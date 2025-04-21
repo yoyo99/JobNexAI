@@ -1,4 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ToastContainer from './ToastContainer.js';
+
+
 import { DashboardLayout } from './components/DashboardLayout'
 import { JobSearch } from './components/JobSearch'
 import { MarketAnalysis } from './components/MarketAnalysis'
@@ -129,6 +132,8 @@ function App() {
           <PrivacyConsent />
           <SecurityBadge />
           <SubscriptionBanner />
+          <ToastContainer />
+
         </AuthProvider>
       </Router>
     </ErrorBoundary>

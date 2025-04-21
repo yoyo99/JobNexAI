@@ -21,7 +21,8 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import { NotificationCenter } from './NotificationCenter'
+import ResendQuotaBanner from './ResendQuotaBanner';
+
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -75,6 +76,7 @@ export function DashboardLayout() {
 
   return (
     <div>
+      <ResendQuotaBanner />
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
           <Transition.Child

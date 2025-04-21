@@ -934,16 +934,9 @@ export async function generateBulkApplicationMessages(cv: any,
               content: `Tu es un expert en rédaction de messages de candidature concis et percutants.
               
               TÂCHE:
-              Rédige un court message de candidature personnalisé en ${language} (maximum 150 mots) pour accompagner un CV.
-              
-              INSTRUCTIONS:
-              1. Sois direct et concis
-              2. Mentionne 2-3 compétences clés du CV qui correspondent au poste
-              3. Inclus une phrase d'accroche personnalisée
-              4. Termine par une formule de politesse appropriée
-              
-              FORMAT:
-              Un paragraphe court et impactant, sans formules d'introduction ou signature.`,
+              Pour chaque description de poste, rédige un message de candidature personnalisé, court (5-7 lignes), en ${language}, qui met en avant les points forts du CV et fait le lien avec les besoins du poste.
+              - Sois direct, pertinent, et évite les répétitions.
+              - Mets en avant la motivation et l'adéquation entre le profil et le poste.`
             },
             {
               role: "user",
@@ -968,5 +961,6 @@ export async function generateBulkApplicationMessages(cv: any,
     trackError(error as Error, { feature: 'bulk-application-messages' })
     throw error
   }
-};
+}
+;
 }

@@ -139,12 +139,52 @@ L'application peut être déployée sur Netlify :
 npm run build
 ```
 
-## Tests
+## Sécurité et gestion des clés API
 
-Lancer les tests unitaires :
-```bash
-npm run test
-```
+**ATTENTION :** Ne jamais exposer les clés sensibles (`VITE_OPENAI_API_KEY`, `RESEND_API_KEY`, `REACT_APP_API_KEY_SECRET`) dans le frontend ou dans le dépôt public. Ces clés doivent être stockées côté serveur (Edge Functions, variables d'environnement Netlify/Supabase).
+
+- `.env` côté frontend : uniquement les variables publiques (ex : `SUPABASE_URL`, `SUPABASE_ANON_KEY`)
+- `.env` côté serveur/Supabase : toutes les clés sensibles nécessaires
+
+## Notifications par email (Resend)
+
+La plateforme utilise une Supabase Edge Function pour envoyer des emails transactionnels via le service Resend.
+
+- Code de la fonction : `supabase/functions/send-notification-email/index.ts`
+- Appel côté frontend via le service `lib/emailService.js`
+- Exemple d'utilisation :
+  ```js
+  import { notifyUser } from '../lib/notifyUser';
+  await notifyUser({
+    to: 'destinataire@email.com',
+    subject: 'Sujet',
+    text: 'Texte brut',
+    html: '<b>Texte HTML</b>'
+  });
+  ```
+- En cas d'échec, une notification d'erreur est affichée à l'utilisateur.
+
+## Tests de notifications email
+
+Des tests unitaires sont à ajouter dans `lib/emailService.test.js` pour simuler l'appel à la fonction et vérifier la gestion des erreurs (voir exemple dans le fichier).
+
+## UI/UX pour les notifications email
+
+- Un retour visuel (succès/erreur) est affiché à l'utilisateur après chaque tentative d'envoi d'email.
+- Utiliser un composant de notification (toast) pour améliorer l'expérience utilisateur.
+
+## Gestion des quotas Resend
+
+- Surveiller les quotas gratuits/mois directement sur le dashboard Resend.
+- En cas de dépassement, afficher un message d'erreur explicite à l'utilisateur.
+
+## Sécurisation des Edge Functions
+
+- Protéger les fonctions critiques côté Supabase (authentification, vérification de l'appelant, filtrage des emails autorisés, etc.).
+- Limiter l'accès aux fonctions d'envoi d'email aux utilisateurs authentifiés ou à des rôles spécifiques.
+
+---
+
 
 ## Contribution
 
