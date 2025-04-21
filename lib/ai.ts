@@ -705,144 +705,6 @@ export function getNextQuestion(conversationId: string): string {
         difficulty = "medium";
     }
 
-    // On récupère toutes les questions déjà posées
-    const askedQuestions = history.map(h => h.question);;
-
-    // On filtre les questions pour ne garder que celles qui n'ont pas été posées
-    // On filtre les questions pour ne garder que celles qui n'ont pas été posées et qui sont en rapport avec les compétences du poste.
-    const availableQuestions = allQuestions.filter(q => !askedQuestions.includes(q.question));
-   
-    // On récupère les types de questions déjà posés
-    const askedQuestionsTypes = history.map(h => {
-        for (const question of allQuestions) {           if (question.question == h.question) {
-                return question.type;            }
-        }
-       return "";
-    });
-
-    // Si toutes les questions ont été posées, on les repose
-        // Si il y a des questions dispo on prend en compte les compétences
-    if (availableQuestions.length === 0) {
-        return generateInterviewQuestion(jobDescription);
-    }
-    // On filtre les questions en fonction de la difficulté.
-    const availableQuestionsByDifficulty = availableQuestions.filter(q => q.difficulty === difficulty);
-    // Si on a des questions de la difficulté demandée, on les utilise sinon on prend toute les questions.
-    const questions = availableQuestionsByDifficulty.length > 0 ? availableQuestionsByDifficulty : availableQuestions;    
-    // On va check les compétences
-    const jobInfo = analyzeJobDescription(jobDescription);
-    // On va maintenant essayer de ne pas poser 2 questions du même type d'affilé
-    let nextQuestion = availableQuestions[0]
-    // On vérifie si on a des points faibles.
-    let weakPointsQuestions = availableQuestions.filter(q => {
-      for(const weakPoint of weakPoints) {           if(q.keywords.includes(weakPoint)) return true;        }
-      return false;    });
-    if (weakPointsQuestions.length > 0){
-        //on pose une question sur les points faibles
-        nextQuestion = weakPointsQuestions[0];
-    } else {    
-          for (const question of availableQuestions) {
-            if (askedQuestionsTypes[askedQuestionsTypes.length - 1] != question.type) {
-            // Sélection par compétence
-            
-            
-              let skillFound = false
-              for (const skill of jobInfo.skills) {
-                if (question.keywords.includes(skill)) {
-                  skillFound = true;
-                }
-              }
-              if (jobInfo.skills.length > 0 && skillFound) {
-                nextQuestion = question;
-                break;    
-              }                
-                
-                break
-            }
-
-    }
-
-    return nextQuestion.question;
-};
-
-/**
- * Ajoute une réponse à l'historique d'une conversation et génère des feedbacks.
- *
- * @param {string} conversationId - L'identifiant de la conversation.
- * @param {string} answer - La réponse de l'utilisateur.
- * @returns {string[]} - Les feedbacks générés pour la réponse.
- */
-export function addAnswer(conversationId: string, answer: string): string[] {    
-    const conversation = conversations.find((c) => c.conversationId === conversationId);
-    if (!conversation) {
-        throw new Error(`Conversation with ID ${conversationId} not found.`);
-    }
-
-    const lastExchange = conversation.history[conversation.history.length - 1];
-    if (!lastExchange || !lastExchange.question) return [];
-    const jobDescription = conversation.jobDescription;
-    const { feedbacks, note, weakPoints } = analyzeAnswer(answer, lastExchange.question,);
-    lastExchange.answer = answer;// On ajoute la réponse
-    lastExchange.feedbacks = feedbacks;
-    lastExchange.note = note;
-    // On ajoute les nouveaux points faibles.   
-    weakPoints.forEach(weakPoint => {
-        if(!conversation.weakPoints.includes(weakPoint)) conversation.weakPoints.push(weakPoint)
-    })
-    return feedbacks;
-}
-
-/**
- * Récupère la moyenne des notes d'une conversation.
- *
- * @param {string} conversationId - L'identifiant de la conversation.
- * @returns {number} - La moyenne des notes.
- */
-export function getAverageNote(conversationId: string): number {
-    const conversation = conversations.find((c) => c.conversationId === conversationId);
-    if (!conversation) {
-        throw new Error("Conversation not found");
-    };
-    if (conversation.history.length === 0) {
-        return 0; // Retourne 0 si aucune réponse n'a été donnée
-    }
-    const totalNotes = conversation.history.reduce((sum, exchange) => sum + (exchange.note || 0), 0);;
-    return totalNotes / conversation.history.length;
-}
-
-
-
-/*
-export async function optimizeCV(cv: any, jobDescription: string) {  try {
-    const { data, error } = await supabase.functions.invoke('optimize-cv', {
-      body: { cv, jobDescription }
-    })
-
-    if (error) throw error
-    return data
-  } catch (error) {
-    trackError(error as Error, { feature: 'cv-optimization' })
-    throw error
-  }
-}
-
-*/
-/*
-export async function analyzeSimilarity(text1: string, text2: string) {
-    try {
-      const { data, error } = await supabase.functions.invoke('analyze-similarity', {
-        body: { text1, text2 }
-      })
-      if (error) throw error
-      return data.similarity
-    } catch (error) {
-      trackError(error as Error, { feature: 'text-similarity' })
-      throw error
-  }
-}
-*/
-
-/**z
  * Récupère l'historique complet d'une conversation.
  *
  * @param {string} conversationId - L'identifiant de la conversation.
@@ -855,73 +717,20 @@ export function getConversationHistory(conversationId: string): { question: stri
     }
     return conversation.history;;
 }
-/*
-export async function extractKeywords(text: string) {
-  try {
-    const { data, error } = await supabase.functions.invoke('extract-keywords', {
-      body: { text }
-    })
 
-    if (error) throw error
-    return data.keywords
-  } catch (error) {
-    trackError(error as Error, { feature: 'keyword-extraction' })
-    throw error
-  }
-}
-*/
-export async function generateCoverLetter(
+/**
+ * Génère des messages de candidature pour plusieurs offres d'emploi.
+ *
+ * @param {any} cv - Le CV du candidat.
+ * @param {{ id: string; description: string }[]} jobDescriptions - Les descriptions des offres d'emploi.
+ * @param {string} language - La langue des messages (par défaut : 'fr').
+ * @returns {Promise<{ jobId: string; message: string }[]>} - Les messages de candidature générés.
+ */
+export async function generateBulkApplicationMessages(
   cv: any,
-  jobDescription: string,
-  language: string = 'fr',
-  tone: 'professional' | 'conversational' | 'enthusiastic' = 'professional'
-) {
-  try {
-    // Use OpenAI API directly from the browser
-    // Note: In production, use an Edge Function to protect your API key
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: `Tu es un expert en rédaction de lettres de motivation professionnelles.
-          
-          TÂCHE:
-          Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous.
-          
-          INSTRUCTIONS:
-          1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}
-          2. Structure la lettre avec une introduction, un développement et une conclusion
-          3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi
-          4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste
-          5. Évite les formules génériques et les clichés
-          6. Limite la lettre à environ 300-400 mots
-          7. Inclus les formules de politesse appropriées en ${language}
-          
-          FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`
-        },
-        {
-          role: "user",
-          content: `CV: ${JSON.stringify(cv)}
-          
-          Description du poste: ${jobDescription}`,
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 1000,
-    })
-
-    return completion.choices[0].message.content as string
-  } catch (error) {
-    trackError(error as Error, { feature: 'cover-letter-generation' })
-    throw error
-  }
-}
-
-export async function generateBulkApplicationMessages(cv: any,
   jobDescriptions: { id: string; description: string }[],
-  language: string = 'fr',
-) {
+  language: string = 'fr'
+): Promise<{ jobId: string; message: string }[]> {
   try {
     const messages = await Promise.all(
       jobDescriptions.map(async (job) => {
@@ -930,18 +739,11 @@ export async function generateBulkApplicationMessages(cv: any,
           messages: [
             {
               role: "system",
-              content: `Tu es un expert en rédaction de messages de candidature concis et percutants.
-              
-              TÂCHE:
-              Pour chaque description de poste, rédige un message de candidature personnalisé, court (5-7 lignes), en ${language}, qui met en avant les points forts du CV et fait le lien avec les besoins du poste.
-              - Sois direct, pertinent, et évite les répétitions.
-              - Mets en avant la motivation et l'adéquation entre le profil et le poste.`
+              content: `Tu es un expert en rédaction de messages de candidature concis et percutants.\n\nTÂCHE:\nPour chaque description de poste, rédige un message de candidature personnalisé, court (5-7 lignes), en ${language}, qui met en avant les points forts du CV et fait le lien avec les besoins du poste.\n- Sois direct, pertinent, et évite les répétitions.\n- Mets en avant la motivation et l'adéquation entre le profil et le poste.`
             },
             {
               role: "user",
-              content: `CV: ${JSON.stringify(cv)}
-              
-              Description du poste: ${job.description}`,
+              content: `CV: ${JSON.stringify(cv)}\n\nDescription du poste: ${job.description}`,
             },
           ],
           temperature: 0.7,
@@ -950,12 +752,40 @@ export async function generateBulkApplicationMessages(cv: any,
 
         return {
           jobId: job.id, 
-          message: completion.choices[0].message.content
+          message: completion.choices[0].message.content || ''
         }
       })
     )
 
     return messages
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function generateCoverLetter(
+  cv: any,
+  jobDescription: string,
+  language: string = 'fr',
+  tone: 'professional' | 'conversational' | 'enthusiastic' = 'professional'
+): Promise<string> {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: `Tu es un expert en rédaction de lettres de motivation professionnelles.\n\nTÂCHE:\nRédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous.\n\nINSTRUCTIONS:\n1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}\n2. Structure la lettre avec une introduction, un développement et une conclusion\n3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi\n4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste\n5. Évite les formules génériques et les clichés\n6. Limite la lettre à environ 300-400 mots\n7. Inclus les formules de politesse appropriées en ${language}\n\nFORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`
+        },
+        {
+          role: "user",
+          content: `CV: ${JSON.stringify(cv)}\n\nDescription du poste: ${jobDescription}`,
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    })
+    return completion.choices[0].message.content as string
   } catch (error) {
     throw error
   }

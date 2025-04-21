@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../stores/auth';
 import { supabase } from '../../lib/supabase';
-import { generateBulkApplicationMessages } from '../../lib/ai';
+import { generateBulkApplicationMessages } from '../../lib/ai'; // Fix: remove .ts extension for TypeScript resolver
 import { PaperAirplaneIcon, ArrowPathIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import { LoadingSpinner } from '../LoadingSpinner';
 export function AutomatedApplications() {
@@ -56,7 +56,10 @@ export function AutomatedApplications() {
             if (suggestionsError)
                 throw suggestionsError;
             // Formater les données
-            const formattedJobs = suggestions.map(suggestion => ({
+            // Type guard to ensure suggestion.job exists
+            const formattedJobs = suggestions
+                .filter((suggestion) => suggestion.job && suggestion.job.id)
+                .map((suggestion) => ({
                 id: suggestion.job.id,
                 title: suggestion.job.title,
                 company: suggestion.job.company,
@@ -104,6 +107,7 @@ export function AutomatedApplications() {
     const deselectAllJobs = () => {
         setSelectedJobs({});
     };
+    // Génère les messages de candidature pour les jobs sélectionnés
     const generateApplicationMessages = () => __awaiter(this, void 0, void 0, function* () {
         if (!cv) {
             setError('Veuillez d\'abord créer un CV dans la section CV Builder');
@@ -117,14 +121,19 @@ export function AutomatedApplications() {
         try {
             setGenerating(true);
             setError(null);
-            const jobDescriptions = selectedJobsList.map(job => ({
+            // Récupérer les descriptions des jobs sélectionnés
+            const jobDescriptions = selectedJobsList.map((job) => ({
                 id: job.id,
                 description: job.description
             }));
+            // Générer les messages de candidature
             const messages = yield generateBulkApplicationMessages(cv, jobDescriptions);
             // Formater les messages avec l'état de sélection
-            const formattedMessages = messages.map(msg => (Object.assign(Object.assign({}, msg), { selected: true })));
-            setApplicationMessages(formattedMessages);
+            setApplicationMessages(messages.map((msg) => ({
+                jobId: msg.jobId,
+                message: msg.message,
+                selected: true
+            })));
         }
         catch (error) {
             console.error('Error generating application messages:', error);
@@ -134,6 +143,7 @@ export function AutomatedApplications() {
             setGenerating(false);
         }
     });
+    // Toggle la sélection d'un message de candidature
     const toggleMessageSelection = (jobId) => {
         setApplicationMessages(prev => prev.map(msg => msg.jobId === jobId ? Object.assign(Object.assign({}, msg), { selected: !msg.selected }) : msg));
     };
@@ -190,13 +200,13 @@ export function AutomatedApplications() {
                                                             // Régénérer ce message spécifique
                                                             setGenerating(true);
                                                             generateBulkApplicationMessages(cv, [{ id: appMsg.jobId, description: (job === null || job === void 0 ? void 0 : job.description) || '' }])
-                                                                .then(messages => {
+                                                                .then((messages) => {
                                                                 if (messages.length > 0) {
-                                                                    setApplicationMessages(prev => prev.map(msg => msg.jobId === appMsg.jobId
+                                                                    setApplicationMessages((prev) => prev.map((msg) => msg.jobId === appMsg.jobId
                                                                         ? Object.assign(Object.assign({}, msg), { message: messages[0].message }) : msg));
                                                                 }
                                                             })
-                                                                .catch(error => {
+                                                                .catch((error) => {
                                                                 console.error('Error regenerating message:', error);
                                                                 setError('Erreur lors de la régénération du message');
                                                             })
@@ -204,5 +214,5 @@ export function AutomatedApplications() {
                                                                 setGenerating(false);
                                                             });
                                                         }, className: "text-primary-400 hover:text-primary-300 text-sm flex items-center gap-1", children: [_jsx(ArrowPathIcon, { className: "h-4 w-4" }), "R\u00E9g\u00E9n\u00E9rer"] }) })] })] }) }, appMsg.jobId));
-                        }) }), _jsx("div", { className: "flex justify-center", children: _jsx("button", { onClick: submitApplications, disabled: submitting || applicationMessages.filter(msg => msg.selected).length === 0, className: "btn-primary flex items-center gap-2", children: submitting ? (_jsxs(_Fragment, { children: [_jsx(LoadingSpinner, { size: "sm" }), "Envoi en cours..."] })) : (_jsxs(_Fragment, { children: [_jsx(PaperAirplaneIcon, { className: "h-5 w-5" }), "Envoyer les candidatures"] })) }) })] }))] }));
+                        }) }), _jsx("div", { className: "flex justify-center", children: _jsx("button", { onClick: submitApplications, disabled: submitting || applicationMessages.filter((msg) => msg.selected).length === 0, className: "btn-primary flex items-center gap-2", children: submitting ? (_jsxs(_Fragment, { children: [_jsx(LoadingSpinner, { size: "sm" }), "Envoi en cours..."] })) : (_jsxs(_Fragment, { children: [_jsx(PaperAirplaneIcon, { className: "h-5 w-5" }), "Envoyer les candidatures"] })) }) })] }))] }));
 }

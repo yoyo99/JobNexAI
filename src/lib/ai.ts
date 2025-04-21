@@ -924,10 +924,7 @@ export async function generateCoverLetter(
   }
 }
 
-export async function generateBulkApplicationMessages(cv: any,
-  jobDescriptions: { id: string; description: string }[],
-  language: string = 'fr',
-) {
+
   try {
     // Pour chaque offre d'emploi, générer un message de candidature personnalisé
     const messages = await Promise.all(

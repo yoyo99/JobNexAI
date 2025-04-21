@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
-import { generateBulkApplicationMessages } from '../../lib/ai'
+import { generateBulkApplicationMessages } from '../../lib/ai' // Fix: remove .ts extension for TypeScript resolver
 import { 
   PaperAirplaneIcon, 
   ArrowPathIcon,
@@ -17,6 +17,7 @@ interface Job {
   location: string
   description: string
   url: string
+  matchScore?: number // Fix: add matchScore property for compatibility
 }
 
 interface ApplicationMessage {
@@ -70,17 +71,19 @@ export function AutomatedApplications() {
       if (suggestionsError) throw suggestionsError
 
       // Formater les données
-      const formattedJobs = suggestions.map(suggestion => ({
-        id: suggestion.job.id,
-        title: suggestion.job.title,
-        company: suggestion.job.company,
-        location: suggestion.job.location,
-        description: suggestion.job.description || '',
-        url: suggestion.job.url,
-        matchScore: suggestion.match_score
-      }))
-
-      setJobs(formattedJobs)
+      // Type guard to ensure suggestion.job exists
+const formattedJobs = (suggestions as any[])
+  .filter((suggestion: any) => suggestion.job && suggestion.job.id)
+  .map((suggestion: any) => ({
+    id: suggestion.job.id,
+    title: suggestion.job.title,
+    company: suggestion.job.company,
+    location: suggestion.job.location,
+    description: suggestion.job.description || '',
+    url: suggestion.job.url,
+    matchScore: suggestion.match_score
+  }))
+setJobs(formattedJobs)
     } catch (error) {
       console.error('Error loading jobs:', error)
       setError('Erreur lors du chargement des offres d\'emploi')
@@ -124,7 +127,8 @@ export function AutomatedApplications() {
     setSelectedJobs({})
   }
 
-  const generateApplicationMessages = async () => {
+  // Génère les messages de candidature pour les jobs sélectionnés
+const generateApplicationMessages = async (): Promise<void> => {
     if (!cv) {
       setError('Veuillez d\'abord créer un CV dans la section CV Builder')
       return
@@ -141,21 +145,24 @@ export function AutomatedApplications() {
       setGenerating(true)
       setError(null)
       
-      const jobDescriptions = selectedJobsList.map(job => ({
+      // Récupérer les descriptions des jobs sélectionnés
+      const jobDescriptions = selectedJobsList.map((job: Job) => ({
         id: job.id,
         description: job.description
       }))
 
+      // Générer les messages de candidature
       const messages = await generateBulkApplicationMessages(cv, jobDescriptions)
-      
-      // Formater les messages avec l'état de sélection
-      const formattedMessages = messages.map(msg => ({
-        ...msg,
-        selected: true
-      }))
 
-      setApplicationMessages(formattedMessages)
-    } catch (error) {
+      // Formater les messages avec l'état de sélection
+      setApplicationMessages(
+        messages.map((msg: { jobId: string; message: string }) => ({
+          jobId: msg.jobId,
+          message: msg.message,
+          selected: true
+        }))
+      )
+    } catch (error: any) {
       console.error('Error generating application messages:', error)
       setError('Erreur lors de la génération des messages de candidature')
     } finally {
@@ -163,7 +170,8 @@ export function AutomatedApplications() {
     }
   }
 
-  const toggleMessageSelection = (jobId: string) => {
+  // Toggle la sélection d'un message de candidature
+const toggleMessageSelection = (jobId: string): void => {
     setApplicationMessages(prev => 
       prev.map(msg => 
         msg.jobId === jobId ? { ...msg, selected: !msg.selected } : msg
@@ -345,7 +353,7 @@ export function AutomatedApplications() {
           <h2 className="text-xl font-semibold text-white">Messages de candidature générés</h2>
           
           <div className="space-y-4">
-            {applicationMessages.map((appMsg) => {
+            {applicationMessages.map((appMsg: ApplicationMessage) => {
               const job = jobs.find(j => j.id === appMsg.jobId)
               
               return (
@@ -378,10 +386,10 @@ export function AutomatedApplications() {
                             // Régénérer ce message spécifique
                             setGenerating(true)
                             generateBulkApplicationMessages(cv, [{ id: appMsg.jobId, description: job?.description || '' }])
-                              .then(messages => {
+                              .then((messages: { jobId: string; message: string }[]) => {
                                 if (messages.length > 0) {
-                                  setApplicationMessages(prev => 
-                                    prev.map(msg => 
+                                  setApplicationMessages((prev: ApplicationMessage[]) => 
+                                    prev.map((msg: ApplicationMessage) => 
                                       msg.jobId === appMsg.jobId 
                                         ? { ...msg, message: messages[0].message } 
                                         : msg
@@ -389,7 +397,7 @@ export function AutomatedApplications() {
                                   )
                                 }
                               })
-                              .catch(error => {
+                              .catch((error: any) => {
                                 console.error('Error regenerating message:', error)
                                 setError('Erreur lors de la régénération du message')
                               })
@@ -413,7 +421,7 @@ export function AutomatedApplications() {
           <div className="flex justify-center">
             <button
               onClick={submitApplications}
-              disabled={submitting || applicationMessages.filter(msg => msg.selected).length === 0}
+              disabled={submitting || applicationMessages.filter((msg: ApplicationMessage) => msg.selected).length === 0}
               className="btn-primary flex items-center gap-2"
             >
               {submitting ? (

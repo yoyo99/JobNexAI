@@ -2,15 +2,13 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
-import { generateCoverLetter } from '../../lib/ai'
+import { generateCoverLetter } from '../../lib/ai' // Fix: remove .ts extension for TypeScript resolver
 import { 
-  DocumentTextIcon,
   ArrowPathIcon,
   ClipboardIcon,
   CheckIcon,
-  LanguageIcon,
   SparklesIcon
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline' // Remove unused icons
 import { LoadingSpinner } from '../LoadingSpinner'
 
 interface Job {
@@ -20,6 +18,7 @@ interface Job {
   location: string
   description: string
   url: string
+  matchScore?: number // Fix: add matchScore property for compatibility
 }
 
 export function CoverLetterGenerator() {
@@ -68,17 +67,19 @@ export function CoverLetterGenerator() {
       if (suggestionsError) throw suggestionsError
 
       // Formater les données
-      const formattedJobs = suggestions.map(suggestion => ({
-        id: suggestion.job.id,
-        title: suggestion.job.title,
-        company: suggestion.job.company,
-        location: suggestion.job.location,
-        description: suggestion.job.description || '',
-        url: suggestion.job.url,
-        matchScore: suggestion.match_score
-      }))
-
-      setJobs(formattedJobs)
+      // Type guard to ensure suggestion.job exists
+const formattedJobs = (suggestions as any[])
+  .filter((suggestion: any) => suggestion.job && suggestion.job.id)
+  .map((suggestion: any) => ({
+    id: suggestion.job.id,
+    title: suggestion.job.title,
+    company: suggestion.job.company,
+    location: suggestion.job.location,
+    description: suggestion.job.description || '',
+    url: suggestion.job.url,
+    matchScore: suggestion.match_score
+  }))
+setJobs(formattedJobs)
     } catch (error) {
       console.error('Error loading jobs:', error)
       setError('Erreur lors du chargement des offres d\'emploi')
@@ -195,7 +196,7 @@ export function CoverLetterGenerator() {
                   <p className="text-gray-400 text-sm">{job.company} • {job.location}</p>
                   <div className="mt-2 flex justify-between items-center">
                     <span className="text-xs bg-primary-600/20 text-primary-400 px-2 py-1 rounded-full">
-                      {job.matchScore.toFixed(0)}% de correspondance
+                      {job.matchScore?.toFixed(0) ?? 'N/A'}% de correspondance
                     </span>
                     <a
                       href={job.url}
