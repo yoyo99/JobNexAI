@@ -387,7 +387,7 @@ const toggleMessageSelection = (jobId: string): void => {
                             // Régénérer ce message spécifique
                             setGenerating(true)
                             generateBulkApplicationMessages(cv, [{ id: appMsg.jobId, description: job?.description || '' }])
-                              .then((messages: { jobId: string; message: string }[]) => {
+                              .then((messages: { jobId: string; message: string | null }[]) => {
                                 if (messages.length > 0) {
                                   setApplicationMessages((prev: ApplicationMessage[]) => 
                                     prev.map((msg: ApplicationMessage) => 

@@ -129,11 +129,15 @@ export function AutomatedApplications() {
             // Générer les messages de candidature
             const messages = yield generateBulkApplicationMessages(cv, jobDescriptions);
             // Formater les messages avec l'état de sélection
-            setApplicationMessages(messages.map((msg) => ({
-                jobId: msg.jobId,
-                message: msg.message,
-                selected: true
-            })));
+            setApplicationMessages(messages.filter((msg) => msg.message !== null)
+                .map((msg) => {
+                var _a;
+                return ({
+                    jobId: msg.jobId,
+                    message: (_a = msg.message) !== null && _a !== void 0 ? _a : '',
+                    selected: true
+                });
+            }));
         }
         catch (error) {
             console.error('Error generating application messages:', error);

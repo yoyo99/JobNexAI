@@ -1,6 +1,7 @@
 import OpenAI from 'openai';;
 // Importation de la librairie compromise pour la lemmatisation
-import nlp from 'compromise';;
+import nlp from 'compromise';import { trackError } from './monitoring';
+;
 /**z
  * Effectue une analyse sémantique d'un texte donné.
  * Cette fonction prend en entrée un texte et retourne une liste de suggestions
@@ -927,6 +928,8 @@ export async function generateCoverLetter(
 }
 
 export async function generateBulkApplicationMessages(
+
+
   cv: any,
   jobDescriptions: { id: string; description: string }[],
   language: string = 'fr',
