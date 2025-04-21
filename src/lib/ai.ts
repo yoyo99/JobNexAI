@@ -927,8 +927,6 @@ export async function generateCoverLetter(
 
 
 
-}
-
 export async function generateBulkApplicationMessages(
 
 
