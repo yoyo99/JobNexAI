@@ -958,9 +958,6 @@ export async function generateBulkApplicationMessages(cv: any,
 
     return messages
   } catch (error) {
-    trackError(error as Error, { feature: 'bulk-application-messages' })
     throw error
   }
-}
-;
 }
