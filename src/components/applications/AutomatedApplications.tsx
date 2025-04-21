@@ -5,8 +5,6 @@ import { supabase } from '../../lib/supabase'
 import { generateBulkApplicationMessages } from '../../lib/ai'
 import { 
   PaperAirplaneIcon, 
-  CheckIcon, 
-  XMarkIcon,
   ArrowPathIcon,
   DocumentTextIcon
 } from '@heroicons/react/24/outline'

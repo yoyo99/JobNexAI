@@ -923,7 +923,6 @@ export async function generateBulkApplicationMessages(cv: any,
   language: string = 'fr',
 ) {
   try {
-    // Pour chaque offre d'emploi, générer un message de candidature personnalisé
     const messages = await Promise.all(
       jobDescriptions.map(async (job) => {
         const completion = await openai.chat.completions.create({
