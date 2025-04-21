@@ -889,8 +889,8 @@ export function getNextQuestion(conversationId) {
         });
     }
 }
-export function generateBulkApplicationMessages(_1, _a, cv_1, jobDescriptions_1) {
-    return __awaiter(this, arguments, void 0, function* (, { generateCoverLetter }, cv, jobDescriptions, language = 'fr') {
+export function generateBulkApplicationMessages(cv_1, jobDescriptions_1) {
+    return __awaiter(this, arguments, void 0, function* (cv, jobDescriptions, language = 'fr') {
         try {
             // Pour chaque offre d'emploi, générer un message de candidature personnalisé
             const messages = yield Promise.all(jobDescriptions.map((job) => __awaiter(this, void 0, void 0, function* () {
