@@ -1,1 +1,249 @@
-# JobNexus-WindSurf
+Je veux que tu développe # JobNexus - Plateforme de Recherche d'Emploi Automatisée
+
+JobNexus est une plateforme moderne de recherche d'emploi qui utilise l'intelligence artificielle pour optimiser et automatiser votre recherche d'emploi. De l'optimisation de votre CV aux candidatures automatisées, JobNexus simplifie votre parcours vers le poste idéal.
+
+## Fonctionnalités
+
+- **Recherche d'emploi intelligente**
+  - Filtres avancés (type de contrat, localisation, salaire, etc.)
+  - Suggestions personnalisées basées sur vos compétences
+  - Système de notation des correspondances
+  - Mode de travail (remote, hybride, sur site)
+
+- **Gestion des candidatures**
+  - Suivi des candidatures en cours
+  - Organisation par statut (brouillon, postulée, entretien, etc.)
+  - Notes et rappels pour chaque candidature
+  - Planification des prochaines étapes
+
+- **Profil et compétences**
+  - Gestion de vos compétences avec niveaux de maîtrise
+  - Préférences de recherche personnalisables
+  - Historique des candidatures
+  - Statistiques et analyses
+
+- **Alertes et notifications**
+  - Alertes emploi personnalisées
+  - Notifications en temps réel
+  - Rappels d'entretiens
+  - Mises à jour des candidatures
+
+## Technologies utilisées
+
+- **Frontend**
+  - React 18
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Framer Motion
+  - React Router
+  - Zustand
+  - i18next
+
+- **Backend**
+  - Supabase
+  - PostgreSQL
+  - Edge Functions
+  - Row Level Security
+  - Real-time subscriptions
+
+## Prérequis
+
+- Node.js 20.x ou supérieur
+- npm 10.x ou supérieur
+- Un compte Supabase
+
+## Installation
+
+1. Cloner le repository
+```bash
+git clone https://github.com/votre-username/jobnexus.git
+cd jobnexus
+```
+
+2. Installer les dépendances
+```bash
+npm install
+```
+
+3. Configurer les variables d'environnement
+```bash
+cp .env.example .env
+```
+
+Remplir le fichier `.env` avec vos informations Supabase :
+```
+VITE_SUPABASE_URL=votre_url_supabase
+VITE_SUPABASE_ANON_KEY=votre_cle_anon
+```
+
+4. Lancer l'application en développement
+```bash
+npm run dev
+```
+
+L'application sera disponible sur `http://localhost:5173`
+
+## Structure du projet
+
+```
+jobnexus/
+├── public/               # Assets statiques
+│   └── locales/         # Fichiers de traduction
+├── src/
+│   ├── components/      # Composants React
+│   ├── lib/            # Utilitaires et configuration
+│   ├── stores/         # État global (Zustand)
+│   ├── utils/          # Fonctions utilitaires
+│   └── i18n/           # Configuration i18next
+├── supabase/
+│   ├── functions/      # Edge Functions
+│   └── migrations/     # Migrations SQL
+└── package.json
+```
+
+## Fonctionnalités de sécurité
+
+- **Authentification**
+  - Authentification email/mot de passe
+  - Sessions sécurisées
+  - Protection CSRF
+
+- **Autorisation**
+  - Row Level Security (RLS)
+  - Politiques d'accès granulaires
+  - Isolation des données utilisateur
+
+- **Protection des données**
+  - Conformité RGPD
+  - Chiffrement des données sensibles
+  - Journalisation des audits
+
+## Internationalisation
+
+L'application est disponible en plusieurs langues :
+- Français (par défaut)
+- Anglais
+- Espagnol
+- Allemand
+- Italien
+
+## Déploiement
+
+L'application peut être déployée sur Netlify :
+
+1. Connecter le repository à Netlify
+2. Configurer les variables d'environnement
+3. Déployer avec la commande :
+```bash
+npm run build
+```
+
+## Tests
+
+Lancer les tests unitaires :
+```bash
+npm run test
+```
+
+## Contribution
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/amazing-feature`)
+3. Commit les changements (`git commit -m 'Add amazing feature'`)
+4. Push la branche (`git push origin feature/amazing-feature`)
+5. Ouvrir une Pull Request
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## Support
+
+Pour toute question ou problème :
+- Ouvrir une issue sur GitHub
+- Contacter l'équipe support à support@jobnexus.com
+
+## Roadmap
+
+## Fonctionnalités Avancées
+
+### Fonctionnalités basées sur l'IA et l'analyse
+
+**Matching de compétences prédictif :**
+-   Concept: Au lieu de simplement comparer les mots-clés, l'IA pourrait analyser en profondeur les offres d'emploi et les profils des utilisateurs pour prédire la probabilité de réussite d'une candidature.
+-   Bénéfices: Améliorer significativement la pertinence des suggestions d'emploi, réduire le temps de recherche, et augmenter les chances de trouver le "match parfait".
+
+**Analyse sémantique des CV et lettres de motivation :**
+-   Concept: L'IA peut aider à améliorer les CV et lettres de motivation en suggérant des reformulations, en identifiant des compétences clés manquantes ou des incohérences, et en adaptant le langage à l'offre d'emploi visée.
+-   Bénéfices: Augmenter l'attractivité des candidatures, améliorer la qualité de la présentation, et aider les utilisateurs à mieux se vendre.
+
+**Simulateur d'entretien d'embauche :**
+-   Concept: Un environnement virtuel où les utilisateurs peuvent s'entraîner à des entretiens, avec des questions générées par l'IA et des feedbacks personnalisés sur leur performance.
+-   Bénéfices: Réduire le stress des entretiens, améliorer les compétences de communication, et aider les utilisateurs à se préparer efficacement.
+
+**Prédiction des tendances du marché du travail :**
+-   Concept: L'IA pourrait analyser les données des offres d'emploi, des profils, des entreprises, etc., pour identifier les compétences en forte demande, les secteurs en croissance, et les évolutions salariales.
+-   Bénéfices: Permettre aux utilisateurs de se positionner sur les marchés porteurs, d'anticiper les besoins futurs, et de prendre des décisions éclairées sur leur carrière.
+
+**Réseautage intelligent:**
+-   Concept: Utiliser l'IA pour suggérer des connexions pertinentes basées sur les compétences, l'expérience, les intérêts, et les objectifs de carrière.
+-   Bénéfices: Faciliter le réseautage, augmenter les opportunités de carrière, et développer un réseau professionnel de qualité.
+
+### Fonctionnalités sociales et collaboratives
+
+**Communautés de soutien par métier :**
+-   Concept: Des espaces dédiés où les utilisateurs d'un même domaine peuvent échanger des conseils, des ressources, et des opportunités.
+-   Bénéfices: Favoriser le partage de connaissances, créer un sentiment d'appartenance, et permettre un soutien mutuel.
+
+**Mentorat personnalisé:**
+-   Concept: Mettre en relation des utilisateurs expérimentés avec des candidats plus juniors, pour un accompagnement individualisé.
+-   Bénéfices: Accélérer la progression de carrière, bénéficier de conseils précieux, et créer des liens durables.
+
+**Groupes de préparation aux entretiens :**
+-   Concept: Des groupes virtuels où les utilisateurs peuvent s'entraîner ensemble, se donner des feedbacks, et se motiver mutuellement.
+-   Bénéfices: Améliorer la préparation aux entretiens, créer du lien, et réduire l'isolement.
+
+### Fonctionnalités d'automatisation et de gain de temps
+
+**Candidature automatique intelligente :**
+-   Concept: Une fonctionnalité qui permet de postuler à plusieurs offres d'emploi en un clic, tout en adaptant automatiquement la candidature aux exigences de chaque poste.
+-   Bénéfices: Gain de temps considérable, réduction de la charge mentale, et augmentation du nombre de candidatures.
+
+**CV et profil adaptable à l'offre**
+-   Concept: Le CV et le profil s'adapte automatiquement aux offres d'emploi.
+-   Bénéfices: Permet de mieux cibler l'offre, et d'être plus pertinent.
+
+### Autres idées
+
+**Certification et badges de compétences:**
+-   Concept: Intégrer un système de certification ou de badges pour valider les compétences et les connaissances des utilisateurs.
+-   Bénéfices: Augmenter la crédibilité, se démarquer des autres candidats, et valoriser son expertise.
+
+**Intégration avec d'autres plateformes :**
+-   Concept: Permettre aux utilisateurs de synchroniser leurs informations avec LinkedIn, GitHub, et d'autres plateformes professionnelles.
+-   Bénéfices: Faciliter la gestion des données, gagner du temps, et maintenir une présence cohérente sur le web.
+
+### Recommandations
+
+Pour bien développer ces fonctionnalités, il est recommandé de :
+
+-   Analyser en profondeur les besoins et les attentes de vos utilisateurs.
+-   Tester les nouvelles fonctionnalités avec des groupes d'utilisateurs avant de les déployer à grande échelle.
+-   Rester à l'affût des dernières innovations en matière d'IA et de marché du travail.
+-   Continuer a utiliser des testimonials pour rassurer les utilisateurs.
+
+
+
+- [ ] Intégration avec LinkedIn
+- [ ] Analyse des tendances du marché
+- [ ] Assistant IA pour la rédaction de CV
+- [ ] Application mobile
+- [ ] API publique
+
+## Fonctionnalités spécifiques
+- Différenciation personne morale/physique à l'inscription et à l'abonnement.
+- Ajout d'un champ API KEY IA dans le profil utilisateur.
+- Scraping de boîtes mails pour offres d'emploi (IMAP).
+- Notifications programmées sur nouvelles offres.
+- Protection admin des paramètres.

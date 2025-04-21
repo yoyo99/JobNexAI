@@ -1,0 +1,102 @@
+{
+  "navigation": {
+    "dashboard": "Panel de control",
+    "jobSearch": "Búsqueda de empleo",
+    "applications": "Solicitudes",
+    "cvBuilder": "Constructor de CV",
+    "network": "Red",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "marketAnalysis": "Análisis de mercado"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "startTrial": "Comenzar prueba gratuita",
+    "createAccount": "Crear cuenta",
+    "loginSuccess": "¡Inicio de sesión exitoso!",
+    "loginError": "Correo o contraseña incorrectos.",
+    "signupSuccess": "¡Registro exitoso! Ahora puedes iniciar sesión.",
+    "signupError": "Ocurrió un error durante el registro."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Operación exitosa",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "language": "Idioma",
+    "or": "O"
+  },
+  "hero": {
+    "title": "Automatiza tu búsqueda de empleo y trabajo freelance",
+    "subtitle": "Deja que la IA potencie tu búsqueda. Desde la optimización del CV hasta las solicitudes automatizadas, JobNexus simplifica tu camino hacia el puesto perfecto o las mejores oportunidades freelance.",
+    "startTrial": "Comenzar prueba gratuita",
+    "watchDemo": "Ver demo"
+  },
+  "jobSearch": {
+    "title": "Encuentra tu próxima oportunidad",
+    "subtitle": "Busca entre miles de ofertas de trabajo adaptadas a tus habilidades y preferencias.",
+    "filters": {
+      "keyword": "Título del puesto o palabra clave",
+      "jobType": "Tipo de trabajo",
+      "location": "Ubicación"
+    },
+    "types": {
+      "fullTime": "Tiempo completo",
+      "partTime": "Tiempo parcial",
+      "contract": "Contrato",
+      "freelance": "Freelance",
+      "internship": "Prácticas"
+    },
+    "locations": {
+      "remote": "Remoto",
+      "hybrid": "Híbrido",
+      "onsite": "Presencial"
+    }
+  },
+  "marketAnalysis": {
+    "title": "Análisis de mercado",
+    "subtitle": "Descubre tendencias y perspectivas del mercado laboral",
+    "jobTypes": "Distribución de tipos de trabajo",
+    "topLocations": "Ubicaciones principales",
+    "salaryInsights": "Información salarial",
+    "averageSalary": "Salario promedio basado en {{count}} ofertas",
+    "noSalaryData": "No hay suficientes datos salariales disponibles"
+  },
+  "profile": {
+    "title": "Perfil",
+    "subtitle": "Gestiona tu información personal y suscripción",
+    "personalInfo": {
+      "title": "Información personal",
+      "fullName": "Nombre completo",
+      "updateSuccess": "¡Perfil actualizado con éxito!",
+      "updateError": "Ocurrió un error al actualizar el perfil."
+    },
+    "subscription": {
+      "title": "Suscripción",
+      "status": "Estado",
+      "plan": "Plan",
+      "nextRenewal": "Próxima renovación",
+      "trialEnd": "Fin del periodo de prueba",
+      "manage": "Gestionar suscripción",
+      "statuses": {
+        "none": "Sin suscripción",
+        "trialing": "Periodo de prueba",
+        "active": "Activa",
+        "canceled": "Cancelada",
+        "inactive": "Inactiva"
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "jobSearch": "Jobsuche",
+    "applications": "Bewerbungen",
+    "cvBuilder": "Lebenslauf-Builder",
+    "network": "Netzwerk",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "marketAnalysis": "Marktanalyse"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "logout": "Abmelden",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "startTrial": "Kostenlose Testversion starten",
+    "createAccount": "Konto erstellen",
+    "loginSuccess": "Anmeldung erfolgreich!",
+    "loginError": "Falsche E-Mail oder Passwort.",
+    "signupSuccess": "Registrierung erfolgreich! Sie können sich jetzt anmelden.",
+    "signupError": "Bei der Registrierung ist ein Fehler aufgetreten."
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Operation erfolgreich",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "view": "Ansehen",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "sort": "Sortieren",
+    "language": "Sprache",
+    "or": "Oder"
+  },
+  "hero": {
+    "title": "Automatisieren Sie Ihre Jobsuche",
+    "subtitle": "Lassen Sie KI Ihre Jobsuche optimieren. Von der Lebenslauf-Optimierung bis hin zu automatisierten Bewerbungen vereinfacht JobNexus Ihren Weg zur perfekten Position.",
+    "startTrial": "Kostenlose Testversion starten",
+    "watchDemo": "Demo ansehen"
+  },
+  "jobSearch": {
+    "title": "Finden Sie Ihre nächste Chance",
+    "subtitle": "Durchsuchen Sie Tausende von Stellenangeboten, die auf Ihre Fähigkeiten und Präferenzen zugeschnitten sind.",
+    "filters": {
+      "keyword": "Jobtitel oder Stichwort",
+      "jobType": "Beschäftigungsart",
+      "location": "Standort"
+    },
+    "types": {
+      "fullTime": "Vollzeit",
+      "partTime": "Teilzeit",
+      "contract": "Befristet",
+      "freelance": "Freiberuflich",
+      "internship": "Praktikum"
+    },
+    "locations": {
+      "remote": "Remote",
+      "hybrid": "Hybrid",
+      "onsite": "Vor Ort"
+    }
+  },
+  "marketAnalysis": {
+    "title": "Marktanalyse",
+    "subtitle": "Entdecken Sie Trends und Einblicke vom Arbeitsmarkt",
+    "jobTypes": "Verteilung der Beschäftigungsarten",
+    "topLocations": "Top-Standorte",
+    "salaryInsights": "Gehaltseinblicke",
+    "averageSalary": "Durchschnittsgehalt basierend auf {{count}} Angeboten",
+    "noSalaryData": "Nicht genügend Gehaltsdaten verfügbar"
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Verwalten Sie Ihre persönlichen Informationen und Abonnement",
+    "personalInfo": {
+      "title": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "updateSuccess": "Profil erfolgreich aktualisiert!",
+      "updateError": "Beim Aktualisieren des Profils ist ein Fehler aufgetreten."
+    },
+    "subscription": {
+      "title": "Abonnement",
+      "status": "Status",
+      "plan": "Plan",
+      "nextRenewal": "Nächste Verlängerung",
+      "trialEnd": "Ende der Testversion",
+      "manage": "Abonnement verwalten",
+      "statuses": {
+        "none": "Kein Abonnement",
+        "trialing": "Testphase",
+        "active": "Aktiv",
+        "canceled": "Gekündigt",
+        "inactive": "Inaktiv"
+      }
+    }
+  }
+}
