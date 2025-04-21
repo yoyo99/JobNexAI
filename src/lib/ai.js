@@ -888,18 +888,17 @@ export function getNextQuestion(conversationId) {
             }
         });
     }
-}
-export function generateBulkApplicationMessages(cv_1, jobDescriptions_1) {
-    return __awaiter(this, arguments, void 0, function* (cv, jobDescriptions, language = 'fr') {
-        try {
-            // Pour chaque offre d'emploi, générer un message de candidature personnalisé
-            const messages = yield Promise.all(jobDescriptions.map((job) => __awaiter(this, void 0, void 0, function* () {
-                const completion = yield openai.chat.completions.create({
-                    model: "gpt-4",
-                    messages: [
-                        {
-                            role: "system",
-                            content: `Tu es un expert en rédaction de messages de candidature concis et percutants.
+    export function generateBulkApplicationMessages(cv_1, jobDescriptions_1) {
+        return __awaiter(this, arguments, void 0, function* (cv, jobDescriptions, language = 'fr') {
+            try {
+                // Pour chaque offre d'emploi, générer un message de candidature personnalisé
+                const messages = yield Promise.all(jobDescriptions.map((job) => __awaiter(this, void 0, void 0, function* () {
+                    const completion = yield openai.chat.completions.create({
+                        model: "gpt-4",
+                        messages: [
+                            {
+                                role: "system",
+                                content: `Tu es un expert en rédaction de messages de candidature concis et percutants.
               
               TÂCHE:
               Rédige un court message de candidature personnalisé en ${language} (maximum 150 mots) pour accompagner un CV.
@@ -912,27 +911,28 @@ export function generateBulkApplicationMessages(cv_1, jobDescriptions_1) {
               
               FORMAT:
               Un paragraphe court et impactant, sans formules d'introduction ou signature.`,
-                        },
-                        {
-                            role: "user",
-                            content: `CV: ${JSON.stringify(cv)}
+                            },
+                            {
+                                role: "user",
+                                content: `CV: ${JSON.stringify(cv)}
               
               Description du poste: ${job.description}`,
-                        },
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 200,
-                });
-                return {
-                    jobId: job.id,
-                    message: completion.choices[0].message.content
-                };
-            })));
-            return messages;
-        }
-        catch (error) {
-            trackError(error, { feature: 'bulk-application-messages' });
-            throw error;
-        }
-    });
+                            },
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 200,
+                    });
+                    return {
+                        jobId: job.id,
+                        message: completion.choices[0].message.content
+                    };
+                })));
+                return messages;
+            }
+            catch (error) {
+                trackError(error, { feature: 'bulk-application-messages' });
+                throw error;
+            }
+        });
+    }
 }
