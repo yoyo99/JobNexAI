@@ -22,7 +22,7 @@ interface Job {
 
 interface ApplicationMessage {
   jobId: string
-  message: string
+  message: string | null
   selected: boolean
 }
 
@@ -156,9 +156,10 @@ const generateApplicationMessages = async (): Promise<void> => {
 
       // Formater les messages avec l'état de sélection
       setApplicationMessages(
-        messages.map((msg: { jobId: string; message: string }) => ({
+        messages.filter((msg: { jobId: string; message: string | null }) => msg.message !== null)
+        .map((msg: { jobId: string; message: string | null }) => ({
           jobId: msg.jobId,
-          message: msg.message,
+          message: msg.message ?? '',
           selected: true
         }))
       )

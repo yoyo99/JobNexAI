@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
-import { generateCoverLetter } from '../../lib/ai' // Fix: remove .ts extension for TypeScript resolver
+import { generateCoverLetter } from '../../lib/ai'
 import { 
   ArrowPathIcon,
   ClipboardIcon,
