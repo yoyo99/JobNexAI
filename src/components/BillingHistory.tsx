@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../stores/auth'
 import { InvoiceHistory } from './InvoiceHistory'

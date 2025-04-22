@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { supabase } from '../../lib/supabase'
+import { getChatRooms } from '../../lib/chat'
 import { useAuth } from '../../stores/auth'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -35,82 +35,19 @@ export function ChatList({ onSelectRoom }: ChatListProps) {
   useEffect(() => {
     if (user) {
       loadChatRooms()
-      subscribeToNewMessages()
     }
   }, [user])
 
   const loadChatRooms = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
-        .from('chat_room_participants')
-        .select(`
-          room_id,
-          room:chat_rooms (
-            id,
-            last_message:chat_messages (
-              content,
-              created_at,
-              sender:profiles!sender_id (
-                full_name
-              )
-            ),
-            participants:chat_room_participants (
-              user_id,
-              user:profiles!user_id (
-                full_name
-              )
-            )
-          )
-        `)
-        .eq('user_id', user?.id)
-        .order('room.last_message.created_at', { ascending: false })
-
-      if (error) throw error
-
-      // Format the data
-      const rooms = data.map(item => {
-        const otherParticipants = item.room.participants.filter(
-          p => p.user_id !== user?.id
-        )
-
-        // Count unread messages
-        const unreadCount = 0 // This would need to be calculated based on read_by array
-
-        return {
-          id: item.room_id,
-          last_message: item.room.last_message?.[0],
-          participants: otherParticipants,
-          unread_count: unreadCount
-        }
-      })
-
-      setChatRooms(rooms)
+      if (!user) return
+      const roomsData = await getChatRooms(user.id)
+      setChatRooms(roomsData.map(r => ({ ...r, unread_count: 0 })))
     } catch (error) {
       console.error('Error loading chat rooms:', error)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const subscribeToNewMessages = () => {
-    const channel = supabase
-      .channel('chat_messages')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages',
-        },
-        () => {
-          loadChatRooms()
-        }
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
     }
   }
 
