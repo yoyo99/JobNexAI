@@ -1,30 +1,20 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { getChatRooms } from '../../lib/chat'
+import { getChatRooms, Participant, Message } from '../../lib/chat'
 import { useAuth } from '../../stores/auth'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
-interface ChatRoom {
-  id: string
-  last_message?: {
-    content: string
-    created_at: string
-    sender: {
-      full_name: string
-    }
-  }
-  participants: {
-    user_id: string
-    user: {
-      full_name: string
-    }
-  }[]
-  unread_count: number
-}
-
 interface ChatListProps {
   onSelectRoom: (roomId: string, participantId: string) => void
+}
+
+// ChatRoom local: id, participants, last_message nullable, unread_count
+type ChatRoom = {
+  id: string
+  participants: Participant[]
+  last_message: Message | null
+  unread_count: number
 }
 
 export function ChatList({ onSelectRoom }: ChatListProps) {

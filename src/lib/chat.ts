@@ -1,9 +1,27 @@
 import { supabase } from './supabase'
 import { io, Socket } from 'socket.io-client'
 
+// Types pour le chat
+export interface Participant {
+  user_id: string
+  user: { full_name: string }
+}
+export interface Message {
+  id: string
+  sender_id: string
+  content: string
+  created_at: string
+  sender: { full_name: string }
+}
+export interface ChatRoomData {
+  id: string
+  last_message: Message | null
+  participants: Participant[]
+}
+
 let socket: Socket | null = null
 
-export function initializeChat(userId: string) {
+export function initializeChat(userId: string): Socket {
   if (socket) return socket
 
   socket = io(import.meta.env.VITE_CHAT_SERVER_URL || 'http://localhost:3001', {
@@ -27,14 +45,14 @@ export function initializeChat(userId: string) {
   return socket
 }
 
-export function disconnectChat() {
+export function disconnectChat(): void {
   if (socket) {
     socket.disconnect()
     socket = null
   }
 }
 
-export async function getChatRooms(userId: string) {
+export async function getChatRooms(userId: string): Promise<ChatRoomData[]> {
   try {
     const { data, error } = await supabase
       .from('chat_room_participants')
@@ -61,15 +79,22 @@ export async function getChatRooms(userId: string) {
       .order('room.last_message.created_at', { ascending: false })
 
     if (error) throw error
-    return data.map(item => {
-      const otherParticipants = item.room.participants
-        .filter(p => p.user_id !== userId)
-        .map(p => ({ user_id: p.user_id, user: p.user[0] }))
-      return {
-        id: item.room_id,
-        last_message: item.room.last_message?.[0] || null,
-        participants: otherParticipants
-      }
+    return (data || []).map((item: any) => {
+      const participants: Participant[] = (item.room.participants || []).map((p: any) => ({
+        user_id: p.user_id,
+        user: p.user[0],
+      }))
+      const msg = item.room.last_message?.[0]
+      const last_message: Message | null = msg
+        ? {
+            id: msg.id,
+            sender_id: msg.sender_id,
+            content: msg.content,
+            created_at: msg.created_at,
+            sender: msg.sender[0],
+          }
+        : null
+      return { id: item.room_id, participants, last_message }
     })
   } catch (error) {
     console.error('Error getting chat rooms:', error)
@@ -77,7 +102,7 @@ export async function getChatRooms(userId: string) {
   }
 }
 
-export async function getChatMessages(roomId: string) {
+export async function getChatMessages(roomId: string): Promise<Message[]> {
   try {
     const { data, error } = await supabase
       .from('chat_messages')
@@ -94,12 +119,12 @@ export async function getChatMessages(roomId: string) {
       .order('created_at', { ascending: true })
 
     if (error) throw error
-    return data.map(msg => ({
+    return (data || []).map((msg: any) => ({
       id: msg.id,
       sender_id: msg.sender_id,
       content: msg.content,
       created_at: msg.created_at,
-      sender: msg.sender[0]
+      sender: msg.sender[0],
     }))
   } catch (error) {
     console.error('Error getting chat messages:', error)
@@ -107,7 +132,7 @@ export async function getChatMessages(roomId: string) {
   }
 }
 
-export async function sendChatMessage(roomId: string, senderId: string, content: string) {
+export async function sendChatMessage(roomId: string, senderId: string, content: string): Promise<boolean> {
   try {
     const { error } = await supabase
       .from('chat_messages')
@@ -125,7 +150,7 @@ export async function sendChatMessage(roomId: string, senderId: string, content:
   }
 }
 
-export function subscribeToRoom(roomId: string, callback: (message: any) => void) {
+export function subscribeToRoom(roomId: string, callback: (message: Message) => void): () => void {
   const channel = supabase
     .channel(`room:${roomId}`)
     .on(
@@ -137,7 +162,15 @@ export function subscribeToRoom(roomId: string, callback: (message: any) => void
         filter: `room_id=eq.${roomId}`,
       },
       (payload) => {
-        callback(payload.new)
+        const newMsg: any = payload.new
+        const message: Message = {
+          id: newMsg.id,
+          sender_id: newMsg.sender_id,
+          content: newMsg.content,
+          created_at: newMsg.created_at,
+          sender: newMsg.sender,
+        }
+        callback(message)
       }
     )
     .subscribe()
@@ -147,21 +180,18 @@ export function subscribeToRoom(roomId: string, callback: (message: any) => void
   }
 }
 
-export function sendTypingNotification(roomId: string, userId: string) {
-  if (socket) {
-    socket.emit('typing', { roomId, userId })
-  }
+export function sendTypingNotification(roomId: string, userId: string): void {
+  socket?.emit('typing', { roomId, userId })
 }
 
-export function subscribeToTyping(roomId: string, callback: (userId: string) => void) {
-  if (socket) {
-    socket.on(`typing:${roomId}`, (data) => {
-      callback(data.userId)
-    })
-
-    return () => {
-      socket.off(`typing:${roomId}`)
-    }
+export function subscribeToTyping(roomId: string, callback: (userId: string) => void): () => void {
+  if (!socket) {
+    return () => {}
   }
-  return () => {}
+  socket.on(`typing:${roomId}`, (data) => {
+    callback(data.userId)
+  })
+  return () => {
+    socket?.off(`typing:${roomId}`)
+  }
 }

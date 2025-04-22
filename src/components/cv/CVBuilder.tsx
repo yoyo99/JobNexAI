@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
 import { CVTemplate } from './CVTemplate'
 import { CVEditor } from './CVEditor'
@@ -15,7 +14,6 @@ interface Template {
 }
 
 export function CVBuilder() {
-  const { user } = useAuth()
   const [templates, setTemplates] = useState<Template[]>([])
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)

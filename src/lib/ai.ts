@@ -1,17 +1,15 @@
 import OpenAI from 'openai';
-// Importation de la librairie compromise pour la lemmatisation
-import nlp from 'compromise';import { trackError } from './monitoring';
-;
+
 /**
  * Effectue une analyse sémantique d'un texte donné.
  * Cette fonction prend en entrée un texte et retourne une liste de suggestions
  * pour améliorer le texte.
  *
- * @param {string} text - Le texte à analyser.
+ * @param {_text: string} _text - Le texte à analyser.
  * @returns {string[]} - Une liste de suggestions pour améliorer le texte.
  **/
 
-export function semanticAnalysis(text: string): string[] {
+export function semanticAnalysis(_text: string): string[] {
   // Dans cette première version, nous retournons des suggestions en dur..
   return ["Améliorer la structure de la phrase.", "Ajouter des mots clés pertinents pour le poste.", "Mettre en avant vos expériences les plus significatives."];
 }
@@ -19,14 +17,14 @@ export function semanticAnalysis(text: string): string[] {
 /**
  * Fonction pour analyser la description d'un poste et extraire des informations pertinentes.
  *
- * @param {string} jobDescription - La description du poste.
+ * @param {_jobDescription: string} _jobDescription - La description du poste.
  * @returns {{ type: string; level: string; skills: string[]; technologies: string[]; }} - Un objet avec le type, le niveau, les compétences et les technologies.
  */
 
 /**
  * Fonction pour analyser la description d'un poste et extraire des informations pertinentes.
  *
- * @param {string} jobDescription - La description du poste.
+ * @param {_jobDescription: string} _jobDescription - La description du poste.
  * @returns {{ type: string; level: string; skills: string[]; technologies: string[]; }} - Un objet avec le type, le niveau, les compétences et les technologies.
  */
  //Fonction pour analyser la description d'un poste
@@ -37,7 +35,7 @@ interface JobDescriptionAnalysis {
   technologies: string[];
 };;
 
-export function analyzeJobDescription(jobDescription: string): JobDescriptionAnalysis {
+export function analyzeJobDescription(_jobDescription: string): JobDescriptionAnalysis {
   // Stub implementation to satisfy TypeScript
   return { type: 'technical', level: 'junior', skills: [], technologies: [] };
 };;
@@ -45,10 +43,10 @@ export function analyzeJobDescription(jobDescription: string): JobDescriptionAna
 /**
  * Fonction pour générer une question d'entretien en fonction de la description du poste.
  *
- * @param {string} jobDescription - La description du poste.
+ * @param {_jobDescription: string} _jobDescription - La description du poste.
  * @returns {string} - Une question d'entretien.
  */
-export function generateInterviewQuestion(jobDescription: string): string {
+export function generateInterviewQuestion(_jobDescription: string): string {
   // Stub implementation to satisfy TypeScript
   return 'Pouvez-vous détailler votre expérience pertinente pour ce poste ?';
 };;
@@ -56,11 +54,11 @@ export function generateInterviewQuestion(jobDescription: string): string {
 /**
  * Fonction pour analyser une réponse à une question d'entretien.
  *
- * @param {string} answer - La réponse à analyser. 
- * @param {string} question - La question à laquelle la réponse répond. 
+ * @param {_answer: string} _answer - La réponse à analyser. 
+ * @param {_question: string} _question - La question à laquelle la réponse répond. 
  * @returns {{ feedbacks: string[]; note: number, weakPoints: string[] }} - Une liste de feedbacks et une note, et une liste de points faibles.
  */
-export function analyzeAnswer(answer: string, question: string): { feedbacks: string[]; note: number, weakPoints: string[] } {
+export function analyzeAnswer(_answer: string, _question: string): { feedbacks: string[]; note: number, weakPoints: string[] } {
   // Stub implementation to satisfy TypeScript
   return { feedbacks: [], note: 0, weakPoints: [] };
 };;
@@ -68,12 +66,12 @@ export function analyzeAnswer(answer: string, question: string): { feedbacks: st
 /**
  * Fonction pour donner une note à une réponse.
  *
- * @param {string} answer - La réponse à noter.
- * @param {string} question - La question à laquelle la réponse se rapporte. 
- * @param {string} jobDescription - La description du poste.
+ * @param {_answer: string} _answer - La réponse à noter.
+ * @param {_question: string} _question - La question à laquelle la réponse se rapporte. 
+ * @param {_jobDescription: string} _jobDescription - La description du poste.
  * @returns {number} - La note donnée à la réponse.
  */
-export function rateAnswer(answer: string, question: string, jobDescription: string): number {
+export function rateAnswer(_answer: string, _question: string, _jobDescription: string): number {
   // Stub implementation to satisfy TypeScript
   return 0;
 };;
@@ -111,10 +109,10 @@ export function startConversation(jobDescription: string): string {
 /**
  * Récupère la prochaine question à poser dans une conversation.
  *
- * @param {string} conversationId - L'identifiant de la conversation.
+ * @param {_conversationId: string} _conversationId - L'identifiant de la conversation.
  * @returns {string} - La prochaine question.
  */
-export function getNextQuestion(conversationId: string): string {
+export function getNextQuestion(_conversationId: string): string {
   // Stub implementation to satisfy TypeScript
   return 'Quelle est votre expérience la plus pertinente pour ce poste ?';
 }
@@ -215,7 +213,6 @@ Description du poste: ${jobDescription}`,
     return completion.choices[0].message.content as string;
 
   } catch (error) {
-    trackError(error as Error, { feature: 'cover-letter-generation' })
     throw error
   }
 }
