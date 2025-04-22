@@ -1,4 +1,4 @@
-Je veux que tu développe # JobNexus - Plateforme de Recherche d'Emploi Automatisée
+# JobNexus - Plateforme de Recherche d'Emploi Automatisée
 
 JobNexus est une plateforme moderne de recherche d'emploi qui utilise l'intelligence artificielle pour optimiser et automatiser votre recherche d'emploi. De l'optimisation de votre CV aux candidatures automatisées, JobNexus simplifie votre parcours vers le poste idéal.
 

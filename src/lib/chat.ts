@@ -61,15 +61,13 @@ export async function getChatRooms(userId: string) {
       .order('room.last_message.created_at', { ascending: false })
 
     if (error) throw error
-
     return data.map(item => {
-      const otherParticipants = item.room.participants.filter(
-        p => p.user_id !== userId
-      )
-
+      const otherParticipants = item.room.participants
+        .filter(p => p.user_id !== userId)
+        .map(p => ({ user_id: p.user_id, user: p.user[0] }))
       return {
         id: item.room_id,
-        last_message: item.room.last_message?.[0],
+        last_message: item.room.last_message?.[0] || null,
         participants: otherParticipants
       }
     })
@@ -96,7 +94,13 @@ export async function getChatMessages(roomId: string) {
       .order('created_at', { ascending: true })
 
     if (error) throw error
-    return data
+    return data.map(msg => ({
+      id: msg.id,
+      sender_id: msg.sender_id,
+      content: msg.content,
+      created_at: msg.created_at,
+      sender: msg.sender[0]
+    }))
   } catch (error) {
     console.error('Error getting chat messages:', error)
     return []
