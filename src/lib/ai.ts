@@ -14,7 +14,6 @@ import nlp from 'compromise';import { trackError } from './monitoring';
 export function semanticAnalysis(text: string): string[] {
   // Dans cette première version, nous retournons des suggestions en dur..
   return ["Améliorer la structure de la phrase.", "Ajouter des mots clés pertinents pour le poste.", "Mettre en avant vos expériences les plus significatives."];;
-}
 
 /**
  * Fonction pour analyser la description d'un poste et extraire des informations pertinentes.
@@ -59,12 +58,9 @@ function analyzeJobDescription(jobDescription: string): JobDescriptionAnalysis {
         if (doc.match(term).found) {
             type = "management";
             break;
-        }
-    }
-    if(doc.match("directeur").found || doc.match("direction").found){
+                if(doc.match("directeur").found || doc.match("direction").found){
       type = "management";
-    }
-    // Détection du niveau d'expérience (junior ou senior)
+        // Détection du niveau d'expérience (junior ou senior)
     let level:string = "junior";
     //On utilise la librairie compromise pour détecter les niveaux
     const seniorTerms = ["senior", "expert", "confirmé", "expérimenté", "expérimentée"];
@@ -73,12 +69,9 @@ function analyzeJobDescription(jobDescription: string): JobDescriptionAnalysis {
         if (doc.match(term).found) {
             level = "senior";
             break;
-        }
-    }
-    if (doc.match("expert").found || doc.match("confirmé").found || doc.match("expérimenté").found || doc.match("expérimentée").found ){
+                if (doc.match("expert").found || doc.match("confirmé").found || doc.match("expérimenté").found || doc.match("expérimentée").found ){
       level = "senior";;
-    }
-
+    
   // Extraction des compétences (mots-clés) avec plus de précisions
   //On rajoute des mots clés de compétences
   const skillsKeywords = ["communication", "gestion de projet", "analyse", "leadership"];
@@ -87,19 +80,14 @@ function analyzeJobDescription(jobDescription: string): JobDescriptionAnalysis {
     //On vérifie si le mot clé est présent dans la description
     if (lemmatizedWords.includes(keyword)) {
       skills.push(keyword);
-    }
-  }
-  // Extraction des technologies (mots-clés)
+        // Extraction des technologies (mots-clés)
   const technologiesKeywords = ["javascript", "react", "python", "java", "sql"];
   const technologies: string[] = [];
     //On rajoute des mots clés de technologies
   for (const keyword of technologiesKeywords) {
     if (lemmatizedWords.includes(keyword)) {
       technologies.push(keyword);
-    }
-  }
-  return { type, level, skills, technologies };;
-}
+        return { type, level, skills, technologies };;
 
 /**
  * Fonction pour générer une question d'entretien en fonction de la description du poste.
@@ -238,17 +226,13 @@ export function generateInterviewQuestion(jobDescription: string): string {
     for (const skill of jobInfo.skills) {        
         if (question.keywords.includes(skill)) {
             skillFound = true
-        }
-    }
-    if (jobInfo.skills.length > 0 && !skillFound) continue
+                if (jobInfo.skills.length > 0 && !skillFound) continue
         // Sélection par technologie
         let technologyFound = false
         for (const technology of jobInfo.technologies) {
             if (question.keywords.includes(technology)) {
                 technologyFound = true
-            }
-        }
-        if (jobInfo.technologies.length > 0 && !technologyFound) continue
+                            if (jobInfo.technologies.length > 0 && !technologyFound) continue
         // Détection des mots clés dans la description.
         const jobDescriptionKeywords = lemmatizedWords;
         let matchingKeywords = 0
@@ -256,16 +240,12 @@ export function generateInterviewQuestion(jobDescription: string): string {
         for (const keyword of question.keywords) {
             if (jobDescriptionKeywords.includes(keyword)) {
                 matchingKeywords++;
-            }
-        }
-        if (matchingKeywords > maxMatchingKeywords) {
+                            if (matchingKeywords > maxMatchingKeywords) {
             maxMatchingKeywords = matchingKeywords;
             bestQuestion = question;
-        }
-    };
+            };
 
     return bestQuestion.question;;
-}
 
 /**
  * Fonction pour analyser une réponse à une question d'entretien.
@@ -312,17 +292,14 @@ export function analyzeAnswer(answer: string, question: string): { feedbacks: st
     for (const keyword of questionKeywords) {
             if (answerKeywords.includes(keyword)) {
                 nbOfKeywords++
-        }
-    }
-    let questionKeywordsFound = nbOfKeywords;
+                let questionKeywordsFound = nbOfKeywords;
 
 
      // Qualité de l'expression
     // Longueur de la réponse (un minimum est requis)
     if (answerKeywords.length < 5) {
         weakPoints.push("longueur")
-    }
-
+    
     // Liste de feedbacks possibles   
     const feedbacks = [
       "Votre réponse est un bon début, mais elle manque de details.", //0
@@ -348,44 +325,34 @@ export function analyzeAnswer(answer: string, question: string): { feedbacks: st
     selectedFeedbacks.push(feedbacks[10]);
   } else {
     weakPoints.push("exemple")
-  }
-
+  
     if (nbOfKeywords === 0) {
         selectedFeedbacks.push(feedbacks[9]);
         note = 1; // Très mauvaise réponse
-    }
-    if (questionKeywordsFound === 0 && answerKeywords.length < 3) {
+        if (questionKeywordsFound === 0 && answerKeywords.length < 3) {
         selectedFeedbacks.push(feedbacks[12]);
         note = 1; // Très mauvaise réponse
-    }
-    if (answerKeywords.length < 3 && nbOfKeywords > 0) {
+        if (answerKeywords.length < 3 && nbOfKeywords > 0) {
         selectedFeedbacks.push(feedbacks[0]);
         note = 2;// Mauvaise réponse
-    }
-    if (nbOfKeywords > 0 && answerKeywords.length > 3) {
+        if (nbOfKeywords > 0 && answerKeywords.length > 3) {
         selectedFeedbacks.push(feedbacks[1]);
         note = 4;// Bonne réponse
-    }
-    if (answerKeywords.length < 3) {
+        if (answerKeywords.length < 3) {
         selectedFeedbacks.push(feedbacks[11]);
-    }
-        let competences = ["communication", "gestion", "projet", "analys", "leadership"];
+            let competences = ["communication", "gestion", "projet", "analys", "leadership"];
     for (const competence of competences) {
 
         if (!answerKeywords.includes(competence)) weakPoints.push(competence);
-    }
-
+    
     if (selectedFeedbacks.length == 0) {     
         selectedFeedbacks.push(feedbacks[1]);
         note = 5;// Très bonne réponse
-    }
-    // On retourne les feedbacks, la note et les points faibles.
+        // On retourne les feedbacks, la note et les points faibles.
   return { feedbacks: selectedFeedbacks, note , weakPoints};
-}
 
 if (!apiKey) {
   throw new Error('VITE_OPENAI_API_KEY environment variable is not set')
-}
 
 // Initialise le client OpenAI avec la variable d'environnement correctement préfixée
 const openai = new OpenAI({
@@ -439,15 +406,13 @@ export function rateAnswer(answer: string, question: string, jobDescription: str
     if (answerKeywords.includes(keyword)) {
       nbOfKeywords++;
     };
-  }
-  //On pondère les mots clés en fonction de leur importance et si ils sont présents dans la description du poste.
+    //On pondère les mots clés en fonction de leur importance et si ils sont présents dans la description du poste.
   let importantKeywords = ["expérience", "compétences", "motivation", "gestion", "communication", "analyse", "leadership"];
   let importantNbOfKeywords = 0
   for (const keyword of questionKeywords) {
           if (answerKeywords.includes(keyword) && importantKeywords.includes(keyword)) {
              importantNbOfKeywords++;
-      }
-  };
+        };
   if (importantNbOfKeywords == 0 && nbOfKeywords == 0) {
     note += 0;
   } else if (importantNbOfKeywords < questionKeywords.length / 2 || nbOfKeywords < questionKeywords.length/2) {
@@ -456,8 +421,7 @@ export function rateAnswer(answer: string, question: string, jobDescription: str
       note += 2;
   } else {
     note += 3;
-  }
-
+  
   // Qualité de l'expression
   if (answerKeywords.length < 5) {
     note += 0;
@@ -465,8 +429,7 @@ export function rateAnswer(answer: string, question: string, jobDescription: str
     note += 1;
   } else {
     note += 2;
-  }
-
+  
   //Confiance
   if (
     answerKeywords.includes("non") ||
@@ -476,8 +439,7 @@ export function rateAnswer(answer: string, question: string, jobDescription: str
     note -= 1;
   } else {
     note += 1;
-  }
-
+  
   // Présence de compétences
     //On va regarder les compétences presentes dans le poste
     let competencesFound = false;
@@ -486,34 +448,25 @@ export function rateAnswer(answer: string, question: string, jobDescription: str
         for (const skill of jobInfo.skills) {
             if(answerKeywords.includes(skill)){
                 competencesFound = true;
-            }
-        }
-    } else {
+                        } else {
         let competences = ["communication", "gestion", "projet", "analys", "leadership"];
         for (const competence of competences) {
             if (answerKeywords.includes(competence)) {
                 competencesFound = true;
-            }
-        };
-  }
-
+                    };
+  
   if (competencesFound) {    
     note += 1;
-  }
-    if (answerKeywords.includes("exemple") || answerKeywords.includes("exemples")) {
+      if (answerKeywords.includes("exemple") || answerKeywords.includes("exemples")) {
     note += 1
-    }
-     // On limite la note entre 0 et 5
+         // On limite la note entre 0 et 5
   // On limite la note entre 0 et 5
   if (note > 5) {
     note = 5;
-  }
-  if (note < 0) {
+    if (note < 0) {
     note = 0;
-  }
-  
+    
   return note;
-}
 
 /**
  * Structure pour stocker les conversations en cours.
@@ -536,7 +489,6 @@ export function startConversation(jobDescription: string): string {
     };
     conversations.push(newConversation);;
     return conversationId;
-}
 
 /**
  * Récupère la prochaine question à poser dans une conversation.
@@ -549,8 +501,7 @@ export function getNextQuestion(conversationId: string): string {
   const conversation = conversations.find((c) => c.conversationId === conversationId);
   if (!conversation) {
     throw new Error(`Conversation with ID ${conversationId} not found.`);
-  }
-    const weakPoints = conversation.weakPoints
+      const weakPoints = conversation.weakPoints
     const history = conversation.history;
     const jobDescription = conversation.jobDescription;;
     const allQuestions = [
@@ -721,18 +672,19 @@ export function getNextQuestion(conversationId: string): string {
    
     // On récupère les types de questions déjà posés
     const askedQuestionsTypes = history.map(h => {
-        for (const question of allQuestions) {           if (question.question == h.question) {
-                return question.type;            }
+        for (const question of allQuestions) {
+            if (question.question === h.question) {
+                return question.type;
+            }
         }
-       return "";
+        return "";
     });
 
     // Si toutes les questions ont été posées, on les repose
         // Si il y a des questions dispo on prend en compte les compétences
     if (availableQuestions.length === 0) {
         return generateInterviewQuestion(jobDescription);
-    }
-    // On filtre les questions en fonction de la difficulté.
+        // On filtre les questions en fonction de la difficulté.
     const availableQuestionsByDifficulty = availableQuestions.filter(q => q.difficulty === difficulty);
     // Si on a des questions de la difficulté demandée, on les utilise sinon on prend toute les questions.
     const questions = availableQuestionsByDifficulty.length > 0 ? availableQuestionsByDifficulty : availableQuestions;    
@@ -741,9 +693,9 @@ export function getNextQuestion(conversationId: string): string {
     // On va maintenant essayer de ne pas poser 2 questions du même type d'affilé
     let nextQuestion = availableQuestions[0]
     // On vérifie si on a des points faibles.
-    let weakPointsQuestions = availableQuestions.filter(q => {
-      for(const weakPoint of weakPoints) {           if(q.keywords.includes(weakPoint)) return true;        }
-      return false;    });
+    let weakPointsQuestions = availableQuestions.filter(q =>
+  q.keywords.some(weakPoint => weakPoints.includes(weakPoint))
+);
     if (weakPointsQuestions.length > 0){
         //on pose une question sur les points faibles
         nextQuestion = weakPointsQuestions[0];
@@ -757,20 +709,16 @@ export function getNextQuestion(conversationId: string): string {
               for (const skill of jobInfo.skills) {
                 if (question.keywords.includes(skill)) {
                   skillFound = true;
-                }
-              }
-              if (jobInfo.skills.length > 0 && skillFound) {
+                                            if (jobInfo.skills.length > 0 && skillFound) {
                 nextQuestion = question;
                 break;    
               }                
                 
                 break
-            }
-
-    }
-
+            
+    
     return nextQuestion.question;
-};
+}
 
 /**
  * Ajoute une réponse à l'historique d'une conversation et génère des feedbacks.
@@ -783,8 +731,7 @@ export function addAnswer(conversationId: string, answer: string): string[] {
     const conversation = conversations.find((c) => c.conversationId === conversationId);
     if (!conversation) {
         throw new Error(`Conversation with ID ${conversationId} not found.`);
-    }
-
+    
     const lastExchange = conversation.history[conversation.history.length - 1];
     if (!lastExchange || !lastExchange.question) return [];
     const jobDescription = conversation.jobDescription;
@@ -797,7 +744,6 @@ export function addAnswer(conversationId: string, answer: string): string[] {
         if(!conversation.weakPoints.includes(weakPoint)) conversation.weakPoints.push(weakPoint)
     })
     return feedbacks;
-}
 
 /**
  * Récupère la moyenne des notes d'une conversation.
@@ -812,42 +758,34 @@ export function getAverageNote(conversationId: string): number {
     };
     if (conversation.history.length === 0) {
         return 0; // Retourne 0 si aucune réponse n'a été donnée
-    }
-    const totalNotes = conversation.history.reduce((sum, exchange) => sum + (exchange.note || 0), 0);;
+        const totalNotes = conversation.history.reduce((sum, exchange) => sum + (exchange.note || 0), 0);;
     return totalNotes / conversation.history.length;
-}
 
 
 
 /*
 export async function optimizeCV(cv: any, jobDescription: string) {  try {
     const { data, error } = await supabase.functions.invoke('optimize-cv', {
-      body: { cv, jobDescription }
-    })
+      body: { cv, jobDescription     })
 
     if (error) throw error
     return data
   } catch (error) {
     trackError(error as Error, { feature: 'cv-optimization' })
     throw error
-  }
-}
-
+  
 */
 /*
 export async function analyzeSimilarity(text1: string, text2: string) {
     try {
       const { data, error } = await supabase.functions.invoke('analyze-similarity', {
-        body: { text1, text2 }
-      })
+        body: { text1, text2       })
       if (error) throw error
       return data.similarity
     } catch (error) {
       trackError(error as Error, { feature: 'text-similarity' })
       throw error
   }
-}
-*/
 
 /**z
  * Récupère l'historique complet d'une conversation.
@@ -859,15 +797,12 @@ export function getConversationHistory(conversationId: string): { question: stri
     const conversation = conversations.find((c) => c.conversationId === conversationId);
     if (!conversation) {
         throw new Error(`Conversation with ID ${conversationId} not found.`);
-    }
-    return conversation.history;;
-}
+        return conversation.history;;
 /*
 export async function extractKeywords(text: string) {
   try {
     const { data, error } = await supabase.functions.invoke('extract-keywords', {
-      body: { text }
-    })
+      body: { text     })
 
     if (error) throw error
     return data.keywords
@@ -875,8 +810,6 @@ export async function extractKeywords(text: string) {
     trackError(error as Error, { feature: 'keyword-extraction' })
     throw error
   }
-}
-*/
 export async function generateCoverLetter(
   cv: any,
   jobDescription: string,
@@ -892,92 +825,32 @@ export async function generateCoverLetter(
         {
           role: "system",
           content: `Tu es un expert en rédaction de lettres de motivation professionnelles.
-          
-          TÂCHE:
-          Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous.
-          
-          INSTRUCTIONS:
-          1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}
-          2. Structure la lettre avec une introduction, un développement et une conclusion
-          3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi
-          4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste
-          5. Évite les formules génériques et les clichés
-          6. Limite la lettre à environ 300-400 mots
-          7. Inclus les formules de politesse appropriées en ${language}
-          
-          FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`
+TÂCHE:
+Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous.
+INSTRUCTIONS:
+1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}
+2. Structure la lettre avec une introduction, un développement et une conclusion
+3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi
+4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste
+5. Évite les formules génériques et les clichés
+6. Limite la lettre à environ 300-400 mots
+7. Inclus les formules de politesse appropriées en ${language}
+FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
         },
         {
           role: "user",
           content: `CV: ${JSON.stringify(cv)}
-          
-          Description du poste: ${jobDescription}`,
-        }
+Description du poste: ${jobDescription}`,
+        },
       ],
       temperature: 0.7,
       max_tokens: 1000,
-    })
+    });
 
-    return completion.choices[0].message.content as string
+    return completion.choices[0].message.content as string;
+
   } catch (error) {
     trackError(error as Error, { feature: 'cover-letter-generation' })
-    throw error
-  }
-}
-
-
-
-export async function generateBulkApplicationMessages(
-
-
-  cv: any,
-  jobDescriptions: { id: string; description: string }[],
-  language: string = 'fr',
-) {
-  try {
-    // Pour chaque offre d'emploi, générer un message de candidature personnalisé
-    const messages = await Promise.all(
-      jobDescriptions.map(async (job) => {
-        const completion = await openai.chat.completions.create({
-          model: "gpt-4",
-          messages: [
-            {
-              role: "system",
-              content: `Tu es un expert en rédaction de messages de candidature concis et percutants.
-              
-              TÂCHE:
-              Rédige un court message de candidature personnalisé en ${language} (maximum 150 mots) pour accompagner un CV.
-              
-              INSTRUCTIONS:
-              1. Sois direct et concis
-              2. Mentionne 2-3 compétences clés du CV qui correspondent au poste
-              3. Inclus une phrase d'accroche personnalisée
-              4. Termine par une formule de politesse appropriée
-              
-              FORMAT:
-              Un paragraphe court et impactant, sans formules d'introduction ou signature.`,
-            },
-            {
-              role: "user",
-              content: `CV: ${JSON.stringify(cv)}
-              
-              Description du poste: ${job.description}`,
-            },
-          ],
-          temperature: 0.7,
-          max_tokens: 200,
-        })
-
-        return {
-          jobId: job.id, 
-          message: completion.choices[0].message.content
-        }
-      })
-    )
-
-    return messages
-  } catch (error) {
-    trackError(error as Error, { feature: 'bulk-application-messages' })
     throw error
   }
 }
