@@ -9,7 +9,6 @@ import {
   ClockIcon, 
   BriefcaseIcon,
   UserIcon,
-  BuildingOfficeIcon,
   MapPinIcon,
   PencilIcon,
   TrashIcon,

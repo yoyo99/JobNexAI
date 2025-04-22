@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
@@ -9,9 +9,6 @@ export function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Récupérer le hash de l'URL
-        const hash = window.location.hash
-
         // Traiter le callback d'authentification
         const { data, error } = await supabase.auth.getSession()
 

@@ -15,7 +15,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Configurer les écouteurs d'événements d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event, _session) => {
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
           await loadUser()
         } else if (event === 'SIGNED_OUT') {

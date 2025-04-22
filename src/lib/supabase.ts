@@ -113,6 +113,20 @@ export interface MarketTrend {
   percentage: number
 }
 
+// Interface pour la génération de PDF de candidature
+export interface JobApplication {
+  id: string
+  job: {
+    title: string
+    company: string
+    location: string
+  }
+  status: string
+  created_at: string
+  notes?: string | null
+  timeline?: { date: string; description: string }[]
+}
+
 export async function getJobs(filters: {
   search?: string
   jobType?: string
