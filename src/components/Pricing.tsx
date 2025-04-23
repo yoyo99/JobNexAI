@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../stores/auth'
+import { ContactSalesModal } from './ContactSalesModal'
 import {
   UserIcon,
   BriefcaseIcon,
@@ -187,6 +188,7 @@ export function Pricing() {
   const [error, setError] = useState<string | null>(null)
   const [frequency, setFrequency] = useState<'monthly' | 'yearly'>('monthly')
   const [userType, setUserType] = useState<'candidate' | 'freelancer' | 'recruiter'>('candidate')
+  const [showContactModal, setShowContactModal] = useState(false)
   
   // Sélectionner les plans en fonction du type d'utilisateur
   const selectedPlans = userType === 'freelancer' 
@@ -417,19 +419,11 @@ export function Pricing() {
               ) : plan.name === 'Enterprise' ? (
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                    disabled={loading || currentPlan === plan.name.toLowerCase()}
-                    className={`w-full btn-primary ${
-                      currentPlan === plan.name.toLowerCase()
-                        ? 'opacity-50 cursor-not-allowed'
-                        : ''
-                    }`}
+                    onClick={() => setShowContactModal(true)}
+                    disabled={loading}
+                    className="w-full btn-primary"
                   >
-                    {currentPlan === plan.name.toLowerCase()
-                      ? 'Plan actuel'
-                      : loading
-                      ? 'Chargement...'
-                      : 'Contacter les ventes'}
+                    Contacter les ventes
                   </button>
                   <button
                     onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
@@ -486,6 +480,7 @@ export function Pricing() {
           ))}
         </dl>
       </div>
+      <ContactSalesModal open={showContactModal} onClose={() => setShowContactModal(false)} />
     </div>
   )
 }
