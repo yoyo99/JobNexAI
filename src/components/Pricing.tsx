@@ -45,7 +45,7 @@ const plans = [
       'Alertes emploi personnalisées',
       'Réseau professionnel',
     ],
-    cta: 'Commencer l\'essai gratuit',
+    cta: "S’abonner",
     mostPopular: true,
   },
   {
@@ -104,7 +104,7 @@ const freelancerPlans = [
       'Outils de gestion de projet',
       'Facturation simplifiée',
     ],
-    cta: 'Commencer l\'essai gratuit',
+    cta: "S’abonner",
     mostPopular: true,
   },
   {
@@ -162,7 +162,7 @@ const recruiterPlans = [
       'Support prioritaire',
       'Personnalisation de la marque employeur',
     ],
-    cta: 'Commencer l\'essai gratuit',
+    cta: "S’abonner",
     mostPopular: true,
   },
   {
