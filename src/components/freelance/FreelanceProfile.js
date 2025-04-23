@@ -81,14 +81,14 @@ export function FreelanceProfile() {
                         title: 'E-commerce de produits artisanaux',
                         description: 'Plateforme complète avec paiement en ligne, gestion des stocks et interface d\'administration',
                         url: 'https://example.com/project1',
-                        image_url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+                        image_url: '/landing.jpg'
                     },
                     {
                         id: 'port2',
                         title: 'Application de suivi de fitness',
                         description: 'Application mobile React Native permettant de suivre ses activités sportives et son alimentation',
                         url: 'https://example.com/project2',
-                        image_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+                        image_url: '/landing.jpg'
                     }
                 ],
                 availability: 'limited',

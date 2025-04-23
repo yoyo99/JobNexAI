@@ -20,31 +20,31 @@ const steps = [
         id: '01',
         title: 'Créez votre profil',
         description: 'Importez votre CV ou créez-en un nouveau avec notre outil intuitif. Notre IA analysera vos compétences et votre expérience pour optimiser votre profil.',
-        image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        image: '/landing.jpg',
     },
     {
         id: '02',
         title: 'Recevez des suggestions personnalisées',
         description: 'Notre algorithme vous propose des offres d\'emploi correspondant à votre profil, avec un score de compatibilité pour chaque poste. Plus vous utilisez la plateforme, plus les suggestions deviennent pertinentes.',
-        image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        image: '/landing.jpg',
     },
     {
         id: '03',
         title: 'Optimisez vos candidatures',
         description: 'Notre IA analyse chaque offre d\'emploi et vous suggère des optimisations pour votre CV et lettre de motivation. Vous pouvez également utiliser notre outil de rédaction assistée pour créer des candidatures percutantes.',
-        image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        image: '/landing.jpg',
     },
     {
         id: '04',
         title: 'Postulez et suivez vos candidatures',
         description: 'Postulez directement depuis la plateforme et suivez l\'avancement de toutes vos candidatures dans un tableau de bord centralisé. Recevez des rappels automatiques pour les entretiens et les relances.',
-        image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        image: '/landing.jpg',
     },
     {
         id: '05',
         title: 'Développez votre réseau',
         description: 'Connectez-vous avec d\'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme. Notre système de mise en relation vous suggère des contacts pertinents pour votre carrière.',
-        image: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+        image: '/landing.jpg',
     },
 ];
 const faqs = [
