@@ -30,11 +30,14 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://rsms.me; img-src 'self' data: https://images.unsplash.com https://randomuser.me; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com; frame-src https://js.stripe.com; font-src 'self' https://rsms.me;"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://images.unsplash.com https://randomuser.me; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://rsms.me; font-src 'self' https://rsms.me; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com; frame-src https://js.stripe.com;"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
 
 # Configuration du plugin Netlify pour le monitoring
 [[plugins]]

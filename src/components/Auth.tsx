@@ -6,6 +6,10 @@ import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 import { AuthService } from '../lib/auth-service'
 
 export function Auth() {
+  // --- Ajout pour CGU ---
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [termsError, setTermsError] = useState<string | null>(null);
+
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
@@ -33,6 +37,11 @@ export function Auth() {
   }, [navigate])
 
   const handleSignUp = async (e: React.FormEvent) => {
+    setTermsError(null);
+    if (!acceptTerms) {
+      setTermsError('Vous devez accepter les conditions générales pour vous inscrire.');
+      return;
+    }
     e.preventDefault()
     setMessage(null)
     
@@ -157,6 +166,26 @@ export function Auth() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={isLogin ? handleSignIn : handleSignUp}>
+          {/* Ajout de la case à cocher pour les CGU */}
+          {!isLogin && (
+            <div className="flex items-center mb-2">
+              <input
+                id="accept-terms"
+                name="acceptTerms"
+                type="checkbox"
+                checked={acceptTerms}
+                onChange={e => setAcceptTerms(e.target.checked)}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-white/10 rounded"
+                required
+              />
+              <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-300">
+                J'accepte les <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline text-primary-400 hover:text-primary-300">conditions générales d'utilisation</a>
+              </label>
+            </div>
+          )}
+          {termsError && (
+            <div className="bg-red-900/50 text-red-400 p-2 rounded mb-2 text-sm">{termsError}</div>
+          )}
           <div className="rounded-md shadow-sm -space-y-px">
             {!isLogin && (
               <div>
@@ -207,6 +236,7 @@ export function Auth() {
                 type="password"
                 autoComplete={isLogin ? "current-password" : "new-password"}
                 required
+                minLength={9}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
@@ -219,6 +249,7 @@ export function Auth() {
           </div>
 
           {!isLogin && <PasswordStrengthMeter password={password} />}
+          {/* Astuce sécurité : Pensez à activer l'authentification à deux facteurs dans les paramètres de sécurité de votre compte ! */}
 
           {message && (
             <div 

@@ -378,11 +378,11 @@ export function Pricing() {
               <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
               <p className="text-gray-400 mb-4">{plan.description}</p>
               <p className="text-4xl font-bold text-white mb-6">
-                {frequency === 'monthly' 
-                  ? plan.price 
-                  : plan.name === 'Free' 
-                    ? '0€' 
-                    : `${parseFloat(plan.price.replace('€', '')) * 0.8 * 12}€`}
+                {frequency === 'monthly'
+                  ? Number(plan.price.replace('€', '')).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'
+                  : plan.name === 'Free'
+                    ? '0,00€'
+                    : (Number(plan.price.replace('€', '')) * 0.8 * 12).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
                 <span className="text-sm text-gray-400">
                   {plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}`}
                 </span>
@@ -397,21 +397,40 @@ export function Pricing() {
                 ))}
               </ul>
               
-              <button
-                onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                disabled={loading || currentPlan === plan.name.toLowerCase()}
-                className={`w-full btn-primary ${
-                  currentPlan === plan.name.toLowerCase()
-                    ? 'opacity-50 cursor-not-allowed'
-                    : ''
-                }`}
-              >
-                {currentPlan === plan.name.toLowerCase()
-                  ? 'Plan actuel'
-                  : loading
-                  ? 'Chargement...'
-                  : plan.cta}
-              </button>
+              {/* CTA : Essai gratuit uniquement pour Free, sinon S’abonner ou Contacter les ventes */}
+              {plan.name === 'Free' ? (
+                <button
+                  onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+                  disabled={loading || currentPlan === plan.name.toLowerCase()}
+                  className={`w-full btn-primary ${
+                    currentPlan === plan.name.toLowerCase()
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  }`}
+                >
+                  {currentPlan === plan.name.toLowerCase()
+                    ? 'Plan actuel'
+                    : loading
+                    ? 'Chargement...'
+                    : "Commencer l'essai gratuit"}
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+                  disabled={loading || currentPlan === plan.name.toLowerCase()}
+                  className={`w-full btn-primary ${
+                    currentPlan === plan.name.toLowerCase()
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  }`}
+                >
+                  {currentPlan === plan.name.toLowerCase()
+                    ? 'Plan actuel'
+                    : loading
+                    ? 'Chargement...'
+                    : (plan.name === 'Enterprise' ? 'Contacter les ventes' : 'S’abonner')}
+                </button>
+              )}
             </div>
           </motion.div>
         ))}

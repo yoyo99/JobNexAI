@@ -17,6 +17,7 @@ const publicNavigation = [
   { name: 'Comment ça marche', href: '/how-it-works' },
   { name: 'Tarifs', href: '/pricing' },
   { name: 'Témoignages', href: '/testimonials' },
+  { name: 'CGU', href: '/cgu.html' },
 ]
 
 export function LandingPage() {
