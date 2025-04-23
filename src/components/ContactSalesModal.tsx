@@ -1,5 +1,8 @@
+// Nécessite EmailJS (https://www.emailjs.com/) :
+// SERVICE_ID : service_mua4t0l, TEMPLATE_ID : template_7fpilue, PUBLIC_KEY : O0LnolTBPNqbejzhl
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import emailjs from 'emailjs-com'
 
 interface ContactSalesModalProps {
   open: boolean
@@ -19,10 +22,17 @@ export function ContactSalesModal({ open, onClose }: ContactSalesModalProps) {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    // Ici tu peux intégrer l'envoi à une API ou service email
     try {
-      // Simule un délai réseau
-      await new Promise((res) => setTimeout(res, 1200))
+      const SERVICE_ID = 'service_mua4t0l';
+      const TEMPLATE_ID = 'template_7fpilue';
+      const PUBLIC_KEY = 'O0LnolTBPNqbejzhl';
+      const templateParams = {
+        name,
+        email,
+        company,
+        message,
+      };
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
       setSent(true)
     } catch (err) {
       setError("Erreur lors de l'envoi. Réessaie plus tard.")
