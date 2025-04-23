@@ -14,6 +14,18 @@ const features = [
   'Réseau professionnel intégré',
 ]
 
+function getFeatureDescription(index: number): string {
+  const descriptions = [
+    "Notre algorithme d'IA analyse votre profil et les offres disponibles pour vous proposer les emplois les plus pertinents avec un score de compatibilité.",
+    "Créez un CV professionnel optimisé pour les ATS avec nos modèles élégants et nos conseils d'amélioration personnalisés.",
+    "Suivez toutes vos candidatures en un seul endroit, avec des rappels automatiques pour les entretiens et les relances.",
+    "Accédez à des données en temps réel sur les salaires, les compétences recherchées et les tendances du marché de l'emploi.",
+    "Recevez des suggestions d'emploi personnalisées basées sur vos compétences, votre expérience et vos préférences.",
+    "Connectez-vous avec d'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme."
+  ];
+  return descriptions[index] || '';
+}
+
 export function Hero() {
   const { t } = useTranslation()
   const [showVideo, setShowVideo] = useState(false)
@@ -276,15 +288,3 @@ const steps = [
     description: "Postulez directement depuis la plateforme et suivez l'avancement de toutes vos candidatures dans un tableau de bord centralisé."
   }
 ]
-
-function getFeatureDescription(index: number): string {
-  const descriptions = [
-    'Notre algorithme d\'IA analyse votre profil et les offres disponibles pour vous proposer les emplois les plus pertinents avec un score de compatibilité.',
-    'Créez un CV professionnel optimisé pour les ATS avec nos modèles élégants et nos conseils d\'amélioration personnalisés.',
-    'Suivez toutes vos candidatures en un seul endroit, avec des rappels automatiques pour les entretiens et les relances.',
-    'Accédez à des données en temps réel sur les salaires, les compétences recherchées et les tendances du marché de l\'emploi.',
-    'Recevez des suggestions d\'emploi personnalisées basées sur vos compétences, votre expérience et vos préférences.',
-    'Connectez-vous avec d\'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme.',
-  ]
-  return descriptions[index] || ''
-}
