@@ -57,7 +57,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client1',
                         name: 'TechSolutions SAS',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.8
                     },
                     budget_min: 5000,
@@ -77,7 +77,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client2',
                         name: 'ModaShop',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.5
                     },
                     budget_min: 3000,
@@ -97,7 +97,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client3',
                         name: 'GestionPro',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.2
                     },
                     budget_min: 4000,
@@ -117,7 +117,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client4',
                         name: 'TechBlog Media',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.9
                     },
                     budget_min: 1000,
@@ -137,7 +137,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client5',
                         name: 'FitTech',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.7
                     },
                     budget_min: 2500,
@@ -157,7 +157,7 @@ export function FreelanceProjects() {
                     client: {
                         id: 'client6',
                         name: 'AnalyticsPro',
-                        avatar_url: '/landing.jpg',
+                        avatar_url: '/landing.png',
                         rating: 4.6
                     },
                     budget_min: 6000,

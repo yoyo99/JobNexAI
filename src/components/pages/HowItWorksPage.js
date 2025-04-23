@@ -20,31 +20,31 @@ const steps = [
         id: '01',
         title: 'Créez votre profil',
         description: 'Importez votre CV ou créez-en un nouveau avec notre outil intuitif. Notre IA analysera vos compétences et votre expérience pour optimiser votre profil.',
-        image: '/landing.jpg',
+        image: '/landing.png',
     },
     {
         id: '02',
         title: 'Recevez des suggestions personnalisées',
         description: 'Notre algorithme vous propose des offres d\'emploi correspondant à votre profil, avec un score de compatibilité pour chaque poste. Plus vous utilisez la plateforme, plus les suggestions deviennent pertinentes.',
-        image: '/landing.jpg',
+        image: '/landing.png',
     },
     {
         id: '03',
         title: 'Optimisez vos candidatures',
         description: 'Notre IA analyse chaque offre d\'emploi et vous suggère des optimisations pour votre CV et lettre de motivation. Vous pouvez également utiliser notre outil de rédaction assistée pour créer des candidatures percutantes.',
-        image: '/landing.jpg',
+        image: '/landing.png',
     },
     {
         id: '04',
         title: 'Postulez et suivez vos candidatures',
         description: 'Postulez directement depuis la plateforme et suivez l\'avancement de toutes vos candidatures dans un tableau de bord centralisé. Recevez des rappels automatiques pour les entretiens et les relances.',
-        image: '/landing.jpg',
+        image: '/landing.png',
     },
     {
         id: '05',
         title: 'Développez votre réseau',
         description: 'Connectez-vous avec d\'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme. Notre système de mise en relation vous suggère des contacts pertinents pour votre carrière.',
-        image: '/landing.jpg',
+        image: '/landing.png',
     },
 ];
 const faqs = [
