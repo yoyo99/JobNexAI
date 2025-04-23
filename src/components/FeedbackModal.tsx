@@ -1,4 +1,10 @@
+// Nécessite EmailJS (https://www.emailjs.com/) :
+// 1. Installer emailjs-com : npm install emailjs-com
+// 2. Créer un service, un template et utiliser l'user ID fournis par EmailJS
+// 3. Configurer le template pour envoyer à boltsaas01@gmail.com
+
 import { useState } from 'react'
+import emailjs from 'emailjs-com'
 
 interface FeedbackModalProps {
   open: boolean
@@ -18,8 +24,17 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
     setLoading(true)
     setError(null)
     try {
-      // Ici, vous pouvez intégrer l'envoi à une API ou à votre backend
-      await new Promise(res => setTimeout(res, 1200))
+      // Remplacez ces valeurs par celles de votre compte EmailJS
+      // À compléter avec vos identifiants EmailJS
+      const SERVICE_ID = 'service_mua4t0l';
+      const TEMPLATE_ID = 'template_7fpilue';
+      const PUBLIC_KEY = 'O0LnolTBPNqbejzhl';
+      const templateParams = {
+        type,
+        message,
+        email,
+      };
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
       setSent(true)
     } catch (err) {
       setError("Erreur lors de l'envoi. Veuillez réessayer.")

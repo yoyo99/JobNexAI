@@ -204,16 +204,33 @@ export function Pricing() {
 
   // Vérification si l'utilisateur a déjà utilisé l'offre gratuite
   React.useEffect(() => {
-    if (user) {
-      supabase
+    async function ensureFreeTrialFieldAndFetch() {
+      if (!user) return;
+      let fieldExists = true;
+      // Vérifier si la colonne existe
+      const { data: columns, error: columnError } = await supabase.rpc('pg_get_columns', { table_name: 'profiles' });
+      if (columnError || !columns) {
+        fieldExists = false;
+      } else if (!columns.some((col: any) => col.column_name === 'free_trial_used')) {
+        fieldExists = false;
+      }
+      // Ajouter la colonne si besoin
+      if (!fieldExists) {
+        const { error: alterError } = await supabase.rpc('run_sql', { sql: `ALTER TABLE profiles ADD COLUMN IF NOT EXISTS free_trial_used boolean DEFAULT false;` });
+        if (alterError) {
+          setError("Impossible d'ajouter le champ free_trial_used dans Supabase : " + alterError.message);
+          return;
+        }
+      }
+      // Ensuite, récupération normale
+      const { data, error } = await supabase
         .from('profiles')
         .select('free_trial_used')
         .eq('id', user.id)
-        .single()
-        .then(({ data }) => {
-          if (data && data.free_trial_used) setFreeTrialUsed(true);
-        });
+        .single();
+      if (data && data.free_trial_used) setFreeTrialUsed(true);
     }
+    ensureFreeTrialFieldAndFetch();
   }, [user]);
 
   // Sélectionner les plans en fonction du type d'utilisateur
