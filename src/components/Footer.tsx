@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { FeedbackModal } from './FeedbackModal'
 
 export function Footer() {
+  const [showFeedback, setShowFeedback] = useState(false);
   const { t } = useTranslation()
   
   const navigation = {
@@ -52,29 +55,40 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-background border-t border-white/10">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-        <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
-          {navigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <Link to={item.href} className="text-sm leading-6 text-gray-400 hover:text-white">
-                {item.name}
-              </Link>
-            </div>
-          ))}
-        </nav>
-        <div className="mt-10 flex justify-center space-x-10">
-          {navigation.social.map((item) => (
-            <a key={item.name} href={item.href} className="text-gray-400 hover:text-white">
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
-          ))}
+    <>
+      <footer className="bg-background border-t border-white/10">
+        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
+          <div className="flex justify-center mb-8">
+            <button
+              className="btn-secondary text-sm px-4 py-2 rounded shadow hover:bg-primary-700 hover:text-white transition"
+              onClick={() => setShowFeedback(true)}
+            >
+              Remonter un bug ou une idée
+            </button>
+          </div>
+          <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+            {navigation.main.map((item) => (
+              <div key={item.name} className="pb-6">
+                <Link to={item.href} className="text-sm leading-6 text-gray-400 hover:text-white">
+                  {item.name}
+                </Link>
+              </div>
+            ))}
+          </nav>
+          <div className="mt-10 flex justify-center space-x-10">
+            {navigation.social.map((item) => (
+              <a key={item.name} href={item.href} className="text-gray-400 hover:text-white">
+                <span className="sr-only">{item.name}</span>
+                <item.icon className="h-6 w-6" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+          <p className="mt-10 text-center text-xs leading-5 text-gray-400">
+            &copy; {new Date().getFullYear()} JobNexus, Inc. Tous droits réservés.
+          </p>
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-400">
-          &copy; {new Date().getFullYear()} JobNexus, Inc. Tous droits réservés.
-        </p>
-      </div>
-    </footer>
+      </footer>
+      <FeedbackModal open={showFeedback} onClose={() => setShowFeedback(false)} />
+    </>
   )
 }

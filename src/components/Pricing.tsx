@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
@@ -16,15 +16,16 @@ const plans = [
     name: 'Free',
     price: 0,
     priceId: null,
-    description: 'Essayez les fonctionnalités de base gratuitement',
+    description: "Essayez gratuitement toutes les fonctionnalités de base pendant 24h !",
     features: [
-      'Recherche d\'emploi basique',
+      "Durée de l'offre : 24h",
+      "Recherche d'emploi basique",
       'CV builder limité',
       'Maximum 5 candidatures par mois',
-      'Pas d\'accès aux analyses de marché',
+      "Pas d'accès aux analyses de marché",
       'Pas de suggestions personnalisées',
     ],
-    cta: 'Commencer gratuitement',
+    cta: "Commencer l’essai gratuit de 24h", 
     mostPopular: false,
   },
   {
@@ -199,7 +200,22 @@ export function Pricing() {
   const [frequency, setFrequency] = useState<'monthly' | 'yearly'>('monthly')
   const [userType, setUserType] = useState<'candidate' | 'freelancer' | 'recruiter'>('candidate')
   const [showContactModal, setShowContactModal] = useState(false)
-  
+  const [freeTrialUsed, setFreeTrialUsed] = useState<boolean>(false);
+
+  // Vérification si l'utilisateur a déjà utilisé l'offre gratuite
+  React.useEffect(() => {
+    if (user) {
+      supabase
+        .from('profiles')
+        .select('free_trial_used')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data && data.free_trial_used) setFreeTrialUsed(true);
+        });
+    }
+  }, [user]);
+
   // Sélectionner les plans en fonction du type d'utilisateur
   const selectedPlans = userType === 'freelancer' 
     ? freelancerPlans 
@@ -411,21 +427,30 @@ export function Pricing() {
             <div className="mt-auto">
               {/* BOUTONS PAR OFFRE */}
               {plan.name === 'Free' && (
-                <button
-                  onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                  disabled={loading || currentPlan === plan.name.toLowerCase()}
-                  className={`w-full btn-primary ${
-                    currentPlan === plan.name.toLowerCase()
-                      ? 'opacity-50 cursor-not-allowed'
-                      : ''
-                  }`}
-                >
-                  {currentPlan === plan.name.toLowerCase()
-                    ? 'Plan actuel'
-                    : loading
-                    ? 'Chargement...'
-                    : 'Commencer l’essai gratuit'}
-                </button>
+                <>
+                  <button
+                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+                    disabled={loading || currentPlan === plan.name.toLowerCase() || freeTrialUsed}
+                    className={`w-full btn-primary ${
+                      currentPlan === plan.name.toLowerCase() || freeTrialUsed
+                        ? 'opacity-50 cursor-not-allowed'
+                        : ''
+                    }`}
+                  >
+                    {freeTrialUsed
+                      ? 'Essai déjà utilisé'
+                      : currentPlan === plan.name.toLowerCase()
+                      ? 'Plan actuel'
+                      : loading
+                      ? 'Chargement...'
+                      : 'Commencer l’essai gratuit de 24h'}
+                  </button>
+                  {freeTrialUsed && (
+                    <div className="text-xs text-red-400 mt-2 text-center">
+                      Vous avez déjà bénéficié de l’essai gratuit de 24h.
+                    </div>
+                  )}
+                </>
               )}
               {plan.name === 'Enterprise' && (
                 <button
