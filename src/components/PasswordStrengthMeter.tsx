@@ -49,7 +49,7 @@ function calculatePasswordStrength(password: string): number {
   if (!password) return 0
 
   let score = 0
-  const minLength = 12
+  const minLength = 9
   const hasUpperCase = /[A-Z]/.test(password)
   const hasLowerCase = /[a-z]/.test(password)
   const hasNumbers = /\d/.test(password)
@@ -68,7 +68,7 @@ function calculatePasswordStrength(password: string): number {
 }
 
 function getPasswordFeedback(password: string): string[] {
-  const minLength = 12
+  const minLength = 9
   const criteria: string[] = [
     password.length >= minLength ? `✓ Au moins ${minLength} caractères` : `✗ Au moins ${minLength} caractères`,
     /[A-Z]/.test(password) ? '✓ Au moins une majuscule' : '✗ Au moins une majuscule',
