@@ -379,10 +379,10 @@ export function Pricing() {
               <p className="text-gray-400 mb-4">{plan.description}</p>
               <p className="text-4xl font-bold text-white mb-6">
                 {frequency === 'monthly'
-                  ? Number(plan.price.replace('€', '')).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'
+                  ? Number(plan.price.replace('€', '').replace(',', '.')).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'
                   : plan.name === 'Free'
                     ? '0,00€'
-                    : (Number(plan.price.replace('€', '')) * 0.8 * 12).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
+                    : (Number(plan.price.replace('€', '').replace(',', '.')) * 0.8 * 12).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
                 <span className="text-sm text-gray-400">
                   {plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}`}
                 </span>

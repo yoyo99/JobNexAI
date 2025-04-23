@@ -16,7 +16,7 @@ function calculatePasswordStrength(password) {
     if (!password)
         return 0;
     let score = 0;
-    const minLength = 12;
+    const minLength = 9;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
@@ -36,7 +36,7 @@ function calculatePasswordStrength(password) {
 }
 function getPasswordFeedback(password) {
     const feedback = [];
-    const minLength = 12;
+    const minLength = 9;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
