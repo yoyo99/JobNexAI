@@ -9,7 +9,7 @@ test('Flux abonnement Stripe opérationnel', async ({ page }) => {
   const email = `stripe-test-${Date.now()}@mail.com`;
 
   // Remplir le formulaire d'inscription
-  await page.fill('input[name="fullName"]', 'Test Stripe');
+  await page.fill('input#full-name', 'Test Stripe');
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', 'Test1234!');
   await page.check('input[name="acceptTerms"]');
