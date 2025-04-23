@@ -14,6 +14,8 @@ export function Footer() {
       { name: 'Fonctionnement', href: '/how-it-works' },
       { name: 'Témoignages', href: '/testimonials' },
       { name: 'Confidentialité', href: '/privacy' },
+      { name: 'CGU', href: '/cgu' },
+      { name: 'Contact', onClick: () => setShowFeedback(true) },
     ],
     social: [
       {
@@ -69,9 +71,19 @@ export function Footer() {
           <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
             {navigation.main.map((item) => (
               <div key={item.name} className="pb-6">
-                <Link to={item.href} className="text-sm leading-6 text-gray-400 hover:text-white">
-                  {item.name}
-                </Link>
+                {item.href ? (
+                  <Link to={item.href} className="text-sm leading-6 text-gray-400 hover:text-white">
+                    {item.name}
+                  </Link>
+                ) : (
+                  <button
+                    className="text-sm leading-6 text-gray-400 hover:text-white bg-transparent border-none p-0 underline cursor-pointer"
+                    style={{ background: 'none' }}
+                    onClick={item.onClick}
+                  >
+                    {item.name}
+                  </button>
+                )}
               </div>
             ))}
           </nav>

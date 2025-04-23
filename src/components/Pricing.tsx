@@ -442,109 +442,60 @@ export function Pricing() {
             </ul>
 
             <div className="mt-auto">
-              {/* BOUTONS PAR OFFRE */}
-              {plan.name === 'Free' && (
-  <>
+  {/* BOUTONS PAR OFFRE */}
+  {plan.name === 'Free' && (
+    <>
+      <button
+        onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+        disabled={loading || currentPlan === plan.name.toLowerCase() || freeTrialUsed}
+        className={`w-full btn-primary ${
+          currentPlan === plan.name.toLowerCase() || freeTrialUsed
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+        }`}
+      >
+        {freeTrialUsed
+          ? 'Essai déjà utilisé'
+          : currentPlan === plan.name.toLowerCase()
+          ? 'Plan actuel'
+          : loading
+          ? 'Chargement...'
+          : 'Commencer gratuitement'}
+      </button>
+      {freeTrialUsed && (
+        <div className="text-xs text-red-400 mt-2 text-center">
+          Vous avez déjà bénéficié de l’essai gratuit de 24h.
+        </div>
+      )}
+    </>
+  )}
+  {plan.name === 'Enterprise' && (
+    <button
+      onClick={() => setShowContactModal(true)}
+      disabled={loading}
+      className="w-full btn-primary"
+    >
+      Contacter les ventes
+    </button>
+  )}
+  {plan.name !== 'Free' && plan.name !== 'Enterprise' && (
     <button
       onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-      disabled={loading || currentPlan === plan.name.toLowerCase() || freeTrialUsed}
+      disabled={loading || currentPlan === plan.name.toLowerCase()}
       className={`w-full btn-primary ${
-        currentPlan === plan.name.toLowerCase() || freeTrialUsed
+        currentPlan === plan.name.toLowerCase()
           ? 'opacity-50 cursor-not-allowed'
           : ''
       }`}
     >
-      {freeTrialUsed
-        ? 'Essai déjà utilisé'
-        : currentPlan === plan.name.toLowerCase()
+      {currentPlan === plan.name.toLowerCase()
         ? 'Plan actuel'
         : loading
         ? 'Chargement...'
-        : 'Commencer gratuitement'}
+        : 'S’abonner'}
     </button>
-    {freeTrialUsed && (
-      <div className="text-xs text-red-400 mt-2 text-center">
-        Vous avez déjà bénéficié de l’essai gratuit de 24h.
-      </div>
-    )}
-  </>
-)}
-                <>
-                  <button
-                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                    disabled={loading || currentPlan === plan.name.toLowerCase() || freeTrialUsed}
-                    className={`w-full btn-primary ${
-                      currentPlan === plan.name.toLowerCase() || freeTrialUsed
-                        ? 'opacity-50 cursor-not-allowed'
-                        : ''
-                    }`}
-                  >
-                    {freeTrialUsed
-                      ? 'Essai déjà utilisé'
-                      : currentPlan === plan.name.toLowerCase()
-                      ? 'Plan actuel'
-                      : loading
-                      ? 'Chargement...'
-                      : 'Commencer l’essai gratuit de 24h'}
-                  </button>
-                  {freeTrialUsed && (
-                    <div className="text-xs text-red-400 mt-2 text-center">
-                      Vous avez déjà bénéficié de l’essai gratuit de 24h.
-                    </div>
-                  )}
-                </>
-              )}
-              {plan.name === 'Enterprise' && (
-  <button
-    onClick={() => setShowContactModal(true)}
-    disabled={loading}
-    className="w-full btn-primary"
-  >
-    Contacter les ventes
-  </button>
-)}
-                <button
-                  onClick={() => setShowContactModal(true)}
-                  disabled={loading}
-                  className="w-full btn-primary"
-                >
-                  Contacter les ventes
-                </button>
-              )}
-              {plan.name !== 'Free' && plan.name !== 'Enterprise' && (
-  <button
-    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-    disabled={loading || currentPlan === plan.name.toLowerCase()}
-    className={`w-full btn-primary ${
-      currentPlan === plan.name.toLowerCase()
-        ? 'opacity-50 cursor-not-allowed'
-        : ''
-    }`}
-  >
-    {currentPlan === plan.name.toLowerCase()
-      ? 'Plan actuel'
-      : loading
-      ? 'Chargement...'
-      : 'S’abonner'}
-  </button>
-)}
-                <button
-                  onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                  disabled={loading || currentPlan === plan.name.toLowerCase()}
-                  className={`w-full btn-primary ${
-                    currentPlan === plan.name.toLowerCase()
-                      ? 'opacity-50 cursor-not-allowed'
-                      : ''
-                  }`}
-                >
-                  {currentPlan === plan.name.toLowerCase()
-                    ? 'Plan actuel'
-                    : loading
-                    ? 'Chargement...'
-                    : 'S’abonner'}
-                </button>
-              )}
-            </div>
+  )}
+</div>
           </motion.div>
         ))}
       </div>
