@@ -6,11 +6,11 @@ export function Footer() {
   
   const navigation = {
     main: [
-      { name: 'Features', href: '/features' },
-      { name: 'Pricing', href: '/pricing' },
-      { name: 'How it works', href: '/how-it-works' },
-      { name: 'Testimonials', href: '/testimonials' },
-      { name: 'Privacy', href: '/privacy' },
+      { name: 'Fonctionnalités', href: '/features' },
+      { name: 'Tarifs', href: '/pricing' },
+      { name: 'Fonctionnement', href: '/how-it-works' },
+      { name: 'Témoignages', href: '/testimonials' },
+      { name: 'Confidentialité', href: '/privacy' },
     ],
     social: [
       {

@@ -17,6 +17,7 @@ export function Auth() {
   const [fullName, setFullName] = useState('')
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
   const [showHelp, setShowHelp] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
@@ -234,14 +235,14 @@ export function Auth() {
                 placeholder={t('auth.email')}
               />
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="password" className="sr-only">
                 {t('auth.password')}
               </label>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 autoComplete={isLogin ? "current-password" : "new-password"}
                 required
                 minLength={9}
@@ -250,9 +251,27 @@ export function Auth() {
                   setPassword(e.target.value)
                   setMessage(null)
                 }}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5 pr-10"
                 placeholder={t('auth.password')}
               />
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-primary-400 focus:outline-none"
+                style={{ background: 'none', border: 'none' }}
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.125 3.825A10.05 10.05 0 0022 12s-2.614-4.134-6.875-6.825" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25l3.75 3.75m0 0l-3.75-3.75m0 0A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
 

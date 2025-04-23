@@ -382,7 +382,7 @@ export function Pricing() {
                   ? Number(plan.price.replace('€', '').replace(',', '.')).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'
                   : plan.name === 'Free'
                     ? '0,00€'
-                    : (Number(plan.price.replace('€', '').replace(',', '.')) * 0.8 * 12).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
+                    : (Math.round(Number(plan.price.replace('€', '').replace(',', '.')) * 0.8 * 12 * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
                 <span className="text-sm text-gray-400">
                   {plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}`}
                 </span>
@@ -414,6 +414,39 @@ export function Pricing() {
                     ? 'Chargement...'
                     : "Commencer l'essai gratuit"}
                 </button>
+              ) : plan.name === 'Enterprise' ? (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+                    disabled={loading || currentPlan === plan.name.toLowerCase()}
+                    className={`w-full btn-primary ${
+                      currentPlan === plan.name.toLowerCase()
+                        ? 'opacity-50 cursor-not-allowed'
+                        : ''
+                    }`}
+                  >
+                    {currentPlan === plan.name.toLowerCase()
+                      ? 'Plan actuel'
+                      : loading
+                      ? 'Chargement...'
+                      : 'Contacter les ventes'}
+                  </button>
+                  <button
+                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+                    disabled={loading || currentPlan === plan.name.toLowerCase()}
+                    className={`w-full btn-secondary ${
+                      currentPlan === plan.name.toLowerCase()
+                        ? 'opacity-50 cursor-not-allowed'
+                        : ''
+                    }`}
+                  >
+                    {currentPlan === plan.name.toLowerCase()
+                      ? 'Plan actuel'
+                      : loading
+                      ? 'Chargement...'
+                      : 'S’abonner'}
+                  </button>
+                </div>
               ) : (
                 <button
                   onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
@@ -428,7 +461,7 @@ export function Pricing() {
                     ? 'Plan actuel'
                     : loading
                     ? 'Chargement...'
-                    : (plan.name === 'Enterprise' ? 'Contacter les ventes' : 'S’abonner')}
+                    : 'S’abonner'}
                 </button>
               )}
             </div>
