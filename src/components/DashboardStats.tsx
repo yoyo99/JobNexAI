@@ -142,10 +142,13 @@ export function DashboardStats() {
         .eq('status', 'interviewing')
 
       // Récupérer les entreprises les plus fréquentes
-      const { data: companies } = await supabase
-        .from<'job_applications', { job: { company: string } }>('job_applications')
+      const { data: companiesRaw } = await supabase
+        .from('job_applications')
         .select('job:jobs (company)')
         .eq('user_id', user.id)
+
+      // companiesRaw est typé comme any[] ou null
+      const companies = (companiesRaw || []) as Array<{ job: { company?: string | null } | null }>
 
       // Récupérer l'activité récente
       const { data: recentApplications } = await supabase
@@ -224,8 +227,8 @@ export function DashboardStats() {
             i.next_step_date && new Date(i.next_step_date) <= new Date()
           ).length || 0
         },
-        topCompanies: companies?.reduce((acc: Array<{name: string, count: number}>, curr) => {
-          const company = curr.job.company
+        topCompanies: (companies || []).reduce((acc: Array<{name: string, count: number}>, curr) => {
+          const company = curr.job && typeof curr.job === 'object' ? curr.job.company : undefined
           if (company) {
             const existing = acc.find(c => c.name === company)
             if (existing) {
@@ -235,7 +238,7 @@ export function DashboardStats() {
             }
           }
           return acc
-        }, []).sort((a, b) => b.count - a.count).slice(0, 5) || [],
+        }, []).sort((a, b) => b.count - a.count).slice(0, 5),
         topLocations: [],
         averageSalary: 0,
         responseRate: (applications?.filter(a => a.status !== 'draft').length || 0) / (applications?.length || 1) * 100,

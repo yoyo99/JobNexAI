@@ -64,7 +64,7 @@ export function SubscriptionStatus() {
             </span>
           </div>
           
-          {isTrialActive && (
+          {isTrialActive && user.trial_ends_at && (
             <p className="text-sm text-gray-400 mt-1">
               Période d'essai jusqu'au {format(new Date(user.trial_ends_at), 'dd MMMM yyyy', { locale: fr })}
             </p>
@@ -72,7 +72,7 @@ export function SubscriptionStatus() {
           
           {subscription?.current_period_end && (
             <p className="text-sm text-gray-400 mt-1">
-              Prochaine facturation le {format(new Date(subscription.current_period_end), 'dd MMMM yyyy', { locale: fr })}
+              Prochaine facturation le {subscription.current_period_end ? format(new Date(subscription.current_period_end), 'dd MMMM yyyy', { locale: fr }) : ''}
             </p>
           )}
         </div>

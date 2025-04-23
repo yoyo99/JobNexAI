@@ -59,7 +59,12 @@ export function NetworkList({ onChatWithUser }: NetworkListProps) {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setConnections(data || [])
+      // Corrige la structure pour que connected_user soit un objet unique
+      const fixedData = (data || []).map((conn: any) => ({
+        ...conn,
+        connected_user: Array.isArray(conn.connected_user) ? conn.connected_user[0] : conn.connected_user
+      }))
+      setConnections(fixedData)
     } catch (error) {
       console.error('Error loading connections:', error)
     } finally {

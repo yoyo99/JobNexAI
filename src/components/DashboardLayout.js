@@ -15,7 +15,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../utils/cn';
 import { useAuth } from '../stores/auth';
-import { LanguageSwitcher } from './LanguageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 import ResendQuotaBanner from './ResendQuotaBanner';
 export function DashboardLayout() {
     var _a, _b, _c;

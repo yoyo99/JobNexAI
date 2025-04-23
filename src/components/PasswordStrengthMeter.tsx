@@ -68,40 +68,15 @@ function calculatePasswordStrength(password: string): number {
 }
 
 function getPasswordFeedback(password: string): string[] {
-  const feedback = []
   const minLength = 12
-  const hasUpperCase = /[A-Z]/.test(password)
-  const hasLowerCase = /[a-z]/.test(password)
-  const hasNumbers = /\d/.test(password)
-  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password)
-
-  feedback.push(
-    password.length >= minLength
-      ? `✓ Au moins ${minLength} caractères`
-      : `✗ Au moins ${minLength} caractères`
-  )
-  feedback.push(
-    hasUpperCase
-      ? '✓ Au moins une majuscule'
-      : '✗ Au moins une majuscule'
-  )
-  feedback.push(
-    hasLowerCase
-      ? '✓ Au moins une minuscule'
-      : '✗ Au moins une minuscule'
-  )
-  feedback.push(
-    hasNumbers
-      ? '✓ Au moins un chiffre'
-      : '✗ Au moins un chiffre'
-  )
-  feedback.push(
-    hasSpecialChars
-      ? '✓ Au moins un caractère spécial'
-      : '✗ Au moins un caractère spécial'
-  )
-
-  return feedback
+  const criteria: string[] = [
+    password.length >= minLength ? `✓ Au moins ${minLength} caractères` : `✗ Au moins ${minLength} caractères`,
+    /[A-Z]/.test(password) ? '✓ Au moins une majuscule' : '✗ Au moins une majuscule',
+    /[a-z]/.test(password) ? '✓ Au moins une minuscule' : '✗ Au moins une minuscule',
+    /[0-9]/.test(password) ? '✓ Au moins un chiffre' : '✗ Au moins un chiffre',
+    /[^A-Za-z0-9]/.test(password) ? '✓ Au moins un caractère spécial' : '✗ Au moins un caractère spécial',
+  ]
+  return criteria
 }
 
 function getStrengthColor(strength: number): string {

@@ -70,15 +70,15 @@ export function CreateJobPosting() {
         job_type: 'FULL_TIME',
         salary_min: 55000,
         salary_max: 70000,
-        remote_type: 'hybrid',
-        experience_level: 'senior',
+        remote_type: 'hybrid' as 'remote' | 'hybrid' | 'onsite',
+        experience_level: 'senior' as 'junior' | 'mid' | 'senior',
         description: 'Nous recherchons un développeur React expérimenté pour rejoindre notre équipe...',
         requirements: [
           '5+ ans d\'expérience en React', 
           'Maîtrise de TypeScript', 
           'Expérience avec les API GraphQL'
         ],
-        status: 'active'
+        status: 'active' as 'active' | 'paused' | 'draft'
       }
 
       setJobPosting(mockJobPosting)

@@ -1,0 +1,127 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "jobSearch": "Job Search",
+    "applications": "Applications",
+    "cvBuilder": "CV Builder",
+    "network": "Network",
+    "profile": "Profile",
+    "settings": "Settings",
+    "marketAnalysis": "Market Analysis"
+  },
+  "auth": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out",
+    "email": "Email address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "startTrial": "Start free trial",
+    "createAccount": "Create account",
+    "loginSuccess": "Login successful!",
+    "loginError": "Incorrect email or password.",
+    "signupSuccess": "Sign up successful! You can now log in.",
+    "signupError": "An error occurred during sign up."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "language": "Language",
+    "or": "Or"
+  },
+  "hero": {
+    "title": "Automate Your Job and Freelance Search",
+    "subtitle": "Let AI power your search. From CV optimization to automated applications, JobNexus streamlines your path to the perfect position or the best freelance opportunities.",
+    "startTrial": "Start free trial",
+    "watchDemo": "Watch demo"
+  },
+  "dashboard": {
+    "welcome": "Welcome to your JobNexus personal space",
+    "stats": {
+      "applications": "Applications sent",
+      "interviews": "Scheduled interviews",
+      "responseRate": "Response rate"
+    },
+    "recentApplications": {
+      "title": "Recent applications",
+      "viewAll": "View all",
+      "status": {
+        "pending": "Pending",
+        "interview": "Interview",
+        "rejected": "Rejected"
+      }
+    },
+    "upcomingInterviews": {
+      "title": "Upcoming interviews",
+      "viewCalendar": "View calendar",
+      "types": {
+        "technical": "Technical",
+        "hr": "HR"
+      }
+    }
+  },
+  "jobSearch": {
+    "title": "Find Your Next Opportunity",
+    "subtitle": "Search through thousands of job listings tailored to your skills and preferences.",
+    "filters": {
+      "keyword": "Job title or keyword",
+      "jobType": "Job type",
+      "location": "Location"
+    },
+    "types": {
+      "fullTime": "Full-time",
+      "partTime": "Part-time",
+      "contract": "Contract",
+      "freelance": "Freelance",
+      "internship": "Internship"
+    },
+    "locations": {
+      "remote": "Remote",
+      "hybrid": "Hybrid",
+      "onsite": "On-site"
+    }
+  },
+  "marketAnalysis": {
+    "title": "Market Analysis",
+    "subtitle": "Discover trends and insights from the job market",
+    "jobTypes": "Job Types Distribution",
+    "topLocations": "Top Locations",
+    "salaryInsights": "Salary Insights",
+    "averageSalary": "Average salary based on {{count}} job offers",
+    "noSalaryData": "Not enough salary data available"
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your personal information and subscription",
+    "personalInfo": {
+      "title": "Personal information",
+      "fullName": "Full name",
+      "updateSuccess": "Profile updated successfully!",
+      "updateError": "An error occurred while updating the profile."
+    },
+    "subscription": {
+      "title": "Subscription",
+      "status": "Status",
+      "plan": "Plan",
+      "nextRenewal": "Next renewal",
+      "trialEnd": "Trial ends",
+      "manage": "Manage subscription",
+      "statuses": {
+        "none": "No subscription",
+        "trialing": "Trial period",
+        "active": "Active",
+        "canceled": "Canceled",
+        "inactive": "Inactive"
+      }
+    }
+  }
+}

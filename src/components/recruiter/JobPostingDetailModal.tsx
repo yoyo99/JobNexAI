@@ -1,4 +1,5 @@
 import { Dialog } from '@headlessui/react'
+import { Link } from 'react-router-dom'
 import { XMarkIcon, UserIcon, StarIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { format } from 'date-fns'

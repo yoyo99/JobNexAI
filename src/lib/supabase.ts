@@ -30,6 +30,7 @@ export interface Subscription {
   cancel_at: string | null
   created_at: string
   updated_at: string
+  stripe_customer_id?: string // Ajout pour la compatibilité avec la gestion d'abonnement
 }
 
 export interface Skill {

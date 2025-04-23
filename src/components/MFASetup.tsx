@@ -17,6 +17,10 @@ export function MFASetup({ onComplete, onCancel }: MFASetupProps) {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [totpFactorId, setTotpFactorId] = useState<string | null>(null)
+  const [totpChallengeId, setTotpChallengeId] = useState<string | null>(null)
+  const [smsFactorId, setSmsFactorId] = useState<string | null>(null)
+  const [smsChallengeId, setSmsChallengeId] = useState<string | null>(null)
 
   const setupTOTP = async () => {
     try {
@@ -27,12 +31,20 @@ export function MFASetup({ onComplete, onCancel }: MFASetupProps) {
         factorType: 'totp',
       })
 
-      if (error) throw error
+      if (error || !data) throw error || new Error('No TOTP data')
+      setTotpFactorId(data.id)
 
       const qr = await QRCode.toDataURL(data.totp.qr_code)
       setQrCode(qr)
       setSecret(data.totp.secret)
       setStep('totp')
+
+      // Challenge the factor to get challengeId
+      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({
+        factorId: data.id
+      })
+      if (challengeError || !challengeData) throw challengeError || new Error('No challenge data')
+      setTotpChallengeId(challengeData.id)
 
       trackEvent('auth.mfa.totp.setup_started')
     } catch (error) {
@@ -48,8 +60,13 @@ export function MFASetup({ onComplete, onCancel }: MFASetupProps) {
       setLoading(true)
       setError(null)
 
+      if (!totpFactorId || !totpChallengeId) {
+        setError('Challenge non initialisé.');
+        return;
+      }
       const { error } = await supabase.auth.mfa.verify({
-        factorId: 'totp',
+        factorId: totpFactorId,
+        challengeId: totpChallengeId,
         code: verificationCode,
       })
 
@@ -70,14 +87,22 @@ export function MFASetup({ onComplete, onCancel }: MFASetupProps) {
       setLoading(true)
       setError(null)
 
-      const { error } = await supabase.auth.mfa.enroll({
-        factorType: 'sms',
-        phoneNumber,
+      // Enroll phone factor
+      const { data, error } = await supabase.auth.mfa.enroll({
+        factorType: 'phone',
+        phone: phoneNumber,
       })
-
-      if (error) throw error
-
+      if (error || !data) throw error || new Error('No SMS data')
+      setSmsFactorId(data.id)
       setStep('sms')
+
+      // Challenge the factor to get challengeId
+      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({
+        factorId: data.id
+      })
+      if (challengeError || !challengeData) throw challengeError || new Error('No challenge data')
+      setSmsChallengeId(challengeData.id)
+
       trackEvent('auth.mfa.sms.setup_started')
     } catch (error) {
       trackError(error as Error, { context: 'auth.mfa.sms.setup' })
@@ -92,8 +117,13 @@ export function MFASetup({ onComplete, onCancel }: MFASetupProps) {
       setLoading(true)
       setError(null)
 
+      if (!smsFactorId || !smsChallengeId) {
+        setError('Challenge non initialisé.');
+        return;
+      }
       const { error } = await supabase.auth.mfa.verify({
-        factorId: 'sms',
+        factorId: smsFactorId,
+        challengeId: smsChallengeId,
         code: verificationCode,
       })
 

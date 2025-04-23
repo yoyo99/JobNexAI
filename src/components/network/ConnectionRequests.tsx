@@ -51,7 +51,12 @@ export function ConnectionRequests() {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setRequests(data || [])
+      // Corrige la structure pour que user soit un objet unique
+      const fixedData = (data || []).map((req: any) => ({
+        ...req,
+        user: Array.isArray(req.user) ? req.user[0] : req.user
+      }))
+      setRequests(fixedData)
     } catch (error) {
       console.error('Error loading requests:', error)
     } finally {

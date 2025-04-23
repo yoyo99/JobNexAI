@@ -75,7 +75,8 @@ export function NotificationCenter() {
 
   const markAllAsRead = async () => {
     try {
-      await markAllNotificationsAsRead(user?.id)
+      if (!user?.id) return;
+      await markAllNotificationsAsRead(user.id)
       setNotifications(prev =>
         prev.map(n => ({ ...n, read: true }))
       )

@@ -90,7 +90,7 @@ export async function generateApplicationPDF(application: JobApplication, option
   if (includeNotes && application.notes) {
     docDefinition.content.push(
       { text: 'Notes', style: 'subheader' },
-      { text: application.notes, margin: [0, 0, 0, 20] }
+      { text: [application.notes], margin: [0, 0, 0, 20] }
     )
   }
 
@@ -101,7 +101,7 @@ export async function generateApplicationPDF(application: JobApplication, option
         // Historique sous forme de liste à puces
         text: application.timeline.map(event =>
           `• ${format(new Date(event.date), 'dd/MM/yyyy', { locale: fr })} - ${event.description}`
-        ).join('\n'),
+        ),
         margin: [0, 0, 0, 20],
       }
     )
@@ -121,7 +121,7 @@ export async function generateApplicationPDF(application: JobApplication, option
 
 export async function downloadApplicationPDF(application: JobApplication, options?: ApplicationPDFOptions) {
   const blob = await generateApplicationPDF(application, options)
-  const url = URL.createObjectURL(blob)
+  const url = URL.createObjectURL(blob as Blob)
   const link = document.createElement('a')
   link.href = url
   link.download = `candidature-${application.job.company}-${format(new Date(), 'yyyy-MM-dd')}.pdf`

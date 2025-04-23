@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ToastContainer from './ToastContainer.js';
+import ToastContainer from './ToastContainer';
 
 
 import { DashboardLayout } from './components/DashboardLayout'

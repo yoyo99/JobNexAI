@@ -1,0 +1,102 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "jobSearch": "Ricerca lavoro",
+    "applications": "Candidature",
+    "cvBuilder": "Crea CV",
+    "network": "Network",
+    "profile": "Profilo",
+    "settings": "Impostazioni",
+    "marketAnalysis": "Analisi di mercato"
+  },
+  "auth": {
+    "login": "Accedi",
+    "signup": "Registrati",
+    "logout": "Esci",
+    "email": "Indirizzo email",
+    "password": "Password",
+    "forgotPassword": "Password dimenticata?",
+    "startTrial": "Inizia prova gratuita",
+    "createAccount": "Crea account",
+    "loginSuccess": "Accesso effettuato con successo!",
+    "loginError": "Email o password errati.",
+    "signupSuccess": "Registrazione completata! Ora puoi accedere.",
+    "signupError": "Si è verificato un errore durante la registrazione."
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Si è verificato un errore",
+    "success": "Operazione completata",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "view": "Visualizza",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "sort": "Ordina",
+    "language": "Lingua",
+    "or": "O"
+  },
+  "hero": {
+    "title": "Automatizza la tua ricerca di lavoro",
+    "subtitle": "Lascia che l'IA potenzi la tua ricerca di lavoro. Dall'ottimizzazione del CV alle candidature automatizzate, JobNexus semplifica il tuo percorso verso la posizione perfetta.",
+    "startTrial": "Inizia prova gratuita",
+    "watchDemo": "Guarda demo"
+  },
+  "jobSearch": {
+    "title": "Trova la tua prossima opportunità",
+    "subtitle": "Cerca tra migliaia di offerte di lavoro adatte alle tue competenze e preferenze.",
+    "filters": {
+      "keyword": "Titolo o parola chiave",
+      "jobType": "Tipo di lavoro",
+      "location": "Località"
+    },
+    "types": {
+      "fullTime": "Tempo pieno",
+      "partTime": "Part-time",
+      "contract": "Contratto",
+      "freelance": "Freelance",
+      "internship": "Stage"
+    },
+    "locations": {
+      "remote": "Remoto",
+      "hybrid": "Ibrido",
+      "onsite": "In sede"
+    }
+  },
+  "marketAnalysis": {
+    "title": "Analisi di mercato",
+    "subtitle": "Scopri tendenze e approfondimenti dal mercato del lavoro",
+    "jobTypes": "Distribuzione tipi di lavoro",
+    "topLocations": "Località principali",
+    "salaryInsights": "Informazioni stipendi",
+    "averageSalary": "Stipendio medio basato su {{count}} offerte",
+    "noSalaryData": "Dati stipendiali insufficienti"
+  },
+  "profile": {
+    "title": "Profilo",
+    "subtitle": "Gestisci le tue informazioni personali e l'abbonamento",
+    "personalInfo": {
+      "title": "Informazioni personali",
+      "fullName": "Nome completo",
+      "updateSuccess": "Profilo aggiornato con successo!",
+      "updateError": "Si è verificato un errore durante l'aggiornamento del profilo."
+    },
+    "subscription": {
+      "title": "Abbonamento",
+      "status": "Stato",
+      "plan": "Piano",
+      "nextRenewal": "Prossimo rinnovo",
+      "trialEnd": "Fine periodo di prova",
+      "manage": "Gestisci abbonamento",
+      "statuses": {
+        "none": "Nessun abbonamento",
+        "trialing": "Periodo di prova",
+        "active": "Attivo",
+        "canceled": "Cancellato",
+        "inactive": "Inattivo"
+      }
+    }
+  }
+}

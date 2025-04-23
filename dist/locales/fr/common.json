@@ -1,0 +1,151 @@
+{
+  "navigation": {
+    "dashboard": "Tableau de bord",
+    "jobSearch": "Recherche d'emploi",
+    "applications": "Candidatures",
+    "cvBuilder": "CV Builder",
+    "network": "Réseau",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "marketAnalysis": "Analyse du marché"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "signup": "S'inscrire",
+    "logout": "Se déconnecter",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "startTrial": "Commencer l'essai gratuit",
+    "createAccount": "Créer un compte",
+    "loginSuccess": "Connexion réussie !",
+    "loginError": "Email ou mot de passe incorrect.",
+    "signupSuccess": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+    "signupError": "Une erreur est survenue lors de l'inscription.",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "sendResetInstructions": "Envoyer les instructions",
+    "resetPasswordSuccess": "Instructions de réinitialisation envoyées par email.",
+    "backToLogin": "Retour à la connexion",
+    "genericError": "Une erreur est survenue. Veuillez réessayer.",
+    "invalidCredentials": "Email ou mot de passe incorrect.",
+    "emailNotConfirmed": "Veuillez confirmer votre adresse email.",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères.",
+    "emailAlreadyRegistered": "Cette adresse email est déjà utilisée."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Opération réussie",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "language": "Langue",
+    "or": "Ou"
+  },
+  "hero": {
+    "title": "Automatisez votre recherche d'emploi et de missions freelance",
+    "subtitle": "Laissez l'IA optimiser votre recherche. De l'optimisation du CV aux candidatures automatisées, JobNexus simplifie votre parcours vers le poste idéal ou les meilleures missions freelance.",
+    "startTrial": "Commencer l'essai gratuit",
+    "watchDemo": "Voir la démo"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue sur votre espace personnel JobNexus",
+    "stats": {
+      "applications": "Candidatures envoyées",
+      "interviews": "Entretiens planifiés",
+      "responseRate": "Taux de réponse",
+      "averageSalary": "Salaire moyen",
+      "matchingJobs": "Offres correspondantes",
+      "savedJobs": "Offres sauvegardées"
+    },
+    "recentApplications": {
+      "title": "Candidatures récentes",
+      "viewAll": "Voir tout",
+      "status": {
+        "pending": "En attente",
+        "interview": "Entretien",
+        "rejected": "Refusé",
+        "accepted": "Accepté"
+      }
+    },
+    "upcomingInterviews": {
+      "title": "Entretiens à venir",
+      "viewCalendar": "Voir calendrier",
+      "types": {
+        "technical": "Technique",
+        "hr": "RH",
+        "final": "Final"
+      }
+    },
+    "skillsProgress": {
+      "title": "Progression des compétences",
+      "viewAll": "Voir toutes les compétences",
+      "levels": {
+        "beginner": "Débutant",
+        "intermediate": "Intermédiaire",
+        "advanced": "Avancé",
+        "expert": "Expert"
+      }
+    }
+  },
+  "jobSearch": {
+    "title": "Trouvez votre prochaine opportunité",
+    "subtitle": "Recherchez parmi des milliers d'offres d'emploi adaptées à vos compétences et préférences.",
+    "filters": {
+      "keyword": "Titre du poste ou mot-clé",
+      "jobType": "Type de poste",
+      "location": "Localisation"
+    },
+    "types": {
+      "fullTime": "Temps plein",
+      "partTime": "Temps partiel",
+      "contract": "CDD",
+      "freelance": "Freelance",
+      "internship": "Stage"
+    },
+    "locations": {
+      "remote": "Télétravail",
+      "hybrid": "Hybride",
+      "onsite": "Sur site"
+    }
+  },
+  "marketAnalysis": {
+    "title": "Analyse du marché",
+    "subtitle": "Découvrez les tendances et insights du marché de l'emploi",
+    "jobTypes": "Distribution des types d'emploi",
+    "topLocations": "Principales localisations",
+    "salaryInsights": "Aperçu des salaires",
+    "averageSalary": "Salaire moyen basé sur {{count}} offres",
+    "noSalaryData": "Pas assez de données salariales disponibles"
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Gérez vos informations personnelles et votre abonnement",
+    "personalInfo": {
+      "title": "Informations personnelles",
+      "fullName": "Nom complet",
+      "updateSuccess": "Profil mis à jour avec succès !",
+      "updateError": "Une erreur est survenue lors de la mise à jour du profil."
+    },
+    "subscription": {
+      "title": "Abonnement",
+      "status": "Statut",
+      "plan": "Plan",
+      "nextRenewal": "Prochain renouvellement",
+      "trialEnd": "Fin de la période d'essai",
+      "manage": "Gérer l'abonnement",
+      "statuses": {
+        "none": "Aucun abonnement",
+        "trialing": "Période d'essai",
+        "active": "Actif",
+        "canceled": "Annulé",
+        "inactive": "Inactif"
+      }
+    }
+  }
+}
