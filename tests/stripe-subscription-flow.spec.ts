@@ -16,8 +16,26 @@ test('Flux abonnement Stripe opérationnel', async ({ page }) => {
   // Générer un email unique pour chaque test
   const email = `stripe-test-${Date.now()}@mail.com`;
 
-  // Remplir le formulaire d'inscription
-  await page.fill('input#full-name', 'Test Stripe');
+  // Attendre et remplir le champ Nom complet (plusieurs variantes)
+  let fullNameSelector = null;
+  const selectors = [
+    'input#full-name',
+    'input[name="fullName"]',
+    'input[placeholder*="Nom"]',
+    'input[type="text"]',
+  ];
+  for (const sel of selectors) {
+    try {
+      await page.waitForSelector(sel, { timeout: 4000 });
+      fullNameSelector = sel;
+      break;
+    } catch {}
+  }
+  if (!fullNameSelector) {
+    await page.screenshot({ path: 'signup-form-error.png' });
+    throw new Error('Champ "Nom complet" introuvable. Voir signup-form-error.png');
+  }
+  await page.fill(fullNameSelector, 'Test Stripe');
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', 'Test1234!');
   await page.check('input[name="acceptTerms"]');

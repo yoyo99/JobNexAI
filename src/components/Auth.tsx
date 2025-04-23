@@ -49,6 +49,10 @@ export function Auth() {
       setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
       return
     }
+    if (password.length < 9) {
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
+      return
+    }
 
     try {
       setLoading(true)
@@ -88,6 +92,10 @@ export function Auth() {
 
     if (!email || !password) {
       setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
+      return
+    }
+    if (password.length < 9) {
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
       return
     }
 
@@ -274,19 +282,6 @@ export function Auth() {
             </div>
           )}
 
-          {isLogin && (
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                <button
-                  type="button"
-                  onClick={handleForgotPassword}
-                  className="font-medium text-primary-400 hover:text-primary-300"
-                >
-                  {t('auth.forgotPassword')}
-                </button>
-              </div>
-            </div>
-          )}
 
           <div className="space-y-3">
             <button
