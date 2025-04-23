@@ -8,6 +8,7 @@ import {
   PlusIcon,
   TrashIcon,
   StarIcon,
+  ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline'
 
 interface FreelanceProfile {

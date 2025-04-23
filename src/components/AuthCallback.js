@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 export function AuthCallback() {
@@ -17,8 +17,6 @@ export function AuthCallback() {
     useEffect(() => {
         const handleAuthCallback = () => __awaiter(this, void 0, void 0, function* () {
             try {
-                // Récupérer le hash de l'URL
-                const hash = window.location.hash;
                 // Traiter le callback d'authentification
                 const { data, error } = yield supabase.auth.getSession();
                 if (error) {

@@ -92,12 +92,8 @@ export function generateApplicationPDF(application_1) {
         }
         if (includeTimeline && application.timeline) {
             docDefinition.content.push({ text: 'Historique', style: 'subheader' }, {
-                ul: application.timeline.map(event => ({
-                    text: [
-                        { text: format(new Date(event.date), 'dd/MM/yyyy', { locale: fr }), bold: true },
-                        ` - ${event.description}`,
-                    ],
-                })),
+                // Historique sous forme de liste à puces
+                text: application.timeline.map(event => `• ${format(new Date(event.date), 'dd/MM/yyyy', { locale: fr })} - ${event.description}`).join('\n'),
                 margin: [0, 0, 0, 20],
             });
         }

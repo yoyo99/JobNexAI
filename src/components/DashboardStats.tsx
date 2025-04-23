@@ -143,12 +143,8 @@ export function DashboardStats() {
 
       // Récupérer les entreprises les plus fréquentes
       const { data: companies } = await supabase
-        .from('job_applications')
-        .select(`
-          job:jobs (
-            company
-          )
-        `)
+        .from<'job_applications', { job: { company: string } }>('job_applications')
+        .select('job:jobs (company)')
         .eq('user_id', user.id)
 
       // Récupérer l'activité récente

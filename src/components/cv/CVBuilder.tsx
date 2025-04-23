@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { supabase } from '../../lib/supabase'
 import { CVTemplate } from './CVTemplate'
 import { CVEditor } from './CVEditor'

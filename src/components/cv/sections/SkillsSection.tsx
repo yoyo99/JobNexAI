@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+// import { useState } from 'react' // supprimé: non utilisé
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 interface SkillCategory {
   id: string
@@ -82,11 +81,9 @@ export function SkillsSection({ content, onChange }: SkillsProps) {
 
   return (
     <div className="space-y-6">
-      {content.categories.map((category, index) => (
-        <motion.div
+      {content.categories.map((category) => (
+        <div
           key={category.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
           className="bg-white/5 rounded-lg p-4"
         >
           <div className="flex items-start justify-between mb-4">
@@ -132,7 +129,7 @@ export function SkillsSection({ content, onChange }: SkillsProps) {
               Ajouter une compétence
             </button>
           </div>
-        </motion.div>
+        </div>
       ))}
 
       <button

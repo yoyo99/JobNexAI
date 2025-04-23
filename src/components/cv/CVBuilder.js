@@ -9,13 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../stores/auth';
 import { supabase } from '../../lib/supabase';
 import { CVTemplate } from './CVTemplate';
 import { CVEditor } from './CVEditor';
 import { CVPreview } from './CVPreview';
 export function CVBuilder() {
-    const { user } = useAuth();
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [loading, setLoading] = useState(true);

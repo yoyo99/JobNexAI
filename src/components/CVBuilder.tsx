@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
 import { supabase } from '../lib/supabase'
 import {
@@ -31,7 +30,6 @@ interface CVItem {
 
 export function CVBuilder() {
   const { user } = useAuth()
-  const { t } = useTranslation()
   const [sections, setSections] = useState<CVSection[]>([
     {
       id: 'education',
@@ -53,8 +51,6 @@ export function CVBuilder() {
     }
   ])
   const [loading, setLoading] = useState(false)
-  const [selectedSection, setSelectedSection] = useState<string | null>(null)
-  const [editingItem, setEditingItem] = useState<CVItem | null>(null)
 
   const addItem = (sectionId: string) => {
     setSections(prev => prev.map(section => {

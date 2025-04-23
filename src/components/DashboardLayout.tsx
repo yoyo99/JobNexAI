@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -10,7 +10,6 @@ import {
   UsersIcon,
   XMarkIcon,
   ClipboardDocumentListIcon,
-  BriefcaseIcon,
   RectangleGroupIcon,
   MagnifyingGlassIcon,
   PlusCircleIcon,
@@ -20,11 +19,11 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'
-import { LanguageSwitcher } from './LanguageSwitcher'
-import ResendQuotaBanner from './ResendQuotaBanner';
+import LanguageSwitcher from './LanguageSwitcher'
+import ResendQuotaBanner from './ResendQuotaBanner.jsx';
+import { NotificationCenter } from './NotificationCenter';
 
-
-export function DashboardLayout() {
+export function DashboardLayout({ children }: { children?: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
@@ -252,7 +251,7 @@ export function DashboardLayout() {
 
         <main className="py-10">
           <div className="px-4 sm:px-6 lg:px-8">
-            <Outlet />
+            {children ?? <Outlet />}
           </div>
         </main>
       </div>

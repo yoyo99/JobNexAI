@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline'

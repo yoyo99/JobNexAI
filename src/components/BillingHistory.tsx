@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { useAuth } from '../stores/auth'
 import { InvoiceHistory } from './InvoiceHistory'
 import { PaymentMethodList } from './PaymentMethodList'
 
 export function BillingHistory() {
-  const { user, subscription } = useAuth()
+  const { user } = useAuth()
   const [activeTab, setActiveTab] = useState<'invoices' | 'payment-methods'>('invoices')
 
   if (!user) {
@@ -42,21 +41,15 @@ export function BillingHistory() {
       </div>
 
       {activeTab === 'invoices' && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <div>
           <InvoiceHistory />
-        </motion.div>
+        </div>
       )}
 
       {activeTab === 'payment-methods' && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <div>
           <PaymentMethodList />
-        </motion.div>
+        </div>
       )}
     </div>
   )

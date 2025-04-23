@@ -1,4 +1,3 @@
-tsx
 import React from 'react';
 import { MarketAnalysis } from './MarketAnalysis';
 import { DashboardLayout } from './DashboardLayout';

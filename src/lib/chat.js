@@ -63,14 +63,23 @@ export function getChatRooms(userId) {
                 .order('room.last_message.created_at', { ascending: false });
             if (error)
                 throw error;
-            return data.map(item => {
+            return (data || []).map((item) => {
                 var _a;
-                const otherParticipants = item.room.participants.filter(p => p.user_id !== userId);
-                return {
-                    id: item.room_id,
-                    last_message: (_a = item.room.last_message) === null || _a === void 0 ? void 0 : _a[0],
-                    participants: otherParticipants
-                };
+                const participants = (item.room.participants || []).map((p) => ({
+                    user_id: p.user_id,
+                    user: p.user[0],
+                }));
+                const msg = (_a = item.room.last_message) === null || _a === void 0 ? void 0 : _a[0];
+                const last_message = msg
+                    ? {
+                        id: msg.id,
+                        sender_id: msg.sender_id,
+                        content: msg.content,
+                        created_at: msg.created_at,
+                        sender: msg.sender[0],
+                    }
+                    : null;
+                return { id: item.room_id, participants, last_message };
             });
         }
         catch (error) {
@@ -97,7 +106,13 @@ export function getChatMessages(roomId) {
                 .order('created_at', { ascending: true });
             if (error)
                 throw error;
-            return data;
+            return (data || []).map((msg) => ({
+                id: msg.id,
+                sender_id: msg.sender_id,
+                content: msg.content,
+                created_at: msg.created_at,
+                sender: msg.sender[0],
+            }));
         }
         catch (error) {
             console.error('Error getting chat messages:', error);
@@ -134,7 +149,15 @@ export function subscribeToRoom(roomId, callback) {
         table: 'chat_messages',
         filter: `room_id=eq.${roomId}`,
     }, (payload) => {
-        callback(payload.new);
+        const newMsg = payload.new;
+        const message = {
+            id: newMsg.id,
+            sender_id: newMsg.sender_id,
+            content: newMsg.content,
+            created_at: newMsg.created_at,
+            sender: newMsg.sender,
+        };
+        callback(message);
     })
         .subscribe();
     return () => {
@@ -142,18 +165,16 @@ export function subscribeToRoom(roomId, callback) {
     };
 }
 export function sendTypingNotification(roomId, userId) {
-    if (socket) {
-        socket.emit('typing', { roomId, userId });
-    }
+    socket === null || socket === void 0 ? void 0 : socket.emit('typing', { roomId, userId });
 }
 export function subscribeToTyping(roomId, callback) {
-    if (socket) {
-        socket.on(`typing:${roomId}`, (data) => {
-            callback(data.userId);
-        });
-        return () => {
-            socket.off(`typing:${roomId}`);
-        };
+    if (!socket) {
+        return () => { };
     }
-    return () => { };
+    socket.on(`typing:${roomId}`, (data) => {
+        callback(data.userId);
+    });
+    return () => {
+        socket === null || socket === void 0 ? void 0 : socket.off(`typing:${roomId}`);
+    };
 }

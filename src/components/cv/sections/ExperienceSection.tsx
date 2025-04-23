@@ -1,6 +1,6 @@
-import { useState } from 'react'
+// import { useState } from 'react' // supprimé: non utilisé
 import { motion } from 'framer-motion'
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 interface Experience {
   id: string
@@ -214,7 +214,7 @@ export function ExperienceSection({ content, onChange }: ExperienceProps) {
                   onClick={() => addAchievement(experience.id)}
                   className="text-primary-400 hover:text-primary-300"
                 >
-                  <PlusIcon className="h-5 w-5" />
+                  +
                 </button>
               </div>
               <div className="space-y-2">

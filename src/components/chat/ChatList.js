@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '../../lib/supabase';
+import { getChatRooms } from '../../lib/chat';
 import { useAuth } from '../../stores/auth';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -21,51 +21,15 @@ export function ChatList({ onSelectRoom }) {
     useEffect(() => {
         if (user) {
             loadChatRooms();
-            subscribeToNewMessages();
         }
     }, [user]);
     const loadChatRooms = () => __awaiter(this, void 0, void 0, function* () {
         try {
             setLoading(true);
-            const { data, error } = yield supabase
-                .from('chat_room_participants')
-                .select(`
-          room_id,
-          room:chat_rooms (
-            id,
-            last_message:chat_messages (
-              content,
-              created_at,
-              sender:profiles!sender_id (
-                full_name
-              )
-            ),
-            participants:chat_room_participants (
-              user_id,
-              user:profiles!user_id (
-                full_name
-              )
-            )
-          )
-        `)
-                .eq('user_id', user === null || user === void 0 ? void 0 : user.id)
-                .order('room.last_message.created_at', { ascending: false });
-            if (error)
-                throw error;
-            // Format the data
-            const rooms = data.map(item => {
-                var _a;
-                const otherParticipants = item.room.participants.filter(p => p.user_id !== (user === null || user === void 0 ? void 0 : user.id));
-                // Count unread messages
-                const unreadCount = 0; // This would need to be calculated based on read_by array
-                return {
-                    id: item.room_id,
-                    last_message: (_a = item.room.last_message) === null || _a === void 0 ? void 0 : _a[0],
-                    participants: otherParticipants,
-                    unread_count: unreadCount
-                };
-            });
-            setChatRooms(rooms);
+            if (!user)
+                return;
+            const roomsData = yield getChatRooms(user.id);
+            setChatRooms(roomsData.map(r => (Object.assign(Object.assign({}, r), { unread_count: 0 }))));
         }
         catch (error) {
             console.error('Error loading chat rooms:', error);
@@ -74,21 +38,6 @@ export function ChatList({ onSelectRoom }) {
             setLoading(false);
         }
     });
-    const subscribeToNewMessages = () => {
-        const channel = supabase
-            .channel('chat_messages')
-            .on('postgres_changes', {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'chat_messages',
-        }, () => {
-            loadChatRooms();
-        })
-            .subscribe();
-        return () => {
-            supabase.removeChannel(channel);
-        };
-    };
     if (loading) {
         return (_jsx("div", { className: "flex justify-center p-4", children: _jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-400" }) }));
     }

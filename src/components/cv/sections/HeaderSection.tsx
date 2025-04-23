@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-
 interface HeaderProps {
   content: {
     name: string

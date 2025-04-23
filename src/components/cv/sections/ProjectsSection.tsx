@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 interface Project {
   id: string
@@ -91,10 +89,8 @@ export function ProjectsSection({ content, onChange }: ProjectsProps) {
   return (
     <div className="space-y-6">
       {content.items.map((project, index) => (
-        <motion.div
+        <div
           key={project.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
           className="bg-white/5 rounded-lg p-4"
         >
           <div className="flex items-start justify-between mb-4">
@@ -198,7 +194,7 @@ export function ProjectsSection({ content, onChange }: ProjectsProps) {
                   onClick={() => addTechnology(project.id)}
                   className="text-primary-400 hover:text-primary-300"
                 >
-                  <PlusIcon className="h-5 w-5" />
+                  +
                 </button>
               </div>
               <div className="space-y-2">
@@ -221,7 +217,7 @@ export function ProjectsSection({ content, onChange }: ProjectsProps) {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       ))}
 
       <button

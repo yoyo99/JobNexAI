@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
         // Charger l'utilisateur au démarrage
         loadUser();
         // Configurer les écouteurs d'événements d'authentification
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => __awaiter(this, void 0, void 0, function* () {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, _session) => __awaiter(this, void 0, void 0, function* () {
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 yield loadUser();
             }
