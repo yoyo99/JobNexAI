@@ -5,6 +5,9 @@ test('Flux abonnement Stripe opérationnel', async ({ page }) => {
   // Aller sur la page d’inscription
   await page.goto('https://jobnexus-saas-windsurf.netlify.app/signup');
 
+  // S'assurer que le formulaire d'inscription est visible
+  await page.click('button:has-text("Créer un compte")');
+
   // Générer un email unique pour chaque test
   const email = `stripe-test-${Date.now()}@mail.com`;
 
