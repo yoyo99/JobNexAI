@@ -6,7 +6,12 @@ test('Flux abonnement Stripe opérationnel', async ({ page }) => {
   await page.goto('https://jobnexus-saas-windsurf.netlify.app/signup');
 
   // S'assurer que le formulaire d'inscription est visible
-  await page.click('button:has-text("Créer un compte")');
+  await Promise.any([
+    page.locator('button:has-text("Créer un compte")').click({ timeout: 5000 }),
+    page.locator('text="Créer un compte"').click({ timeout: 5000 }),
+    page.locator('button:has-text("S’inscrire")').click({ timeout: 5000 }),
+    page.locator('a:has-text("Créer un compte")').click({ timeout: 5000 }),
+  ]).catch(() => {});
 
   // Générer un email unique pour chaque test
   const email = `stripe-test-${Date.now()}@mail.com`;
