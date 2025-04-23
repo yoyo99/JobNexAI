@@ -19,9 +19,9 @@ const plugins = [
 // Add Sentry plugin with the provided auth token
 plugins.push(
   sentryVitePlugin({
-    org: "myself-0sq",
-    project: "jobnexus-frontend",
-    authToken: "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",
+    org: process.env.VITE_SENTRY_ORG,
+    project: process.env.VITE_SENTRY_PROJECT,
+    authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
   })
 )
 

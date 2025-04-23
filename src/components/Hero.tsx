@@ -79,8 +79,8 @@ export function Hero() {
           >
             <div className="rounded-xl bg-white/5 p-2 ring-1 ring-inset ring-white/10 lg:rounded-2xl">
               <img
-                src="/jobnexus-hero.jpg"
-                alt="Professionnel utilisant JobNexus avec des interfaces futuristes"
+                src="/landing.jpg"
+                alt="Homme en costume travaillant sur un ordinateur avec une interface futuriste"
                 className="rounded-md shadow-2xl ring-1 ring-white/10 w-full h-auto"
               />
             </div>
