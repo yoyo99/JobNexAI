@@ -444,6 +444,31 @@ export function Pricing() {
             <div className="mt-auto">
               {/* BOUTONS PAR OFFRE */}
               {plan.name === 'Free' && (
+  <>
+    <button
+      onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+      disabled={loading || currentPlan === plan.name.toLowerCase() || freeTrialUsed}
+      className={`w-full btn-primary ${
+        currentPlan === plan.name.toLowerCase() || freeTrialUsed
+          ? 'opacity-50 cursor-not-allowed'
+          : ''
+      }`}
+    >
+      {freeTrialUsed
+        ? 'Essai déjà utilisé'
+        : currentPlan === plan.name.toLowerCase()
+        ? 'Plan actuel'
+        : loading
+        ? 'Chargement...'
+        : 'Commencer gratuitement'}
+    </button>
+    {freeTrialUsed && (
+      <div className="text-xs text-red-400 mt-2 text-center">
+        Vous avez déjà bénéficié de l’essai gratuit de 24h.
+      </div>
+    )}
+  </>
+)}
                 <>
                   <button
                     onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
@@ -470,6 +495,14 @@ export function Pricing() {
                 </>
               )}
               {plan.name === 'Enterprise' && (
+  <button
+    onClick={() => setShowContactModal(true)}
+    disabled={loading}
+    className="w-full btn-primary"
+  >
+    Contacter les ventes
+  </button>
+)}
                 <button
                   onClick={() => setShowContactModal(true)}
                   disabled={loading}
@@ -479,6 +512,22 @@ export function Pricing() {
                 </button>
               )}
               {plan.name !== 'Free' && plan.name !== 'Enterprise' && (
+  <button
+    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
+    disabled={loading || currentPlan === plan.name.toLowerCase()}
+    className={`w-full btn-primary ${
+      currentPlan === plan.name.toLowerCase()
+        ? 'opacity-50 cursor-not-allowed'
+        : ''
+    }`}
+  >
+    {currentPlan === plan.name.toLowerCase()
+      ? 'Plan actuel'
+      : loading
+      ? 'Chargement...'
+      : 'S’abonner'}
+  </button>
+)}
                 <button
                   onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
                   disabled={loading || currentPlan === plan.name.toLowerCase()}

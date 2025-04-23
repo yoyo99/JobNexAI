@@ -50,8 +50,8 @@ export function Auth() {
       setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
       return
     }
-    if (password.length < 9) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
+    if (password.length < 12) {
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 12 caractères.' })
       return
     }
 
@@ -95,8 +95,8 @@ export function Auth() {
       setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
       return
     }
-    if (password.length < 9) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
+    if (password.length < 12) {
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 12 caractères.' })
       return
     }
 
