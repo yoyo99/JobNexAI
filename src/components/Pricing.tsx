@@ -14,7 +14,7 @@ import {
 const plans = [
   {
     name: 'Free',
-    price: '0€',
+    price: 0,
     priceId: null,
     description: 'Essayez les fonctionnalités de base gratuitement',
     features: [
@@ -29,7 +29,8 @@ const plans = [
   },
   {
     name: 'Pro',
-    price: '9.99€',
+    price: 9.99,
+    yearlyPrice: 95.99, // exemple : 9.99 * 12 * 0.8 (20% de réduction)
     priceId: 'prod_S6wNQ7xaUtpmy1', // Abonnement Pro Mensuel
     yearlyPriceId: 'prod_S6wPih2AhKZEkS', // Abonnement Pro Annuel
     description: 'Tout ce dont vous avez besoin pour votre recherche d\'emploi',
@@ -48,7 +49,8 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: '29.99€',
+    price: 29.99,
+    yearlyPrice: 287.90, // exemple : 29.99 * 12 * 0.8
     priceId: 'prod_S6wURmBdYoDuaz', // Abonnement Entreprise Mensuel
     yearlyPriceId: 'prod_S6wVXdjUcpcJ4i', // Abonnement Entreprise Annuel
     description: 'Solution complète pour les professionnels exigeants',
@@ -71,7 +73,7 @@ const plans = [
 const freelancerPlans = [
   {
     name: 'Free',
-    price: '0€',
+    price: 0,
     priceId: null,
     description: 'Pour les freelances débutants',
     features: [
@@ -86,7 +88,8 @@ const freelancerPlans = [
   },
   {
     name: 'Pro',
-    price: '14.99€',
+    price: 14.99,
+    yearlyPrice: 143.90,
     priceId: 'prod_S6wNQ7xaUtpmy1', // Utiliser le même ID que pour les candidats pour simplifier
     yearlyPriceId: 'prod_S6wPih2AhKZEkS',
     description: 'Pour les freelances qui veulent développer leur activité',
@@ -105,7 +108,8 @@ const freelancerPlans = [
   },
   {
     name: 'Business',
-    price: '24.99€',
+    price: 24.99,
+    yearlyPrice: 239.90,
     priceId: 'prod_S6wURmBdYoDuaz', // Utiliser le même ID que pour les candidats pour simplifier
     yearlyPriceId: 'prod_S6wVXdjUcpcJ4i',
     description: 'Pour les freelances confirmés et les agences',
@@ -127,7 +131,7 @@ const freelancerPlans = [
 const recruiterPlans = [
   {
     name: 'Starter',
-    price: '0€',
+    price: 0,
     priceId: null,
     description: 'Pour les petites entreprises et les startups',
     features: [
@@ -142,7 +146,8 @@ const recruiterPlans = [
   },
   {
     name: 'Business',
-    price: '49.99€',
+    price: 49.99,
+    yearlyPrice: 479.90,
     priceId: 'prod_S6wNQ7xaUtpmy1', // Utiliser le même ID que pour les candidats pour simplifier
     yearlyPriceId: 'prod_S6wPih2AhKZEkS',
     description: 'Pour les entreprises en croissance',
@@ -161,7 +166,8 @@ const recruiterPlans = [
   },
   {
     name: 'Enterprise',
-    price: '199.99€',
+    price: 199.99,
+    yearlyPrice: 1919.90,
     priceId: 'prod_S6wURmBdYoDuaz', // Utiliser le même ID que pour les candidats pour simplifier
     yearlyPriceId: 'prod_S6wVXdjUcpcJ4i',
     description: 'Pour les grandes entreprises et les cabinets de recrutement',
@@ -179,6 +185,10 @@ const recruiterPlans = [
     mostPopular: false,
   },
 ]
+
+function formatPrice(value: number): string {
+  return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 })
+}
 
 export function Pricing() {
   const { user } = useAuth()
@@ -358,49 +368,49 @@ export function Pricing() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4">
-        {selectedPlans.map((plan, index) => (
+        {selectedPlans.map((plan) => (
           <motion.div
             key={plan.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            className={`relative rounded-2xl border ${
-              plan.mostPopular 
-                ? 'border-primary-400 bg-primary-900/10' 
-                : 'border-white/10 bg-white/5'
-            } p-8 shadow-lg`}
+            className="bg-white/5 rounded-2xl p-8 flex flex-col shadow-lg"
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
-            {plan.mostPopular && (
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-400 text-white px-4 py-1 rounded-full text-sm font-medium">
-                Le plus populaire
-              </div>
-            )}
-            
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-              <p className="text-gray-400 mb-4">{plan.description}</p>
-              <p className="text-4xl font-bold text-white mb-6">
-                {frequency === 'monthly'
-                  ? Number(plan.price.replace('€', '').replace(',', '.')).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'
-                  : plan.name === 'Free'
-                    ? '0,00€'
-                    : (Math.round(Number(plan.price.replace('€', '').replace(',', '.')) * 0.8 * 12 * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€'}
-                <span className="text-sm text-gray-400">
-                  {plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}`}
-                </span>
-              </p>
-              
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-gray-300">
-                    <CheckIcon className="h-6 w-6 flex-none text-primary-400" aria-hidden="true" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              {/* CTA : Essai gratuit uniquement pour Free, sinon S’abonner ou Contacter les ventes */}
+            <div className="flex items-center gap-3 mb-4">
               {plan.name === 'Free' ? (
+                <UserIcon className="w-8 h-8 text-primary-400" />
+              ) : plan.name === 'Pro' || plan.name === 'Business' ? (
+                <BriefcaseIcon className="w-8 h-8 text-primary-400" />
+              ) : (
+                <DocumentTextIcon className="w-8 h-8 text-primary-400" />
+              )}
+              <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+            </div>
+
+            <div className="flex items-baseline gap-2 mt-4 mb-2">
+              <span className="text-4xl font-extrabold tracking-tight text-white">
+                {frequency === 'yearly' && plan.yearlyPrice !== undefined
+                  ? formatPrice(plan.yearlyPrice)
+                  : formatPrice(plan.price)}
+              </span>
+              <span className="text-gray-400 text-base font-semibold">
+                {frequency === 'yearly' ? '/an' : '/mois'}
+              </span>
+            </div>
+
+            <p className="text-gray-400 mb-4">{plan.description}</p>
+
+            <ul className="mb-6 space-y-2">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex items-center text-gray-300">
+                  <CheckIcon className="w-5 h-5 text-primary-400 mr-2" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-auto">
+              {/* BOUTONS PAR OFFRE */}
+              {plan.name === 'Free' && (
                 <button
                   onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
                   disabled={loading || currentPlan === plan.name.toLowerCase()}
@@ -414,34 +424,19 @@ export function Pricing() {
                     ? 'Plan actuel'
                     : loading
                     ? 'Chargement...'
-                    : "Commencer l'essai gratuit"}
+                    : 'Commencer l’essai gratuit'}
                 </button>
-              ) : plan.name === 'Enterprise' ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setShowContactModal(true)}
-                    disabled={loading}
-                    className="w-full btn-primary"
-                  >
-                    Contacter les ventes
-                  </button>
-                  <button
-                    onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
-                    disabled={loading || currentPlan === plan.name.toLowerCase()}
-                    className={`w-full btn-secondary ${
-                      currentPlan === plan.name.toLowerCase()
-                        ? 'opacity-50 cursor-not-allowed'
-                        : ''
-                    }`}
-                  >
-                    {currentPlan === plan.name.toLowerCase()
-                      ? 'Plan actuel'
-                      : loading
-                      ? 'Chargement...'
-                      : 'S’abonner'}
-                  </button>
-                </div>
-              ) : (
+              )}
+              {plan.name === 'Enterprise' && (
+                <button
+                  onClick={() => setShowContactModal(true)}
+                  disabled={loading}
+                  className="w-full btn-primary"
+                >
+                  Contacter les ventes
+                </button>
+              )}
+              {plan.name !== 'Free' && plan.name !== 'Enterprise' && (
                 <button
                   onClick={() => handleSubscribe(plan.name.toLowerCase(), plan.priceId)}
                   disabled={loading || currentPlan === plan.name.toLowerCase()}
