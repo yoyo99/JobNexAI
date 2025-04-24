@@ -15,6 +15,7 @@ export function Footer() {
       { name: 'Témoignages', href: '/testimonials' },
       { name: 'Confidentialité', href: '/privacy' },
       { name: 'CGU', href: '/cgu' },
+      { name: 'Politique de confidentialité', href: '/privacy' },
       { name: 'Contact', onClick: () => setShowFeedback(true) },
     ],
     social: [
