@@ -18,6 +18,8 @@ import { JobApplicationForm } from './JobApplicationForm'
 import { AutomatedApplications } from './applications/AutomatedApplications'
 import { CoverLetterGenerator } from './applications/CoverLetterGenerator'
 import { InterviewManager } from './applications/InterviewManager'
+import MatchingIA from './MatchingIA'
+import AutomatedApplyButton from './AutomatedApplyButton'
 
 interface JobApplication {
   id: string
@@ -298,8 +300,8 @@ export function JobApplications() {
                                     className="card hover:bg-white/10 transition-colors"
                                   >
                                     <div className="flex flex-col gap-2">
-                                      <div className="flex items-start justify-between">
-                                        <div>
+                                      <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2">
                                           <h3 className="font-medium text-white">
                                             {application.job.title}
                                           </h3>
@@ -307,7 +309,12 @@ export function JobApplications() {
                                             {application.job.company}
                                           </p>
                                         </div>
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex flex-col gap-2">
+                                          <MatchingIA userSkills={['react', 'typescript', 'remote']} jobKeywords={['react', 'node', 'remote']} />
+{/* TODO: Brancher la logique d'automatisation réelle */}
+<AutomatedApplyButton jobId={application.job.id} />
+                                        </div>
+                                        <div className="flex justify-end gap-2">
                                           <button
                                             onClick={() => handleExportPDF(application)}
                                             className="text-gray-400 hover:text-white"

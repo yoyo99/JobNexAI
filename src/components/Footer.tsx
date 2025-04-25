@@ -17,6 +17,7 @@ export function Footer() {
       { name: 'CGU', href: '/cgu' },
       { name: 'Politique de confidentialité', href: '/privacy' },
       { name: 'Contact', onClick: () => setShowFeedback(true) },
+      { name: 'Communauté', href: '/community' },
     ],
     social: [
       {
