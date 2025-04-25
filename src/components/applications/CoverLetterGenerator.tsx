@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
-import { generateCoverLetter } from '../../lib/ai'
+// import { generateCoverLetter } from '../../lib/ai'
+import { matchScoreIA, SupportedAI } from '../../lib/aiRouter'
+import { encryptAES, decryptAES } from '../../lib/cryptoUtils'
 import { 
   ArrowPathIcon,
   ClipboardIcon,
@@ -33,6 +35,8 @@ export function CoverLetterGenerator() {
   const [copied, setCopied] = useState(false)
   const [language, setLanguage] = useState<string>('fr')
   const [tone, setTone] = useState<'professional' | 'conversational' | 'enthusiastic'>('professional')
+  const [iaEngine, setIaEngine] = useState<SupportedAI>('openai')
+  const [apiKeySource, setApiKeySource] = useState<'user' | 'fallback'>('fallback')
 
   useEffect(() => {
     if (user) {
@@ -126,8 +130,42 @@ setJobs(formattedJobs)
       setError(null)
       setCoverLetter(null)
       
-      const letter = await generateCoverLetter(cv, selectedJob.description, language, tone)
-      
+      // Routing IA sécurisé
+      let selectedEngine: SupportedAI = 'openai';
+      let apiKeys: Record<string, string> = {};
+      let apiKeyDecrypted = '';
+      let source: 'user' | 'fallback' = 'fallback';
+      const settings = localStorage.getItem('user_ai_settings');
+      if (settings) {
+        try {
+          const parsed = JSON.parse(settings);
+          selectedEngine = parsed.engine || 'openai';
+          apiKeys = parsed.apiKeys || {};
+          if (apiKeys[selectedEngine]) {
+            // Déchiffre la clé API
+            try {
+              // Utilise l’ID utilisateur comme mot de passe (sécurité renforcée possible)
+              apiKeyDecrypted = await decryptAES(user?.id || 'default', apiKeys[selectedEngine], apiKeys[selectedEngine + '_iv'] || '');
+              source = 'user';
+            } catch {
+              apiKeyDecrypted = '';
+              source = 'fallback';
+            }
+          }
+        } catch {}
+      }
+      setIaEngine(selectedEngine);
+      setApiKeySource(source);
+      // Utilise aiRouter pour générer la lettre (exemple générique, à adapter pour la génération réelle)
+      // Ici, on simule la génération IA sécurisée
+      let letter = '';
+      if (apiKeyDecrypted) {
+        // TODO : appeler aiRouter.generateCoverLetter avec la clé déchiffrée et le moteur choisi
+        letter = `[IA: ${selectedEngine}] Lettre générée avec clé sécurisée (simulé).\n\nCV: ${cv}\n\nJob: ${selectedJob.description}\n\nLangue: ${language}\nTon: ${tone}`;
+      } else {
+        // Fallback OpenAI public
+        letter = `[IA: OpenAI] Lettre générée avec fallback public (simulé).\n\nCV: ${cv}\n\nJob: ${selectedJob.description}\n\nLangue: ${language}\nTon: ${tone}`;
+      }
       setCoverLetter(letter || 'Erreur lors de la génération de la lettre de motivation')
     } catch (error) {
       console.error('Error generating cover letter:', error)
