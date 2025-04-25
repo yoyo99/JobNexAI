@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { matchScoreIA, SupportedAI } from '../lib/aiRouter';
 
 /**
  * Composant de matching IA basique pour JobNexus.
@@ -11,21 +12,33 @@ interface MatchingIAProps {
   jobKeywords: string[];
 }
 
-function computeMatchingScore(userSkills: string[], jobKeywords: string[]): number {
-  if (userSkills.length === 0 || jobKeywords.length === 0) return 0;
-  const matchCount = jobKeywords.filter((kw) => userSkills.includes(kw)).length;
-  return Math.round((matchCount / jobKeywords.length) * 100);
-}
-
 const MatchingIA: React.FC<MatchingIAProps> = ({ userSkills, jobKeywords }) => {
-  const score = computeMatchingScore(userSkills, jobKeywords);
+  const [score, setScore] = useState<number>(0);
+  const [engine, setEngine] = useState<SupportedAI>('openai');
+
+  useEffect(() => {
+    // Récupère le moteur IA et la clé API depuis le localStorage (MVP)
+    const settings = localStorage.getItem('user_ai_settings');
+    let selectedEngine: SupportedAI = 'openai';
+    let apiKeys: Record<string, string> = {};
+    if (settings) {
+      try {
+        const parsed = JSON.parse(settings);
+        selectedEngine = parsed.engine || 'openai';
+        apiKeys = parsed.apiKeys || {};
+      } catch {}
+    }
+    setEngine(selectedEngine);
+    matchScoreIA(userSkills, jobKeywords, { engine: selectedEngine, apiKeys }).then(setScore);
+  }, [userSkills, jobKeywords]);
+
   return (
     <div className="border border-primary-400 rounded-lg p-4 my-4 bg-background/60">
-      <h2 className="text-lg font-semibold mb-2">Compatibilité IA (MVP)</h2>
+      <h2 className="text-lg font-semibold mb-2">Compatibilité IA</h2>
       <p className="mb-1">
         Score de compatibilité : <span className="font-bold text-primary-400">{score}%</span>
       </p>
-      <p className="text-xs text-gray-400">(Calcul basé sur la correspondance des mots-clés, version MVP. À améliorer avec un backend IA.)</p>
+      <p className="text-xs text-gray-400">(Calcul réalisé via&nbsp;<span className="font-semibold">{engine.charAt(0).toUpperCase() + engine.slice(1)}</span>. Sélectionnable dans le profil.)</p>
     </div>
   );
 };

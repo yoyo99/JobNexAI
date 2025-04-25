@@ -10,6 +10,7 @@ import { JobAlerts } from './JobAlerts'
 import { useTranslation } from 'react-i18next'
 import { SubscriptionManager } from './SubscriptionManager'
 import { StripeWebhookInfo } from './StripeWebhookInfo'
+import UserAISettings from './UserAISettings'
 
 export function Profile() {
   const { user, subscription, loadUser } = useAuth()
@@ -17,7 +18,7 @@ export function Profile() {
   const [fullName, setFullName] = useState(user?.full_name || '')
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const { t } = useTranslation()
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'skills' | 'alerts' | 'subscription' | 'webhook'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai' | 'skills' | 'alerts' | 'subscription' | 'webhook'>('profile')
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,6 +82,16 @@ export function Profile() {
             }`}
           >
             Préférences
+          </button>
+          <button
+            onClick={() => setActiveTab('ai')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'ai'
+                ? 'border-primary-400 text-primary-400'
+                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+            }`}
+          >
+            IA
           </button>
           <button
             onClick={() => setActiveTab('skills')}
@@ -182,6 +193,17 @@ export function Profile() {
           className="card"
         >
           <UserPreferences />
+        </motion.div>
+      )}
+
+      {activeTab === 'ai' && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card"
+        >
+          <h2 className="text-lg font-semibold text-white mb-6">Paramètres IA</h2>
+          <UserAISettings userId={user?.id} />
         </motion.div>
       )}
 
