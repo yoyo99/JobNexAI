@@ -271,11 +271,11 @@ export const AuthService = {
  * Vérifie si un mot de passe est suffisamment fort
  */
 function isStrongPassword(password: string): boolean {
-  const minLength = 12
-  const hasUpperCase = /[A-Z]/.test(password)
-  const hasLowerCase = /[a-z]/.test(password)
-  const hasNumbers = /\d/.test(password)
-  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  const minLength = 9;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
   return (
     password.length >= minLength &&
@@ -283,7 +283,7 @@ function isStrongPassword(password: string): boolean {
     hasLowerCase &&
     hasNumbers &&
     hasSpecialChars
-  )
+  );
 }
 
 /**
