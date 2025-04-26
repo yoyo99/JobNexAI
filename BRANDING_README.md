@@ -1,7 +1,7 @@
 # JobifyAI – Kit Branding
 
 ## Logo
-- Logo SVG : `/public/nexusai-logo.svg`
+- Logo SVG : `/public/jobnexai-logo.svg`
 - Utilisation : sur fond clair ou dégradé, version monochrome possible pour fonds sombres.
 
 ## Palette couleurs
@@ -36,7 +36,7 @@ JobifyAI révolutionne la recherche d’emploi grâce à l’intelligence artifi
 - Site : https://nexusai.com (à réserver)
 
 ## Assets presse/investisseurs
-- Logo SVG et PNG (voir `/public/nexusai-logo.svg`)
+- Logo SVG et PNG (voir `/public/jobnexai-logo.svg`)
 - Pitch produit (voir ci-dessus)
 - Slogan et palette couleurs
 - Exemples d’écrans (screenshots de la landing et du login)

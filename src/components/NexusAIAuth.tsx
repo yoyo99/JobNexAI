@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import jobnexaiLogo from '../../public/nexusai-logo.svg';
+import jobnexaiLogo from '../../public/jobnexai-logo.svg';
 
 export default function JobNexAIAuth() {
   const [isLogin, setIsLogin] = useState(true);

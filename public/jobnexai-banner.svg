@@ -8,7 +8,7 @@
   <rect width="1200" height="400" fill="url(#bg)"/>
   <circle cx="200" cy="200" r="120" fill="#fff" fill-opacity="0.08"/>
   <circle cx="1000" cy="100" r="100" fill="#fff" fill-opacity="0.06"/>
-  <image href="nexusai-logo.svg" x="70" y="110" height="180" width="180" />
+  <image href="jobnexai-logo.svg" x="70" y="110" height="180" width="180" />
   <text x="300" y="200" font-size="72" fill="#fff" font-family="Segoe UI, Arial, sans-serif" font-weight="bold">JobNexAI</text>
   <text x="300" y="270" font-size="36" fill="#F6F8FF" font-family="Segoe UI, Arial, sans-serif" font-weight="500">Votre allié pour une carrière réussie</text>
 </svg>

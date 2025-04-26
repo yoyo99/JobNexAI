@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import jobnexaiLogo from '../../public/nexusai-logo.svg';
+import jobnexaiLogo from '../../public/jobnexai-logo.svg';
 
 const translations = {
   fr: {
