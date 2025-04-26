@@ -12,7 +12,7 @@ export default function LegalNotice() {
       <p>Dernière mise à jour : 24 avril 2025</p>
       <h2>Éditeur du site</h2>
       <p>
-        <strong>Nom de la société :</strong> JobNexus SAS<br/>
+        <strong>Nom de la société :</strong> JobifyAI SAS<br/>
         <strong>Adresse :</strong> 10 rue de la Réussite, 75000 Paris, France<br/>
         <strong>Email :</strong> <a href="mailto:boltsaas01@gmail.com" className="text-primary-400 underline">boltsaas01@gmail.com</a><br/>
         <strong>Directeur de la publication :</strong> John Doe<br/>
@@ -27,7 +27,7 @@ export default function LegalNotice() {
       </p>
       <h2>Propriété intellectuelle</h2>
       <p>
-        L’ensemble du contenu du site JobNexus (textes, images, logos, etc.) est protégé par le droit d’auteur et la propriété intellectuelle. Toute reproduction ou représentation totale ou partielle est interdite sans autorisation écrite préalable.
+        L’ensemble du contenu du site JobifyAI (textes, images, logos, etc.) est protégé par le droit d’auteur et la propriété intellectuelle. Toute reproduction ou représentation totale ou partielle est interdite sans autorisation écrite préalable.
       </p>
       <h2>Données personnelles</h2>
       <p>

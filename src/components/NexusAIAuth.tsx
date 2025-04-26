@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import nexusAILogo from '../../public/nexusai-logo.svg';
+import jobnexaiLogo from '../../public/nexusai-logo.svg';
 
-export default function NexusAIAuth() {
+export default function JobNexAIAuth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,8 +17,8 @@ export default function NexusAIAuth() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
         <div className="flex flex-col items-center mb-6">
-          <img src={nexusAILogo} alt="NexusAI Logo" className="h-14 w-14 mb-2" />
-          <h1 className="text-2xl font-bold text-indigo-700">NexusAI</h1>
+          <img src={jobnexaiLogo} alt="JobNexAI Logo" className="h-14 w-14 mb-2" />
+          <h1 className="text-2xl font-bold text-indigo-700">JobNexAI</h1>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <h2 className="text-xl font-semibold text-center mb-2">{isLogin ? 'Connexion' : 'Créer un compte'}</h2>

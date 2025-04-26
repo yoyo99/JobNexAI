@@ -9,5 +9,6 @@
   <line x1="60" y1="68" x2="60" y2="82" stroke="#43E6E1" stroke-width="2"/>
   <line x1="38" y1="60" x2="52" y2="60" stroke="#6C63FF" stroke-width="2"/>
   <line x1="68" y1="60" x2="82" y2="60" stroke="#43E6E1" stroke-width="2"/>
-  <text x="60" y="114" text-anchor="middle" fill="#232946" font-size="20" font-family="Segoe UI, Arial, sans-serif" font-weight="bold">NexusAI</text>
+  <text x="60" y="114" text-anchor="middle" fill="#232946" font-size="20" font-family="Segoe UI, Arial, sans-serif" font-weight="bold">JobNexAI</text>
+<text x="60" y="134" text-anchor="middle" fill="#6C63FF" font-size="10" font-family="Segoe UI, Arial, sans-serif">Votre allié pour une carrière réussie</text>
 </svg>

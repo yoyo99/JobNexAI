@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import nexusAILogo from '../../public/nexusai-logo.svg';
+import jobnexaiLogo from '../../public/nexusai-logo.svg';
 
 const translations = {
   fr: {
-    heroTitle: "Boostez votre carrière avec l'IA",
-    heroSubtitle: "Matching intelligent, lettres de motivation personnalisées, conseils IA. NexusAI simplifie votre recherche d'emploi.",
+    heroTitle: "Votre carrière, propulsée par l’IA",
+    heroSubtitle: "Matching intelligent, lettres de motivation personnalisées, conseils IA. JobNexAI simplifie votre recherche d'emploi.",
     cta: "Commencer maintenant",
     howItWorks: "Comment ça marche ?",
     howItWorksSteps: [
@@ -13,19 +13,19 @@ const translations = {
       "Générez des lettres de motivation sur-mesure grâce à l'IA.",
       "Postulez et suivez vos candidatures en toute simplicité."
     ],
-    advantages: "Pourquoi choisir NexusAI ?",
+    advantages: "Pourquoi choisir JobNexAI ?",
     advantagesList: [
       "Matching IA ultra-précis",
       "Lettres de motivation générées en 1 clic",
       "Confidentialité et sécurité de vos données",
       "Plateforme intuitive et moderne"
     ],
-    testimonials: "Ils ont trouvé leur job grâce à NexusAI",
-    footer: "© 2025 NexusAI. Tous droits réservés."
+    testimonials: "Ils ont trouvé leur job grâce à JobNexAI",
+    footer: " 2025 JobNexAI. Tous droits réservés."
   },
   en: {
     heroTitle: "Boost your career with AI",
-    heroSubtitle: "Smart matching, personalized cover letters, AI-powered advice. NexusAI makes your job search easy.",
+    heroSubtitle: "Smart matching, personalized cover letters, AI-powered advice. JobNexAI makes your job search easy.",
     cta: "Get Started",
     howItWorks: "How does it work?",
     howItWorksSteps: [
@@ -34,19 +34,19 @@ const translations = {
       "Generate custom cover letters with AI.",
       "Apply and track your applications easily."
     ],
-    advantages: "Why choose NexusAI?",
+    advantages: "Why choose JobNexAI?",
     advantagesList: [
       "Ultra-precise AI matching",
       "1-click cover letter generation",
       "Confidentiality & data security",
       "Modern and intuitive platform"
     ],
-    testimonials: "They found their job with NexusAI",
-    footer: "© 2025 NexusAI. All rights reserved."
+    testimonials: "They found their job with JobNexAI",
+    footer: " 2025 JobNexAI. All rights reserved."
   }
 };
 
-export default function NexusAILanding() {
+export default function JobNexAILanding() {
   const [lang, setLang] = useState<'fr' | 'en'>('fr');
   const t = translations[lang];
 
@@ -54,8 +54,8 @@ export default function NexusAILanding() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 text-gray-900">
       <header className="flex justify-between items-center px-6 py-6 max-w-6xl mx-auto">
         <div className="flex items-center gap-4">
-          <img src={nexusAILogo} alt="NexusAI Logo" className="h-12 w-12" />
-          <span className="font-bold text-2xl text-indigo-700">NexusAI</span>
+          <img src={jobnexaiLogo} alt="JobNexAI Logo" className="h-12 w-12" />
+          <span className="font-bold text-2xl text-indigo-700">JobNexAI</span>
         </div>
         <div className="flex gap-3">
           <button
@@ -96,11 +96,11 @@ export default function NexusAILanding() {
           <h2 className="text-2xl font-bold text-indigo-700 mb-4">{t.testimonials}</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow p-6">
-              <p className="italic text-gray-600">“Grâce à NexusAI, j’ai trouvé un job en 2 semaines !”</p>
+              <p className="italic text-gray-600">“Grâce à JobNexAI, j’ai trouvé un job en 2 semaines !”</p>
               <span className="block mt-2 font-semibold text-indigo-600">Sarah, Paris</span>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
-              <p className="italic text-gray-600">“NexusAI made my job search so much easier and faster.”</p>
+              <p className="italic text-gray-600">“JobNexAI made my job search so much easier and faster.”</p>
               <span className="block mt-2 font-semibold text-indigo-600">James, London</span>
             </div>
           </div>

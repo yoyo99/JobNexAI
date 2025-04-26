@@ -1,4 +1,4 @@
-# NexusAI – Kit Branding
+# JobifyAI – Kit Branding
 
 ## Logo
 - Logo SVG : `/public/nexusai-logo.svg`
@@ -15,12 +15,11 @@
 - Texte : Segoe UI, Arial, sans-serif
 
 ## Slogan
-- "Boostez votre carrière avec l'IA"
-- "Connectez vos talents à l’IA"
-- "L’intelligence artificielle au service de votre carrière"
+- "Votre allié pour une carrière, propulsée par l’IAvec JobifyAI, trouvez le job parfait sans effort"
+- "L'IA au service de votre réussite professionnelle"
 
 ## Pitch produit
-NexusAI révolutionne la recherche d’emploi grâce à l’intelligence artificielle : matching, génération de lettres de motivation, conseils personnalisés, le tout dans une plateforme moderne et intuitive.
+JobifyAI révolutionne la recherche d’emploi grâce à l’intelligence artificielle : matching, génération de lettres de motivation, conseils personnalisés, le tout dans une plateforme moderne et intuitive.
 
 ## Utilisation du logo
 - Garder une marge autour du logo.
