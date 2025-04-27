@@ -26,21 +26,8 @@ export default function LegalNotice() {
         <strong>Site web :</strong> <a href="https://www.ovh.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 underline">www.ovh.com</a>
       </p>
       <h2>Propriété intellectuelle</h2>
-      <p>
-        L’ensemble du contenu du site JobNexAI (textes, images, logos, etc.) est protégé par le droit d’auteur et la propriété intellectuelle. Toute reproduction ou représentation totale ou partielle est interdite sans autorisation écrite préalable.
-      </p>
-      <h2>Données personnelles</h2>
-      <p>
-        Les informations recueillies font l’objet d’un traitement informatique destiné à la gestion des utilisateurs et des services. Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression des données vous concernant.
-      </p>
-      <h2>Responsabilité</h2>
-      <p>
-        L’éditeur ne saurait être tenu responsable des dommages directs ou indirects résultant de l’accès ou de l’utilisation du site.
-      </p>
-      <h2>Contact</h2>
-      <p>
-        Pour toute question, contactez-nous à <a href="mailto:boltsaas01@gmail.com" className="text-primary-400 underline">boltsaas01@gmail.com</a>
-      </p>
+      <p>Pour toute question concernant les mentions légales, contactez-nous à l’adresse suivante : <a href="mailto:boltsaas01@gmail.com" className="text-primary-400 underline">boltsaas01@gmail.com</a>.</p>
+      <p>L’ensemble du contenu du site JobNexAI (textes, images, logos, etc.) est protégé par le droit d’auteur et la propriété intellectuelle. Toute reproduction ou représentation totale ou partielle est interdite sans autorisation écrite préalable.</p>
     </div>
   );
 }

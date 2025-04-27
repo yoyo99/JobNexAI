@@ -82,59 +82,60 @@ export default function PrivacyPolicy() {
         LMCA – Données personnelles<br />
         13 Allée des Tulipiers, 77120 Coulommiers – France<br />
         Email : <a href="mailto:contact@jobnexus.fr" className="text-primary-400 underline">contact@jobnexus.fr</a>
+      </address>
       <h1>Politique de confidentialité</h1>
       <p>
         La présente politique de confidentialité décrit les modalités de collecte, d’utilisation, de conservation et de protection des données à caractère personnel des utilisateurs de la plateforme SaaS « JobNexus » (ci-après « la Plateforme »), conformément au Règlement Général sur la Protection des Données (RGPD) et à la norme ISO27001.
       </p>
       <div className="prose prose-invert max-w-none">
-        <h1>{t('privacy.title')}</h1>
+        <h1>Politique de confidentialité</h1>
         
-        <h2>{t('privacy.dataCollection.title')}</h2>
-        <p>{t('privacy.dataCollection.description')}</p>
+        <h2>Collecte des données</h2>
+        <p>Nous collectons les données suivantes : informations personnelles, préférences, compétences et utilisation du service.</p>
         <ul>
-          <li>{t('privacy.dataCollection.personal')}</li>
-          <li>{t('privacy.dataCollection.preferences')}</li>
-          <li>{t('privacy.dataCollection.skills')}</li>
-          <li>{t('privacy.dataCollection.usage')}</li>
+          <li>Informations personnelles</li>
+          <li>Préférences</li>
+          <li>Compétences</li>
+          <li>Utilisation du service</li>
         </ul>
 
-        <h2>{t('privacy.dataPurpose.title')}</h2>
-        <p>{t('privacy.dataPurpose.description')}</p>
+        <h2>Finalité des données</h2>
+        <p>Les données sont utilisées pour l’adéquation des profils, recommandations et analyses.</p>
         <ul>
-          <li>{t('privacy.dataPurpose.matching')}</li>
-          <li>{t('privacy.dataPurpose.recommendations')}</li>
-          <li>{t('privacy.dataPurpose.analytics')}</li>
+          <li>Mise en relation avec des offres</li>
+          <li>Recommandations personnalisées</li>
+          <li>Analyse statistique</li>
         </ul>
 
-        <h2>{t('privacy.dataRetention.title')}</h2>
-        <p>{t('privacy.dataRetention.description')}</p>
+        <h2>Durée de conservation</h2>
+        <p>Vos données sont conservées aussi longtemps que nécessaire pour l’usage du service.</p>
         <ul>
-          <li>{t('privacy.dataRetention.preferences')}</li>
-          <li>{t('privacy.dataRetention.skills')}</li>
-          <li>{t('privacy.dataRetention.logs')}</li>
+          <li>Préférences</li>
+          <li>Compétences</li>
+          <li>Journaux de connexion</li>
         </ul>
 
-        <h2>{t('privacy.security.title')}</h2>
-        <p>{t('privacy.security.description')}</p>
+        <h2>Sécurité</h2>
+        <p>Nous appliquons des mesures de sécurité pour protéger vos données.</p>
         <ul>
-          <li>{t('privacy.security.encryption')}</li>
-          <li>{t('privacy.security.access')}</li>
-          <li>{t('privacy.security.monitoring')}</li>
-          <li>{t('privacy.security.compliance')}</li>
+          <li>Chiffrement</li>
+          <li>Contrôle d’accès</li>
+          <li>Surveillance</li>
+          <li>Conformité RGPD</li>
         </ul>
 
-        <h2>{t('privacy.rights.title')}</h2>
-        <p>{t('privacy.rights.description')}</p>
+        <h2>Vos droits</h2>
+        <p>Vous disposez d’un droit d’accès, de rectification, d’effacement, de portabilité et de retrait de consentement.</p>
         <ul>
-          <li>{t('privacy.rights.access')}</li>
-          <li>{t('privacy.rights.rectification')}</li>
-          <li>{t('privacy.rights.erasure')}</li>
-          <li>{t('privacy.rights.portability')}</li>
-          <li>{t('privacy.rights.withdraw')}</li>
+          <li>Accès</li>
+          <li>Rectification</li>
+          <li>Effacement</li>
+          <li>Portabilité</li>
+          <li>Retrait du consentement</li>
         </ul>
 
-        <h2>{t('privacy.contact.title')}</h2>
-        <p>{t('privacy.contact.description')}</p>
+        <h2>Contact</h2>
+        <p>Pour toute question ou demande concernant vos données personnelles, contactez-nous à l’adresse indiquée dans les mentions légales.</p>
       </div>
     </div>
   )
