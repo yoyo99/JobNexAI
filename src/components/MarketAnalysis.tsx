@@ -124,7 +124,7 @@ export function MarketAnalysis() {
             </div>
             <h2 className="text-lg font-semibold text-white">{t('marketAnalysis.salaryInsights')}</h2>
           </div>
-          {trends.salary.count > 0 ? (
+          {typeof trends.salary.count === "number" && trends.salary.count > 0 ? (
             <div>
               <div className="text-3xl font-bold text-white mb-2">
                 {trends.salary.average.toLocaleString('fr-FR', {

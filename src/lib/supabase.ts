@@ -223,8 +223,8 @@ export async function getMarketTrends() {
   const totalJobs = jobs.length
   const jobTypesTrends = Object.entries(jobTypes).map(([category, count]) => ({
     category,
-    count,
-    percentage: (count / totalJobs) * 100
+    count: typeof count === "number" ? count : 0,
+    percentage: (typeof count === "number" ? count : 0) / totalJobs * 100
   }))
 
   const locations = jobs.reduce((acc: Record<string, number>, job) => {
@@ -235,8 +235,8 @@ export async function getMarketTrends() {
   const locationTrends = Object.entries(locations)
     .map(([category, count]) => ({
       category,
-      count,
-      percentage: (count / totalJobs) * 100
+      count: typeof count === "number" ? count : 0,
+      percentage: (typeof count === "number" ? count : 0) / totalJobs * 100
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5)

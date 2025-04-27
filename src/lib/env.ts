@@ -1,3 +1,6 @@
+// @ts-ignore
+// Permet à TypeScript d'accepter Deno dans les environnements Node/Netlify
+declare const Deno: any;
 // Universal environment variable getter for Deno, Node.js, and Vite environments
 export function getEnv(name: string): string | undefined {
   // Deno (Edge Functions, Deno Deploy, Supabase Edge)
