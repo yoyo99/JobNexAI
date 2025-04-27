@@ -111,7 +111,7 @@ const features = [
   {
     name: 'Multilingue et international',
     description:
-      'JobNexus est disponible en plusieurs langues et couvre les offres d\'emploi dans de nombreux pays pour une recherche sans frontières.',
+      'JobNexAI est disponible en plusieurs langues et couvre les offres d\'emploi dans de nombreux pays pour une recherche sans frontières.',
     icon: GlobeAltIcon,
     color: 'from-indigo-500 to-blue-500',
   },
@@ -129,9 +129,9 @@ export default function FeaturesPage() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexus</span>
+              <span className="sr-only">JobNexAI</span>
               <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexus
+                JobNexAI
               </div>
             </Link>
           </div>
@@ -181,9 +181,9 @@ export default function FeaturesPage() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
-                <span className="sr-only">JobNexus</span>
+                <span className="sr-only">JobNexAI</span>
                 <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                  JobNexus
+                  JobNexAI
                 </div>
               </Link>
               <button
@@ -268,7 +268,7 @@ export default function FeaturesPage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="mt-6 text-lg leading-8 text-gray-300"
                 >
-                  Découvrez toutes les fonctionnalités innovantes de JobNexus qui transforment votre recherche d'emploi en une expérience efficace, personnalisée et sans stress.
+                  Découvrez toutes les fonctionnalités innovantes de JobNexAI qui transforment votre recherche d'emploi en une expérience efficace, personnalisée et sans stress.
                 </motion.p>
               </div>
             </div>
@@ -284,7 +284,7 @@ export default function FeaturesPage() {
                 Tout ce dont vous avez besoin pour trouver le job idéal
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                JobNexus combine intelligence artificielle et outils professionnels pour vous aider à décrocher votre prochain emploi plus rapidement et plus efficacement.
+                JobNexAI combine intelligence artificielle et outils professionnels pour vous aider à décrocher votre prochain emploi plus rapidement et plus efficacement.
               </p>
             </div>
             <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -323,7 +323,7 @@ export default function FeaturesPage() {
               Prêt à booster votre carrière ?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-              Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexus.
+              Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
