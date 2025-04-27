@@ -48,10 +48,94 @@
     "or": "Ou"
   },
   "hero": {
-    "title": "Automatisez votre recherche d'emploi et de missions freelance",
-    "subtitle": "Laissez l'IA optimiser votre recherche. De l'optimisation du CV aux candidatures automatisées, JobNexus simplifie votre parcours vers le poste idéal ou les meilleures missions freelance.",
-    "startTrial": "Commencer l'essai gratuit",
-    "watchDemo": "Voir la démo"
+    "title": "La plateforme tout-en-un pour l'emploi",
+    "subtitle": "JobNexAI connecte candidats, freelances et recruteurs grâce à l'IA. Trouvez le job idéal, décrochez des missions ou recrutez les meilleurs talents en toute simplicité.",
+    "features": [
+      "Recherche d'emploi intelligente avec IA",
+      "CV builder professionnel",
+      "Suivi des candidatures automatisé",
+      "Analyses de marché en temps réel",
+      "Suggestions d'emploi personnalisées",
+      "Réseau professionnel intégré"
+    ],
+    "featureDescriptions": [
+      "Notre algorithme d'IA analyse votre profil et les offres disponibles pour vous proposer les emplois les plus pertinents avec un score de compatibilité.",
+      "Créez un CV professionnel optimisé pour les ATS avec nos modèles élégants et nos conseils d'amélioration personnalisés.",
+      "Suivez toutes vos candidatures en un seul endroit, avec des rappels automatiques pour les entretiens et les relances.",
+      "Accédez à des données en temps réel sur les salaires, les compétences recherchées et les tendances du marché de l'emploi.",
+      "Recevez des suggestions d'emploi personnalisées basées sur vos compétences, votre expérience et vos préférences.",
+      "Connectez-vous avec d'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme."
+    ],
+    "steps": [
+      {
+        "title": "Créez votre profil",
+        "description": "Importez votre CV ou créez-en un nouveau avec notre outil intuitif. Notre IA analysera vos compétences et votre expérience."
+      },
+      {
+        "title": "Recevez des suggestions personnalisées",
+        "description": "Notre algorithme vous propose des offres d'emploi correspondant à votre profil, avec un score de compatibilité pour chaque poste."
+      },
+      {
+        "title": "Postulez et suivez vos candidatures",
+        "description": "Postulez directement depuis la plateforme et suivez l'avancement de toutes vos candidatures dans un tableau de bord centralisé."
+      }
+    ],
+    "ctaTitle": "Prêt à booster votre carrière ?",
+    "ctaSubtitle": "Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.",
+    "ctaStart": "Commencer gratuitement",
+    "ctaLogin": "Se connecter",
+    "testimonials": [
+      {
+        "name": "Sophie Martin",
+        "role": "Développeuse Full Stack",
+        "quote": "Grâce à JobNexAI, j'ai trouvé un poste qui correspond parfaitement à mes compétences en seulement 3 semaines. L'outil d'analyse de CV m'a permis d'optimiser mon profil pour chaque candidature."
+      },
+      {
+        "name": "Thomas Dubois",
+        "role": "Product Manager",
+        "quote": "Le système de matching intelligent m'a fait gagner un temps précieux. J'ai reçu des alertes pour des offres qui correspondaient vraiment à mes critères, et j'ai décroché un job avec un salaire 15% supérieur à mon précédent poste."
+      },
+      {
+        "name": "Léa Bernard",
+        "role": "UX Designer",
+        "quote": "Le suivi des candidatures est incroyablement pratique. Je pouvais voir en un coup d'œil où j'en étais dans mes démarches, et les rappels automatiques m'ont évité d'oublier des entretiens importants."
+      },
+      {
+        "name": "Alexandre Petit",
+        "role": "Data Scientist",
+        "quote": "Les analyses de marché m'ont donné un avantage considérable lors des négociations salariales. J'ai pu me positionner avec confiance en connaissant les tendances du secteur."
+      },
+      {
+        "name": "Julie Moreau",
+        "role": "Chef de projet",
+        "quote": "Le réseau professionnel intégré m'a permis de rentrer en contact avec des recruteurs directement. C'est comme ça que j'ai obtenu mon poste actuel, sans même passer par une annonce classique."
+      },
+      {
+        "name": "Nicolas Lambert",
+        "role": "Ingénieur DevOps",
+        "quote": "L'abonnement Pro vaut vraiment son prix. Les fonctionnalités avancées m'ont permis de me démarquer et de décrocher plusieurs entretiens dans des entreprises très recherchées."
+      }
+    ]
+  },
+  "footer": {
+    "navigation": {
+      "features": "Fonctionnalités",
+      "pricing": "Tarifs",
+      "howItWorks": "Fonctionnement",
+      "testimonials": "Témoignages",
+      "privacy": "Confidentialité",
+      "cgu": "CGU",
+      "privacyPolicy": "Politique de confidentialité",
+      "contact": "Contact",
+      "community": "Communauté"
+    },
+    "reportBug": "Remonter un bug ou une idée",
+    "copyright": "© {{year}} JobNexAI, Inc. Tous droits réservés.",
+    "social": {
+      "twitter": "Twitter",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
   },
   "dashboard": {
     "welcome": "Bienvenue sur votre espace personnel JobNexus",
