@@ -58,7 +58,7 @@ export const AuthService = {
         return {
           user: null,
           error: {
-            message: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+            message: 'Le mot de passe doit contenir au moins 9 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
             status: 400,
           }
         }
@@ -174,7 +174,7 @@ export const AuthService = {
       if (!isStrongPassword(password)) {
         return {
           error: {
-            message: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+            message: 'Le mot de passe doit contenir au moins 9 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
             status: 400,
           }
         }
@@ -302,7 +302,7 @@ function getErrorMessage(error: any): string {
     case errorMessage.includes('email not confirmed'):
       return 'Veuillez confirmer votre adresse email avant de vous connecter.'
     case errorMessage.includes('password should be at least'):
-      return 'Le mot de passe doit contenir au moins 12 caractères.'
+      return 'Le mot de passe doit contenir au moins 9 caractères.'
     case errorMessage.includes('email already registered'):
       return 'Cette adresse email est déjà utilisée. Essayez de vous connecter ou utilisez la récupération de mot de passe.'
     case errorMessage.includes('too many requests'):

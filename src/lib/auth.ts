@@ -199,7 +199,7 @@ function getErrorMessage(error: AuthError): string {
     case 'Email not confirmed':
       return 'Veuillez confirmer votre adresse email'
     case 'Password should be at least 12 characters':
-      return 'Le mot de passe doit contenir au moins 12 caractères'
+      return 'Le mot de passe doit contenir au moins 9 caractères'
     case 'Email already registered':
       return 'Cette adresse email est déjà utilisée'
     case 'Too many requests':

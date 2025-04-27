@@ -51,7 +51,7 @@ export function Auth() {
       return
     }
     if (password.length < 12) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 12 caractères.' })
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
       return
     }
 
@@ -96,7 +96,7 @@ export function Auth() {
       return
     }
     if (password.length < 12) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 12 caractères.' })
+      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
       return
     }
 
