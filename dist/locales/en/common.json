@@ -109,7 +109,7 @@
     ]
   },
     "title": "Automate Your Job and Freelance Search",
-    "subtitle": "Let AI power your search. From CV optimization to automated applications, JobNexus streamlines your path to the perfect position or the best freelance opportunities.",
+    "subtitle": "Let AI power your search. From CV optimization to automated applications, JobNexAI streamlines your path to the perfect position or the best freelance opportunities.",
     "startTrial": "Start free trial",
     "watchDemo": "Watch demo"
   },
@@ -134,7 +134,7 @@
     }
   },
   "dashboard": {
-    "welcome": "Welcome to your JobNexus personal space",
+    "welcome": "Welcome to your JobNexAI personal space",
     "stats": {
       "applications": "Applications sent",
       "interviews": "Scheduled interviews",
