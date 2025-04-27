@@ -15,7 +15,7 @@ export default function CGU() {
       <p><strong>Responsable de traitement :</strong> LMCA</p>
 
       <h2>Article 1 – Objet</h2>
-      <p>Les présentes CGU ont pour objet de définir les conditions d’accès et d’utilisation du service <strong>JobNexus</strong>, accessible à l’adresse suivante : <a href="https://jobnexus-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexus-saas-windsurf.netlify.app/</a> (ci-après la "Plateforme").<br/>JobNexus est une application SaaS permettant d’accompagner les utilisateurs dans leur recherche d'emploi, notamment via des outils basés sur l'IA, de suivi de candidatures, de préparation d’entretiens et de mise en réseau professionnel.</p>
+      <p>Les présentes CGU ont pour objet de définir les conditions d’accès et d’utilisation du service <strong>JobNexAI</strong>, accessible à l’adresse suivante : <a href="https://jobnexus-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexus-saas-windsurf.netlify.app/</a> (ci-après la "Plateforme").<br/>JobNexAI est une application SaaS permettant d’accompagner les utilisateurs dans leur recherche d'emploi, notamment via des outils basés sur l'IA, de suivi de candidatures, de préparation d’entretiens et de mise en réseau professionnel.</p>
 
       <h2>Article 2 – Accès au service</h2>
       <p>L’accès à la Plateforme est gratuit, sous réserve d’inscription préalable. L'utilisateur s'engage à fournir des informations exactes lors de son inscription.</p>

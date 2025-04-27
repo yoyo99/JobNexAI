@@ -295,7 +295,7 @@ function getErrorMessage(error) {
         case errorMessage.includes('email not confirmed'):
             return 'Veuillez confirmer votre adresse email avant de vous connecter.';
         case errorMessage.includes('password should be at least'):
-            return 'Le mot de passe doit contenir au moins 12 caractères.';
+            return 'Le mot de passe doit contenir au moins 9 caractères.';
         case errorMessage.includes('email already registered'):
             return 'Cette adresse email est déjà utilisée. Essayez de vous connecter ou utilisez la récupération de mot de passe.';
         case errorMessage.includes('too many requests'):
