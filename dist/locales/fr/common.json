@@ -80,42 +80,9 @@
         "description": "Postulez directement depuis la plateforme et suivez l'avancement de toutes vos candidatures dans un tableau de bord centralisé."
       }
     ],
-    "ctaTitle": "Prêt à booster votre carrière ?",
-    "ctaSubtitle": "Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.",
-    "ctaStart": "Commencer gratuitement",
-    "ctaLogin": "Se connecter",
-    "testimonials": [
-      {
-        "name": "Sophie Martin",
-        "role": "Développeuse Full Stack",
-        "quote": "Grâce à JobNexAI, j'ai trouvé un poste qui correspond parfaitement à mes compétences en seulement 3 semaines. L'outil d'analyse de CV m'a permis d'optimiser mon profil pour chaque candidature."
-      },
-      {
-        "name": "Thomas Dubois",
-        "role": "Product Manager",
-        "quote": "Le système de matching intelligent m'a fait gagner un temps précieux. J'ai reçu des alertes pour des offres qui correspondaient vraiment à mes critères, et j'ai décroché un job avec un salaire 15% supérieur à mon précédent poste."
-      },
-      {
-        "name": "Léa Bernard",
-        "role": "UX Designer",
-        "quote": "Le suivi des candidatures est incroyablement pratique. Je pouvais voir en un coup d'œil où j'en étais dans mes démarches, et les rappels automatiques m'ont évité d'oublier des entretiens importants."
-      },
-      {
-        "name": "Alexandre Petit",
-        "role": "Data Scientist",
-        "quote": "Les analyses de marché m'ont donné un avantage considérable lors des négociations salariales. J'ai pu me positionner avec confiance en connaissant les tendances du secteur."
-      },
-      {
-        "name": "Julie Moreau",
-        "role": "Chef de projet",
-        "quote": "Le réseau professionnel intégré m'a permis de rentrer en contact avec des recruteurs directement. C'est comme ça que j'ai obtenu mon poste actuel, sans même passer par une annonce classique."
-      },
-      {
-        "name": "Nicolas Lambert",
-        "role": "Ingénieur DevOps",
-        "quote": "L'abonnement Pro vaut vraiment son prix. Les fonctionnalités avancées m'ont permis de me démarquer et de décrocher plusieurs entretiens dans des entreprises très recherchées."
-      }
-    ]
+    "ctaFinalSubtitle": "Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.",
+    "ctaFinalStart": "Commencer gratuitement",
+    "ctaFinalLogin": "Se connecter"
   },
   "footer": {
     "navigation": {
