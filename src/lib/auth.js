@@ -192,7 +192,7 @@ function getErrorMessage(error) {
         case 'Email not confirmed':
             return 'Veuillez confirmer votre adresse email';
         case 'Password should be at least 12 characters':
-            return 'Le mot de passe doit contenir au moins 12 caractères';
+            return 'Le mot de passe doit contenir au moins 9 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
         case 'Email already registered':
             return 'Cette adresse email est déjà utilisée';
         case 'Too many requests':
