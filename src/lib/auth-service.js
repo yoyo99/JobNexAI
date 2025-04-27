@@ -58,7 +58,7 @@ export const AuthService = {
                     return {
                         user: null,
                         error: {
-                            message: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+                            message: 'Le mot de passe doit contenir au moins 9 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
                             status: 400,
                         }
                     };
@@ -171,7 +171,7 @@ export const AuthService = {
                 if (!isStrongPassword(password)) {
                     return {
                         error: {
-                            message: 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+                            message: 'Le mot de passe doit contenir au moins 9 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
                             status: 400,
                         }
                     };
@@ -270,7 +270,7 @@ export const AuthService = {
  * Vérifie si un mot de passe est suffisamment fort
  */
 function isStrongPassword(password) {
-    const minLength = 12;
+    const minLength = 9;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
