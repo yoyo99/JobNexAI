@@ -8,7 +8,55 @@ import { PlayCircleIcon, CheckIcon } from '@heroicons/react/24/outline'
 
 
 export function Hero() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+
+  const testimonials = [
+    {
+      name: t('hero.testimonials.0.name'),
+      role: t('hero.testimonials.0.role'),
+      quote: t('hero.testimonials.0.quote'),
+    },
+    {
+      name: t('hero.testimonials.1.name'),
+      role: t('hero.testimonials.1.role'),
+      quote: t('hero.testimonials.1.quote'),
+    },
+    {
+      name: t('hero.testimonials.2.name'),
+      role: t('hero.testimonials.2.role'),
+      quote: t('hero.testimonials.2.quote'),
+    },
+    {
+      name: t('hero.testimonials.3.name'),
+      role: t('hero.testimonials.3.role'),
+      quote: t('hero.testimonials.3.quote'),
+    },
+    {
+      name: t('hero.testimonials.4.name'),
+      role: t('hero.testimonials.4.role'),
+      quote: t('hero.testimonials.4.quote'),
+    },
+    {
+      name: t('hero.testimonials.5.name'),
+      role: t('hero.testimonials.5.role'),
+      quote: t('hero.testimonials.5.quote'),
+    },
+  ];
+
+  const steps = [
+    {
+      title: t('hero.steps.0.title'),
+      description: t('hero.steps.0.description')
+    },
+    {
+      title: t('hero.steps.1.title'),
+      description: t('hero.steps.1.description')
+    },
+    {
+      title: t('hero.steps.2.title'),
+      description: t('hero.steps.2.description')
+    }
+  ];
   const [showVideo, setShowVideo] = useState(false)
 
   const features = t('hero.features', { returnObjects: true }) as string[]
@@ -204,20 +252,20 @@ export function Hero() {
         </div>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Prêt à booster votre carrière ?
+            {t('hero.ctaFinalTitle')}
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-            Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.
+            {t('hero.ctaFinalSubtitle')}
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
               to="/pricing"
               className="btn-primary"
             >
-              Commencer gratuitement
+              {t('hero.ctaFinalStart')}
             </Link>
             <Link to="/login" className="text-sm font-semibold leading-6 text-white">
-              Se connecter <span aria-hidden="true">→</span>
+              {t('hero.ctaFinalLogin')} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
@@ -228,50 +276,4 @@ export function Hero() {
   )
 }
 
-const testimonials = [
-  {
-    name: 'Sophie Martin',
-    role: 'Développeuse Full Stack',
-    quote: 'Grâce à JobNexAI, j\'ai trouvé un poste qui correspond parfaitement à mes compétences en seulement 3 semaines. L\'outil d\'analyse de CV m\'a permis d\'optimiser mon profil pour chaque candidature.',
-  },
-  {
-    name: 'Thomas Dubois',
-    role: 'Product Manager',
-    quote: 'Le système de matching intelligent m\'a fait gagner un temps précieux. J\'ai reçu des alertes pour des offres qui correspondaient vraiment à mes critères, et j\'ai décroché un job avec un salaire 15% supérieur à mon précédent poste.',
-  },
-  {
-    name: 'Léa Bernard',
-    role: 'UX Designer',
-    quote: 'Le suivi des candidatures est incroyablement pratique. Je pouvais voir en un coup d\'œil où j\'en étais dans mes démarches, et les rappels automatiques m\'ont évité d\'oublier des entretiens importants.',
-  },
-  {
-    name: 'Alexandre Petit',
-    role: 'Data Scientist',
-    quote: 'Les analyses de marché m\'ont donné un avantage considérable lors des négociations salariales. J\'ai pu me positionner avec confiance en connaissant les tendances du secteur.',
-  },
-  {
-    name: 'Julie Moreau',
-    role: 'Chef de projet',
-    quote: 'Le réseau professionnel intégré m\'a permis de rentrer en contact avec des recruteurs directement. C\'est comme ça que j\'ai obtenu mon poste actuel, sans même passer par une annonce classique.',
-  },
-  {
-    name: 'Nicolas Lambert',
-    role: 'Ingénieur DevOps',
-    quote: 'L\'abonnement Pro vaut vraiment son prix. Les fonctionnalités avancées m\'ont permis de me démarquer et de décrocher plusieurs entretiens dans des entreprises très recherchées.',
-  },
-]
 
-const steps = [
-  {
-    title: "Créez votre profil",
-    description: "Importez votre CV ou créez-en un nouveau avec notre outil intuitif. Notre IA analysera vos compétences et votre expérience."
-  },
-  {
-    title: "Recevez des suggestions personnalisées",
-    description: "Notre algorithme vous propose des offres d'emploi correspondant à votre profil, avec un score de compatibilité pour chaque poste."
-  },
-  {
-    title: "Postulez et suivez vos candidatures",
-    description: "Postulez directement depuis la plateforme et suivez l'avancement de toutes vos candidatures dans un tableau de bord centralisé."
-  }
-]

@@ -39,6 +39,56 @@
     "or": "Or"
   },
   "hero": {
+    "ctaFinalTitle": "Ready to boost your career?",
+    "ctaFinalSubtitle": "Join thousands of professionals who have already transformed their job search with JobNexAI.",
+    "ctaFinalStart": "Start for free",
+    "ctaFinalLogin": "Log in",
+    "testimonials": [
+      {
+        "name": "Sophie Martin",
+        "role": "Full Stack Developer",
+        "quote": "Thanks to JobNexAI, I found a position that perfectly matched my skills in just 3 weeks. The CV analysis tool helped me optimize my profile for each application."
+      },
+      {
+        "name": "Thomas Dubois",
+        "role": "Product Manager",
+        "quote": "The smart matching system saved me a lot of time. I received alerts for jobs that truly matched my criteria, and I landed a job with a 15% higher salary than my previous one."
+      },
+      {
+        "name": "Léa Bernard",
+        "role": "UX Designer",
+        "quote": "The application tracking is incredibly convenient. I could see at a glance where I was in my process, and the automatic reminders kept me from missing important interviews."
+      },
+      {
+        "name": "Alexandre Petit",
+        "role": "Data Scientist",
+        "quote": "The market analysis gave me a significant advantage during salary negotiations. I was able to position myself confidently by knowing the industry trends."
+      },
+      {
+        "name": "Julie Moreau",
+        "role": "Project Manager",
+        "quote": "The integrated professional network allowed me to connect directly with recruiters. That's how I got my current job, without even applying through a traditional job post."
+      },
+      {
+        "name": "Nicolas Lambert",
+        "role": "DevOps Engineer",
+        "quote": "The Pro subscription is really worth it. The advanced features helped me stand out and land several interviews at top companies."
+      }
+    ],
+    "steps": [
+      {
+        "title": "Create your profile",
+        "description": "Import your CV or create a new one with our intuitive tool. Our AI will analyze your skills and experience."
+      },
+      {
+        "title": "Get personalized suggestions",
+        "description": "Our algorithm suggests job offers that match your profile, with a compatibility score for each position."
+      },
+      {
+        "title": "Apply and track your applications",
+        "description": "Apply directly from the platform and track the progress of all your applications in a centralized dashboard."
+      }
+    ],
     "title": "The all-in-one platform for jobs",
     "subtitle": "JobNexAI connects candidates, freelancers, and recruiters using AI. Find the ideal job, land projects, or recruit the best talents with ease.",
     "features": [
