@@ -62,7 +62,7 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg leading-8 text-gray-300"
             >
-              JobNexus connecte candidats, freelances et recruteurs grâce à l'IA. Trouvez le job idéal, décrochez des missions ou recrutez les meilleurs talents en toute simplicité.
+              JobNexAI connecte candidats, freelances et recruteurs grâce à l'IA. Trouvez le job idéal, décrochez des missions ou recrutez les meilleurs talents en toute simplicité.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
