@@ -1,5 +1,5 @@
 // Import necessary modules
-import OpenAI from 'npm:openai@4.0.0'
+import OpenAI from 'openai'
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 
 

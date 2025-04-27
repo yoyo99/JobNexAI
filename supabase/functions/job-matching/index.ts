@@ -5,19 +5,22 @@
  */
 
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
-import OpenAI from 'npm:openai@4.0.0'
-import { create, getNumericDate, verify } from 'npm:djwt@1.0.0'
-import { UUID } from 'npm:uuid@9.0.1'
+import OpenAI from 'openai'
+import { create, getNumericDate, verify } from "https://deno.land/x/djwt@v2.9.1/mod.ts";
+import { v4 as uuidv4 } from "https://deno.land/std@0.224.0/uuid/mod.ts";
+import { getEnv } from "../../../src/lib/env.ts";
 
 // Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
-})
+  apiKey: getEnv("OPENAI_API_KEY") || "",
+});
 
 // Initialize Supabase client
+const supabaseUrl = getEnv("SUPABASE_URL") || "";
+const supabaseAnonKey = getEnv("SUPABASE_ANON_KEY") || "";
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  supabaseUrl,
+  supabaseAnonKey
 )
 
 // Define CORS headers
@@ -84,7 +87,7 @@ const authenticate = async (req: Request): Promise<string> => {
 
   // Extract the token from the header
   const token = authHeader.split(' ')[1];
-  const secret = Deno.env.get('JWT_SECRET')!;
+  const secret = getEnv("JWT_SECRET") || "";
   // Verify the token
   try {
     await verify(token, secret);

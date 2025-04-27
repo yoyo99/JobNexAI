@@ -1,6 +1,6 @@
 // Import Stripe and Supabase client
-import Stripe from 'npm:stripe@14.0.0'
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
+import Stripe from 'stripe'
+import { createClient } from '@supabase/supabase-js'
 import { verify } from 'npm:jsonwebtoken@9.0.2';
 
 // Initialize Stripe and Supabase clients

@@ -1,13 +1,13 @@
 import Stripe from "npm:stripe@14.0.0";
 import { createClient } from "npm:@supabase/supabase-js@2.39.3";
-import { verify } from "npm:djwt@3.0.1";
-import { type } from "npm:zod@3.22.4";
+import { verify } from "https://deno.land/x/djwt@v2.9.1/mod.ts";
+import { v4 as uuidv4 } from "https://deno.land/std@0.224.0/uuid/mod.ts";
+import { getEnv } from "../../src/lib/env.ts";
 
 // Initialize Supabase client
-const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-);
+const supabaseUrl = getEnv("SUPABASE_URL") || "";
+const supabaseServiceRoleKey = getEnv("SUPABASE_SERVICE_ROLE_KEY") || "";
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 // Define CORS headers
 const corsHeaders = {
