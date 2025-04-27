@@ -33,10 +33,10 @@ export default function JobNexAIAuth() {
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Mot de passe (12 caractères min.)"
+              placeholder="Mot de passe (9 caractères min.)"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              minLength={12}
+              minLength={9}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               required
             />

@@ -177,7 +177,7 @@ export async function updatePassword(password: string) {
 }
 
 function isStrongPassword(password: string): boolean {
-  const minLength = 12
+  const minLength = 9
   const hasUpperCase = /[A-Z]/.test(password)
   const hasLowerCase = /[a-z]/.test(password)
   const hasNumbers = /\d/.test(password)

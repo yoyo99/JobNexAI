@@ -17,7 +17,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { AuthProvider } from './components/AuthProvider'
 import { CVBuilder } from './components/cv/CVBuilder'
 import { NetworkPage } from './components/NetworkPage'
-import { LandingPage } from './components/LandingPage'
+import JobNexAILanding from './components/JobNexAILanding'
 import FeaturesPage from './components/pages/FeaturesPage'
 import { HowItWorksPage } from './components/pages/HowItWorksPage'
 import { TestimonialsPage } from './components/pages/TestimonialsPage'
@@ -42,7 +42,7 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<JobNexAILanding />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
