@@ -33,9 +33,10 @@ export default function JobNexAIAuth() {
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Mot de passe"
+              placeholder="Mot de passe (12 caractères min.)"
               value={password}
               onChange={e => setPassword(e.target.value)}
+              minLength={12}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               required
             />
@@ -49,7 +50,7 @@ export default function JobNexAIAuth() {
               {showPassword ? (
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.125 3.825A10.05 10.05 0 0022 12s-2.614-4.134-6.875-6.825" /></svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25l3.75 3.75m0 0l-3.75-3.75m0 0A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25l3.75 3.75m0 0l-3.75-3.75m0 0A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134-6.875-6.825" /></svg>
               )}
             </button>
           </div>
