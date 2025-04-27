@@ -1,4 +1,4 @@
-# JobifyAI – Kit Branding
+# JobNexAI – Kit Branding
 
 ## Logo
 - Logo SVG : `/public/jobnexai-logo.svg`
@@ -15,11 +15,11 @@
 - Texte : Segoe UI, Arial, sans-serif
 
 ## Slogan
-- "Votre allié pour une carrière, propulsée par l’IAvec JobifyAI, trouvez le job parfait sans effort"
+- "Votre allié pour une carrière, propulsée par l’IAvec JobNexAI, trouvez le job parfait sans effort"
 - "L'IA au service de votre réussite professionnelle"
 
 ## Pitch produit
-JobifyAI révolutionne la recherche d’emploi grâce à l’intelligence artificielle : matching, génération de lettres de motivation, conseils personnalisés, le tout dans une plateforme moderne et intuitive.
+JobNexAI révolutionne la recherche d’emploi grâce à l’intelligence artificielle : matching, génération de lettres de motivation, conseils personnalisés, le tout dans une plateforme moderne et intuitive.
 
 ## Utilisation du logo
 - Garder une marge autour du logo.
@@ -27,13 +27,13 @@ JobifyAI révolutionne la recherche d’emploi grâce à l’intelligence artifi
 - Ne pas déformer ni changer les couleurs principales.
 
 ## Réseaux sociaux
-- Réserve @nexusai sur LinkedIn, Twitter, Instagram.
+- Réserve @jobnexai sur LinkedIn, Twitter, Instagram.
 - Utilise le logo SVG en avatar, décline-le en version ronde si besoin.
 - Bannière recommandée : fond dégradé indigo/turquoise, logo centré, slogan.
 
 ## Contact presse
 - Email : boltsaas01@gmail.com
-- Site : https://nexusai.com (à réserver)
+- Site : https://jobnexai.com (à réserver)
 
 ## Assets presse/investisseurs
 - Logo SVG et PNG (voir `/public/jobnexai-logo.svg`)
