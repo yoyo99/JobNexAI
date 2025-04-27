@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Composant Badges pour la gamification JobNexus.
+ * Composant Badges pour la gamification JobNexAI.
  * Affiche des badges selon l'activité de l'utilisateur (MVP, à brancher sur vraies stats).
  */
 

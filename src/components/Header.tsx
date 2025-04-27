@@ -37,9 +37,9 @@ export function Header() {
       <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">JobNexus</span>
+            <span className="sr-only">JobNexAI</span>
             <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-              JobNexus
+              JobNexAI
             </div>
           </Link>
         </div>
@@ -89,9 +89,9 @@ export function Header() {
         <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
           <div className="flex items-center justify-between">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexus</span>
+              <span className="sr-only">JobNexAI</span>
               <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexus
+                JobNexAI
               </div>
             </Link>
             <button

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { matchScoreIA, SupportedAI } from '../lib/aiRouter';
 
 /**
- * Composant de matching IA basique pour JobNexus.
+ * Composant de matching IA basique pour JobNexAI.
  * Affiche un score de compatibilité simple entre le profil utilisateur et une offre d'emploi.
  * Cette version MVP compare les mots-clés du profil et de l'offre (à remplacer plus tard par un vrai backend IA).
  */

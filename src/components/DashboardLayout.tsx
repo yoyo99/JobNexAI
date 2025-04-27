@@ -120,7 +120,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-background px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
                     <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                      JobNexus
+                      JobNexAI
                     </Link>
                   </div>
                   <nav className="flex flex-1 flex-col">
@@ -158,7 +158,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-background px-6 pb-4 border-r border-white/10">
           <div className="flex h-16 shrink-0 items-center">
             <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-              JobNexus
+              JobNexAI
             </Link>
           </div>
           <nav className="flex flex-1 flex-col">

@@ -6,7 +6,7 @@ import { jsPDF } from 'jspdf';
 Chart.register(BarElement, ArcElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 /**
- * Dashboard interactif des statistiques de candidatures JobNexus.
+ * Dashboard interactif des statistiques de candidatures JobNexAI.
  * Affiche des graphiques et permet l'export PDF du dashboard.
  * TODO: Brancher sur les vraies données utilisateur.
  */
@@ -51,7 +51,7 @@ const JobStatsDashboard: React.FC<JobStatsDashboardProps> = ({ stats }) => {
   // Export PDF du dashboard
   const handleExportPDF = () => {
     const doc = new jsPDF();
-    doc.text('Statistiques de candidatures JobNexus', 10, 10);
+    doc.text('Statistiques de candidatures JobNexAI', 10, 10);
     doc.text('Répartition des statuts :', 10, 20);
     stats.forEach((s, i) => {
       doc.text(`${s.status}: ${s.count}`, 10, 30 + i * 10);
