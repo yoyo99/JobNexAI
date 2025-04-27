@@ -9,15 +9,15 @@ export function Footer() {
   
   const navigation = {
     main: [
-      { name: 'Fonctionnalités', href: '/features' },
-      { name: 'Tarifs', href: '/pricing' },
-      { name: 'Fonctionnement', href: '/how-it-works' },
-      { name: 'Témoignages', href: '/testimonials' },
-      { name: 'Confidentialité', href: '/privacy' },
-      { name: 'CGU', href: '/cgu' },
-      { name: 'Politique de confidentialité', href: '/privacy' },
-      { name: 'Contact', onClick: () => setShowFeedback(true) },
-      { name: 'Communauté', href: '/community' },
+      { name: t('footer.navigation.features'), href: '/features' },
+      { name: t('footer.navigation.pricing'), href: '/pricing' },
+      { name: t('footer.navigation.howItWorks'), href: '/how-it-works' },
+      { name: t('footer.navigation.testimonials'), href: '/testimonials' },
+      { name: t('footer.navigation.privacy'), href: '/privacy' },
+      { name: t('footer.navigation.cgu'), href: '/cgu' },
+      { name: t('footer.navigation.privacyPolicy'), href: '/privacy' },
+      { name: t('footer.navigation.contact'), onClick: () => setShowFeedback(true) },
+      { name: t('footer.navigation.community'), href: '/community' },
     ],
     social: [
       {
@@ -67,7 +67,7 @@ export function Footer() {
               className="btn-secondary text-sm px-4 py-2 rounded shadow hover:bg-primary-700 hover:text-white transition"
               onClick={() => setShowFeedback(true)}
             >
-              Remonter un bug ou une idée
+              {t('footer.reportBug')}
             </button>
           </div>
           <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
@@ -98,7 +98,7 @@ export function Footer() {
             ))}
           </div>
           <p className="mt-10 text-center text-xs leading-5 text-gray-400">
-            &copy; {new Date().getFullYear()} JobNexAI, Inc. Tous droits réservés.
+            {t('footer.copyright', { year: new Date().getFullYear() })}
           </p>
         </div>
       </footer>

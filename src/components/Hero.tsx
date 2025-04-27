@@ -5,30 +5,17 @@ import { useState } from 'react'
 import { VideoModal } from './VideoModal'
 import { PlayCircleIcon, CheckIcon } from '@heroicons/react/24/outline'
 
-const features = [
-  'Recherche d\'emploi intelligente avec IA',
-  'CV builder professionnel',
-  'Suivi des candidatures automatisé',
-  'Analyses de marché en temps réel',
-  'Suggestions d\'emploi personnalisées',
-  'Réseau professionnel intégré',
-]
 
-function getFeatureDescription(index: number): string {
-  const descriptions = [
-    "Notre algorithme d'IA analyse votre profil et les offres disponibles pour vous proposer les emplois les plus pertinents avec un score de compatibilité.",
-    "Créez un CV professionnel optimisé pour les ATS avec nos modèles élégants et nos conseils d'amélioration personnalisés.",
-    "Suivez toutes vos candidatures en un seul endroit, avec des rappels automatiques pour les entretiens et les relances.",
-    "Accédez à des données en temps réel sur les salaires, les compétences recherchées et les tendances du marché de l'emploi.",
-    "Recevez des suggestions d'emploi personnalisées basées sur vos compétences, votre expérience et vos préférences.",
-    "Connectez-vous avec d'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme."
-  ];
-  return descriptions[index] || '';
-}
 
 export function Hero() {
   const { t } = useTranslation()
   const [showVideo, setShowVideo] = useState(false)
+
+  const features = t('hero.features', { returnObjects: true }) as string[]
+  function getFeatureDescription(index: number): string {
+    const descriptions = t('hero.featureDescriptions', { returnObjects: true }) as string[];
+    return descriptions[index] || '';
+  }
 
   return (
     <div className="relative isolate pt-14">
@@ -54,7 +41,7 @@ export function Hero() {
               transition={{ duration: 0.5 }}
               className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text"
             >
-              La plateforme tout-en-un pour l'emploi
+              {t('hero.title')}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -62,7 +49,7 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg leading-8 text-gray-300"
             >
-              JobNexAI connecte candidats, freelances et recruteurs grâce à l'IA. Trouvez le job idéal, décrochez des missions ou recrutez les meilleurs talents en toute simplicité.
+              {t('hero.subtitle')}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -71,14 +58,14 @@ export function Hero() {
               className="mt-10 flex items-center justify-center gap-x-6"
             >
               <Link to="/pricing" className="btn-primary">
-                {t('hero.startTrial')}
+                {t('hero.ctaStart')}
               </Link>
               <button
                 onClick={() => setShowVideo(true)}
                 className="btn-secondary inline-flex items-center gap-2"
               >
                 <PlayCircleIcon className="h-5 w-5" />
-                {t('hero.watchDemo')}
+                {t('hero.ctaWatchDemo')}
               </button>
             </motion.div>
           </div>
@@ -92,7 +79,7 @@ export function Hero() {
             <div className="rounded-xl bg-white/5 p-2 ring-1 ring-inset ring-white/10 lg:rounded-2xl">
               <img
                 src="/landing.jpg"
-                alt="Homme en costume travaillant sur un ordinateur avec une interface futuriste"
+                alt={t('hero.imageAlt')}
                 className="rounded-md shadow-2xl ring-1 ring-white/10 w-full h-auto"
               />
             </div>
@@ -103,12 +90,12 @@ export function Hero() {
       {/* Features section */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-24" id="features">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-primary-400">Optimisez votre recherche</h2>
+          <h2 className="text-base font-semibold leading-7 text-primary-400">{t('hero.featuresSectionTitle')}</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Tout ce dont vous avez besoin pour trouver le job idéal
+            {t('hero.featuresSectionSubtitle')}
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-300">
-            JobNexAI combine intelligence artificielle et outils professionnels pour vous aider à décrocher votre prochain emploi plus rapidement et plus efficacement.
+            {t('hero.featuresSectionDescription')}
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
@@ -140,12 +127,12 @@ export function Hero() {
       <div className="bg-white/5 py-24 sm:py-32" id="how-it-works">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-primary-400">Comment ça marche</h2>
+            <h2 className="text-base font-semibold leading-7 text-primary-400">{t('hero.howItWorksSectionTitle')}</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Trouvez votre emploi idéal en 3 étapes simples
+              {t('hero.howItWorksSectionSubtitle')}
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Notre plateforme simplifie votre recherche d'emploi grâce à l'intelligence artificielle et des outils intuitifs.
+              {t('hero.howItWorksSectionDescription')}
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
@@ -174,9 +161,9 @@ export function Hero() {
       <div className="bg-white/5 py-24 sm:py-32" id="about">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <h2 className="text-lg font-semibold leading-8 tracking-tight text-primary-400">Témoignages</h2>
+            <h2 className="text-lg font-semibold leading-8 tracking-tight text-primary-400">{t('hero.testimonialsSectionTitle')}</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ils ont trouvé leur emploi idéal avec JobNexAI
+              {t('hero.testimonialsSectionSubtitle')}
             </p>
           </div>
           <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">

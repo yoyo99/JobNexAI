@@ -39,10 +39,99 @@
     "or": "Or"
   },
   "hero": {
+    "title": "The all-in-one platform for jobs",
+    "subtitle": "JobNexAI connects candidates, freelancers, and recruiters using AI. Find the ideal job, land projects, or recruit the best talents with ease.",
+    "features": [
+      "AI-powered job search",
+      "Professional CV builder",
+      "Automated application tracking",
+      "Real-time market analysis",
+      "Personalized job suggestions",
+      "Integrated professional network"
+    ],
+    "featureDescriptions": [
+      "Our AI algorithm analyzes your profile and available positions to suggest the most relevant jobs with a compatibility score.",
+      "Create a professional, ATS-optimized CV with our sleek templates and personalized improvement tips.",
+      "Track all your applications in one place, with automatic reminders for interviews and follow-ups.",
+      "Access real-time data on salaries, in-demand skills, and job market trends.",
+      "Receive personalized job suggestions based on your skills, experience, and preferences.",
+      "Connect with other professionals, exchange messages, and grow your network directly from the platform."
+    ],
+    "steps": [
+      {
+        "title": "Create your profile",
+        "description": "Import your CV or create a new one with our intuitive tool. Our AI will analyze your skills and experience."
+      },
+      {
+        "title": "Get personalized suggestions",
+        "description": "Our algorithm suggests job offers matching your profile, with a compatibility score for each position."
+      },
+      {
+        "title": "Apply and track your applications",
+        "description": "Apply directly from the platform and track all your applications in a centralized dashboard."
+      }
+    ],
+    "ctaTitle": "Ready to boost your career?",
+    "ctaSubtitle": "Join thousands of professionals who have already transformed their job search with JobNexAI.",
+    "ctaStart": "Start for free",
+    "ctaLogin": "Log in",
+    "testimonials": [
+      {
+        "name": "Sophie Martin",
+        "role": "Full Stack Developer",
+        "quote": "Thanks to JobNexAI, I found a position that perfectly matches my skills in just 3 weeks. The CV analysis tool helped me optimize my profile for each application."
+      },
+      {
+        "name": "Thomas Dubois",
+        "role": "Product Manager",
+        "quote": "The smart matching system saved me a lot of time. I received alerts for offers that really matched my criteria, and I landed a job with a 15% higher salary than my previous position."
+      },
+      {
+        "name": "Léa Bernard",
+        "role": "UX Designer",
+        "quote": "The application tracking is incredibly convenient. I could instantly see my progress, and the automatic reminders kept me from missing important interviews."
+      },
+      {
+        "name": "Alexandre Petit",
+        "role": "Data Scientist",
+        "quote": "The market analysis gave me a real edge during salary negotiations. I could position myself confidently, knowing the industry trends."
+      },
+      {
+        "name": "Julie Moreau",
+        "role": "Project Manager",
+        "quote": "The integrated professional network allowed me to connect directly with recruiters. That's how I got my current job, without even going through a traditional job posting."
+      },
+      {
+        "name": "Nicolas Lambert",
+        "role": "DevOps Engineer",
+        "quote": "The Pro subscription is really worth it. The advanced features helped me stand out and get several interviews at top companies."
+      }
+    ]
+  },
     "title": "Automate Your Job and Freelance Search",
     "subtitle": "Let AI power your search. From CV optimization to automated applications, JobNexus streamlines your path to the perfect position or the best freelance opportunities.",
     "startTrial": "Start free trial",
     "watchDemo": "Watch demo"
+  },
+  "footer": {
+    "navigation": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "howItWorks": "How it works",
+      "testimonials": "Testimonials",
+      "privacy": "Privacy",
+      "cgu": "Terms of Service",
+      "privacyPolicy": "Privacy Policy",
+      "contact": "Contact",
+      "community": "Community"
+    },
+    "reportBug": "Report a bug or idea",
+    "copyright": "© {{year}} JobNexAI, Inc. All rights reserved.",
+    "social": {
+      "twitter": "Twitter",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
   },
   "dashboard": {
     "welcome": "Welcome to your JobNexus personal space",

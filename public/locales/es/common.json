@@ -39,10 +39,99 @@
     "or": "O"
   },
   "hero": {
+    "title": "La plataforma todo en uno para el empleo",
+    "subtitle": "JobNexAI conecta a candidatos, freelancers y reclutadores gracias a la IA. Encuentra el trabajo ideal, consigue nuevas misiones o recluta a los mejores talentos con facilidad.",
+    "features": [
+      "Búsqueda de empleo inteligente con IA",
+      "Creador de CV profesional",
+      "Seguimiento automatizado de solicitudes",
+      "Análisis de mercado en tiempo real",
+      "Sugerencias de empleo personalizadas",
+      "Red profesional integrada"
+    ],
+    "featureDescriptions": [
+      "Nuestro algoritmo de IA analiza tu perfil y las ofertas disponibles para sugerirte los empleos más relevantes con una puntuación de compatibilidad.",
+      "Crea un CV profesional optimizado para ATS con nuestras plantillas elegantes y consejos personalizados de mejora.",
+      "Haz seguimiento de todas tus solicitudes en un solo lugar, con recordatorios automáticos para entrevistas y seguimientos.",
+      "Accede a datos en tiempo real sobre salarios, habilidades demandadas y tendencias del mercado laboral.",
+      "Recibe sugerencias de empleo personalizadas basadas en tus habilidades, experiencia y preferencias.",
+      "Conéctate con otros profesionales, intercambia mensajes y desarrolla tu red directamente en la plataforma."
+    ],
+    "steps": [
+      {
+        "title": "Crea tu perfil",
+        "description": "Importa tu CV o crea uno nuevo con nuestra herramienta intuitiva. Nuestra IA analizará tus habilidades y experiencia."
+      },
+      {
+        "title": "Recibe sugerencias personalizadas",
+        "description": "Nuestro algoritmo te sugiere ofertas de trabajo que coinciden con tu perfil, con una puntuación de compatibilidad para cada puesto."
+      },
+      {
+        "title": "Postula y haz seguimiento a tus solicitudes",
+        "description": "Postula directamente desde la plataforma y haz seguimiento a todas tus solicitudes en un panel centralizado."
+      }
+    ],
+    "ctaTitle": "¿Listo para impulsar tu carrera?",
+    "ctaSubtitle": "Únete a miles de profesionales que ya han transformado su búsqueda de empleo con JobNexAI.",
+    "ctaStart": "Comenzar gratis",
+    "ctaLogin": "Iniciar sesión",
+    "testimonials": [
+      {
+        "name": "Sophie Martin",
+        "role": "Desarrolladora Full Stack",
+        "quote": "Gracias a JobNexAI, encontré un puesto que se adapta perfectamente a mis habilidades en solo 3 semanas. La herramienta de análisis de CV me ayudó a optimizar mi perfil para cada solicitud."
+      },
+      {
+        "name": "Thomas Dubois",
+        "role": "Product Manager",
+        "quote": "El sistema de coincidencia inteligente me ahorró mucho tiempo. Recibí alertas de ofertas que realmente coincidían con mis criterios y conseguí un trabajo con un salario un 15% superior al anterior."
+      },
+      {
+        "name": "Léa Bernard",
+        "role": "Diseñadora UX",
+        "quote": "El seguimiento de solicitudes es increíblemente útil. Podía ver de un vistazo mi progreso y los recordatorios automáticos me evitaron olvidar entrevistas importantes."
+      },
+      {
+        "name": "Alexandre Petit",
+        "role": "Data Scientist",
+        "quote": "Los análisis de mercado me dieron una ventaja considerable en las negociaciones salariales. Pude posicionarme con confianza conociendo las tendencias del sector."
+      },
+      {
+        "name": "Julie Moreau",
+        "role": "Jefa de proyecto",
+        "quote": "La red profesional integrada me permitió contactar directamente con reclutadores. Así conseguí mi puesto actual, sin pasar por una oferta tradicional."
+      },
+      {
+        "name": "Nicolas Lambert",
+        "role": "Ingeniero DevOps",
+        "quote": "La suscripción Pro realmente vale la pena. Las funciones avanzadas me ayudaron a destacar y conseguir varias entrevistas en empresas muy demandadas."
+      }
+    ]
+  },
     "title": "Automatiza tu búsqueda de empleo y trabajo freelance",
     "subtitle": "Deja que la IA potencie tu búsqueda. Desde la optimización del CV hasta las solicitudes automatizadas, JobNexus simplifica tu camino hacia el puesto perfecto o las mejores oportunidades freelance.",
     "startTrial": "Comenzar prueba gratuita",
     "watchDemo": "Ver demo"
+  },
+  "footer": {
+    "navigation": {
+      "features": "Funcionalidades",
+      "pricing": "Precios",
+      "howItWorks": "Cómo funciona",
+      "testimonials": "Testimonios",
+      "privacy": "Privacidad",
+      "cgu": "Términos de uso",
+      "privacyPolicy": "Política de privacidad",
+      "contact": "Contacto",
+      "community": "Comunidad"
+    },
+    "reportBug": "Informar de un error o idea",
+    "copyright": "© {{year}} JobNexAI, Inc. Todos los derechos reservados.",
+    "social": {
+      "twitter": "Twitter",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
   },
   "jobSearch": {
     "title": "Encuentra tu próxima oportunidad",
