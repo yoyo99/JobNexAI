@@ -56,7 +56,7 @@ const JobStatsDashboard: React.FC<JobStatsDashboardProps> = ({ stats }) => {
     stats.forEach((s, i) => {
       doc.text(`${s.status}: ${s.count}`, 10, 30 + i * 10);
     });
-    doc.save('jobnexus_stats.pdf');
+    doc.save('jobnexai_stats.pdf');
   };
 
   return (

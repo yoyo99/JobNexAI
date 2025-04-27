@@ -138,7 +138,7 @@
     }
   },
   "dashboard": {
-    "welcome": "Bienvenue sur votre espace personnel JobNexus",
+    "welcome": "Bienvenue sur votre espace personnel JobNexAI",
     "stats": {
       "applications": "Candidatures envoyées",
       "interviews": "Entretiens planifiés",

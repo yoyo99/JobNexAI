@@ -108,11 +108,10 @@
       }
     ]
   },
-    "title": "Automatisieren Sie Ihre Jobsuche",
-    "subtitle": "Lassen Sie KI Ihre Jobsuche optimieren. Von der Lebenslauf-Optimierung bis hin zu automatisierten Bewerbungen vereinfacht JobNexus Ihren Weg zur perfekten Position.",
-    "startTrial": "Kostenlose Testversion starten",
-    "watchDemo": "Demo ansehen"
-  },
+  "title": "Automatisieren Sie Ihre Jobsuche",
+  "subtitle": "Lassen Sie KI Ihre Jobsuche optimieren. Von der Lebenslauf-Optimierung bis hin zu automatisierten Bewerbungen vereinfacht JobNexAI Ihren Weg zur perfekten Position.",
+  "startTrial": "Kostenlose Testversion starten",
+  "watchDemo": "Demo ansehen",
   "footer": {
     "navigation": {
       "features": "Funktionen",

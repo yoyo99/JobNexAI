@@ -108,11 +108,10 @@
       }
     ]
   },
-    "title": "Automatizza la tua ricerca di lavoro",
-    "subtitle": "Lascia che l'IA potenzi la tua ricerca di lavoro. Dall'ottimizzazione del CV alle candidature automatizzate, JobNexus semplifica il tuo percorso verso la posizione perfetta.",
-    "startTrial": "Inizia prova gratuita",
-    "watchDemo": "Guarda demo"
-  },
+  "title": "Automatizza la tua ricerca di lavoro",
+  "subtitle": "Lascia che l'IA potenzi la tua ricerca di lavoro. Dall'ottimizzazione del CV alle candidature automatizzate, JobNexAI semplifica il tuo percorso verso la posizione perfetta.",
+  "startTrial": "Inizia prova gratuita",
+  "watchDemo": "Guarda demo",
   "footer": {
     "navigation": {
       "features": "Funzionalità",
