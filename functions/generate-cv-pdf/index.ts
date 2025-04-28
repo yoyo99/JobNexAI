@@ -1,7 +1,7 @@
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
-import pdfMake from 'npm:pdfmake@0.2.10'
-import { TDocumentDefinitions } from 'npm:@types/pdfmake@0.2.9'
-import { verify } from 'npm:djwt@3.0.1'
+import { createClient } from '@supabase/supabase-js'
+import pdfMake from 'pdfmake'
+import { TDocumentDefinitions } from '@types/pdfmake'
+import { verify } from 'djwt'
 import { Status } from 'https://deno.land/std@0.177.0/http/http_status.ts'
 import { isHttpError } from 'https://deno.land/std@0.177.0/http/http_errors.ts';
 

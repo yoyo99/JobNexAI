@@ -1,7 +1,7 @@
 // Import Stripe and Supabase client
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
-import { verify } from 'npm:jsonwebtoken@9.0.2';
+import { verify } from 'jsonwebtoken';
 
 // Initialize Stripe and Supabase clients
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)

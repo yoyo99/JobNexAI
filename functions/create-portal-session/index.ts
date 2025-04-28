@@ -1,5 +1,5 @@
 // Import Stripe library
-import Stripe from 'npm:stripe@14.0.0'
+import Stripe from 'stripe'
 // Import the verify function from the djwt library to handle JWT verification
 import { verify } from 'https://deno.land/x/djwt@v2.9.1/mod.ts'
 

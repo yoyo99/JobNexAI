@@ -1,6 +1,6 @@
-import { serve } from "npm:http-server@14.1.1"
-import { Server } from "npm:socket.io@4.7.5"
-import { createClient } from "npm:@supabase/supabase-js@2.39.3"
+import { serve } from "http-server"
+import { Server } from "socket.io"
+import { createClient } from "@supabase/supabase-js"
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,

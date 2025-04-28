@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
+import { createClient } from '@supabase/supabase-js'
 
 const openai = new OpenAI({
   apiKey: Deno.env.get('OPENAI_API_KEY')

@@ -1,5 +1,5 @@
-import Stripe from 'npm:stripe@14.0.0';
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3';
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 import { verify } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 import { type Payload } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 

@@ -1,5 +1,5 @@
-import Stripe from "npm:stripe@14.0.0";
-import { createClient } from "npm:@supabase/supabase-js@2.39.3";
+import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 import { verify } from "https://deno.land/x/djwt@v2.9.1/mod.ts";
 import { v4 as uuidv4 } from "https://deno.land/std@0.224.0/uuid/mod.ts";
 import { getEnv } from "../../src/lib/env.ts";
