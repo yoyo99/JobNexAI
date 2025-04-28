@@ -127,12 +127,61 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export async function getMarketTrends() {
-  const { data, error, count } = await supabase
-    .from('job_market')
-    .select('*', { count: 'exact' });
+export async function getMarketTrends(): Promise<{
+  jobTypes: MarketTrend[];
+  locations: MarketTrend[];
+  salary: {
+    average: number;
+    count: number;
+  };
+}> {
+  const { data, error } = await supabase
+    .from('jobs')
+    .select('*');
   if (error) throw error;
-  return { data, count: typeof count === "number" ? count : 0 };
+  if (!data) return { jobTypes: [], locations: [], salary: { average: 0, count: 0 } };
+
+  // Job types
+  const jobTypeCounts: Record<string, number> = {};
+  for (const job of data) {
+    if (job.job_type) {
+      jobTypeCounts[job.job_type] = (jobTypeCounts[job.job_type] || 0) + 1;
+    }
+  }
+  const totalJobs = data.length;
+  const jobTypes: MarketTrend[] = Object.entries(jobTypeCounts).map(([category, count]) => ({
+    category,
+    count,
+    percentage: totalJobs > 0 ? (count / totalJobs) * 100 : 0
+  }));
+
+  // Locations
+  const locationCounts: Record<string, number> = {};
+  for (const job of data) {
+    if (job.location) {
+      locationCounts[job.location] = (locationCounts[job.location] || 0) + 1;
+    }
+  }
+  const locations: MarketTrend[] = Object.entries(locationCounts).map(([category, count]) => ({
+    category,
+    count,
+    percentage: totalJobs > 0 ? (count / totalJobs) * 100 : 0
+  }));
+
+  // Salaries
+  const salaries = data.filter((job: any) => typeof job.salary_min === 'number' && typeof job.salary_max === 'number');
+  const avgSalary = salaries.length > 0
+    ? salaries.reduce((sum: number, job: any) => sum + ((job.salary_min + job.salary_max) / 2), 0) / salaries.length
+    : 0;
+
+  return {
+    jobTypes,
+    locations,
+    salary: {
+      average: avgSalary,
+      count: salaries.length
+    }
+  };
 }
 
 export async function getJobs(filters: {
@@ -180,7 +229,8 @@ export async function getJobs(filters: {
 
   const { data, error } = await query;
   if (error) throw error;
-  return data as Job[];
+  // On force le cast via unknown pour satisfaire TypeScript, car la structure est contrôlée par la requête Supabase.
+  return data as unknown as Job[];
 }
 
 export async function getJobSuggestions(userId: string): Promise<JobSuggestion[]> {
@@ -194,7 +244,7 @@ export async function getJobSuggestions(userId: string): Promise<JobSuggestion[]
   if (!suggestions) return [];
 
   return suggestions.map(suggestion => ({
-    job: suggestion.job as Job,
+    job: Array.isArray(suggestion.job) ? suggestion.job[0] as Job : suggestion.job as Job,
     matchScore: suggestion.match_score,
     matchingSkills: [] // à adapter si tu veux un vrai calcul de matchingSkills
   }));

@@ -184,26 +184,33 @@ const analyzeJobMatch = async (jobData: any, userSkills: any, jobSkills: any) =>
         },
         {
           role: 'user',
-          content: `{
-            "jobTitle": "${jobData.title}",
-            "jobDescription": "${jobData.description}",
-            "jobSkills": ${JSON.stringify(jobSkills)},
-            "userSkills": ${JSON.stringify(userSkills)}
-          }`
+          content: JSON.stringify({
+            jobTitle: jobData.title ?? '',
+            jobDescription: jobData.description ?? '',
+            jobSkills: jobSkills ?? [],
+            userSkills: userSkills ?? []
+          })
         }
       ],
-      response_format: { type: 'json_object' },
       temperature: 0.5,
     });
-    return JSON.parse(completion.choices[0].message.content);
+    // GPT-4 renvoie du texte, on tente de parser
+    const content = completion.choices[0].message.content;
+    if (!content) throw new Error('OpenAI did not return any content');
+    return JSON.parse(content);
   } catch (openaiError) {
     throw new Error('Error with OpenAI');
   }
 };
 
-Deno.serve(async (req) => {
+// Express/Node.js handler compatible
+// import { Request, Response } from 'express'; // Si besoin, sinon laisse req/res en any
+
+export default async function handler(req: any, res: any) {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+    return res.status(200).send('ok');
   }
 
   try {
@@ -211,150 +218,62 @@ Deno.serve(async (req) => {
     await authenticate(req);
 
     // Get input data
-    const { userId, jobId } = await req.json();
+    let { userId, jobId } = req.body || req.query || {};
+    if (!userId || typeof userId !== 'string') {
+      return res.status(400).json({ error: 'userId is required', code: 400 });
+    }
+    if (!jobId || typeof jobId !== 'string') {
+      return res.status(400).json({ error: 'jobId is required', code: 400 });
+    }
 
     // Validate the input data
-    const validationError = validateInput({ userId, jobId })
+    const validationError = validateInput({ userId, jobId });
     if (validationError) {
-      console.error('Validation error:', validationError)
-      return new Response(
-        JSON.stringify({ // Return an error response if validation fails
-          error: validationError,
-          code: 400,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
-      )
+      console.error('Validation error:', validationError);
+      return res.status(400).json({ error: validationError, code: 400 });
     }
-    
+    // Force le typage pour TypeScript après validation stricte
+    const userIdStr = userId as string;
+    const jobIdStr = jobId as string;
 
     // Récupérer les informations de l'utilisateur
-    const { data: userData, error: userError } = await supabase
-      .from('user_skills')
-      .select(`
-        skill:skills (
-          name,
-          category
-        ),
-        proficiency_level,
-        years_experience
-      `)
-      .eq('user_id', userId)
-
-    
-
-    if (userError) {
-      console.error('Supabase userError:', userError)
-      return new Response(
-        JSON.stringify({
-          error: 'Error fetching user data',
-          code: 500,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      )
-    }
+    const userSkills = await getUserSkills(userIdStr);
 
     // Récupérer les informations du poste
-    const { data: jobData, error: jobError } = await supabase
-      .from('jobs')
-      .select(`
-        *,
-        job_skills (
-          skill:skills (
-            name,
-            category
-          ),
-          importance
-        )
-      `)
-      .eq('id', jobId)
-      .single()
-
-    if (jobError) {
-      console.error('Supabase jobError:', jobError)
-      return new Response(
-        JSON.stringify({
-          error: 'Error fetching job data',
-          code: 500,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      )
-    }
+    const jobData = await getJobData(jobIdStr);
 
     // Préparer les données pour l'analyse
-    const userSkills = transformUserSkills(userData);
-
-
-    const jobSkills = jobData.job_skills.map(skill => ({
-      name: skill.skill.name,
-      category: skill.skill.category,
-      importance: skill.importance,
-    }))
+    const transformedUserSkills = transformUserSkills(userSkills);
+    const jobSkills = transformJobSkills(jobData);
 
     // Analyser la correspondance avec GPT-4
     const analysis = await analyzeJobMatch(jobData, userSkills, jobSkills);
 
-    if(!analysis.score || !analysis.matchingSkills || !analysis.missingSkills || !analysis.recommendations){
-      throw new Error("Error during the analyse")
+    if (!analysis.score || !analysis.matchingSkills || !analysis.missingSkills || !analysis.recommendations) {
+      throw new Error('Error during the analyse');
     }
-    } catch (openaiError) {
-      console.error('OpenAI error:', openaiError)
-      return new Response(
-        JSON.stringify({
-          error: 'Error with OpenAI',
-          code: 500,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      );
 
     // Mettre à jour le score de correspondance dans la base de données
     const { error: updateError } = await supabase
       .from('job_matches')
       .upsert({
-        user_id: userId,
-        job_id: jobId,
+        user_id: userIdStr,
+        job_id: jobIdStr,
         match_score: analysis.score,
-        skills_match_percentage: jobSkills.length > 0
-        ? (analysis.matchingSkills.length / jobSkills.length) * 100
-        : 0,
-        
-
-
-
-
+        skills_match_percentage: jobSkills.length > 0 ? (analysis.matchingSkills.length / jobSkills.length) * 100 : 0,
         ai_analysis: analysis,
         updated_at: new Date().toISOString(),
-      })
+      });
 
     if (updateError) {
-      console.error('Supabase updateError:', updateError)
-      return new Response(
-        JSON.stringify({
-          error: 'Error updating job match',
-          code: 500,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      )
+      console.error('Supabase updateError:', updateError);
+      return res.status(500).json({ error: 'Error updating job match', code: 500 });
     }
-     // Return the analysis in the response
-     return new Response(JSON.stringify({ data: analysis }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 200,
-    });
 
+    // Return the analysis in the response
+    return res.status(200).json({ data: analysis });
   } catch (error) {
     console.error('Error:', error);
-
-    const response: ErrorResponse = {
-
-        error: 'An unexpected error occurred',
-        code: 500,
-    };
-    return new Response(
-      JSON.stringify(response),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    );
+    return res.status(400).json({ error: 'An unexpected error occurred', code: 500 });
   }
-});
+}
