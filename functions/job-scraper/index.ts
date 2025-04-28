@@ -1,8 +1,8 @@
 // Import necessary modules and functions
 import { createClient } from '@supabase/supabase-js';
 import { load } from 'cheerio';
-import { verify } from 'djwt';
-import { Status } from 'https://deno.land/std@0.208.0/http/http_status.ts';
+import jwt from 'jsonwebtoken';
+
 
 // Define a constant for default location
 const DEFAULT_LOCATION = 'France';
@@ -11,8 +11,8 @@ const FULL_TIME_JOB_TYPE = 'FULL_TIME';
 
 // Retrieve Supabase URL and service role key from environment variables
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 // Create a Supabase client
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -41,33 +41,28 @@ interface ErrorResponse {
 }
 
 // Function to validate JWT token and extract user ID
-const validateToken = async (req: Request): Promise<string> => {
+function validateToken(req: any): string {
   // Retrieve the Authorization header from the request
-  const authHeader = req.headers.get('Authorization');
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw { error: 'Missing Authorization header', code: Status.Unauthorized };
+    throw { error: 'Missing Authorization header', code: 401 };
   }
-
   const token = authHeader.split(' ')[1];
   if (!token) {
-    throw { error: 'Missing token', code: Status.Unauthorized };
+    throw { error: 'Missing token', code: 401 };
   }
-
   try {
-    const payload = await verify(
-      token,
-      Deno.env.get('JWT_SECRET')!,
-      'HS256'
-    );
+    const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!payload.userId) throw new Error('Invalid token payload');
     return payload.userId;
   } catch (err) {
     console.error('Token verification error:', err);
-    throw { error: 'Invalid token', code: Status.Unauthorized };
+    throw { error: 'Invalid token', code: 401 };
   }
-};
+}
 
 // Function to check if the user is an admin
-const checkAdmin = async (userId: string): Promise<void> => {
+async function checkAdmin(userId: string): Promise<void> {
   const { data, error } = await supabase
     .from('profiles')
     .select('is_admin')
@@ -75,7 +70,7 @@ const checkAdmin = async (userId: string): Promise<void> => {
 
   if (error) throw error
   if (!data?.is_admin) {
-    throw { error: 'Forbidden', code: Status.Forbidden }
+    throw { error: 'Forbidden', code: 403 }
   }
 }
 
@@ -148,9 +143,9 @@ function mapIndeedJobData(element: any, sourceId: string): any {
 
 // Function to scrape jobs from a given URL
 async function scrapeJobs(url: string, sourceId: string, mapJobData: (job: any, sourceId: string) => any, selector?: string): Promise<any[]> {
- try {
+  try {
     // Define specific headers for the request
-    const specificHeaders = url.includes('welcometothejungle') ? { 'Accept': 'application/json' } : scrapingHeaders;
+    const specificHeaders = url.includes('welcometothejungle') ? { 'Accept': 'application/json' } : WEB_SCRAPING_HEADERS;
 
     // Fetch data from the URL
     const response = await fetch(url, {
@@ -203,13 +198,17 @@ const jobSources: Record<string, { url: string; mapData: (job: any, sourceId: st
 };
 
 // Main function to handle requests
-Deno.serve(async (req: Request) => {
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    res.status(200).send('ok');
+    return;
   }
 
   try {
     // Authenticate the request
+    const userId = validateToken(req);
     const userId = await validateToken(req)
     // Check if the user is an admin
     try {

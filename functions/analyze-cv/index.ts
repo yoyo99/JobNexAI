@@ -1,13 +1,14 @@
-import OpenAI from 'openai'
-import { createClient } from '@supabase/supabase-js'
+import jwt from 'jsonwebtoken';
+import OpenAI from 'openai';
+import { createClient } from '@supabase/supabase-js';
 
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
+  apiKey: process.env.OPENAI_API_KEY
 })
 
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 const corsHeaders = {
@@ -39,21 +40,19 @@ interface AnalysisResult {
   }[]
 }
 
-Deno.serve(async (req) => {
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    res.status(200).send('ok');
+    return;
   }
 
   try {
-    const { cv, jobDescription } = await req.json()
+    const { cv, jobDescription } = req.body
 
     // Analyze CV with GPT-4
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [
-        {
-          role: 'system',
-          content: `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
+    const prompt = `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
           If a job description is provided, analyze the CV's relevance for that position.
           Focus on:
           1. Content completeness and clarity
@@ -65,19 +64,18 @@ Deno.serve(async (req) => {
           - score (0-100)
           - strengths (array of strings)
           - weaknesses (array of strings)
-          - suggestions (array of objects with section, priority, and suggestion)`
-        },
-        {
-          role: 'user',
-          content: `CV: ${JSON.stringify(cv)}
+          - suggestions (array of objects with section, priority, and suggestion)
+          CV: ${JSON.stringify(cv)}
           ${jobDescription ? `Job Description: ${jobDescription}` : ''}`
-        }
-      ],
-      response_format: { type: 'json_object' },
-      temperature: 0.7,
+
+    const completion = await openai.completions.create({
+      model: 'text-davinci-003',
+      prompt: prompt,
+      max_tokens: 300,
+      temperature: 0.7
     })
 
-    const analysis: AnalysisResult = JSON.parse(completion.choices[0].message.content)
+    const analysis: AnalysisResult = JSON.parse(completion.choices[0].text ?? '{}')
 
     // Save analysis results
     const { error: analysisError } = await supabase
@@ -105,21 +103,11 @@ Deno.serve(async (req) => {
 
     if (suggestionsError) throw suggestionsError
 
-    return new Response(
-      JSON.stringify(analysis),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    )
+    res.status(200).json(analysis);
+    return;
   } catch (error) {
     console.error('Error analyzing CV:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    )
+    res.status(400).json({ error: error.message });
+    return;
   }
-})
+}

@@ -1,364 +1,274 @@
-import { createClient } from '@supabase/supabase-js'
-import pdfMake from 'pdfmake'
-import { TDocumentDefinitions } from '@types/pdfmake'
-import { verify } from 'djwt'
-import { Status } from 'https://deno.land/std@0.177.0/http/http_status.ts'
-import { isHttpError } from 'https://deno.land/std@0.177.0/http/http_errors.ts';
+import { createClient } from '@supabase/supabase-js';
+import PdfPrinter from 'pdfmake';
+import jwt from 'jsonwebtoken';
+import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 
+// --- Types & Enums ---
 
-
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-)
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+enum CVSectionType {
+  HEADER = 'header',
+  EXPERIENCE = 'experience',
+  EDUCATION = 'education',
+  SKILLS = 'skills',
+  PROJECTS = 'projects',
 }
 
 interface CVSection {
-  type: CVSectionType
-  title: string
-  content: any
-}
-
-enum CVSectionType {
-    HEADER = 'header',
-    EXPERIENCE = 'experience',
-    EDUCATION = 'education',
-    SKILLS = 'skills',
-    PROJECTS = 'projects'
+  type: CVSectionType;
+  title: string;
+  content: any;
 }
 
 interface CV {
-  id: string
-  template_id: string
-  sections: CVSection[]
-  language: string
-}
-
-const STANDARD_TEMPLATE_STYLE = {
-  header: {
-    fontSize: 24,
-    bold: true,
-    margin: [0, 0, 0, 10],
-  },
-  subheader: {
-    fontSize: 18,
-    margin: [0, 0, 0, 5],
-  },
-  sectionHeader: {
-    fontSize: 14,
-    bold: true,
-    margin: [0, 15, 0, 10],
-  },
-  contact: {
-    fontSize: 10,
-    color: '#666666',
-  },
+  id: string;
+  template_id: string;
+  sections: CVSection[];
+  language: string;
+  template: { category: string };
 }
 
 interface TemplateStyle {
-    [key: string]: any;
+  [key: string]: any;
 }
+
 interface ResponseBody {
   pdf?: string;
   error?: string;
   message?: string;
 }
 
-const JWT_SECRET = Deno.env.get("JWT_SECRET")!;
+// --- PDF Styles ---
 
-async function validateInput(data: any): Promise<string> {
-  if (!data.cv_id) {
-    throw new Error('cv_id is required')
-  }
-
-  if (typeof data.cv_id !== 'string') {
-    throw new Error('cv_id must be a string')
-  }
-
-  return data.cv_id
-}
-
-async function verifyJWT(req: Request): Promise<string> {
-  const authHeader = req.headers.get('Authorization')
-  if (!authHeader) {
-    throw new Error('Authorization header is missing')
-  }
-
-  const token = authHeader.split(' ')[1]
-  if (!token) {
-    throw new Error('Token is missing')
-  }
-
-  try {
-    const payload = await verify(token, JWT_SECRET, 'HS512')
-    if (typeof payload !== "object" || payload === null || !payload.sub) {
-        throw new Error("Invalid token payload");
-    }
-    return payload.sub
-  } catch (error) {
-    throw new Error('Invalid token')
-  }
-}
-
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
-  }
-
-  let response: ResponseBody = {}
-  let status = 200
-
-  try {
-    const userId = await verifyJWT(req);
-    await verifyJWT(req);
-
-    const data = await req.json()
-
-    const cv_id = await validateInput(data)
-
-    // Get CV data
-    const { data: cv, error: cvError } = await supabase
-      .from('user_cvs')
-      .select(`
-        *,
-        template:cv_templates(*),
-        sections:cv_sections(*)
-      `)
-      .eq('id', cv_id)
-      .single()
-
-    if (cvError) {
-        console.error('Supabase Error:', cvError);
-        throw new Error("Error while fetching the CV")
-    }
-
-    if (!cv) {
-        console.error('CV not found:', cv_id);
-        throw new Error("CV not found");
-    }
-
-    // Get template style
-    const templateStyle = getTemplateStyle(cv.template.category)
-
-    // Create PDF definition
-    const docDefinition: TDocumentDefinitions = {
-      content: [],
-      defaultStyle: {
-        font: 'Helvetica',
-      },
-      pageSize: 'A4',
-      pageMargins: [40, 60, 40, 60],
-      info: {
-        title: 'CV',
-      },
-      styles: templateStyle.styles,
-    }
-
-    // Add header
-    if (cv.sections.find(s => s.type === CVSectionType.HEADER)) {
-      const header = cv.sections.find(s => s.type === 'header')
-      docDefinition.content.push({
-        stack: [
-          { text: header.content.name, style: 'header' },
-          { text: header.content.title, style: 'subheader' },
-          {
-            columns: [
-              { text: header.content.email, style: 'contact' },
-              { text: header.content.phone, style: 'contact' },
-              { text: header.content.location, style: 'contact' },
-            ],
-          },
-        ],
-        margin: [0, 0, 0, 20],
-      })
-    }
-
-    // Add other sections
-    cv.sections
-      .filter(s => s.type !== CVSectionType.HEADER)
-      .sort((a, b) => a.order_index - b.order_index)
-      .forEach(section => {
-        docDefinition.content.push(
-          { text: section.title, style: 'sectionHeader' },
-          getSectionContent(section),
-          { text: '', margin: [0, 10] }
-        )
-      })
-
-    // Generate PDF
-    try {
-        const pdfDoc = pdfMake.createPdf(docDefinition);
-
-        const pdfBase64 = await new Promise<string>((resolve, reject) => {
-          pdfDoc.getBase64((data: string) => {
-            if (data) {
-                resolve(data);
-            } else {
-                reject(new Error('Failed to generate PDF data'));
-            }
-          });
-        });
-        response = { pdf: pdfBase64 }
-    } catch (pdfError) {
-        console.error('pdfMake Error:', pdfError);
-        throw new Error("Error while generating the PDF")
-    }
-
-
-
-    status = Status.OK
-
-  } catch (error) {
-    console.error('Error generating PDF:', error);
-    response = {
-      error: error.message,
-    }
-    if (error.message === 'Authorization header is missing' || error.message === "Invalid token" || error.message === "Token is missing"){        
-        status = Status.Unauthorized;
-    } else if (isHttpError(error)){
-        status = error.status;
-    } else {
-        status = Status.BadRequest;
-    }
-  }
-  return new Response(JSON.stringify(response), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    )
-  }
-})
+const STANDARD_TEMPLATE_STYLE: TemplateStyle = {
+  header: { fontSize: 24, bold: true, margin: [0, 0, 0, 10] },
+  subheader: { fontSize: 18, margin: [0, 0, 0, 5] },
+  sectionHeader: { fontSize: 14, bold: true, margin: [0, 15, 0, 10] },
+  contact: { fontSize: 10, color: '#666666' },
+};
 
 const CREATIVE_TEMPLATE_STYLE: TemplateStyle = {
-    header: {
-        fontSize: 28,
-        bold: true,
-        color: '#2563eb',
-        margin: [0, 0, 0, 10],
-    },
-    subheader: {
-        fontSize: 20,
-        color: '#4b5563',
-        margin: [0, 0, 0, 5],
-    },
-    sectionHeader: {
-        fontSize: 16,
-        bold: true,
-        color: '#2563eb',
-        margin: [0, 20, 0, 10],
-    },
-    contact: {
-        fontSize: 12,
-        color: '#4b5563',
-    },
-}
+  header: { fontSize: 28, bold: true, color: '#2563eb', margin: [0, 0, 0, 10] },
+  subheader: { fontSize: 20, color: '#4b5563', margin: [0, 0, 0, 5] },
+  sectionHeader: { fontSize: 16, bold: true, color: '#2563eb', margin: [0, 20, 0, 10] },
+  contact: { fontSize: 12, color: '#4b5563' },
+};
 
 const FREELANCE_TEMPLATE_STYLE: TemplateStyle = {
-    header: {
-        fontSize: 26,
-        bold: true,
-        color: '#059669',
-        margin: [0, 0, 0, 10],
-    },
-    subheader: {
-        fontSize: 19,
-        color: '#374151',
-        margin: [0, 0, 0, 5],
-    },
-    sectionHeader: {
-        fontSize: 15,
-        bold: true,
-        color: '#059669',
-        margin: [0, 20, 0, 10],
-    },
-    contact: {
-        fontSize: 11,
-        color: '#374151',
-    },
+  header: { fontSize: 26, bold: true, color: '#059669', margin: [0, 0, 0, 10] },
+  subheader: { fontSize: 19, color: '#374151', margin: [0, 0, 0, 5] },
+  sectionHeader: { fontSize: 15, bold: true, color: '#059669', margin: [0, 20, 0, 10] },
+  contact: { fontSize: 11, color: '#374151' },
+};
+
+// --- Helpers ---
+
+function getTemplateStyle(category: string): { styles: TemplateStyle } {
+  const styles: { [key: string]: TemplateStyle } = {
+    standard: STANDARD_TEMPLATE_STYLE,
+    creative: CREATIVE_TEMPLATE_STYLE,
+    freelance: FREELANCE_TEMPLATE_STYLE,
+  };
+  if (category in styles) {
+    return { styles: styles[category] };
+  } else {
+    return { styles: styles.standard };
+  }
 }
 
-function getSectionContent(section: CVSection) {
-    switch (section.type) {
-        case CVSectionType.EXPERIENCE:
-            return section.content.items.map(item => ({
-                stack: [
-                    {
-                        columns: [
-                            { text: item.title, bold: true },
-                            { text: item.date, alignment: 'right' },
-                        ],
-                    },
-                    {
-                        columns: [
-                            { text: item.company },
-                            { text: item.location, alignment: 'right' },
-                        ],
-                        margin: [0, 2],
-                    },
-                    { text: item.description, margin: [0, 5] },
-                ],
-                margin: [0, 0, 0, 10],
-            }))
-
-        case CVSectionType.EDUCATION:
-      return section.content.items.map(item => ({
+function getSectionContent(section: CVSection): any {
+  switch (section.type) {
+    case CVSectionType.EXPERIENCE:
+      return section.content.items.map((item: any) => ({
         stack: [
-          {
-            columns: [
-              { text: item.degree, bold: true },
-              { text: item.date, alignment: 'right' },
-            ],
-          },
-          {
-            columns: [
-              { text: item.school },
-              { text: item.location, alignment: 'right' },
-            ],
-            margin: [0, 2],
-          },
+          { columns: [ { text: item.title, bold: true }, { text: item.date, alignment: 'right' } ] },
+          { columns: [ { text: item.company }, { text: item.location, alignment: 'right' } ], margin: [0, 2] },
+          { text: item.description, margin: [0, 5] },
         ],
         margin: [0, 0, 0, 10],
-      }))
-
-        case CVSectionType.SKILLS:
+      }));
+    case CVSectionType.EDUCATION:
+      return section.content.items.map((item: any) => ({
+        stack: [
+          { columns: [ { text: item.degree, bold: true }, { text: item.date, alignment: 'right' } ] },
+          { columns: [ { text: item.school }, { text: item.location, alignment: 'right' } ], margin: [0, 2] },
+        ],
+        margin: [0, 0, 0, 10],
+      }));
+    case CVSectionType.SKILLS:
       return {
-            columns: section.content.categories.map(category => ({
+        columns: section.content.categories.map((category: any) => ({
           stack: [
             { text: category.name, bold: true, margin: [0, 0, 0, 5] },
             { ul: category.skills },
           ],
         })),
-      }
-
-        case CVSectionType.PROJECTS:
-      return section.content.items.map(item => ({
+      };
+    case CVSectionType.PROJECTS:
+      return section.content.items.map((item: any) => ({
         stack: [
           { text: item.name, bold: true },
           { text: item.description, margin: [0, 2] },
-          { text: item.technologies.join(', '), italics: true, margin: [0, 2] },
+          { text: (item.technologies || []).join(', '), italics: true, margin: [0, 2] },
         ],
         margin: [0, 0, 0, 10],
-      }))
-
+      }));
     default:
-      return { text: JSON.stringify(section.content, null, 2) }
+      return { text: JSON.stringify(section.content, null, 2) };
   }
 }
 
-function getTemplateStyle(category: string): { styles: TemplateStyle } {
-    const styles: { [key: string]: TemplateStyle } = {
-        standard: STANDARD_TEMPLATE_STYLE,
-        creative: CREATIVE_TEMPLATE_STYLE,
-        freelance: FREELANCE_TEMPLATE_STYLE,
+// --- JWT & Supabase ---
+
+
+
+const JWT_SECRET = process.env.JWT_SECRET!;
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+function verifyJWT(req: any): string {
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+  if (!authHeader) throw new Error('Authorization header is missing');
+  const token = authHeader.split(' ')[1];
+  if (!token) throw new Error('Token is missing');
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { sub?: string };
+    if (!payload || !payload.sub) throw new Error('Invalid token payload');
+    return payload.sub;
+  } catch {
+    throw new Error('Invalid token');
+  }
+}
+
+async function validateInput(data: any): Promise<string> {
+  if (!data.cv_id) throw new Error('cv_id is required');
+  if (typeof data.cv_id !== 'string') throw new Error('cv_id must be a string');
+  return data.cv_id;
+}
+
+// --- Variables ---
+
+
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+// --- Handler ---
+
+export default async function handler(req: any, res: any) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  if (req.method === 'OPTIONS') {
+    res.status(200).send('ok');
+    return;
+  }
+
+  let status = 200;
+  let response: ResponseBody = {};
+
+  try {
+    const userId = verifyJWT(req);
+    const data = req.body;
+    const cv_id = await validateInput(data);
+
+    // Récupération du CV et du template
+    const { data: cv, error: cvError } = await supabase
+      .from('user_cvs')
+      .select('*,template:cv_templates(*),sections:cv_sections(*)')
+      .eq('id', cv_id)
+      .single();
+
+    if (cvError) {
+      console.error('Supabase Error:', cvError);
+      throw new Error('Error while fetching the CV');
+    }
+    if (!cv) {
+      console.error('CV not found:', cv_id);
+      throw new Error('CV not found');
+    }
+
+    // Style du template
+    const templateStyle = getTemplateStyle(cv.template.category);
+
+    // Définition du PDF
+    const docDefinition: TDocumentDefinitions = {
+      content: [] as any[],
+      defaultStyle: { font: 'Helvetica' },
+      pageSize: 'A4',
+      pageMargins: [40, 60, 40, 60],
+      info: { title: 'CV' },
+      styles: templateStyle.styles,
     };
 
-    if (category in styles) {
-        return { styles: styles[category] };
-    } else {
-        return { styles: styles.standard };
+    // Header
+    const headerSection = cv.sections.find((s: CVSection) => s.type === CVSectionType.HEADER);
+    if (headerSection) {
+      docDefinition.content.push({
+        stack: [
+          { text: headerSection.content.name, style: 'header' },
+          { text: headerSection.content.title, style: 'subheader' },
+          {
+            columns: [
+              { text: headerSection.content.email, style: 'contact' },
+              { text: headerSection.content.phone, style: 'contact' },
+              { text: headerSection.content.location, style: 'contact' },
+            ],
+          },
+        ],
+        margin: [0, 0, 0, 20],
+      });
     }
+
+    // Autres sections
+    cv.sections.forEach((section: CVSection) => {
+      if (section.type !== CVSectionType.HEADER) {
+        const content = getSectionContent(section);
+        if (Array.isArray(content)) {
+          (docDefinition.content as any[]).push(...content);
+        } else {
+          (docDefinition.content as any[]).push(content);
+        }
+      }
+    });
+
+    // Génération du PDF
+    const fonts = {
+      Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique',
+      },
+    };
+    const printer = new PdfPrinter(fonts);
+    const pdfDoc = printer.createPdfKitDocument(docDefinition);
+    const chunks: Buffer[] = [];
+    pdfDoc.on('data', (chunk: Buffer) => chunks.push(chunk));
+    pdfDoc.on('end', () => {
+      const result = Buffer.concat(chunks);
+      const pdfBase64 = result.toString('base64');
+      response = { pdf: pdfBase64 };
+      res.status(200).json(response);
+    });
+    pdfDoc.end();
+    return;
+  } catch (error: any) {
+    console.error('Error generating PDF:', error);
+    response = { error: error.message };
+    if (
+      error.message === 'Authorization header is missing' ||
+      error.message === 'Invalid token' ||
+      error.message === 'Token is missing'
+    ) {
+      status = 401;
+    } else {
+      status = 400;
+    }
+    res.status(status).json(response);
+    return;
+  }
 }
