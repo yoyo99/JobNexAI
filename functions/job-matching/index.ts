@@ -1,24 +1,26 @@
+import 'dotenv/config';
+
 /**
  * @file This file contains the Supabase function for job matching.
  * It retrieves user skills and job requirements, analyzes the match using OpenAI's GPT-4,
  * and updates the match score in the database.
  */
 
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
-import OpenAI from 'openai'
-import { create, getNumericDate, verify } from 'npm:djwt@1.0.0'
-import { UUID } from 'npm:uuid@9.0.1'
+import { createClient } from '@supabase/supabase-js';
+import OpenAI from 'openai';
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
-})
+  apiKey: process.env.OPENAI_API_KEY as string,
+});
 
 // Initialize Supabase client
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-)
+  process.env.SUPABASE_URL as string,
+  process.env.SUPABASE_SERVICE_ROLE_KEY as string
+);
 
 // Define CORS headers
 const corsHeaders = {
@@ -54,15 +56,15 @@ interface Input {
  */
 const validateInput = (input: Input): string | null => {
   if (!input.userId || !input.jobId) {
-    return 'Missing userId or jobId'
+    return 'Missing userId or jobId';
   }
-  if (!UUID.isValid(input.userId)) {
-    return 'Invalid userId'
+  if (!uuidValidate(input.userId)) {
+    return 'Invalid userId';
   }
-  if (!UUID.isValid(input.jobId)) {
-    return 'Invalid jobId'
+  if (!uuidValidate(input.jobId)) {
+    return 'Invalid jobId';
   }
-  return null
+  return null;
 }
 
 interface JobSkill {
@@ -84,11 +86,10 @@ const authenticate = async (req: Request): Promise<string> => {
 
   // Extract the token from the header
   const token = authHeader.split(' ')[1];
-  const secret = Deno.env.get('JWT_SECRET')!;
-  // Verify the token
+  const secret = process.env.JWT_SECRET as string;
   try {
-    await verify(token, secret);
-    return token
+    jwt.verify(token, secret);
+    return token;
   } catch {
     throw new Error('Unauthorized');
   }
