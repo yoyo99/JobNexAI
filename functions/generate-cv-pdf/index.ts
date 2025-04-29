@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import PdfPrinter from 'pdfmake';
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
 import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 
 // --- Types & Enums ---

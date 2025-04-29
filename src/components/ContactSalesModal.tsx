@@ -1,5 +1,6 @@
 // Nécessite EmailJS (https://www.emailjs.com/) :
-// SERVICE_ID : service_mua4t0l, TEMPLATE_ID : template_7fpilue, PUBLIC_KEY : O0LnolTBPNqbejzhl
+// SERVICE_ID, TEMPLATE_ID et PUBLIC_KEY doivent être définis dans les variables d'environnement :
+// VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import emailjs from 'emailjs-com'
@@ -23,9 +24,9 @@ export function ContactSalesModal({ open, onClose }: ContactSalesModalProps) {
     setError(null)
     setLoading(true)
     try {
-      const SERVICE_ID = 'service_mua4t0l';
-      const TEMPLATE_ID = 'template_7fpilue';
-      const PUBLIC_KEY = 'O0LnolTBPNqbejzhl';
+      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const templateParams = {
         name,
         email,

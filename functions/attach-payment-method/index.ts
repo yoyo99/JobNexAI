@@ -1,5 +1,4 @@
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
+
 import { createClient } from '@supabase/supabase-js'
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -11,7 +10,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-exports.handler = async function(event, context) {
+export async function handler(event, context) {
+  const { default: Stripe } = await import('stripe');
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
   const req = {
     method: event.httpMethod,
     json: async () => JSON.parse(event.body || '{}')

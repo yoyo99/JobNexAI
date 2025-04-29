@@ -1,5 +1,5 @@
 // Import Stripe library
-import Stripe from 'stripe'
+import Stripe from 'stripe';
 // Import the verify function from the djwt library to handle JWT verification
 import { jwtVerify } from 'jose';
 
@@ -59,7 +59,9 @@ async function authenticate(headers: Record<string, string | undefined>): Promis
 }
 
 // Main Deno server function
-exports.handler = async function(event, context) {
+export async function handler(event, context) {
+  const { default: Stripe } = await import('stripe');
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   // Parse headers and body for Netlify
   const headers: Record<string, string | undefined> = Object.fromEntries(
     Object.entries(event.headers || {}).map(([k, v]) => [k.toLowerCase(), typeof v === 'string' ? v : undefined])

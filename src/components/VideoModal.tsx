@@ -16,7 +16,7 @@ export function VideoModal({ isOpen, onClose }: VideoModalProps) {
   useEffect(() => {
     if (isOpen && !playerRef.current) {
       playerRef.current = new Player('vimeo-player', {
-        id: 123456789, // Replace with your Vimeo video ID
+        id: import.meta.env.VITE_VIMEO_VIDEO_ID,
         width: 800,
         loop: false,
         autoplay: true,
