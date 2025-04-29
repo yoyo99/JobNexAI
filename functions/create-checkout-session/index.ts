@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 export async function handler(event, context) {
