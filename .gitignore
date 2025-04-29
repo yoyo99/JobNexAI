@@ -48,3 +48,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.sw?
+JobNexAI-WindSurf/
+.gitignore
+/JobNexAI-WindSurf- Cursor
