@@ -1,10 +1,10 @@
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 const corsHeaders = {
@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     // Si le webhook secret n'est pas configuré, on traite quand même l'événement
     // mais sans vérifier la signature
     let event;
-    const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     
     if (webhookSecret) {
       event = stripe.webhooks.constructEvent(
@@ -59,23 +59,23 @@ Deno.serve(async (req) => {
         let plan = 'free'
         
         // Plans pour les candidats
-        if (priceId === Deno.env.get('VITE_STRIPE_PRICE_PRO')) {
+        if (priceId === process.env.VITE_STRIPE_PRICE_PRO) {
           plan = 'pro'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_ENTERPRISE')) {
+        } else if (priceId === process.env.VITE_STRIPE_PRICE_ENTERPRISE) {
           plan = 'enterprise'
         }
         
         // Plans pour les freelances
-        else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_FREELANCE_PRO')) {
+        else if (priceId === process.env.VITE_STRIPE_PRICE_FREELANCE_PRO) {
           plan = 'freelance_pro'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_FREELANCE_BUSINESS')) {
+        } else if (priceId === process.env.VITE_STRIPE_PRICE_FREELANCE_BUSINESS) {
           plan = 'freelance_business'
         }
         
         // Plans pour les recruteurs
-        else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_RECRUITER_BUSINESS')) {
+        else if (priceId === process.env.VITE_STRIPE_PRICE_RECRUITER_BUSINESS) {
           plan = 'recruiter_business'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_RECRUITER_ENTERPRISE')) {
+        } else if (priceId === process.env.VITE_STRIPE_PRICE_RECRUITER_ENTERPRISE) {
           plan = 'recruiter_enterprise'
         }
 

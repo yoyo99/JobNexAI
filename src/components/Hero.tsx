@@ -106,14 +106,14 @@ export function Hero() {
               className="mt-10 flex items-center justify-center gap-x-6"
             >
               <Link to="/pricing" className="btn-primary">
-                {t('hero.ctaStart')}
+                {t('hero.ctaStart', 'Commencer l\'essai gratuit')}
               </Link>
               <button
                 onClick={() => setShowVideo(true)}
                 className="btn-secondary inline-flex items-center gap-2"
               >
                 <PlayCircleIcon className="h-5 w-5" />
-                {t('hero.ctaWatchDemo')}
+                {t('hero.watchDemo', 'Voir la démo')}
               </button>
             </motion.div>
           </div>

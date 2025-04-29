@@ -1,10 +1,10 @@
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 const corsHeaders = {
@@ -12,9 +12,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-Deno.serve(async (req) => {
+exports.handler = async function(event, context) {
+  const req = {
+    method: event.httpMethod,
+    json: async () => JSON.parse(event.body || '{}')
+  };
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: 'ok'
+    }
   }
 
   try {
@@ -43,13 +51,11 @@ Deno.serve(async (req) => {
 
     if (!subscription?.stripe_customer_id) {
       // Si l'utilisateur n'a pas de client Stripe, retourner une liste vide
-      return new Response(
-        JSON.stringify([]),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200,
-        }
-      )
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify([])
+      }
     }
 
     // Récupérer les méthodes de paiement du client
@@ -59,8 +65,15 @@ Deno.serve(async (req) => {
     })
 
     // Récupérer la méthode de paiement par défaut du client
-    const customer = await stripe.customers.retrieve(subscription.stripe_customer_id)
-    const defaultPaymentMethodId = customer.invoice_settings?.default_payment_method
+    const customer = await stripe.customers.retrieve(subscription.stripe_customer_id);
+    let defaultPaymentMethodId: string | undefined = undefined;
+    // Type guard: only access invoice_settings if not deleted
+    if ('invoice_settings' in customer) {
+      const pm = customer.invoice_settings?.default_payment_method;
+      if (typeof pm === 'string') {
+        defaultPaymentMethodId = pm;
+      }
+    }
 
     // Formater les méthodes de paiement
     const formattedPaymentMethods = paymentMethods.data.map(method => ({
@@ -72,21 +85,17 @@ Deno.serve(async (req) => {
       is_default: method.id === defaultPaymentMethodId,
     }))
 
-    return new Response(
-      JSON.stringify(formattedPaymentMethods),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    )
+    return {
+      statusCode: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify(formattedPaymentMethods)
+    }
   } catch (error) {
     console.error('Error:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    )
+    return {
+      statusCode: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: error.message })
+    }
   }
 })

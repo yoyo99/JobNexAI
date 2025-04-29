@@ -4,15 +4,15 @@ import { verify } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 import { type Payload } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 
 // Initialisation de Stripe avec la clé secrète
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 // Initialisation de Supabase avec l'URL et la clé de service
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 // Récupération de la clé secrète JWT depuis les variables d'environnement
-const JWT_SECRET = Deno.env.get('JWT_SECRET');
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Vérification si la clé secrète JWT est définie
 if (!JWT_SECRET) throw new Error('JWT_SECRET is not defined');

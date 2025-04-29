@@ -5,7 +5,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 
 // Initialize OpenAI client with API key from environment variables
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
+  apiKey: process.env.OPENAI_API_KEY
 })
 
 // Define common CORS headers
@@ -59,8 +59,8 @@ async function verifyToken(req: Request): Promise<{userId: string | null, error:
   }
   // Create a Supabase client
   const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
   // Retrieve the user from Supabase using the provided token
   const { data: user, error: authError } = await supabase.auth.getUser(token)

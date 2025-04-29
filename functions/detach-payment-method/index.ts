@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from "https://deno.land/std@0.224.0/uuid/mod.ts";
 import { getEnv } from "../../src/lib/env.ts";
 
 // Initialize Supabase client
-const supabaseUrl = getEnv("SUPABASE_URL") || "";
-const supabaseServiceRoleKey = getEnv("SUPABASE_SERVICE_ROLE_KEY") || "";
+const supabaseUrl = process.env.SUPABASE_URL || "";
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 // Define CORS headers
@@ -31,7 +31,7 @@ const authenticate = async (req: Request): Promise<string> => {
   const token = authHeader.split(" ")[1];
   const payload = await verify(
     token,
-    Deno.env.get("SUPABASE_JWT_SECRET")!,
+    process.env."SUPABASE_JWT_SECRET")!,
     "HS256",
   );
   const userIdFromToken = payload.sub;
@@ -57,7 +57,7 @@ const detachPaymentMethod = async (
   userId: string,
   paymentMethodId: string,
 ): Promise<DetachPaymentMethodResponse> => {
-  const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!);
+  const stripe = new Stripe(process.env."STRIPE_SECRET_KEY")!);
 
   // Check if the user is authorized to delete this payment method
   const { data: subscription, error: subscriptionError } = await supabase

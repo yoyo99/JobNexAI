@@ -1,7 +1,7 @@
 // Import Stripe library
 import Stripe from 'stripe'
 // Import the verify function from the djwt library to handle JWT verification
-import { verify } from 'https://deno.land/x/djwt@v2.9.1/mod.ts'
+import { jwtVerify } from 'jose';
 
 // Define an interface for the JWT data to specify the structure
 interface JWTData {
@@ -9,9 +9,9 @@ interface JWTData {
 }
 
 // Create a new instance of the Stripe API client using the secret key from environment variables
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 // Retrieve the JWT secret key from the environment variables
-const jwtSecret = Deno.env.get('JWT_SECRET')!
+const jwtSecret = process.env.JWT_SECRET!
 
 // Define the CORS headers for the HTTP responses
 const corsHeaders = {
@@ -39,9 +39,9 @@ function validateInput(customerId: string): void {
 }
 
 // Middleware function to authenticate the user
-async function authenticate(req: Request): Promise<string> {
+async function authenticate(headers: Record<string, string | undefined>): Promise<string> {
   // Get the Authorization header
-  const authHeader = req.headers.get('Authorization')
+  const authHeader = headers['authorization']
   // Check if Authorization header is missing
   if (!authHeader) {
     throw { error: 'Missing Authorization header', code: 401 }
@@ -49,7 +49,7 @@ async function authenticate(req: Request): Promise<string> {
   // Extract the token from the Authorization header
   const token = authHeader.split(' ')[1]
   // Verify the token
-  const jwtData = await verify(token, jwtSecret, 'HS512') as JWTData
+  const { payload: jwtData } = await jwtVerify(token, new TextEncoder().encode(jwtSecret), { algorithms: ['HS512'] }) as { payload: JWTData }
   // Check if the token is valid
   if (!jwtData.sub) {
     throw { error: 'Invalid token', code: 401 }
@@ -59,47 +59,58 @@ async function authenticate(req: Request): Promise<string> {
 }
 
 // Main Deno server function
-Deno.serve(async (req) => {
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+exports.handler = async function(event, context) {
+  // Parse headers and body for Netlify
+  const headers: Record<string, string | undefined> = Object.fromEntries(
+    Object.entries(event.headers || {}).map(([k, v]) => [k.toLowerCase(), typeof v === 'string' ? v : undefined])
+  );
+  const method = event.httpMethod;
+  const reqBody = event.body ? JSON.parse(event.body) : {};
+
+  if (method === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: 'ok',
+    };
   }
 
   // Try to authenticate the user
   try {
-    await authenticate(req)
+    await authenticate(headers);
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.error || error.message || 'Invalid Token', code: error.code || 401 }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: error.code || 401 })
+    return {
+      statusCode: error.code || 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: error.error || error.message || 'Invalid Token', code: error.code || 401 })
+    };
   }
 
   try {
-    const { customerId }: { customerId: string } = await req.json()
-    validateInput(customerId)
+    const { customerId }: { customerId: string } = reqBody;
+    validateInput(customerId);
 
+    // Récupère l'URL d'origine pour le retour (si non dispo, fallback sur /)
+    const origin = (headers['origin'] || headers['referer'] || '') as string;
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${req.headers.get('origin')}/settings`,
-    })
+      return_url: `${origin.replace(/\/$/, '')}/settings`,
+    });
 
-    return new Response(
-      JSON.stringify({ url: session.url } as createPortalSessionResponse),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      },
-    )
+    return {
+      statusCode: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: session.url } as createPortalSessionResponse),
+    };
   } catch (error) {
-    // Handle any errors that occur during the process
-    const message = error.error || error.message || 'Internal Server Error'
-    const code = error.code || 500
-    console.error('Error:', message, error)
-    // Return an error response
-    return new Response(
-      JSON.stringify({ error: message, code } as createPortalSessionResponse),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: code,
-      }
-    )
+    // Gestion des erreurs
+    const message = error.error || error.message || 'Internal Server Error';
+    const code = error.code || 500;
+    console.error('Error:', message, error);
+    return {
+      statusCode: code,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: message, code } as createPortalSessionResponse),
+    };
   }
-})
+};

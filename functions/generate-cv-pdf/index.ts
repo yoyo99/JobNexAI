@@ -194,20 +194,13 @@ export default async function handler(req: any, res: any) {
     // Style du template
     const templateStyle = getTemplateStyle(cv.template.category);
 
-    // Définition du PDF
-    const docDefinition: TDocumentDefinitions = {
-      content: [] as any[],
-      defaultStyle: { font: 'Helvetica' },
-      pageSize: 'A4',
-      pageMargins: [40, 60, 40, 60],
-      info: { title: 'CV' },
-      styles: templateStyle.styles,
-    };
+    // Construction du contenu du PDF dans un tableau local
+    const content: any[] = [];
 
     // Header
     const headerSection = cv.sections.find((s: CVSection) => s.type === CVSectionType.HEADER);
     if (headerSection) {
-      docDefinition.content.push({
+      content.push({
         stack: [
           { text: headerSection.content.name, style: 'header' },
           { text: headerSection.content.title, style: 'subheader' },
@@ -226,14 +219,25 @@ export default async function handler(req: any, res: any) {
     // Autres sections
     cv.sections.forEach((section: CVSection) => {
       if (section.type !== CVSectionType.HEADER) {
-        const content = getSectionContent(section);
-        if (Array.isArray(content)) {
-          (docDefinition.content as any[]).push(...content);
+        const sectionContent = getSectionContent(section);
+        if (Array.isArray(sectionContent)) {
+          content.push(...sectionContent);
         } else {
-          (docDefinition.content as any[]).push(content);
+          content.push(sectionContent);
         }
       }
     });
+
+    // Définition du PDF
+    const docDefinition: TDocumentDefinitions = {
+      content,
+      defaultStyle: { font: 'Helvetica' },
+      pageSize: 'A4',
+      pageMargins: [40, 60, 40, 60],
+      info: { title: 'CV' },
+      styles: templateStyle.styles,
+    };
+
 
     // Génération du PDF
     const fonts = {
