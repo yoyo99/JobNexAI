@@ -47,6 +47,7 @@
     "react-share": "^5.1.0",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.7.5",
+    "spdy": "^4.0.2",
     "stripe": "^14.0.0",
     "tailwind-merge": "^2.2.1",
     "uuid": "^11.1.0",
