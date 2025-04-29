@@ -15,7 +15,7 @@ import {
   PlusCircleIcon,
   CreditCardIcon,
 } from '@heroicons/react/24/outline'
-import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom' // Already v6 compatible
 import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'

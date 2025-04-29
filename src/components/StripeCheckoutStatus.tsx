@@ -6,7 +6,7 @@ import { useAuth } from '../stores/auth'
 import { LoadingSpinner } from './LoadingSpinner'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
-export function StripeCheckoutStatus() {
+function StripeCheckoutStatus() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState<string>('')
   const location = useLocation()
@@ -42,7 +42,7 @@ export function StripeCheckoutStatus() {
         setStatus('success')
         setMessage('Votre abonnement a été activé avec succès')
 
-        // Redirect to dashboard after a delay
+        // Navigate to dashboard after a delay (React Router v6 migration)
         setTimeout(() => {
           navigate('/dashboard')
         }, 3000)
@@ -114,3 +114,5 @@ export function StripeCheckoutStatus() {
     </div>
   )
 }
+
+export default StripeCheckoutStatus;

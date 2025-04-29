@@ -48,7 +48,7 @@ interface FreelanceProfile {
   }[]
 }
 
-export function FreelanceProfile() {
+function FreelanceProfile() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -574,3 +574,5 @@ export function FreelanceProfile() {
     </div>
   )
 }
+
+export default FreelanceProfile;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarketAnalysis } from './MarketAnalysis';
+import MarketAnalysis from './MarketAnalysis';
 import { DashboardLayout } from './DashboardLayout';
 
 const MarketTrendsPage: React.FC = () => {

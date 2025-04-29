@@ -24,7 +24,7 @@ interface JobPosting {
   status: 'active' | 'paused' | 'draft'
 }
 
-export function CreateJobPosting() {
+function CreateJobPosting() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -406,3 +406,5 @@ export function CreateJobPosting() {
     </div>
   )
 }
+
+export default CreateJobPosting;

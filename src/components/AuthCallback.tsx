@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
-export function AuthCallback() {
+function AuthCallback() {
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -66,3 +66,5 @@ export function AuthCallback() {
     </div>
   )
 }
+
+export default AuthCallback;

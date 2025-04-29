@@ -36,7 +36,7 @@ interface JobPosting {
   expires_at: string
 }
 
-export function JobPostings() {
+function JobPostings() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([])
@@ -451,3 +451,5 @@ export function JobPostings() {
     </div>
   )
 }
+
+export default JobPostings;

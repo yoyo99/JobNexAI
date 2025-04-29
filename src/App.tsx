@@ -1,40 +1,42 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense } from 'react';
 import ToastContainer from './ToastContainer';
 
-
 import { DashboardLayout } from './components/DashboardLayout'
-import { JobSearch } from './components/JobSearch'
-import { MarketAnalysis } from './components/MarketAnalysis'
-import { Dashboard } from './components/Dashboard'
-import { JobApplications } from './components/JobApplications'
-import { Auth } from './components/Auth'
-import { Pricing } from './components/Pricing'
-import { Profile } from './components/Profile'
-import PrivacyPolicy from './components/PrivacyPolicy'
-import { PrivacyConsent } from './components/PrivacyConsent'
-import { SecurityBadge } from './components/SecurityBadge'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AuthProvider } from './components/AuthProvider'
-import { CVBuilder } from './components/cv/CVBuilder'
-import { NetworkPage } from './components/NetworkPage'
-import JobNexAILanding from './components/JobNexAILanding'
-import FeaturesPage from './components/pages/FeaturesPage'
-import { HowItWorksPage } from './components/pages/HowItWorksPage'
-import { TestimonialsPage } from './components/pages/TestimonialsPage'
-import { ResetPassword } from './components/ResetPassword'
-import { AuthCallback } from './components/AuthCallback'
-import { FreelanceProjects } from './components/freelance/FreelanceProjects'
-import { FreelanceProfile } from './components/freelance/FreelanceProfile'
-import MarketTrendsPage from './components/pages/MarketTrendsPage'
-import { RecruiterDashboard } from './components/recruiter/RecruiterDashboard'
-import { CandidateSearch } from './components/recruiter/CandidateSearch'
-import { JobPostings } from './components/recruiter/JobPostings'
-import { CreateJobPosting } from './components/recruiter/CreateJobPosting'
-import { UserTypeSelection } from './components/UserTypeSelection'
-import { ErrorBoundary } from './components/ErrorBoundary'
-import { StripeCheckoutStatus } from './components/StripeCheckoutStatus'
-import { Billing } from './components/Billing'
+import { PrivacyConsent } from './components/PrivacyConsent'
+import { SecurityBadge } from './components/SecurityBadge'
 import { SubscriptionBanner } from './components/SubscriptionBanner'
+import { ErrorBoundary } from './components/ErrorBoundary'
+
+// Code splitting (React.lazy) pour les pages principales
+const JobNexAILanding = React.lazy(() => import('./components/JobNexAILanding'));
+const Auth = React.lazy(() => import('./components/Auth'));
+const Pricing = React.lazy(() => import('./components/Pricing'));
+const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
+const FeaturesPage = React.lazy(() => import('./components/pages/FeaturesPage'));
+const HowItWorksPage = React.lazy(() => import('./components/pages/HowItWorksPage'));
+const TestimonialsPage = React.lazy(() => import('./components/pages/TestimonialsPage'));
+const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
+const AuthCallback = React.lazy(() => import('./components/AuthCallback'));
+const StripeCheckoutStatus = React.lazy(() => import('./components/StripeCheckoutStatus'));
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Profile = React.lazy(() => import('./components/Profile'));
+const Billing = React.lazy(() => import('./components/Billing'));
+const JobSearch = React.lazy(() => import('./components/JobSearch'));
+const JobApplications = React.lazy(() => import('./components/JobApplications'));
+const MarketAnalysis = React.lazy(() => import('./components/MarketAnalysis'));
+const CVBuilder = React.lazy(() => import('./components/cv/CVBuilder'));
+const NetworkPage = React.lazy(() => import('./components/NetworkPage'));
+const MarketTrendsPage = React.lazy(() => import('./components/pages/MarketTrendsPage'));
+const FreelanceProjects = React.lazy(() => import('./components/freelance/FreelanceProjects'));
+const FreelanceProfile = React.lazy(() => import('./components/freelance/FreelanceProfile'));
+const RecruiterDashboard = React.lazy(() => import('./components/recruiter/RecruiterDashboard'));
+const CandidateSearch = React.lazy(() => import('./components/recruiter/CandidateSearch'));
+const JobPostings = React.lazy(() => import('./components/recruiter/JobPostings'));
+const CreateJobPosting = React.lazy(() => import('./components/recruiter/CreateJobPosting'));
+const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelection'));
 
 function App() {
   return (
@@ -54,7 +56,7 @@ function App() {
             <Route path="/checkout/success" element={<StripeCheckoutStatus />} />
             <Route path="/user-type" element={
               <ProtectedRoute>
-                <UserTypeSelection />
+                <Navigate to="/dashboard" replace />
               </ProtectedRoute>
             } />
             <Route element={
@@ -133,7 +135,6 @@ function App() {
           <SecurityBadge />
           <SubscriptionBanner />
           <ToastContainer />
-
         </AuthProvider>
       </Router>
     </ErrorBoundary>

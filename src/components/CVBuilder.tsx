@@ -28,7 +28,7 @@ interface CVItem {
   tags?: string[]
 }
 
-export function CVBuilder() {
+function CVBuilder() {
   const { user } = useAuth()
   const [sections, setSections] = useState<CVSection[]>([
     {
@@ -288,3 +288,5 @@ export function CVBuilder() {
     </div>
   )
 }
+
+export default CVBuilder;

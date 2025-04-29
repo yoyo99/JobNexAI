@@ -1,20 +1,41 @@
 // Import Stripe and Supabase client
-import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
-import { verify } from 'jsonwebtoken';
 
-// Initialize Stripe and Supabase clients
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+import { createClient } from '@supabase/supabase-js';
+import { verify, JwtPayload } from 'jsonwebtoken';
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
-// Define interfaces for data structures
 interface Profile {
   email: string;
 }
+
+interface Subscription {
+  stripe_customer_id: string;
+}
+
+interface PaymentIntentResponse {
+  clientSecret?: string | null;
+  error?: string;
+  details?: any;
+  code?: string;
+}
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+export async function handler(event: any, context: any) {
+  const { default: Stripe } = await import('stripe');
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' })
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  // Define interfaces for data structures
+  interface Profile {
+    email: string;
+  }
 
 interface Subscription {
   stripe_customer_id: string;

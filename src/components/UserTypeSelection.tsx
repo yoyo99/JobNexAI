@@ -9,7 +9,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/24/outline'
 
-export function UserTypeSelection() {
+function UserTypeSelection() {
   const { user, loadUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -132,3 +132,5 @@ export function UserTypeSelection() {
     </div>
   )
 }
+
+export default UserTypeSelection;

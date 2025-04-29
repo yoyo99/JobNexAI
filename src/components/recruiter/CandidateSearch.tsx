@@ -29,7 +29,7 @@ interface Candidate {
   availability: 'available' | 'limited' | 'unavailable'
 }
 
-export function CandidateSearch() {
+function CandidateSearch() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [candidates, setCandidates] = useState<Candidate[]>([])
@@ -452,3 +452,5 @@ export function CandidateSearch() {
     </div>
   )
 }
+
+export default CandidateSearch;

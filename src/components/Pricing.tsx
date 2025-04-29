@@ -191,7 +191,7 @@ function formatPrice(value: number): string {
   return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 })
 }
 
-export function Pricing() {
+function Pricing() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
@@ -560,3 +560,5 @@ function CheckIcon(props) {
     </svg>
   )
 }
+
+export default Pricing;

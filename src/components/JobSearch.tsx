@@ -13,7 +13,7 @@ import { LazyImage } from './LazyImage'
 import { cache } from '../lib/cache'
 import { LoadingSpinner } from './LoadingSpinner'
 
-export function JobSearch() {
+function JobSearch() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
@@ -517,3 +517,5 @@ export function JobSearch() {
     </>
   )
 }
+
+export default JobSearch;

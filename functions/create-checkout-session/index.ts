@@ -1,11 +1,13 @@
-import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createClient } from '@supabase/supabase-js';
+
+export async function handler(event, context) {
+  const { default: Stripe } = await import('stripe');
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

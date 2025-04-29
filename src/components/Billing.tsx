@@ -5,7 +5,7 @@ import { SubscriptionManager } from './SubscriptionManager'
 import { BillingHistory } from './BillingHistory'
 import { StripeWebhookInfo } from './StripeWebhookInfo'
 
-export function Billing() {
+function Billing() {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState<'subscription' | 'history' | 'webhook'>('subscription')
 
@@ -92,3 +92,5 @@ export function Billing() {
     </div>
   )
 }
+
+export default Billing;

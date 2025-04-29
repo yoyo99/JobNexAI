@@ -21,7 +21,7 @@ import { Pie, Bar } from 'react-chartjs-2'
 // Initialiser ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title)
 
-export function RecruiterDashboard() {
+function RecruiterDashboard() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
@@ -569,3 +569,5 @@ export function RecruiterDashboard() {
     </div>
   )
 }
+
+export default RecruiterDashboard;

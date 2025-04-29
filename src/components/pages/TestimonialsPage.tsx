@@ -95,7 +95,7 @@ const recruiterTestimonials = [
   },
 ]
 
-export function TestimonialsPage() {
+function TestimonialsPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -444,3 +444,5 @@ export function TestimonialsPage() {
     </div>
   )
 }
+
+export default TestimonialsPage;

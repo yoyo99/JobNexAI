@@ -12,7 +12,7 @@ import { SubscriptionManager } from './SubscriptionManager'
 import { StripeWebhookInfo } from './StripeWebhookInfo'
 import UserAISettings from './UserAISettings'
 
-export function Profile() {
+function Profile() {
   const { user, subscription, loadUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [fullName, setFullName] = useState(user?.full_name || '')
@@ -239,3 +239,5 @@ export function Profile() {
     </div>
   )
 }
+
+export default Profile;

@@ -5,7 +5,7 @@ import { useAuth } from '../stores/auth'
 import { DashboardStats } from './DashboardStats'
 import { UpgradePrompt } from './UpgradePrompt'
 
-export function Dashboard() {
+function Dashboard() {
   const { t } = useTranslation()
   const { user } = useAuth()
 
@@ -39,3 +39,5 @@ export function Dashboard() {
     </div>
   )
 }
+
+export default Dashboard;

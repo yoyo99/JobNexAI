@@ -6,7 +6,7 @@ import { ChatNotifications } from './chat/ChatNotifications'
 import { NotificationPreferences } from './notifications/NotificationPreferences'
 import { initializeChat, disconnectChat } from '../lib/chat'
 
-export function NetworkPage() {
+function NetworkPage() {
   const { user } = useAuth()
   const [showPreferences, setShowPreferences] = useState(false)
   const [activeChatRoom, setActiveChatRoom] = useState<{
@@ -63,3 +63,5 @@ export function NetworkPage() {
     </div>
   )
 }
+
+export default NetworkPage;

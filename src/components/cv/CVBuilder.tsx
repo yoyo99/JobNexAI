@@ -12,7 +12,7 @@ interface Template {
   category: string
 }
 
-export function CVBuilder() {
+function CVBuilder() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -79,3 +79,5 @@ export function CVBuilder() {
     </div>
   )
 }
+
+export default CVBuilder;

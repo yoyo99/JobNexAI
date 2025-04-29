@@ -72,7 +72,7 @@ const faqs = [
   },
 ]
 
-export function HowItWorksPage() {
+function HowItWorksPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -358,3 +358,5 @@ export function HowItWorksPage() {
     </div>
   )
 }
+
+export default HowItWorksPage;

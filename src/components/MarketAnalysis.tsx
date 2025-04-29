@@ -13,7 +13,7 @@ type MarketTrendsData = {
   }
 }
 
-export function MarketAnalysis() {
+function MarketAnalysis() {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [trends, setTrends] = useState<MarketTrendsData | null>(null)
@@ -145,3 +145,5 @@ export function MarketAnalysis() {
     </div>
   )
 }
+
+export default MarketAnalysis;

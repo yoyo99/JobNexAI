@@ -38,7 +38,7 @@ interface Project {
   status: 'open' | 'in_progress' | 'completed'
 }
 
-export function FreelanceProjects() {
+function FreelanceProjects() {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [projects, setProjects] = useState<Project[]>([])
@@ -553,3 +553,5 @@ export function FreelanceProjects() {
     </div>
   )
 }
+
+export default FreelanceProjects;

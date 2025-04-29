@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 import { AuthService } from '../lib/auth-service'
 
-export function ResetPassword() {
+function ResetPassword() {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -142,3 +142,5 @@ export function ResetPassword() {
     </div>
   )
 }
+
+export default ResetPassword;

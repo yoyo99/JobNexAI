@@ -47,7 +47,7 @@ const statusColumns = [
   { id: 'rejected', name: 'Refusées', color: 'bg-red-600' },
 ]
 
-export function JobApplications() {
+function JobApplications() {
   const { user } = useAuth()
   const [applications, setApplications] = useState<JobApplication[]>([])
   const [loading, setLoading] = useState(true)
@@ -428,3 +428,5 @@ export function JobApplications() {
     </div>
   )
 }
+
+export default JobApplications;
