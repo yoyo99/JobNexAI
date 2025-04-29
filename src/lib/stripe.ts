@@ -6,7 +6,7 @@ let stripe: Awaited<ReturnType<typeof loadStripe>> | null = null;
 
 // Initialize stripe in an async function
 const initStripe = async () => {
-  stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+  stripe = await loadStripe(process.env.VITE_STRIPE_PUBLIC_KEY!)
 }
 
 // Initialize stripe immediately
