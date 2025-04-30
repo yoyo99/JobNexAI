@@ -1,32 +1,35 @@
 import { createClient } from '@supabase/supabase-js';
+import Stripe from 'stripe';
 
 export async function handler(event, context) {
-  const { default: Stripe } = await import('stripe');
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
   const supabase = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
 
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: 'ok',
+    };
   }
 
   try {
-    const { priceId, userId, userType } = await req.json()
+    const { priceId, userId, userType } = JSON.parse(event.body || '{}');
 
     // Créer ou récupérer le client Stripe
     const { data: profile } = await supabase
       .from('profiles')
       .select('email')
       .eq('id', userId)
-      .single()
+      .single();
 
     if (!profile) {
       throw new Error('User not found')
@@ -73,8 +76,8 @@ Deno.serve(async (req) => {
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.get('origin')}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get('origin')}/pricing`,
+      success_url: `${(event.headers as any)?.origin || ''}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${(event.headers as any)?.origin || ''}/pricing`,
       subscription_data: {
         metadata: {
           supabase_user_id: userId,
@@ -83,21 +86,17 @@ Deno.serve(async (req) => {
       },
     })
 
-    return new Response(
-      JSON.stringify({ sessionId: session.id, url: session.url }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    )
+    return {
+      statusCode: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: session.id, url: session.url }),
+    }
   } catch (error) {
     console.error('Error:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    )
+    return {
+      statusCode: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: error.message }),
+    }
   }
-})
+}
