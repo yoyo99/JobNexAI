@@ -64,15 +64,12 @@ export const AuthService = {
         }
       }
 
+      // Inscription sans metadata custom
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
-          data: {
-            full_name: fullName || email.split('@')[0],
-            trial_ends_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24h trial
-          }
         },
       })
 
