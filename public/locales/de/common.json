@@ -23,6 +23,7 @@
     "signupSuccess": "Registrierung erfolgreich! Sie können sich jetzt anmelden.",
     "signupError": "Bei der Registrierung ist ein Fehler aufgetreten."
   },
+  "connectedAs": "Angemeldet als {{name}}",
   "common": {
     "loading": "Laden...",
     "error": "Ein Fehler ist aufgetreten",

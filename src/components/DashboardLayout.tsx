@@ -27,7 +27,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
-  const { t } = useTranslation()
+  const { t } = useTranslation('common')
   const location = useLocation()
   const [navigation, setNavigation] = useState<any[]>([])
 

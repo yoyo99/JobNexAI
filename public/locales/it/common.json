@@ -23,6 +23,7 @@
     "signupSuccess": "Registrazione completata! Ora puoi accedere.",
     "signupError": "Si è verificato un errore durante la registrazione."
   },
+  "connectedAs": "Connesso come {{name}}",
   "common": {
     "loading": "Caricamento...",
     "error": "Si è verificato un errore",

@@ -24,7 +24,7 @@ const privateNavigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { t } = useTranslation()
+  const { t } = useTranslation('common')
   const { user } = useAuth()
   const location = useLocation()
 
@@ -67,21 +67,18 @@ export function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
           <LanguageSwitcher />
           {!user && (
-            <>
-              <Link 
-                to="/login" 
-                className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
-              >
-                {t('auth.login')}
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
-              >
-                {t('auth.startTrial')}
-              </Link>
-            </>
+            <Link to="/login" className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors">
+              {t('auth.login')}
+            </Link>
           )}
+          {user && (
+            <span className="text-sm text-gray-300 mr-4">
+              {t('common.connectedAs', { name: user.full_name || user.email })}
+            </span>
+          )}
+          <Link to="/pricing" className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors">
+            {t('auth.startTrial')}
+          </Link>
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

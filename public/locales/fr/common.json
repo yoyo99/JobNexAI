@@ -32,6 +32,7 @@
     "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères.",
     "emailAlreadyRegistered": "Cette adresse email est déjà utilisée."
   },
+  "connectedAs": "Connecté en tant que {{name}}",
   "common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue",

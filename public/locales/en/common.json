@@ -23,6 +23,7 @@
     "signupSuccess": "Sign up successful! You can now log in.",
     "signupError": "An error occurred during sign up."
   },
+  "connectedAs": "Connected as {{name}}",
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",

@@ -421,8 +421,10 @@ function Pricing() {
 
             <div className="flex items-baseline gap-2 mt-4 mb-2">
               <span className="text-4xl font-extrabold tracking-tight text-white">
-                {frequency === 'yearly' && plan.yearlyPrice !== undefined
-                  ? formatPrice(plan.yearlyPrice)
+                {frequency === 'yearly'
+                  ? plan.yearlyPrice !== undefined
+                    ? formatPrice(plan.yearlyPrice)
+                    : '—'
                   : formatPrice(plan.price)}
               </span>
               <span className="text-gray-400 text-base font-semibold">

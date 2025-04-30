@@ -23,6 +23,7 @@
     "signupSuccess": "¡Registro exitoso! Ahora puedes iniciar sesión.",
     "signupError": "Ocurrió un error durante el registro."
   },
+  "connectedAs": "Conectado como {{name}}",
   "common": {
     "loading": "Cargando...",
     "error": "Ocurrió un error",
