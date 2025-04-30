@@ -21,7 +21,7 @@ import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'
 import LanguageSwitcher from './LanguageSwitcher'
 import ResendQuotaBanner from './ResendQuotaBanner.jsx';
-import { NotificationCenter } from './NotificationCenter';
+import { NotificationCenter } from './notifications/NotificationCenter';
 
 export function DashboardLayout({ children }: { children?: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
