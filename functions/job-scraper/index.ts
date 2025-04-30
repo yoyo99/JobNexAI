@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 
 // Define a constant for default location
-const DEFAULT_LOCATION = 'France';
+const DEFAULT_LOCATION = 'France'; // <-- keep only the first declaration
 // Define a const for full time job type
 const FULL_TIME_JOB_TYPE = 'FULL_TIME';
 
@@ -31,8 +31,6 @@ const WEB_SCRAPING_HEADERS = {
 
 // Define header for WTTJ api
 const WTTJ_HEADER = { 'Accept': 'application/json' };
-// Define a constant for default location
-const DEFAULT_LOCATION = 'France';
 
 interface ErrorResponse {
   error: string
@@ -52,7 +50,10 @@ function validateToken(req: any): string {
     throw { error: 'Missing token', code: 401 };
   }
   try {
-    const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not defined.');
+}
+const payload = jwt.verify(token, process.env.JWT_SECRET) as jwt.JwtPayload;
     if (!payload.userId) throw new Error('Invalid token payload');
     return payload.userId;
   } catch (err) {
@@ -208,16 +209,16 @@ export default async function handler(req, res) {
 
   try {
     // Authenticate the request
-    const userId = validateToken(req);
+    // const userId = validateToken(req); // removed duplicate
     const userId = await validateToken(req)
     // Check if the user is an admin
     try {
       await checkAdmin(userId)
     } catch (adminError) {
         console.error('Admin check error:', adminError);
-        return new Response(JSON.stringify({ error: "Forbidden", code: Status.Forbidden, details: adminError }), {
+        return new Response(JSON.stringify({ error: "Forbidden", code: 403, details: adminError }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: Status.Forbidden,
+          status: 403,
         })
       }
 
@@ -229,18 +230,18 @@ export default async function handler(req, res) {
 
     if (sourcesError) { // Handle Supabase errors during source fetching
       console.error('Supabase error fetching job sources:', sourcesError);
-      const errorResponse: ErrorResponse = { error: 'Failed to fetch job sources', code: Status.InternalServerError, details: sourcesError };
+      const errorResponse: ErrorResponse = { error: 'Failed to fetch job sources', code: 500, details: sourcesError };
       return new Response(JSON.stringify(errorResponse), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: Status.InternalServerError,
+        status: 500,
       });
-    };
+    }
 
     if (!sources?.length) {
-      const errorResponse: ErrorResponse = { error: 'No active job sources found', code: Status.NotFound }
+      const errorResponse: ErrorResponse = { error: 'No active job sources found', code: 404 }
       return new Response(JSON.stringify(errorResponse), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: Status.NotFound,
+        status: 404,
       })
     };
 
@@ -248,7 +249,7 @@ export default async function handler(req, res) {
     const errors: any[] = []; // Array to store errors from scraping
 
     // Scrape jobs from each active source
-    for (const source of sources) {
+    for (const source of (sources || [])) {
       try {
         // Get the scraping parameters for the current source
         const sourceParams = jobSources[source.name.toLowerCase()];
@@ -257,7 +258,7 @@ export default async function handler(req, res) {
         allJobs.push(...jobs); // Add scraped jobs to the allJobs array
       } catch (scrapeError) { // Handle errors during scraping
         console.error(`Error scraping from ${source.name}:`, scrapeError);
-        errors.push({source: source.name, error: scrapeError}); // Log the error
+        errors.push({ source: source.name, error: scrapeError }); // Log the error
       }
     };
 
@@ -267,10 +268,10 @@ export default async function handler(req, res) {
 
       if (upsertError) { // Handle Supabase errors during job insertion
         console.error('Supabase error inserting jobs:', upsertError)
-        const errorResponse: ErrorResponse = { error: 'Failed to insert jobs', code: Status.InternalServerError, details: upsertError }
+        const errorResponse: ErrorResponse = { error: 'Failed to insert jobs', code: 500, details: upsertError }
         return new Response(JSON.stringify(errorResponse), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: Status.InternalServerError,
+          status: 500,
         })
       }
     }
@@ -279,23 +280,26 @@ export default async function handler(req, res) {
       JSON.stringify({
         message: 'Jobs scraped successfully',
         count: allJobs.length,
-        sources: sources.map((s) => s.name),
+        sources: (sources || []).map((s) => s.name),
         errors: errors.length > 0 ? errors: undefined,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: Status.OK,
+        status: 200,
       }
     )
   } catch (error) {
     console.error('Unhandled error:', error);
-    const errorResponse: ErrorResponse = { error: 'Internal Server Error', code: Status.InternalServerError, details: error }
+    const errorResponse: ErrorResponse = { error: 'Internal Server Error', code: 500, details: error }
     return new Response(
       JSON.stringify(errorResponse),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: Status.InternalServerError,
+        status: 500,
       }
     );
   }
-});
+}
+
+// NOTE: Si le build échoue pour modules manquants, exécutez :
+// npm install cheerio jsonwebtoken
