@@ -1,8 +1,6 @@
-import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
-import { verify } from "https://deno.land/x/djwt@v2.9.1/mod.ts";
-import { v4 as uuidv4 } from "https://deno.land/std@0.224.0/uuid/mod.ts";
-import { getEnv } from "../../src/lib/env.ts";
+import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
+import { verify } from 'jsonwebtoken';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL || "";
@@ -24,16 +22,11 @@ interface DetachPaymentMethodResponse {
 }
 
 // Function to authenticate the request
-const authenticate = async (req: Request): Promise<string> => {
-  const authHeader = req.headers.get("Authorization");
+const authenticate = async (authHeader: string): Promise<string> => {
   if (!authHeader) throw new Error("Unauthorized");
 
-  const token = authHeader.split(" ")[1];
-  const payload = await verify(
-    token,
-    process.env."SUPABASE_JWT_SECRET")!,
-    "HS256",
-  );
+  const token = authHeader.split(' ')[1];
+  const payload = verify(token, process.env.SUPABASE_JWT_SECRET!);
   const userIdFromToken = payload.sub;
 
   if (!userIdFromToken) throw new Error("Unauthorized");
@@ -57,7 +50,7 @@ const detachPaymentMethod = async (
   userId: string,
   paymentMethodId: string,
 ): Promise<DetachPaymentMethodResponse> => {
-  const stripe = new Stripe(process.env."STRIPE_SECRET_KEY")!);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
 
   // Check if the user is authorized to delete this payment method
   const { data: subscription, error: subscriptionError } = await supabase
@@ -91,57 +84,47 @@ const detachPaymentMethod = async (
   return { success: true };
 };
 
-// Main function to handle the request
-Deno.serve(async (req: Request): Promise<Response> => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+// Netlify handler
+export async function handler(event: any) {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: 'ok',
+    };
   }
 
   try {
-    // Authenticate the request
-    const userIdFromToken = await authenticate(req);
-
-    // Validate the input data
-    const body = await req.json();
-    await validateInput(body);
-
-    const { userId, paymentMethodId } = body;
-
-    // Check if the user ID from the token matches the user ID from the body
-    if (userId !== userIdFromToken) throw new Error("Unauthorized");
-
-    // Detach the payment method
-    const response = await detachPaymentMethod(userId, paymentMethodId);
-
-    return new Response(JSON.stringify(response), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
-    });
-  } catch (error) {
-    console.error("Error detach payment method:", error);
-    const response: DetachPaymentMethodResponse = {};
-
-    // Handle different types of errors
-    if (error.message === "Unauthorized") {
-      response.error = "Unauthorized";
-      response.code = "unauthorized";
-      return new Response(JSON.stringify(response), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 401,
-      });
-    } else if (
-      error.message === "Failed to retrieve payment method from Stripe" || error.message === "Failed to retrieve subscription information from Supabase"
-    ) {
-      response.error = error.message;
-      response.code = "error";
-    } else {
-      response.error = error.message;
-      response.code = "error-detach-payment-method";
+    const authHeader = event.headers.authorization || event.headers.Authorization;
+    if (!authHeader) {
+      throw new Error('Unauthorized');
     }
 
-    return new Response(JSON.stringify(response), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 400,
-    });
+    const userIdFromToken = (verify(authHeader.split(' ')[1], process.env.SUPABASE_JWT_SECRET!) as any).sub;
+
+    const { userId, paymentMethodId } = JSON.parse(event.body || '{}');
+
+    // Validate input
+    if (!userId || !paymentMethodId) {
+      throw new Error('Missing userId or paymentMethodId');
+    }
+    if (userId !== userIdFromToken) {
+      throw new Error('Unauthorized');
+    }
+
+    const response = await detachPaymentMethod(userId, paymentMethodId);
+
+    return {
+      statusCode: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify(response),
+    };
+  } catch (error) {
+    console.error('Error detach payment method:', error);
+    return {
+      statusCode: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: (error as Error).message }),
+    };
   }
-});
+}
