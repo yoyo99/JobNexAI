@@ -82,7 +82,9 @@
     ],
     "ctaFinalSubtitle": "Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.",
     "ctaFinalStart": "Commencer gratuitement",
-    "ctaFinalLogin": "Se connecter"
+    "ctaFinalLogin": "Se connecter",
+    "startTrial": "Commencer l'essai gratuit",
+    "watchDemo": "Voir la démo"
   },
   "footer": {
     "navigation": {

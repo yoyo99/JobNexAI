@@ -9,7 +9,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'fr',
-    supportedLngs: ['fr', 'en'],
+    supportedLngs: ['fr', 'en', 'de', 'es', 'it'],
     defaultNS: 'common',
     ns: ['common'],
     interpolation: {
@@ -18,6 +18,9 @@ i18n
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
   })
 
