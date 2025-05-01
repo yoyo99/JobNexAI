@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase, getMarketTrends as fetchMarketTrends } from './supabase'
 import { trackError, trackEvent } from './monitoring'
 
 export interface AuthError {
@@ -261,7 +261,25 @@ export const AuthService = {
         },
       }
     }
-  }
+  },
+
+  /**
+   * Récupère les tendances du marché (jobTypes, locations, salary)
+   * Utilise la fonction existante de supabase.
+   */
+  async getMarketTrends() {
+    return fetchMarketTrends();
+  },
+
+  /**
+   * Exemple de version pour interroger une API externe (décommente et adapte si besoin)
+   *
+   * async getMarketTrendsFromAPI() {
+   *   const response = await fetch('https://api.exemple.com/market-trends');
+   *   if (!response.ok) throw new Error('Erreur lors de la récupération des tendances');
+   *   return response.json();
+   * },
+   */
 }
 
 /**

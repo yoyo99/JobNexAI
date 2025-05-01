@@ -9,6 +9,13 @@ const fakeStats = [
   { status: 'Refusées', count: 4 },
 ];
 
+import MarketTrends from '../components/MarketTrends';
+
 export default function StatsPage() {
-  return <JobStatsDashboard stats={fakeStats} />;
+  return (
+    <>
+      <JobStatsDashboard stats={fakeStats} />
+      <MarketTrends />
+    </>
+  );
 }
