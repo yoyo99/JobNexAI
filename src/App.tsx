@@ -38,7 +38,10 @@ const JobPostings = React.lazy(() => import('./components/recruiter/JobPostings'
 const CreateJobPosting = React.lazy(() => import('./components/recruiter/CreateJobPosting'));
 const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelection'));
 
+import i18n from './i18n';
 function App() {
+  console.log('Langue courante i18n:', i18n.language);
+
   return (
     <ErrorBoundary>
       <Router>
