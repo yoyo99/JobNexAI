@@ -1,0 +1,404 @@
+{
+  "auth": {
+    "acceptTerms": "J'accepte les",
+    "alreadyRegistered": "Déjà inscrit ? Se connecter",
+    "createAccount": "Créer un compte",
+    "email": "Adresse email",
+    "errors": {
+      "acceptTerms": "Vous devez accepter les conditions générales pour vous inscrire.",
+      "emailRequired": "Veuillez entrer votre adresse email",
+      "login": "Une erreur est survenue lors de la connexion",
+      "passwordLength": "Le mot de passe doit contenir au moins 9 caractères.",
+      "requiredFields": "Veuillez remplir tous les champs",
+      "signup": "Une erreur est survenue lors de l'inscription",
+      "unknown": "Une erreur est survenue"
+    },
+    "forgotPassword": "",
+    "fullName": "Nom complet",
+    "help": {
+      "capsLock": "Assurez-vous que le verrouillage des majuscules est désactivé",
+      "checkEmail": "Vérifiez que votre adresse email est correcte",
+      "forgotPassword": "Si vous avez oublié votre mot de passe, utilisez le lien \"Mot de passe oublié\"",
+      "noAccount": "Si vous n'avez pas encore de compte, cliquez sur \"Créer un compte\"",
+      "title": "Besoin d'aide pour vous connecter ?"
+    },
+    "hidePassword": "Masquer le mot de passe",
+    "login": "Connexion",
+    "logout": "",
+    "password": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "signup": "Créer un compte",
+    "startTrial": "Commencer l’essai gratuit",
+    "success": {
+      "login": "Connexion réussie !",
+      "reset": "Instructions de réinitialisation envoyées à votre adresse email",
+      "signup": "Inscription réussie ! Vous pouvez maintenant vous connecter."
+    },
+    "termsLink": "conditions générales d'utilisation"
+  },
+  "badges": {
+    "firstApp": {
+      "description": "Sende deine erste Bewerbung.",
+      "label": "Erste Bewerbung"
+    },
+    "networker": {
+      "description": "Füge einen Kontakt zu deinem Netzwerk hinzu.",
+      "label": "Vernetzer"
+    },
+    "persistent": {
+      "description": "Sende 10 Bewerbungen.",
+      "label": "Beharrlich"
+    },
+    "starter": {
+      "description": "Willkommen bei JobNexAI!",
+      "label": "Neuling"
+    },
+    "title": "Fortschrittsabzeichen",
+    "toUnlock": "Schalte dieses Abzeichen frei, indem du das Ziel erreichst!",
+    "winner": {
+      "description": "Erhalte ein Jobangebot.",
+      "label": "Gewinner!"
+    }
+  },
+  "common": {
+    "connectedAs": "",
+    "loading": "Chargement...",
+    "or": "ou",
+    "save": "",
+    "search": "",
+    "view": ""
+  },
+  "ctaFinalLogin": "Se connecter",
+  "ctaFinalStart": "Commencer l'essai gratuit",
+  "ctaFinalSubtitle": "Rejoignez notre plateforme et bénéficiez des meilleurs outils pour décrocher le job qui vous correspond.",
+  "ctaFinalTitle": "Prêt à booster votre carrière ?",
+  "ctaStart": "Commencer l'essai gratuit",
+  "dashboard": {
+    "activity": {
+      "application": "Neue Bewerbung",
+      "favorite": "Favorit",
+      "interview": "Vorstellungsgespräch",
+      "offer": "Angebot",
+      "status_change": "Statusänderung"
+    },
+    "documentTitle": "Dashboard - JobNexus",
+    "greeting": "Hallo {{name}}",
+    "recentApplications": {
+      "title": ""
+    },
+    "skillsProgress": {
+      "title": ""
+    },
+    "stats": {
+      "applications": "",
+      "applicationsSent": "Gesendete Bewerbungen",
+      "averageSalary": "",
+      "interviews": "",
+      "interviewsUpcoming": "Bevorstehende Vorstellungsgespräche",
+      "matchingJobs": "",
+      "recentActivity": "Letzte Aktivitäten",
+      "responseRate": "",
+      "savedJobs": "",
+      "topCompanies": "Top-Unternehmen",
+      "topLocations": "Top-Standorte"
+    },
+    "status": {
+      "accepted": "Akzeptiert",
+      "pending": "Ausstehend",
+      "rejected": "Abgelehnt"
+    },
+    "timeframe": {
+      "month": "Monat",
+      "week": "Woche",
+      "year": "Jahr"
+    },
+    "userDefault": "Benutzer",
+    "welcome": "Willkommen in deinem Dashboard"
+  },
+  "demo": {
+    "description": ""
+  },
+  "features": [
+    "Analyse automatique des offres",
+    "Génération de CV et lettres de motivation",
+    "Suivi des candidatures",
+    "Statistiques personnalisées",
+    "Veille marché intelligente"
+  ],
+  "featuresSectionTitle": "Voir les fonctionnalités",
+  "footer": {
+    "copyright": "© {{year}} JobNexus. Tous droits réservés.",
+    "navigation": {
+      "cgu": "CGU",
+      "community": "Communauté",
+      "contact": "Contact",
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "privacy": "Confidentialité",
+      "privacyPolicy": "Politique de confidentialité",
+      "testimonials": "Témoignages"
+    },
+    "reportBug": "Signaler un bug / Donner un avis",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    }
+  },
+  "hero": {
+    "ctaFinalLogin": "Bereits registriert? Anmelden",
+    "ctaFinalStart": "Jetzt starten",
+    "ctaFinalSubtitle": "Werde Teil von JobNexAI und bekomme schneller mehr Einladungen.",
+    "ctaFinalTitle": "Bereit für den Karrieresprung?",
+    "ctaStart": "Kostenlos testen",
+    "featureDescriptions": [
+      "Die KI bewirbt sich automatisch auf passende Stellen.",
+      "Interviews einfach visualisieren und vorbereiten.",
+      "Analysiere deinen Lebenslauf und erhalte gezielte Tipps.",
+      "Genieße ultra-präzises Matching zwischen Profil und Jobs.",
+      "Verfolge deinen Fortschritt und erhalte persönliche Empfehlungen."
+    ],
+    "features": [
+      "KI-gestützte Auto-Bewerbungen",
+      "Intelligentes Interview-Tracking",
+      "CV-Analyse und persönliche Tipps",
+      "Fortschrittliches Matching von Jobs und Skills",
+      "KI-Statistiken und Empfehlungen"
+    ],
+    "featuresSectionDescription": "Alles, was du für eine erfolgreiche Jobsuche brauchst.",
+    "featuresSectionSubtitle": "Wichtige Funktionen",
+    "featuresSectionTitle": "",
+    "howItWorksSectionDescription": "3 einfache Schritte zum Traumjob.",
+    "howItWorksSectionSubtitle": "Wie funktioniert es?",
+    "howItWorksSectionTitle": "",
+    "imageAlt": "JobNexAI Dashboard Illustration",
+    "startTrial": "",
+    "stepNumber": "Schritt {{number}}",
+    "steps": [
+      {
+        "description": "Beschreibe Ziele und Hintergrund in 2 Minuten.",
+        "title": "Erstelle dein KI-Profil"
+      },
+      {
+        "description": "Die KI findet und bewirbt sich für dich bei den besten Jobs.",
+        "title": "Starte den Auto-Bewerbungsprozess"
+      },
+      {
+        "description": "Analysiere Ergebnisse und bereite Interviews mit KI vor.",
+        "title": "Verfolge deinen Fortschritt"
+      }
+    ],
+    "subtitle": "Automatisiere, analysiere und erhalte mehr Einladungen mit JobNexAI.",
+    "testimonials": [
+      {
+        "name": "Sophie",
+        "quote": "JobNexAI hat mir 3 Interviews in 2 Wochen verschafft!",
+        "role": "React Entwicklerin"
+      },
+      {
+        "name": "Lucas",
+        "quote": "Das Automatisieren der Bewerbungen spart enorm Zeit.",
+        "role": "Projektmanager"
+      },
+      {
+        "name": "Emma",
+        "quote": "Die KI hat mir geholfen, mich besser auf Interviews vorzubereiten.",
+        "role": "UX/UI Designerin"
+      },
+      {
+        "name": "Yann",
+        "quote": "Ich habe dank JobNexAI eine Festanstellung gefunden!",
+        "role": "DevOps Engineer"
+      },
+      {
+        "name": "Fatima",
+        "quote": "Die Plattform ist einfach, effizient und motivierend.",
+        "role": "Product Owner"
+      },
+      {
+        "name": "Marco",
+        "quote": "Ich habe mehr positive Rückmeldungen erhalten als früher.",
+        "role": "Data Scientist"
+      }
+    ],
+    "testimonialsSectionSubtitle": "Sie fanden dank JobNexAI einen Job",
+    "testimonialsSectionTitle": "Erfahrungsberichte",
+    "title": "Die KI, die deine Jobsuche beschleunigt!",
+    "watchDemo": "Voir la démo"
+  },
+  "howItWorks": {
+    "description": "Unser vereinfachter Prozess begleitet dich bei jedem Schritt, um deine Chancen zu maximieren.",
+    "stepNumber": "Schritt {{number}}",
+    "steps": [
+      {
+        "description": "Importiere deinen Lebenslauf oder vervollständige deine Angaben mit wenigen Klicks.",
+        "title": "Erstelle dein Profil"
+      },
+      {
+        "description": "Die KI analysiert deine Fähigkeiten und den Markt, um dir die besten Angebote vorzuschlagen.",
+        "title": "Erhalte Empfehlungen"
+      },
+      {
+        "description": "Erstelle maßgeschneiderte Bewerbungen und verfolge deinen Fortschritt in Echtzeit.",
+        "title": "Bewirb dich einfach"
+      }
+    ],
+    "subtitle": "Entdecke, wie JobNexus deine Jobsuche optimiert.",
+    "title": "Wie funktioniert es?"
+  },
+  "howItWorksSectionTitle": "Comment ça marche",
+  "jobSearch": {
+    "filters": {
+      "keyword": ""
+    },
+    "locations": {
+      "hybrid": "",
+      "onsite": "",
+      "remote": ""
+    },
+    "subtitle": "",
+    "title": "",
+    "types": {
+      "contract": "",
+      "freelance": "",
+      "fullTime": "",
+      "internship": "",
+      "partTime": ""
+    }
+  },
+  "marketAnalysis": {
+    "averageSalary_one": "",
+    "averageSalary_other": "",
+    "jobTypes": "",
+    "noSalaryData": "",
+    "salaryInsights": "",
+    "subtitle": "",
+    "title": "",
+    "topLocations": ""
+  },
+  "marketTrends": {
+    "error": "",
+    "errorUnknown": "",
+    "jobTypes": "",
+    "loading": "",
+    "locations": "",
+    "noData": "",
+    "salary": "",
+    "salaryOffers": "",
+    "title": ""
+  },
+  "navigation": {
+    "profile": ""
+  },
+  "privacy": {
+    "accept": "",
+    "consent": "",
+    "contact": {
+      "description": "",
+      "title": ""
+    },
+    "dataCollection": {
+      "description": "",
+      "personal": "",
+      "preferences": "",
+      "skills": "",
+      "title": "",
+      "usage": ""
+    },
+    "dataPurpose": {
+      "analytics": "",
+      "description": "",
+      "matching": "",
+      "recommendations": "",
+      "title": ""
+    },
+    "dataRetention": {
+      "description": "",
+      "logs": "",
+      "preferences": "",
+      "skills": "",
+      "title": ""
+    },
+    "decline": "",
+    "rights": {
+      "access": "",
+      "description": "",
+      "erasure": "",
+      "portability": "",
+      "rectification": "",
+      "title": "",
+      "withdraw": ""
+    },
+    "security": {
+      "access": "",
+      "compliance": "",
+      "description": "",
+      "encryption": "",
+      "monitoring": "",
+      "title": ""
+    },
+    "shortConsent": "",
+    "title": ""
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "",
+      "title": "",
+      "updateError": "",
+      "updateSuccess": ""
+    },
+    "subtitle": "",
+    "title": ""
+  },
+  "steps": [
+    {
+      "description": "Importez votre CV ou renseignez vos expériences et compétences.",
+      "title": "Créez votre profil en 2 minutes"
+    },
+    {
+      "description": "Laissez l'IA analyser le marché et vous proposer les meilleures opportunités.",
+      "title": "Recevez des offres personnalisées"
+    },
+    {
+      "description": "Générez des candidatures sur-mesure et suivez vos avancées en temps réel.",
+      "title": "Postulez en un clic"
+    }
+  ],
+  "subtitle": "Optimisez votre recherche d'emploi grâce à l'automatisation intelligente et des conseils personnalisés.",
+  "testimonials": {
+    "0": {
+      "name": "Alice",
+      "quote": "JobNexus m'a permis de décrocher 3 entretiens en 2 semaines !",
+      "role": "Développeuse Web"
+    },
+    "1": {
+      "name": "Mehdi",
+      "quote": "La génération automatique de CV est bluffante.",
+      "role": "Product Manager"
+    },
+    "2": {
+      "name": "Sophie",
+      "quote": "J'ai gagné un temps fou pour postuler à mes offres préférées.",
+      "role": "Designer UX"
+    },
+    "3": {
+      "name": "Luca",
+      "quote": "Enfin une plateforme qui comprend vraiment mes besoins.",
+      "role": "Data Scientist"
+    },
+    "4": {
+      "name": "Fatima",
+      "quote": "L'accompagnement personnalisé fait la différence.",
+      "role": "Ingénieure IA"
+    },
+    "5": {
+      "name": "Paul",
+      "quote": "La veille marché intégrée m'a permis de cibler les meilleures opportunités.",
+      "role": "Consultant"
+    }
+  },
+  "testimonialsSectionSubtitle": "Témoignages de nos utilisateurs",
+  "testimonialsSectionTitle": "Ils ont trouvé leur job de rêve",
+  "watchDemo": "Regarder la démo"
+}

@@ -10,7 +10,7 @@ function Dashboard() {
   const { user } = useAuth()
 
   useEffect(() => {
-    document.title = 'Dashboard - JobNexus'
+    document.title = t('dashboard.documentTitle', { ns: 'translation' })
   }, [])
 
   return (
@@ -29,7 +29,7 @@ function Dashboard() {
           transition={{ delay: 0.1 }}
           className="text-gray-400 mt-1"
         >
-          Bonjour {user?.full_name || 'utilisateur'}
+          {t('dashboard.greeting', { name: user?.full_name || t('dashboard.userDefault') })}
         </motion.p>
       </div>
 

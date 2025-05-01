@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AuthService } from '../lib/auth-service';
+import { useTranslation } from 'react-i18next';
 
 type MarketTrend = {
   category: string;
@@ -20,40 +21,41 @@ const MarketTrends: React.FC = () => {
   const [trends, setTrends] = useState<MarketTrendsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     AuthService.getMarketTrends()
       .then(setTrends)
-      .catch((err) => setError(err.message || 'Erreur inconnue'))
+      .catch((err) => setError(err.message || t('marketTrends.errorUnknown')))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
-  if (loading) return <div>Chargement des tendances...</div>;
-  if (error) return <div>Erreur : {error}</div>;
-  if (!trends) return <div>Aucune donnée disponible.</div>;
+  if (loading) return <div>{t('marketTrends.loading')}</div>;
+  if (error) return <div>{t('marketTrends.error', { error })}</div>;
+  if (!trends) return <div>{t('marketTrends.noData')}</div>;
 
   return (
     <div>
-      <h2>Tendances du marché</h2>
-      <h3>Types de poste</h3>
+      <h2>{t('marketTrends.title')}</h2>
+      <h3>{t('marketTrends.jobTypes')}</h3>
       <ul>
-        {trends.jobTypes.map((t) => (
-          <li key={t.category}>
-            {t.category} : {t.count} ({t.percentage.toFixed(1)}%)
+        {trends.jobTypes.map((tItem) => (
+          <li key={tItem.category}>
+            {tItem.category} : {tItem.count} ({tItem.percentage.toFixed(1)}%)
           </li>
         ))}
       </ul>
-      <h3>Localisations</h3>
+      <h3>{t('marketTrends.locations')}</h3>
       <ul>
-        {trends.locations.map((l) => (
-          <li key={l.category}>
-            {l.category} : {l.count} ({l.percentage.toFixed(1)}%)
+        {trends.locations.map((lItem) => (
+          <li key={lItem.category}>
+            {lItem.category} : {lItem.count} ({lItem.percentage.toFixed(1)}%)
           </li>
         ))}
       </ul>
-      <h3>Salaire moyen</h3>
+      <h3>{t('marketTrends.salary')}</h3>
       <p>
-        {trends.salary.average.toLocaleString()} € ({trends.salary.count} offres renseignées)
+        {trends.salary.average.toLocaleString()} € ({trends.salary.count} {t('marketTrends.salaryOffers')})
       </p>
     </div>
   );

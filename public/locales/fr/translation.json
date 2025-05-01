@@ -1,0 +1,395 @@
+{
+  ".": "À traduire",
+  "Developer": "À traduire",
+  "English": "À traduire",
+  "a": "À traduire",
+  "application_exported_pdf": "À traduire",
+  "auth": {
+    "acceptTerms": "",
+    "alreadyRegistered": "",
+    "createAccount": "",
+    "email": "",
+    "errors": {
+      "acceptTerms": "",
+      "emailRequired": "",
+      "login": "",
+      "passwordLength": "",
+      "requiredFields": "",
+      "signup": "",
+      "unknown": ""
+    },
+    "forgotPassword": "À traduire",
+    "fullName": "",
+    "help": {
+      "capsLock": "",
+      "checkEmail": "",
+      "forgotPassword": "",
+      "noAccount": "",
+      "title": ""
+    },
+    "hidePassword": "",
+    "login": "",
+    "logout": "À traduire",
+    "mfa": {
+      "sms": {
+        "setup_completed": "À traduire",
+        "setup_started": "À traduire"
+      },
+      "totp": {
+        "setup_completed": "À traduire",
+        "setup_started": "À traduire"
+      }
+    },
+    "password": {
+      "updated": "À traduire"
+    },
+    "reset_password": {
+      "requested": "À traduire"
+    },
+    "showPassword": "",
+    "signin": {
+      "success": "À traduire"
+    },
+    "signout": {
+      "success": "À traduire"
+    },
+    "signup": {
+      "success": "À traduire"
+    },
+    "startTrial": "",
+    "success": {
+      "login": "",
+      "reset": "",
+      "signup": ""
+    },
+    "termsLink": ""
+  },
+  "badges": {
+    "firstApp": {
+      "description": "Envoie ta première candidature.",
+      "label": "Première candidature"
+    },
+    "networker": {
+      "description": "Ajoute un contact à ton réseau.",
+      "label": "Networker"
+    },
+    "persistent": {
+      "description": "Envoie 10 candidatures.",
+      "label": "Persévérant"
+    },
+    "starter": {
+      "description": "Bienvenue sur JobNexAI !",
+      "label": "Nouveau venu"
+    },
+    "title": "Badges de progression",
+    "toUnlock": "Débloque ce badge en atteignant l'objectif !",
+    "winner": {
+      "description": "Obtiens une offre d'emploi.",
+      "label": "Gagnant !"
+    }
+  },
+  "common": {
+    "connectedAs": "À traduire",
+    "loading": "",
+    "or": "",
+    "save": "À traduire",
+    "search": "À traduire",
+    "view": "À traduire"
+  },
+  "content": "À traduire",
+  "dashboard": {
+    "activity": {
+      "application": "Nouvelle candidature",
+      "favorite": "Favori",
+      "interview": "Entretien",
+      "offer": "Offre",
+      "status_change": "Changement de statut"
+    },
+    "documentTitle": "",
+    "greeting": "",
+    "recentApplications": {
+      "title": ""
+    },
+    "skillsProgress": {
+      "title": ""
+    },
+    "stats": {
+      "applications": "",
+      "applicationsSent": "Candidatures envoyées",
+      "averageSalary": "",
+      "interviews": "",
+      "interviewsUpcoming": "Entretiens à venir",
+      "matchingJobs": "",
+      "recentActivity": "Activité récente",
+      "responseRate": "",
+      "savedJobs": "",
+      "topCompanies": "Top Entreprises",
+      "topLocations": "Top Localisations"
+    },
+    "status": {
+      "accepted": "Acceptée",
+      "pending": "En attente",
+      "rejected": "Refusée"
+    },
+    "timeframe": {
+      "month": "Mois",
+      "week": "Semaine",
+      "year": "Année"
+    },
+    "userDefault": "",
+    "welcome": ""
+  },
+  "demo": {
+    "description": "À traduire"
+  },
+  "documentTitle": "Tableau de bord - JobNexus",
+  "edit": "À traduire",
+  "footer": {
+    "copyright": "© {{year}} JobNexus. Tous droits réservés.",
+    "navigation": {
+      "cgu": "CGU",
+      "community": "Communauté",
+      "contact": "Contact",
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "privacy": "Confidentialité",
+      "privacyPolicy": "Politique de confidentialité",
+      "testimonials": "Témoignages"
+    },
+    "reportBug": "Signaler un bug / Donner un avis",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    }
+  },
+  "free_trial_used": "À traduire",
+  "full_name": "À traduire",
+  "gdpr_consent": "À traduire",
+  "greeting": "Bonjour {{name}}",
+  "hero": {
+    "ctaFinalLogin": "Déjà inscrit ? Connexion",
+    "ctaFinalStart": "Commencer maintenant",
+    "ctaFinalSubtitle": "Rejoins JobNexAI et décroche plus d’entretiens, plus vite.",
+    "ctaFinalTitle": "Prêt à booster ta carrière ?",
+    "ctaStart": "Commencer l’essai gratuit",
+    "featureDescriptions": [
+      "À traduire",
+      "À traduire",
+      "À traduire",
+      "À traduire",
+      "À traduire"
+    ],
+    "features": [
+      "À traduire",
+      "À traduire",
+      "À traduire",
+      "À traduire",
+      "À traduire"
+    ],
+    "featuresSectionDescription": "À traduire",
+    "featuresSectionSubtitle": "À traduire",
+    "featuresSectionTitle": "Fonctionnalités à traduire",
+    "howItWorksSectionDescription": "À traduire",
+    "howItWorksSectionSubtitle": "À traduire",
+    "howItWorksSectionTitle": "À traduire",
+    "imageAlt": "À traduire",
+    "startTrial": "",
+    "stepNumber": "Étape {{number}}",
+    "steps": [
+      {
+        "description": "À traduire",
+        "title": "À traduire"
+      },
+      {
+        "description": "À traduire",
+        "title": "À traduire"
+      },
+      {
+        "description": "À traduire",
+        "title": "À traduire"
+      }
+    ],
+    "subtitle": "Automatise, analyse et décroche plus d’entretiens avec JobNexAI.",
+    "testimonials": [
+      {
+        "name": "Sophie",
+        "quote": "À traduire",
+        "role": "Développeuse React"
+      },
+      {
+        "name": "Lucas",
+        "quote": "À traduire",
+        "role": "Chef de projet"
+      },
+      {
+        "name": "Emma",
+        "quote": "À traduire",
+        "role": "Designer UX/UI"
+      },
+      {
+        "name": "Yann",
+        "quote": "À traduire",
+        "role": "Ingénieur DevOps"
+      },
+      {
+        "name": "Fatima",
+        "quote": "À traduire",
+        "role": "Product Owner"
+      },
+      {
+        "name": "Marco",
+        "quote": "À traduire",
+        "role": "Data Scientist"
+      }
+    ],
+    "testimonialsSectionSubtitle": "Ils ont trouvé un job grâce à JobNexAI",
+    "testimonialsSectionTitle": "Témoignages",
+    "title": "L’IA qui accélère ta recherche d’emploi !",
+    "watchDemo": "Regarder la démo"
+  },
+  "howItWorks": {
+    "description": "Notre processus simplifié vous guide à chaque étape pour maximiser vos chances.",
+    "stepNumber": "Étape {{number}}",
+    "steps": [
+      {
+        "description": "Importez votre CV ou complétez vos informations en quelques clics.",
+        "title": "Créez votre profil"
+      },
+      {
+        "description": "L'IA analyse vos compétences et le marché pour vous proposer les meilleures offres.",
+        "title": "Recevez des recommandations"
+      },
+      {
+        "description": "Générez des candidatures adaptées et suivez vos progrès en temps réel.",
+        "title": "Postulez facilement"
+      }
+    ],
+    "subtitle": "Découvrez comment JobNexus optimise votre recherche d'emploi.",
+    "title": "Comment ça marche ?"
+  },
+  "jobSearch": {
+    "filters": {
+      "keyword": "À traduire"
+    },
+    "locations": {
+      "hybrid": "À traduire",
+      "onsite": "À traduire",
+      "remote": "À traduire"
+    },
+    "subtitle": "À traduire",
+    "title": "À traduire",
+    "types": {
+      "contract": "À traduire",
+      "freelance": "À traduire",
+      "fullTime": "À traduire",
+      "internship": "À traduire",
+      "partTime": "À traduire"
+    }
+  },
+  "job_id": "À traduire",
+  "marketAnalysis": {
+    "averageSalary": "À traduire",
+    "averageSalary_many": "",
+    "averageSalary_one": "",
+    "averageSalary_other": "",
+    "jobTypes": "À traduire",
+    "noSalaryData": "À traduire",
+    "salaryInsights": "À traduire",
+    "subtitle": "À traduire",
+    "title": "À traduire",
+    "topLocations": "À traduire"
+  },
+  "marketTrends": {
+    "error": "À traduire",
+    "errorUnknown": "À traduire",
+    "jobTypes": "À traduire",
+    "loading": "À traduire",
+    "locations": "À traduire",
+    "noData": "À traduire",
+    "salary": "À traduire",
+    "salaryOffers": "À traduire",
+    "title": "À traduire"
+  },
+  "navigation": {
+    "profile": "À traduire"
+  },
+  "privacy": {
+    "accept": "À traduire",
+    "consent": "À traduire",
+    "contact": {
+      "description": "À traduire",
+      "title": "À traduire"
+    },
+    "dataCollection": {
+      "description": "À traduire",
+      "personal": "À traduire",
+      "preferences": "À traduire",
+      "skills": "À traduire",
+      "title": "À traduire",
+      "usage": "À traduire"
+    },
+    "dataPurpose": {
+      "analytics": "À traduire",
+      "description": "À traduire",
+      "matching": "À traduire",
+      "recommendations": "À traduire",
+      "title": "À traduire"
+    },
+    "dataRetention": {
+      "description": "À traduire",
+      "logs": "À traduire",
+      "preferences": "À traduire",
+      "skills": "À traduire",
+      "title": "À traduire"
+    },
+    "decline": "À traduire",
+    "rights": {
+      "access": "À traduire",
+      "description": "À traduire",
+      "erasure": "À traduire",
+      "portability": "À traduire",
+      "rectification": "À traduire",
+      "title": "À traduire",
+      "withdraw": "À traduire"
+    },
+    "security": {
+      "access": "À traduire",
+      "compliance": "À traduire",
+      "description": "À traduire",
+      "encryption": "À traduire",
+      "monitoring": "À traduire",
+      "title": "À traduire"
+    },
+    "shortConsent": "À traduire",
+    "title": "À traduire"
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "À traduire",
+      "title": "À traduire",
+      "updateError": "À traduire",
+      "updateSuccess": "À traduire"
+    },
+    "subtitle": "À traduire",
+    "title": "À traduire"
+  },
+  "read_by": "À traduire",
+  "sections": "À traduire",
+  "session_id": "À traduire",
+  "status": "À traduire",
+  "structure": "À traduire",
+  "subscription": {
+    "checkout": {
+      "completed": "À traduire",
+      "started": "À traduire"
+    },
+    "portal": {
+      "opened": "À traduire"
+    }
+  },
+  "typing": "À traduire",
+  "userDefault": "utilisateur",
+  "welcome": "Bienvenue sur votre tableau de bord"
+}

@@ -42,7 +42,7 @@ function Auth() {
   const handleSignUp = async (e: React.FormEvent) => {
     setTermsError(null);
     if (!acceptTerms) {
-      setTermsError('Vous devez accepter les conditions générales pour vous inscrire.');
+      setTermsError(t('auth.errors.acceptTerms'));
       return;
     }
 
@@ -50,12 +50,12 @@ function Auth() {
     setMessage(null)
     
     if (!email || !password) {
-      setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
+      setMessage({ type: 'error', text: t('auth.errors.requiredFields') })
       return
     }
 
     if (password.length < 12) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
+      setMessage({ type: 'error', text: t('auth.errors.passwordLength') })
       return
     }
 
@@ -71,14 +71,14 @@ function Auth() {
 
 
       if (!user) {
-        setMessage({ type: 'error', text: 'Une erreur est survenue lors de l\'inscription' })
+        setMessage({ type: 'error', text: t('auth.errors.signup') })
         return
       }
 
 
       setMessage({ 
         type: 'success', 
-        text: 'Inscription réussie ! Vous pouvez maintenant vous connecter.' 
+        text: t('auth.success.signup') 
       })
       
       // Rediriger vers la page de tarification après un court délai
@@ -87,7 +87,7 @@ function Auth() {
       }, 2000)
     } catch (error: any) {
       console.error('Error signing up:', error)
-      setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' })
+      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
     } finally {
       setLoading(false)
     }
@@ -101,12 +101,12 @@ function Auth() {
     setShowHelp(false)
 
     if (!email || !password) {
-      setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
+      setMessage({ type: 'error', text: t('auth.errors.requiredFields') })
       return
     }
 
     if (password.length < 12) {
-      setMessage({ type: 'error', text: 'Le mot de passe doit contenir au moins 9 caractères.' })
+      setMessage({ type: 'error', text: t('auth.errors.passwordLength') })
       return
     }
 
@@ -123,18 +123,18 @@ function Auth() {
 
 
       if (!user) {
-        setMessage({ type: 'error', text: 'Une erreur est survenue lors de la connexion' })
+        setMessage({ type: 'error', text: t('auth.errors.login') })
         return
       }
 
 
-      setMessage({ type: 'success', text: 'Connexion réussie !' })
+      setMessage({ type: 'success', text: t('auth.success.login') })
       
       // Rediriger vers le dashboard ou la page précédente
       navigate(from)
     } catch (error: any) {
       console.error('Error signing in:', error)
-      setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' })
+      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
       setShowHelp(true)
     } finally {
       setLoading(false)
@@ -145,7 +145,7 @@ function Auth() {
 
   const handleForgotPassword = async () => {
     if (!email) {
-      setMessage({ type: 'error', text: 'Veuillez entrer votre adresse email' })
+      setMessage({ type: 'error', text: t('auth.errors.emailRequired') })
       return
     }
 
@@ -162,11 +162,11 @@ function Auth() {
 
       setMessage({ 
         type: 'success', 
-        text: 'Instructions de réinitialisation envoyées à votre adresse email' 
+        text: t('auth.success.reset') 
       })
     } catch (error: any) {
       console.error('Error resetting password:', error)
-      setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' })
+      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
     } finally {
       setLoading(false)
     }
@@ -215,7 +215,7 @@ function Auth() {
                 required
               />
               <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-300">
-                J'accepte les <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline text-primary-400 hover:text-primary-300">conditions générales d'utilisation</a>
+                {t('auth.acceptTerms')} <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline text-primary-400 hover:text-primary-300">{t('auth.termsLink')}</a>
               </label>
             </div>
           )}
@@ -228,7 +228,7 @@ function Auth() {
             {!isLogin && (
               <div>
                 <label htmlFor="full-name" className="sr-only">
-                  Nom complet
+                  {t('auth.fullName')}
                 </label>
                 <input
                   id="full-name"
@@ -243,7 +243,7 @@ function Auth() {
                   }}
 
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5"
-                  placeholder="Nom complet"
+                  placeholder={t('auth.fullName')}
                 />
               </div>
             )}
@@ -302,7 +302,7 @@ function Auth() {
                 type="button"
                 tabIndex={-1}
 
-                aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
 
                 onClick={() => setShowPassword((v) => !v)}
 
@@ -344,12 +344,12 @@ function Auth() {
 
           {showHelp && isLogin && (
             <div className="bg-blue-900/50 text-blue-400 p-4 rounded-md">
-              <h4 className="text-sm font-medium mb-2">Besoin d'aide pour vous connecter ?</h4>
+              <h4 className="text-sm font-medium mb-2">{t('auth.help.title')}</h4>
               <ul className="text-xs space-y-1 list-disc list-inside">
-                <li>Vérifiez que votre adresse email est correcte</li>
-                <li>Assurez-vous que le verrouillage des majuscules est désactivé</li>
-                <li>Si vous avez oublié votre mot de passe, utilisez le lien "Mot de passe oublié"</li>
-                <li>Si vous n'avez pas encore de compte, cliquez sur "Créer un compte"</li>
+                <li>{t('auth.help.checkEmail')}</li>
+                <li>{t('auth.help.capsLock')}</li>
+                <li>{t('auth.help.forgotPassword')}</li>
+                <li>{t('auth.help.noAccount')}</li>
               </ul>
             </div>
           )}
@@ -376,7 +376,7 @@ function Auth() {
 
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white btn-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              {isLogin ? "Créer un compte" : "Déjà inscrit ? Se connecter"}
+              {isLogin ? t('auth.createAccount') : t('auth.alreadyRegistered')}
 
             </button>
           </div>

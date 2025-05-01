@@ -21,7 +21,7 @@ export function Footer() {
     ],
     social: [
       {
-        name: 'Twitter',
+        name: t('footer.social.twitter'),
         href: '#',
         icon: (props) => (
           <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -30,7 +30,7 @@ export function Footer() {
         ),
       },
       {
-        name: 'GitHub',
+        name: t('footer.social.github'),
         href: '#',
         icon: (props) => (
           <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -43,7 +43,7 @@ export function Footer() {
         ),
       },
       {
-        name: 'LinkedIn',
+        name: t('footer.social.linkedin'),
         href: '#',
         icon: (props) => (
           <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -72,7 +72,7 @@ export function Footer() {
           </div>
           <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
             {navigation.main.map((item) => (
-              <div key={item.name} className="pb-6">
+              <div key={item.href || item.name} className="pb-6">
                 {item.href ? (
                   <Link to={item.href} className="text-sm leading-6 text-gray-400 hover:text-white">
                     {item.name}

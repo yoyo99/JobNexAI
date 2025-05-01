@@ -1,0 +1,436 @@
+{
+  ".": "Da tradurre",
+  "Developer": "Da tradurre",
+  "English": "Da tradurre",
+  "a": "Da tradurre",
+  "application_exported_pdf": "Da tradurre",
+  "auth": {
+    "acceptTerms": "J'accepte les",
+    "alreadyRegistered": "Déjà inscrit ? Se connecter",
+    "createAccount": "Créer un compte",
+    "email": "Adresse email",
+    "errors": {
+      "acceptTerms": "Vous devez accepter les conditions générales pour vous inscrire.",
+      "emailRequired": "Veuillez entrer votre adresse email",
+      "login": "Une erreur est survenue lors de la connexion",
+      "passwordLength": "Le mot de passe doit contenir au moins 9 caractères.",
+      "requiredFields": "Veuillez remplir tous les champs",
+      "signup": "Une erreur est survenue lors de l'inscription",
+      "unknown": "Une erreur est survenue"
+    },
+    "forgotPassword": "",
+    "fullName": "Nom complet",
+    "help": {
+      "capsLock": "Assurez-vous que le verrouillage des majuscules est désactivé",
+      "checkEmail": "Vérifiez que votre adresse email est correcte",
+      "forgotPassword": "Si vous avez oublié votre mot de passe, utilisez le lien \"Mot de passe oublié\"",
+      "noAccount": "Si vous n'avez pas encore de compte, cliquez sur \"Créer un compte\"",
+      "title": "Besoin d'aide pour vous connecter ?"
+    },
+    "hidePassword": "Masquer le mot de passe",
+    "login": "Connexion",
+    "logout": "",
+    "password": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "signup": "Créer un compte",
+    "startTrial": "Commencer l’essai gratuit",
+    "success": {
+      "login": "Connexion réussie !",
+      "reset": "Instructions de réinitialisation envoyées à votre adresse email",
+      "signup": "Inscription réussie ! Vous pouvez maintenant vous connecter."
+    },
+    "termsLink": "conditions générales d'utilisation"
+  },
+  "badges": {
+    "firstApp": {
+      "description": "Invia la tua prima candidatura.",
+      "label": "Prima candidatura"
+    },
+    "networker": {
+      "description": "Aggiungi un contatto alla tua rete.",
+      "label": "Networker"
+    },
+    "persistent": {
+      "description": "Invia 10 candidature.",
+      "label": "Persistente"
+    },
+    "starter": {
+      "description": "Benvenuto su JobNexAI!",
+      "label": "Nuovo arrivato"
+    },
+    "title": "Badge di progresso",
+    "toUnlock": "Sblocca questo badge raggiungendo l'obiettivo!",
+    "winner": {
+      "description": "Ricevi un'offerta di lavoro.",
+      "label": "Vincitore!"
+    }
+  },
+  "common": {
+    "connectedAs": "",
+    "loading": "Chargement...",
+    "or": "ou",
+    "save": "",
+    "search": "",
+    "view": ""
+  },
+  "content": "Da tradurre",
+  "ctaFinalLogin": "Se connecter",
+  "ctaFinalStart": "Commencer l'essai gratuit",
+  "ctaFinalSubtitle": "Rejoignez notre plateforme et bénéficiez des meilleurs outils pour décrocher le job qui vous correspond.",
+  "ctaFinalTitle": "Prêt à booster votre carrière ?",
+  "ctaStart": "Commencer l'essai gratuit",
+  "dashboard": {
+    "activity": {
+      "application": "Nuova candidatura",
+      "favorite": "Preferito",
+      "interview": "Colloquio",
+      "offer": "Offerta",
+      "status_change": "Cambio di stato"
+    },
+    "documentTitle": "Dashboard - JobNexus",
+    "greeting": "Ciao {{name}}",
+    "recentApplications": {
+      "title": ""
+    },
+    "skillsProgress": {
+      "title": ""
+    },
+    "stats": {
+      "applications": "",
+      "applicationsSent": "Candidature inviate",
+      "averageSalary": "",
+      "interviews": "",
+      "interviewsUpcoming": "Colloqui in arrivo",
+      "matchingJobs": "",
+      "recentActivity": "Attività recente",
+      "responseRate": "",
+      "savedJobs": "",
+      "topCompanies": "Aziende principali",
+      "topLocations": "Località principali"
+    },
+    "status": {
+      "accepted": "Accettata",
+      "pending": "In attesa",
+      "rejected": "Respinta"
+    },
+    "timeframe": {
+      "month": "Mese",
+      "week": "Settimana",
+      "year": "Anno"
+    },
+    "userDefault": "utente",
+    "welcome": "Benvenuto nella tua dashboard"
+  },
+  "demo": {
+    "description": "Da tradurre"
+  },
+  "documentTitle": "Da tradurre",
+  "edit": "Da tradurre",
+  "features": [
+    "Analyse automatique des offres",
+    "Génération de CV et lettres de motivation",
+    "Suivi des candidatures",
+    "Statistiques personnalisées",
+    "Veille marché intelligente"
+  ],
+  "featuresSectionTitle": "Voir les fonctionnalités",
+  "footer": {
+    "copyright": "© {{year}} JobNexus. Tous droits réservés.",
+    "navigation": {
+      "cgu": "CGU",
+      "community": "Communauté",
+      "contact": "Contact",
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "privacy": "Confidentialité",
+      "privacyPolicy": "Politique de confidentialité",
+      "testimonials": "Témoignages"
+    },
+    "reportBug": "Signaler un bug / Donner un avis",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    }
+  },
+  "free_trial_used": "Da tradurre",
+  "full_name": "Da tradurre",
+  "gdpr_consent": "Da tradurre",
+  "greeting": "Da tradurre",
+  "hero": {
+    "ctaFinalLogin": "Già registrato? Accedi",
+    "ctaFinalStart": "Inizia ora",
+    "ctaFinalSubtitle": "Unisciti a JobNexAI e ottieni più colloqui, più velocemente.",
+    "ctaFinalTitle": "Pronto a far decollare la tua carriera?",
+    "ctaStart": "Inizia la prova gratuita",
+    "featureDescriptions": [
+      "L'IA si candida automaticamente alle offerte più adatte a te.",
+      "Visualizza e prepara facilmente i tuoi colloqui.",
+      "Analizza il tuo CV e ricevi consigli su misura.",
+      "Goditi un matching ultra preciso tra il tuo profilo e le offerte.",
+      "Monitora i tuoi progressi e ricevi raccomandazioni personalizzate."
+    ],
+    "features": [
+      "Candidature automatiche AI",
+      "Monitoraggio intelligente dei colloqui",
+      "Analisi CV e consigli personalizzati",
+      "Matching avanzato tra offerte e competenze",
+      "Statistiche e raccomandazioni AI"
+    ],
+    "featuresSectionDescription": "Tutto ciò di cui hai bisogno per avere successo nella ricerca di lavoro.",
+    "featuresSectionSubtitle": "Funzionalità principali",
+    "featuresSectionTitle": "",
+    "howItWorksSectionDescription": "3 semplici passi per trovare il lavoro ideale.",
+    "howItWorksSectionSubtitle": "Come funziona?",
+    "howItWorksSectionTitle": "",
+    "imageAlt": "Illustrazione della dashboard di JobNexAI",
+    "startTrial": "",
+    "stepNumber": "Passo {{number}}",
+    "steps": [
+      {
+        "description": "Descrivi i tuoi obiettivi e il tuo background in 2 minuti.",
+        "title": "Crea il tuo profilo AI"
+      },
+      {
+        "description": "L'IA trova e si candida per te alle migliori offerte.",
+        "title": "Avvia la candidatura automatica"
+      },
+      {
+        "description": "Analizza i risultati e prepara i colloqui con l'IA.",
+        "title": "Monitora i tuoi progressi"
+      }
+    ],
+    "subtitle": "Automatizza, analizza e ottieni più colloqui con JobNexAI.",
+    "testimonials": [
+      {
+        "name": "Sophie",
+        "quote": "JobNexAI mi ha fatto ottenere 3 colloqui in 2 settimane!",
+        "role": "Sviluppatrice React"
+      },
+      {
+        "name": "Lucas",
+        "quote": "Automatizzare le candidature fa risparmiare davvero tempo.",
+        "role": "Project Manager"
+      },
+      {
+        "name": "Emma",
+        "quote": "L'IA mi ha aiutato a preparare meglio i colloqui.",
+        "role": "UX/UI Designer"
+      },
+      {
+        "name": "Yann",
+        "quote": "Ho trovato un lavoro a tempo indeterminato grazie a JobNexAI!",
+        "role": "DevOps Engineer"
+      },
+      {
+        "name": "Fatima",
+        "quote": "La piattaforma è semplice, efficiente e motivante.",
+        "role": "Product Owner"
+      },
+      {
+        "name": "Marco",
+        "quote": "Ho ricevuto più risposte positive rispetto a prima.",
+        "role": "Data Scientist"
+      }
+    ],
+    "testimonialsSectionSubtitle": "Hanno trovato lavoro grazie a JobNexAI",
+    "testimonialsSectionTitle": "Testimonianze",
+    "title": "L'IA che accelera la tua ricerca di lavoro!",
+    "watchDemo": "Voir la démo"
+  },
+  "howItWorks": {
+    "description": "Il nostro processo semplificato ti guida in ogni fase per massimizzare le tue possibilità.",
+    "stepNumber": "Passo {{number}}",
+    "steps": [
+      {
+        "description": "Importa il tuo CV o completa le tue informazioni in pochi clic.",
+        "title": "Crea il tuo profilo"
+      },
+      {
+        "description": "L'IA analizza le tue competenze e il mercato per suggerirti le migliori offerte.",
+        "title": "Ricevi raccomandazioni"
+      },
+      {
+        "description": "Genera candidature personalizzate e monitora i tuoi progressi in tempo reale.",
+        "title": "Candidati facilmente"
+      }
+    ],
+    "subtitle": "Scopri come JobNexus ottimizza la tua ricerca di lavoro.",
+    "title": "Come funziona?"
+  },
+  "howItWorksSectionTitle": "Comment ça marche",
+  "jobSearch": {
+    "filters": {
+      "keyword": "Da tradurre"
+    },
+    "locations": {
+      "hybrid": "Da tradurre",
+      "onsite": "Da tradurre",
+      "remote": "Da tradurre"
+    },
+    "subtitle": "Da tradurre",
+    "title": "Da tradurre",
+    "types": {
+      "contract": "Da tradurre",
+      "freelance": "Da tradurre",
+      "fullTime": "Da tradurre",
+      "internship": "Da tradurre",
+      "partTime": "Da tradurre"
+    }
+  },
+  "job_id": "Da tradurre",
+  "marketAnalysis": {
+    "averageSalary": "Da tradurre",
+    "averageSalary_many": "",
+    "averageSalary_one": "",
+    "averageSalary_other": "",
+    "jobTypes": "Da tradurre",
+    "noSalaryData": "Da tradurre",
+    "salaryInsights": "Da tradurre",
+    "subtitle": "Da tradurre",
+    "title": "Da tradurre",
+    "topLocations": "Da tradurre"
+  },
+  "marketTrends": {
+    "error": "Da tradurre",
+    "errorUnknown": "Da tradurre",
+    "jobTypes": "Da tradurre",
+    "loading": "Da tradurre",
+    "locations": "Da tradurre",
+    "noData": "Da tradurre",
+    "salary": "Da tradurre",
+    "salaryOffers": "Da tradurre",
+    "title": "Da tradurre"
+  },
+  "navigation": {
+    "profile": ""
+  },
+  "privacy": {
+    "accept": "",
+    "consent": "",
+    "contact": {
+      "description": "",
+      "title": ""
+    },
+    "dataCollection": {
+      "description": "",
+      "personal": "",
+      "preferences": "",
+      "skills": "",
+      "title": "",
+      "usage": ""
+    },
+    "dataPurpose": {
+      "analytics": "",
+      "description": "",
+      "matching": "",
+      "recommendations": "",
+      "title": ""
+    },
+    "dataRetention": {
+      "description": "",
+      "logs": "",
+      "preferences": "",
+      "skills": "",
+      "title": ""
+    },
+    "decline": "",
+    "rights": {
+      "access": "",
+      "description": "",
+      "erasure": "",
+      "portability": "",
+      "rectification": "",
+      "title": "",
+      "withdraw": ""
+    },
+    "security": {
+      "access": "",
+      "compliance": "",
+      "description": "",
+      "encryption": "",
+      "monitoring": "",
+      "title": ""
+    },
+    "shortConsent": "",
+    "title": ""
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "Da tradurre",
+      "title": "Da tradurre",
+      "updateError": "Da tradurre",
+      "updateSuccess": "Da tradurre"
+    },
+    "subtitle": "Da tradurre",
+    "title": "Da tradurre"
+  },
+  "read_by": "Da tradurre",
+  "sections": "Da tradurre",
+  "session_id": "Da tradurre",
+  "status": "Da tradurre",
+  "steps": [
+    {
+      "description": "Importez votre CV ou renseignez vos expériences et compétences.",
+      "title": "Créez votre profil en 2 minutes"
+    },
+    {
+      "description": "Laissez l'IA analyser le marché et vous proposer les meilleures opportunités.",
+      "title": "Recevez des offres personnalisées"
+    },
+    {
+      "description": "Générez des candidatures sur-mesure et suivez vos avancées en temps réel.",
+      "title": "Postulez en un clic"
+    }
+  ],
+  "structure": "Da tradurre",
+  "subscription": {
+    "checkout": {
+      "completed": "Da tradurre",
+      "started": "Da tradurre"
+    },
+    "portal": {
+      "opened": "Da tradurre"
+    }
+  },
+  "subtitle": "Optimisez votre recherche d'emploi grâce à l'automatisation intelligente et des conseils personnalisés.",
+  "testimonials": {
+    "0": {
+      "name": "Alice",
+      "quote": "JobNexus m'a permis de décrocher 3 entretiens en 2 semaines !",
+      "role": "Développeuse Web"
+    },
+    "1": {
+      "name": "Mehdi",
+      "quote": "La génération automatique de CV est bluffante.",
+      "role": "Product Manager"
+    },
+    "2": {
+      "name": "Sophie",
+      "quote": "J'ai gagné un temps fou pour postuler à mes offres préférées.",
+      "role": "Designer UX"
+    },
+    "3": {
+      "name": "Luca",
+      "quote": "Enfin une plateforme qui comprend vraiment mes besoins.",
+      "role": "Data Scientist"
+    },
+    "4": {
+      "name": "Fatima",
+      "quote": "L'accompagnement personnalisé fait la différence.",
+      "role": "Ingénieure IA"
+    },
+    "5": {
+      "name": "Paul",
+      "quote": "La veille marché intégrée m'a permis de cibler les meilleures opportunités.",
+      "role": "Consultant"
+    }
+  },
+  "testimonialsSectionSubtitle": "Témoignages de nos utilisateurs",
+  "testimonialsSectionTitle": "Ils ont trouvé leur job de rêve",
+  "typing": "Da tradurre",
+  "userDefault": "Da tradurre",
+  "watchDemo": "Regarder la démo",
+  "welcome": "Da tradurre"
+}

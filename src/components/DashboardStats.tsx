@@ -94,8 +94,11 @@ const activityConfig = {
   },
 }
 
+import { useTranslation } from 'react-i18next'
+
 export function DashboardStats() {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [timeframe, setTimeframe] = useState<'week' | 'month' | 'year'>('week')
@@ -273,17 +276,17 @@ export function DashboardStats() {
     <div className="space-y-6">
       {/* Timeframe selector */}
       <div className="flex justify-end space-x-2">
-        {(['week', 'month', 'year'] as const).map((t) => (
+        {(['week', 'month', 'year'] as const).map((tf) => (
           <button
-            key={t}
-            onClick={() => setTimeframe(t)}
+            key={tf}
+            onClick={() => setTimeframe(tf)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              timeframe === t
+              timeframe === tf
                 ? 'bg-primary-600 text-white'
                 : 'bg-white/5 text-gray-400 hover:bg-white/10'
             }`}
           >
-            {t.charAt(0).toUpperCase() + t.slice(1)}
+            {t(`dashboard.timeframe.${tf}`)}
           </button>
         ))}
       </div>
@@ -316,7 +319,7 @@ export function DashboardStats() {
             <h3 className="text-lg font-semibold text-white">
               {stats.applications.total}
             </h3>
-            <p className="text-sm text-gray-400">Candidatures</p>
+            <p className="text-sm text-gray-400">{t('dashboard.stats.applicationsSent')}</p>
           </div>
         </motion.div>
 
@@ -335,7 +338,7 @@ export function DashboardStats() {
             <h3 className="text-lg font-semibold text-white">
               {stats.interviews.upcoming}
             </h3>
-            <p className="text-sm text-gray-400">Entretiens à venir</p>
+            <p className="text-sm text-gray-400">{t('dashboard.stats.interviewsUpcoming')}</p>
           </div>
         </motion.div>
 
@@ -359,7 +362,7 @@ export function DashboardStats() {
                 </div>
               ))}
             </div>
-            <p className="text-sm text-gray-400 mt-2">Top Entreprises</p>
+            <p className="text-sm text-gray-400 mt-2">{t('dashboard.stats.topCompanies')}</p>
           </div>
         </motion.div>
 
@@ -383,7 +386,7 @@ export function DashboardStats() {
                 </div>
               ))}
             </div>
-            <p className="text-sm text-gray-400 mt-2">Top Localisations</p>
+            <p className="text-sm text-gray-400 mt-2">{t('dashboard.stats.topLocations')}</p>
           </div>
         </motion.div>
       </div>
@@ -396,7 +399,7 @@ export function DashboardStats() {
         className="card"
       >
         <h3 className="text-lg font-semibold text-white mb-4">
-          Activité récente
+          {t('dashboard.stats.recentActivity')}
         </h3>
         <div className="space-y-4">
           {stats.recentActivity.map((activity) => {
@@ -411,7 +414,7 @@ export function DashboardStats() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white truncate">
-                    {activity.title}
+                    {t(`dashboard.activity.${activity.type}`)}: {activity.title}
                   </p>
                   <p className="text-sm text-gray-400">
                     {activity.company}

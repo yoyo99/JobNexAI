@@ -106,7 +106,7 @@ export function Hero() {
               className="mt-10 flex items-center justify-center gap-x-6"
             >
               <Link to="/pricing" className="btn-primary">
-                {t('hero.ctaStart', 'Commencer l\'essai gratuit')}
+                {t('hero.ctaStart')}
               </Link>
               <button
                 onClick={() => setShowVideo(true)}
@@ -196,6 +196,7 @@ export function Hero() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white text-xl font-bold">
                     {index + 1}
                   </div>
+                  <span className="sr-only">{t('hero.stepNumber', { number: index + 1 })}</span>
                   <h3 className="mt-6 text-lg font-semibold leading-8 text-white">{step.title}</h3>
                   <p className="mt-2 text-base leading-7 text-gray-400">{step.description}</p>
                 </motion.div>
