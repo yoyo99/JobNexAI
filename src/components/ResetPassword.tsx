@@ -29,9 +29,9 @@ function ResetPassword() {
 
     try {
       setLoading(true);
-      // Utilisation du client Supabase natif :
-      // Si le token recovery est dans l'URL, supabase-js gère la session automatiquement
+      console.log('Tentative de reset du mot de passe via Supabase...');
       const { error } = await supabase.auth.updateUser({ password });
+      console.log('Réponse Supabase reçue', error);
 
       if (error) {
         setMessage({ type: 'error', text: error.message });
@@ -43,6 +43,7 @@ function ResetPassword() {
         navigate('/login');
       }, 2000);
     } catch (error: any) {
+      console.error('Erreur inattendue reset password:', error);
       setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' });
     } finally {
       setLoading(false);
