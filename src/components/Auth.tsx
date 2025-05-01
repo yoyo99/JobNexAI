@@ -113,7 +113,8 @@ function Auth() {
 
     try {
       setLoading(true)
-      const { user, error } = await AuthService.signIn(email, password)
+      const { user, error, ...rest } = await AuthService.signIn(email, password)
+      console.log('DEBUG LOGIN RESPONSE', { user, error, ...rest });
 
       if (error) {
         setMessage({ type: 'error', text: error.message })
@@ -121,20 +122,18 @@ function Auth() {
         return
       }
 
-
       if (!user) {
         setMessage({ type: 'error', text: t('auth.errors.login') })
+        setShowHelp(true)
         return
       }
 
-
       setMessage({ type: 'success', text: t('auth.success.login') })
-      
       // Rediriger vers le dashboard ou la page précédente
       navigate(from)
     } catch (error: any) {
       console.error('Error signing in:', error)
-      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
+      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') })
       setShowHelp(true)
     } finally {
       setLoading(false)

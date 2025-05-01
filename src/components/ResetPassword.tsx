@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
-import { AuthService } from '../lib/auth-service'
+import { supabase } from '../lib/supabaseClient' // Utilisation du client natif
 
 function ResetPassword() {
   const [loading, setLoading] = useState(false)
@@ -14,39 +14,38 @@ function ResetPassword() {
   const navigate = useNavigate()
 
   const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setMessage(null)
-    
+    e.preventDefault();
+    setMessage(null);
+
     if (!password || !confirmPassword) {
-      setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' })
-      return
+      setMessage({ type: 'error', text: 'Veuillez remplir tous les champs' });
+      return;
     }
 
     if (password !== confirmPassword) {
-      setMessage({ type: 'error', text: 'Les mots de passe ne correspondent pas' })
-      return
+      setMessage({ type: 'error', text: 'Les mots de passe ne correspondent pas' });
+      return;
     }
 
     try {
-      setLoading(true)
-      const { error } = await AuthService.updatePassword(password)
+      setLoading(true);
+      // Utilisation du client Supabase natif :
+      // Si le token recovery est dans l'URL, supabase-js gère la session automatiquement
+      const { error } = await supabase.auth.updateUser({ password });
 
       if (error) {
-        setMessage({ type: 'error', text: error.message })
-        return
+        setMessage({ type: 'error', text: error.message });
+        return;
       }
 
-      setMessage({ type: 'success', text: 'Votre mot de passe a été mis à jour avec succès' })
-      
-      // Rediriger vers la page de connexion après un court délai
+      setMessage({ type: 'success', text: 'Votre mot de passe a été mis à jour avec succès' });
       setTimeout(() => {
-        navigate('/login')
-      }, 2000)
+        navigate('/login');
+      }, 2000);
     } catch (error: any) {
-      console.error('Error resetting password:', error)
-      setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' })
+      setMessage({ type: 'error', text: error.message || 'Une erreur est survenue' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
