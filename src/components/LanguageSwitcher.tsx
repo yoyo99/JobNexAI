@@ -46,7 +46,8 @@ export default function LanguageSwitcher() {
                 }`}
                 onClick={() => {
   i18n.changeLanguage(lang.code).then(() => {
-    window.location.reload(); // Force le rechargement pour appliquer la langue partout
+    localStorage.setItem('i18nextLng', lang.code); // Force la langue dans le localStorage
+    window.location.reload();
   });
 }}
               >
