@@ -44,7 +44,11 @@ export default function LanguageSwitcher() {
                     ? 'bg-gray-50 text-primary-600'
                     : 'text-gray-900 hover:bg-gray-50'
                 }`}
-                onClick={() => i18n.changeLanguage(lang.code)}
+                onClick={() => {
+  i18n.changeLanguage(lang.code).then(() => {
+    window.location.reload(); // Force le rechargement pour appliquer la langue partout
+  });
+}}
               >
                 <span className="text-base">{lang.flag}</span>
                 {lang.name}

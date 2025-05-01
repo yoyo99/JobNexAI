@@ -10,18 +10,31 @@ i18n
   .init({
     fallbackLng: 'fr',
     supportedLngs: ['fr', 'en', 'de', 'es', 'it'],
-    defaultNS: 'common',
     ns: ['common'],
+    defaultNS: 'common',
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
     },
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
+      requestOptions: {
+        mode: 'cors',
+        credentials: 'same-origin',
+      },
     },
+    react: {
+      useSuspense: false,
+    },
+    debug: true,
   })
+
+// Pour le debug : log la langue courante et les namespaces chargés
+console.log('[i18n] Langue détectée:', i18n.language, '| Namespaces:', i18n.options.ns)
+
 
 export default i18n
