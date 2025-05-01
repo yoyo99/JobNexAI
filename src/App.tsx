@@ -40,7 +40,8 @@ const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelectio
 
 import i18n from './i18n';
 function App() {
-  console.log('Langue courante i18n:', i18n.language);
+  console.log('[i18n-debug] Langue courante:', i18n.language, '| Ressources:', Object.keys(i18n.services.resourceStore.data), '| Namespaces:', i18n.options.ns);
+
 
   return (
     <ErrorBoundary>
