@@ -417,6 +417,7 @@ function Pricing() {
                 <DocumentTextIcon className="w-8 h-8 text-primary-400" />
               )}
               <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+            </div>
 
             <div className="flex items-baseline gap-2 mt-4 mb-2">
               <span className="text-4xl font-extrabold tracking-tight text-white">
