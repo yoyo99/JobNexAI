@@ -54,7 +54,6 @@ export default function LanguageSwitcher() {
       >
         <Menu.Items
           className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
-          role="listbox"
         >
           {languages.map((lang) => (
             <Menu.Item key={lang.code}>
@@ -71,7 +70,7 @@ export default function LanguageSwitcher() {
                     i18n.changeLanguage(lang.code);
                     localStorage.setItem('i18nextLng', lang.code);
                   }}
-                  role="option"
+                  
                   aria-selected={i18n.language === lang.code}
                   tabIndex={0}
                 >
