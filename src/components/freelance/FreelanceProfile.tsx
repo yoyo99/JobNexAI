@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../stores/auth'
+import { formatPrice } from '../../utils/formatPrice'
 import { supabase } from '../../lib/supabase'
 import { useDropzone } from 'react-dropzone'
 import {
@@ -292,7 +293,7 @@ function FreelanceProfile() {
               
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Taux horaire (€)
+                  Taux horaire
                 </label>
                 <input
                   type="number"
@@ -332,7 +333,7 @@ function FreelanceProfile() {
           ) : (
             <div>
               <h3 className="text-xl font-semibold text-white">{profile.title}</h3>
-              <p className="text-primary-400 font-semibold mt-2">{profile.hourly_rate}€ / heure</p>
+              <p className="text-primary-400 font-semibold mt-2">{formatPrice(profile.hourly_rate)} / heure</p>
               
               <div className="mt-4">
                 <h4 className="text-sm font-medium text-gray-400">Disponibilité</h4>

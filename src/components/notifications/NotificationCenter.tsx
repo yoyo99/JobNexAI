@@ -26,17 +26,22 @@ export function NotificationCenter() {
   const [unreadCount, setUnreadCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (user) {
       loadNotifications()
-      subscribeToNotifications()
+      const unsubscribe = subscribeToNotifications()
+      return () => {
+        if (unsubscribe) unsubscribe()
+      }
     }
   }, [user])
 
   const loadNotifications = async () => {
     try {
       setLoading(true)
+      setError(null)
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -47,8 +52,9 @@ export function NotificationCenter() {
       if (error) throw error
       setNotifications(data || [])
       setUnreadCount(data?.filter(n => !n.read).length || 0)
-    } catch (error) {
-      console.error('Error loading notifications:', error)
+    } catch (err: any) {
+      setError('Erreur lors du chargement des notifications.')
+      console.error('Error loading notifications:', err)
     } finally {
       setLoading(false)
     }
@@ -71,7 +77,7 @@ export function NotificationCenter() {
           setUnreadCount(prev => prev + 1)
 
           // Show browser notification
-          if (Notification.permission === 'granted') {
+          if (window.Notification && Notification.permission === 'granted') {
             new Notification(newNotification.title, {
               body: newNotification.content,
               icon: '/logo.png',
@@ -145,8 +151,6 @@ export function NotificationCenter() {
     }
   }
 
-  if (loading) return null
-
   return (
     <div className="relative">
       <button
@@ -189,61 +193,74 @@ export function NotificationCenter() {
               </div>
             </div>
 
+            {loading && (
+              <div className="p-4 text-center text-gray-400">
+                Chargement des notifications…
+              </div>
+            )}
+            {error && (
+              <div className="p-4 text-center text-red-400">
+                {error}
+              </div>
+            )}
+
             <div className="max-h-[480px] overflow-y-auto">
-              {notifications.length === 0 ? (
+              {!loading && !error && notifications.length === 0 ? (
                 <div className="p-4 text-center text-gray-400">
-                  
                   Aucune notification
                 </div>
-              ) : (
-                notifications.map((notification) => (
-                  <motion.div
-                    key={notification.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 border-b border-white/10 ${
-                      notification.read ? 'bg-white/5' : 'bg-primary-600/20'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="font-medium text-white">
-                          {notification.title}
-                        </p>
-                        <p className="text-sm text-gray-400 mt-1">
-                          {notification.content}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-2">
-                          {format(new Date(notification.created_at), 'dd MMMM yyyy à HH:mm', { locale: fr })}
-                        </p>
-                        {notification.link && (
-                          <a
-                            href={notification.link}
-                            className="text-sm text-primary-400 hover:text-primary-300 mt-2 inline-block"
-                          >
-                            Voir les détails →
-                          </a>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 ml-4">
-                        {!notification.read && (
+              ) : null}
+              {!loading && !error && notifications.length > 0 && (
+                <div>
+                  {notifications.map((notification) => (
+                    <motion.div
+                      key={notification.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`p-4 border-b border-white/10 ${
+                        notification.read ? 'bg-white/5' : 'bg-primary-600/20'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="font-medium text-white">
+                            {notification.title}
+                          </p>
+                          <p className="text-sm text-gray-400 mt-1">
+                            {notification.content}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-2">
+                            {format(new Date(notification.created_at), 'dd MMMM yyyy à HH:mm', { locale: fr })}
+                          </p>
+                          {notification.link && (
+                            <a
+                              href={notification.link}
+                              className="text-sm text-primary-400 hover:text-primary-300 mt-2 inline-block"
+                            >
+                              Voir les détails →
+                            </a>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          {!notification.read && (
+                            <button
+                              onClick={() => markAsRead(notification.id)}
+                              className="p-1 text-green-400 hover:bg-green-400/10 rounded-lg transition-colors"
+                            >
+                              <CheckIcon className="h-4 w-4" />
+                            </button>
+                          )}
                           <button
-                            onClick={() => markAsRead(notification.id)}
-                            className="p-1 text-green-400 hover:bg-green-400/10 rounded-lg transition-colors"
+                            onClick={() => deleteNotification(notification.id)}
+                            className="p-1 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
                           >
-                            <CheckIcon className="h-4 w-4" />
+                            <XMarkIcon className="h-4 w-4" />
                           </button>
-                        )}
-                        <button
-                          onClick={() => deleteNotification(notification.id)}
-                          className="p-1 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
-                        >
-                          <XMarkIcon className="h-4 w-4" />
-                        </button>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))
+                    </motion.div>
+                  ))}
+                </div>
               )}
             </div>
           </motion.div>

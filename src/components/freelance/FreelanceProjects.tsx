@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../stores/auth'
 import { format } from 'date-fns'
+import { formatPrice } from '../../utils/formatPrice'
 import { fr } from 'date-fns/locale'
 import {
   MagnifyingGlassIcon,
@@ -357,7 +358,7 @@ function FreelanceProjects() {
                       type="number"
                       value={budgetMin}
                       onChange={(e) => setBudgetMin(e.target.value ? Number(e.target.value) : '')}
-                      placeholder="Min €"
+                      placeholder="Ex: 1 000,00 €"
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
@@ -366,7 +367,7 @@ function FreelanceProjects() {
                       type="number"
                       value={budgetMax}
                       onChange={(e) => setBudgetMax(e.target.value ? Number(e.target.value) : '')}
-                      placeholder="Max €"
+                      placeholder="Ex: 5 000,00 €"
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
@@ -516,7 +517,7 @@ function FreelanceProjects() {
                     <div className="text-right">
                       <div className="flex items-center text-primary-400 font-semibold">
                         <CurrencyEuroIcon className="h-5 w-5 mr-1" />
-                        {project.budget_min.toLocaleString()} - {project.budget_max.toLocaleString()}
+                        {formatPrice(project.budget_min)} - {formatPrice(project.budget_max)}
                       </div>
                       <p className="text-sm text-gray-400">
                         Date limite: {format(new Date(project.deadline), 'dd MMMM yyyy', { locale: fr })}

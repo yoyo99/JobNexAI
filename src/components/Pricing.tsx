@@ -187,9 +187,7 @@ const recruiterPlans = [
   },
 ]
 
-function formatPrice(value: number): string {
-  return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 })
-}
+import { formatPrice } from '../../utils/formatPrice'
 
 function Pricing() {
   const { user } = useAuth()

@@ -69,7 +69,7 @@ const Auth: React.FC = () => {
       }, 2000);
     } catch (error: any) {
       console.error('Error signing up:', error);
-      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') });
+      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
     } finally {
       setLoading(false);
     }
@@ -91,7 +91,7 @@ const Auth: React.FC = () => {
       setLoading(true);
       const { user, error } = await AuthService.signIn(email, password);
       if (error) {
-        setMessage({ type: 'error', text: error.message });
+        setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
         setShowHelp(true);
         return;
       }
@@ -124,7 +124,7 @@ const Auth: React.FC = () => {
       }
       setMessage({ type: 'success', text: t('auth.success.reset') });
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') });
+      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
     } finally {
       setLoading(false);
     }

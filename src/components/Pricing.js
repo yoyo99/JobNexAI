@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../stores/auth';
+import { formatPrice } from '../../utils/formatPrice';
 // Mise à jour des IDs de produits Stripe avec vos valeurs réelles
 const plans = [
     {
@@ -32,7 +33,7 @@ const plans = [
     },
     {
         name: 'Pro',
-        price: '9.99€',
+        price: 9.99,
         priceId: 'prod_S6wNQ7xaUtpmy1', // Abonnement Pro Mensuel
         yearlyPriceId: 'prod_S6wPih2AhKZEkS', // Abonnement Pro Annuel
         description: 'Tout ce dont vous avez besoin pour votre recherche d\'emploi',
@@ -51,7 +52,7 @@ const plans = [
     },
     {
         name: 'Enterprise',
-        price: '29.99€',
+        price: 29.99,
         priceId: 'prod_S6wURmBdYoDuaz', // Abonnement Entreprise Mensuel
         yearlyPriceId: 'prod_S6wVXdjUcpcJ4i', // Abonnement Entreprise Annuel
         description: 'Solution complète pour les professionnels exigeants',
@@ -88,7 +89,7 @@ const freelancerPlans = [
     },
     {
         name: 'Pro',
-        price: '14.99€',
+        price: 14.99,
         priceId: 'prod_S6wNQ7xaUtpmy1', // Utiliser le même ID que pour les candidats pour simplifier
         yearlyPriceId: 'prod_S6wPih2AhKZEkS',
         description: 'Pour les freelances qui veulent développer leur activité',
@@ -107,7 +108,7 @@ const freelancerPlans = [
     },
     {
         name: 'Business',
-        price: '24.99€',
+        price: 24.99,
         priceId: 'prod_S6wURmBdYoDuaz', // Utiliser le même ID que pour les candidats pour simplifier
         yearlyPriceId: 'prod_S6wVXdjUcpcJ4i',
         description: 'Pour les freelances confirmés et les agences',
@@ -143,7 +144,7 @@ const recruiterPlans = [
     },
     {
         name: 'Business',
-        price: '49.99€',
+        price: 49.99,
         priceId: 'prod_S6wNQ7xaUtpmy1', // Utiliser le même ID que pour les candidats pour simplifier
         yearlyPriceId: 'prod_S6wPih2AhKZEkS',
         description: 'Pour les entreprises en croissance',
@@ -162,7 +163,7 @@ const recruiterPlans = [
     },
     {
         name: 'Enterprise',
-        price: '199.99€',
+        price: 199.99,
         priceId: 'prod_S6wURmBdYoDuaz', // Utiliser le même ID que pour les candidats pour simplifier
         yearlyPriceId: 'prod_S6wVXdjUcpcJ4i',
         description: 'Pour les grandes entreprises et les cabinets de recrutement',
@@ -278,10 +279,10 @@ export function Pricing() {
                                 })] }) })), _jsx("div", { className: "mt-8 flex justify-center", children: _jsxs("div", { className: "relative flex rounded-full bg-white/5 p-1", children: [_jsx("button", { type: "button", className: `${userType === 'candidate' ? 'bg-primary-600 text-white' : 'text-gray-400'} rounded-full py-2 px-6 text-sm font-semibold transition-colors`, onClick: () => setUserType('candidate'), children: "Candidat" }), _jsx("button", { type: "button", className: `${userType === 'freelancer' ? 'bg-primary-600 text-white' : 'text-gray-400'} rounded-full py-2 px-6 text-sm font-semibold transition-colors`, onClick: () => setUserType('freelancer'), children: "Freelance" }), _jsx("button", { type: "button", className: `${userType === 'recruiter' ? 'bg-primary-600 text-white' : 'text-gray-400'} rounded-full py-2 px-6 text-sm font-semibold transition-colors`, onClick: () => setUserType('recruiter'), children: "Recruteur" })] }) }), _jsx("div", { className: "mt-8 flex justify-center", children: _jsxs("div", { className: "relative flex rounded-full bg-white/5 p-1", children: [_jsx("button", { type: "button", className: `${frequency === 'monthly' ? 'bg-primary-600 text-white' : 'text-gray-400'} rounded-full py-2 px-6 text-sm font-semibold transition-colors`, onClick: () => setFrequency('monthly'), children: "Mensuel" }), _jsxs("button", { type: "button", className: `${frequency === 'yearly' ? 'bg-primary-600 text-white' : 'text-gray-400'} rounded-full py-2 px-6 text-sm font-semibold transition-colors`, onClick: () => setFrequency('yearly'), children: ["Annuel ", _jsx("span", { className: "text-primary-400 ml-1", children: "-20%" })] })] }) })] }), _jsx("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto px-4", children: selectedPlans.map((plan, index) => (_jsxs(motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.3, delay: index * 0.1 }, className: `relative rounded-2xl border ${plan.mostPopular
                         ? 'border-primary-400 bg-primary-900/10'
                         : 'border-white/10 bg-white/5'} p-8 shadow-lg`, children: [plan.mostPopular && (_jsx("div", { className: "absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-400 text-white px-4 py-1 rounded-full text-sm font-medium", children: "Le plus populaire" })), _jsxs("div", { children: [_jsx("h3", { className: "text-2xl font-bold text-white mb-2", children: plan.name }), _jsx("p", { className: "text-gray-400 mb-4", children: plan.description }), _jsxs("p", { className: "text-4xl font-bold text-white mb-6", children: [frequency === 'monthly'
-                                            ? plan.price
+                                            ? formatPrice(plan.price)
                                             : plan.name === 'Free'
-                                                ? '0€'
-                                                : `${parseFloat(plan.price.replace('€', '')) * 0.8 * 12}€`, _jsx("span", { className: "text-sm text-gray-400", children: plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}` })] }), _jsx("ul", { className: "space-y-4 mb-8", children: plan.features.map((feature) => (_jsxs("li", { className: "flex items-start gap-3 text-gray-300", children: [_jsx(CheckIcon, { className: "h-6 w-6 flex-none text-primary-400", "aria-hidden": "true" }), _jsx("span", { children: feature })] }, feature))) }), _jsx("button", { onClick: () => handleSubscribe(plan.name.toLowerCase(), plan.priceId), disabled: loading || currentPlan === plan.name.toLowerCase(), className: `w-full btn-primary ${currentPlan === plan.name.toLowerCase()
+                                                ? formatPrice(0)
+                                                : formatPrice(plan.price * 0.8 * 12), _jsx("span", { className: "text-sm text-gray-400", children: plan.name !== 'Free' && `/${frequency === 'monthly' ? 'mois' : 'an'}` })] }), _jsx("ul", { className: "space-y-4 mb-8", children: plan.features.map((feature) => (_jsxs("li", { className: "flex items-start gap-3 text-gray-300", children: [_jsx(CheckIcon, { className: "h-6 w-6 flex-none text-primary-400", "aria-hidden": "true" }), _jsx("span", { children: feature })] }, feature))) }), _jsx("button", { onClick: () => handleSubscribe(plan.name.toLowerCase(), plan.priceId), disabled: loading || currentPlan === plan.name.toLowerCase(), className: `w-full btn-primary ${currentPlan === plan.name.toLowerCase()
                                         ? 'opacity-50 cursor-not-allowed'
                                         : ''}`, children: currentPlan === plan.name.toLowerCase()
                                         ? 'Plan actuel'

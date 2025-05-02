@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { formatPrice } from '../../utils/formatPrice'
 import { Dialog } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -20,7 +21,8 @@ interface ProjectProposalModalProps {
 }
 
 export function ProjectProposalModal({ isOpen, onClose, project, onSubmit }: ProjectProposalModalProps) {
-  const [bidAmount, setBidAmount] = useState(Math.floor((project.budget_min + project.budget_max) / 2))
+  const [bidAmount, setBidAmount] = useState(Math.floor((project.budget_min + project.budget_max) / 2));
+
   const [deliveryTime, setDeliveryTime] = useState('2_weeks')
   const [coverLetter, setCoverLetter] = useState('')
   const [loading, setLoading] = useState(false)
@@ -72,7 +74,7 @@ export function ProjectProposalModal({ isOpen, onClose, project, onSubmit }: Pro
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-white">{project.title}</h2>
             <p className="text-gray-400">Client: {project.client.name}</p>
-            <p className="text-gray-400">Budget: {project.budget_min}€ - {project.budget_max}€</p>
+            <p className="text-gray-400">Budget: {formatPrice(project.budget_min)} - {formatPrice(project.budget_max)}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -89,7 +91,7 @@ export function ProjectProposalModal({ isOpen, onClose, project, onSubmit }: Pro
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
               <p className="text-sm text-gray-500 mt-1">
-                Proposez un montant entre {project.budget_min}€ et {project.budget_max}€
+                Proposez un montant entre {formatPrice(project.budget_min)} et {formatPrice(project.budget_max)}
               </p>
             </div>
 
