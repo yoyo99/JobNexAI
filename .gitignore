@@ -51,3 +51,4 @@ Thumbs.db
 JobNexAI-WindSurf/
 .gitignore
 /JobNexAI-WindSurf- Cursor
+node_modules/
