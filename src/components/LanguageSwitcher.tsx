@@ -1,4 +1,5 @@
-import { useTranslation } from 'react-i18next'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { GlobeAltIcon } from '@heroicons/react/24/outline'

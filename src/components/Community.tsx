@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 /**
- * Module Communauté/forum MVP pour JobNexus.
+ * Module Communauté/forum MVP pour JobNexAI.
  * Permet de poster des messages, de répondre et de liker (stockage local pour MVP, à brancher sur Supabase ensuite).
  */
 
@@ -17,7 +19,7 @@ const initialMessages: Message[] = [
   {
     id: 1,
     author: 'Alice',
-    content: 'Bienvenue sur la communauté JobNexus ! Présentez-vous ici.',
+    content: 'Bienvenue sur la communauté JobNexAI ! Présentez-vous ici.',
     likes: 2,
     replies: [
       { id: 2, author: 'Bob', content: 'Bonjour à tous !', likes: 1, replies: [] },
@@ -46,7 +48,7 @@ const Community: React.FC = () => {
 
   return (
     <div className="prose mx-auto p-8 bg-background text-white rounded-lg max-w-3xl">
-      <h1>Communauté JobNexus</h1>
+      <h1>Communauté JobNexAI</h1>
       <div className="mb-6">
         <textarea
           className="w-full rounded-lg p-2 text-black"

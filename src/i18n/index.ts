@@ -10,7 +10,7 @@ i18n
   .init({
     fallbackLng: 'fr',
     supportedLngs: ['fr', 'en', 'de', 'es', 'it'],
-    ns: ['common'],
+    ns: ['common', 'translation'],
     defaultNS: 'common',
     interpolation: {
       escapeValue: false,

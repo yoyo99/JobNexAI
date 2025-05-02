@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 import { AuthService } from '../lib/auth-service'
 
@@ -96,11 +97,13 @@ function Auth() {
 
 
   const handleSignIn = async (e: React.FormEvent) => {
+  console.log('[LOGIN] handleSignIn called');
     e.preventDefault()
-    setMessage(null)
-    setShowHelp(false)
+  setMessage(null)
+  setShowHelp(false)
+  console.log('[LOGIN] Email:', email, '| Password:', password ? '[provided]' : '[empty]');
 
-    if (!email || !password) {
+  if (!email || !password) {
       setMessage({ type: 'error', text: t('auth.errors.requiredFields') })
       return
     }
@@ -112,34 +115,38 @@ function Auth() {
 
 
     try {
-      setLoading(true)
-      const { user, error, ...rest } = await AuthService.signIn(email, password)
-      console.log('DEBUG LOGIN RESPONSE', { user, error, ...rest });
+    setLoading(true)
+    console.log('[LOGIN] Calling AuthService.signIn');
+    const { user, error, ...rest } = await AuthService.signIn(email, password)
+    console.log('[LOGIN] AuthService.signIn response:', { user, error, ...rest });
 
-      if (error) {
+    if (error) {
         setMessage({ type: 'error', text: error.message })
         setShowHelp(true)
         return
       }
 
       if (!user) {
-        setMessage({ type: 'error', text: t('auth.errors.login') })
-        setShowHelp(true)
-        return
-      }
-
-      setMessage({ type: 'success', text: t('auth.success.login') })
-      // Rediriger vers le dashboard ou la page précédente
-      navigate(from)
-    } catch (error: any) {
-      console.error('Error signing in:', error)
-      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') })
+      console.warn('[LOGIN] No user returned from AuthService.signIn');
+      setMessage({ type: 'error', text: t('auth.errors.login') })
       setShowHelp(true)
-    } finally {
-      setLoading(false)
+      return
     }
 
+    setMessage({ type: 'success', text: t('auth.success.login') })
+    console.log('[LOGIN] Success - navigating to', from);
+    // Rediriger vers le dashboard ou la page précédente
+    navigate(from)
+  } catch (error: any) {
+    console.error('[LOGIN] Exception thrown in handleSignIn:', error)
+    setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') })
+    setShowHelp(true)
+  } finally {
+    setLoading(false)
+    console.log('[LOGIN] setLoading(false) called (finally block)');
   }
+
+
 
 
   const handleForgotPassword = async () => {
@@ -300,46 +307,31 @@ function Auth() {
               <button
                 type="button"
                 tabIndex={-1}
-
                 aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
-
                 onClick={() => setShowPassword((v) => !v)}
-
                 className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-primary-400 focus:outline-none"
                 style={{ background: 'none', border: 'none' }}
-
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.125 3.825A10.05 10.05 0 0022 12s-2.614-4.134-6.875-6.825" />
-                  </svg>
+                  <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25l3.75 3.75m0 0l-3.75-3.75m0 0A10.05 10.05 0 0112 19c-5.523 0-10-7-10-7s2.614-4.134 6.875-6.825" />
-                  </svg>
+                  <EyeIcon className="h-5 w-5" aria-hidden="true" />
                 )}
-
               </button>
             </div>
           </div>
-
           {!isLogin && <PasswordStrengthMeter password={password} />}
-
           {/* Astuce sécurité : Pensez à activer l'authentification à deux facteurs dans les paramètres de sécurité de votre compte ! */}
-
-
           {message && (
             <div 
               className={`rounded-md p-4 ${
                 message.type === 'error' ? 'bg-red-900/50 text-red-400' : 'bg-green-900/50 text-green-400'
               }`}
-
               role="alert"
             >
               <p className="text-sm">{message.text}</p>
             </div>
           )}
-
 
           {showHelp && isLogin && (
             <div className="bg-blue-900/50 text-blue-400 p-4 rounded-md">
@@ -353,17 +345,13 @@ function Auth() {
             </div>
           )}
 
-
-
           <div className="space-y-3">
             <button
               type="submit"
               disabled={loading}
-
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white btn-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? t('common.loading') : isLogin ? t('auth.login') : t('auth.createAccount')}
-
             </button>
             <button
               type="button"
@@ -372,17 +360,17 @@ function Auth() {
                 setMessage(null)
                 setShowHelp(false)
               }}
-
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white btn-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
               {isLogin ? t('auth.createAccount') : t('auth.alreadyRegistered')}
-
             </button>
           </div>
         </form>
       </motion.div>
     </div>
-  )
+  );
+}
+
 }
 
 export default Auth;

@@ -10,7 +10,7 @@ i18n
     fallbackLng: 'fr',
     supportedLngs: ['fr', 'en'],
     defaultNS: 'common',
-    ns: ['common'],
+    ns: ['common', 'translation'],
     interpolation: {
         escapeValue: false,
     },

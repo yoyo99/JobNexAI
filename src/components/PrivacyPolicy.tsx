@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PrivacyPolicy() {
   return (
@@ -11,7 +12,7 @@ export default function PrivacyPolicy() {
       <p><strong>Contact :</strong> <a href="mailto:contact@jobnexus.fr" className="text-primary-400 underline">contact@jobnexus.fr</a> (ou par courrier à l’adresse du siège)</p>
 
       <h2>1. Objet de la politique</h2>
-      <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexus</strong> (<a href="https://jobnexus-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexus-saas-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
+      <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexAI</strong> (<a href="https://jobnexus-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexus-saas-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
 
       <h2>2. Données collectées</h2>
       <p>LMCA peut collecter les catégories de données suivantes :</p>
@@ -85,7 +86,7 @@ export default function PrivacyPolicy() {
       </address>
       <h1>Politique de confidentialité</h1>
       <p>
-        La présente politique de confidentialité décrit les modalités de collecte, d’utilisation, de conservation et de protection des données à caractère personnel des utilisateurs de la plateforme SaaS « JobNexus » (ci-après « la Plateforme »), conformément au Règlement Général sur la Protection des Données (RGPD) et à la norme ISO27001.
+        La présente politique de confidentialité décrit les modalités de collecte, d’utilisation, de conservation et de protection des données à caractère personnel des utilisateurs de la plateforme SaaS « JobNexAI » (ci-après « la Plateforme »), conformément au Règlement Général sur la Protection des Données (RGPD) et à la norme ISO27001.
       </p>
       <div className="prose prose-invert max-w-none">
         <h1>Politique de confidentialité</h1>

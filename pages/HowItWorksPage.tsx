@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion';
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -67,8 +68,8 @@ const faqs = [
     answer: 'Notre IA analyse votre CV et le compare aux meilleures pratiques du secteur et aux exigences spécifiques de chaque offre d\'emploi. Elle vous suggère ensuite des améliorations pour mettre en valeur vos compétences pertinentes, utiliser les bons mots-clés et optimiser la structure pour les systèmes ATS des recruteurs.',
   },
   {
-    question: 'Puis-je utiliser JobNexus sur mobile ?',
-    answer: 'Absolument ! JobNexus est entièrement responsive et fonctionne parfaitement sur tous les appareils. Nous proposons également une application mobile pour iOS et Android pour une expérience encore plus fluide.',
+    question: 'Puis-je utiliser JobNexAI sur mobile ?',
+    answer: 'Absolument ! JobNexAI est entièrement responsive et fonctionne parfaitement sur tous les appareils. Nous proposons également une application mobile pour iOS et Android pour une expérience encore plus fluide.',
   },
 ]
 
@@ -84,9 +85,9 @@ export function HowItWorksPage() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexus</span>
+              <span className="sr-only">JobNexAI</span>
               <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexus
+                JobNexAI
               </div>
             </Link>
           </div>
@@ -136,9 +137,9 @@ export function HowItWorksPage() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
-                <span className="sr-only">JobNexus</span>
+                <span className="sr-only">JobNexAI</span>
                 <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                  JobNexus
+                  JobNexAI
                 </div>
               </Link>
               <button
@@ -223,7 +224,7 @@ export function HowItWorksPage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="mt-6 text-lg leading-8 text-gray-300"
                 >
-                  Découvrez comment JobNexus transforme votre recherche d'emploi en un processus simple, efficace et personnalisé grâce à l'intelligence artificielle.
+                  Découvrez comment JobNexAI transforme votre recherche d'emploi en un processus simple, efficace et personnalisé grâce à l'intelligence artificielle.
                 </motion.p>
               </div>
             </div>
@@ -276,10 +277,10 @@ export function HowItWorksPage() {
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-primary-400">Voir en action</h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Découvrez JobNexus en vidéo
+                Découvrez JobNexAI en vidéo
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Une démonstration vaut mieux que mille mots. Regardez comment JobNexus peut transformer votre recherche d'emploi.
+                Une démonstration vaut mieux que mille mots. Regardez comment JobNexAI peut transformer votre recherche d'emploi.
               </p>
             </div>
             
@@ -305,7 +306,7 @@ export function HowItWorksPage() {
                 Tout ce que vous devez savoir
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Vous avez des questions ? Nous avons les réponses. Voici les questions les plus fréquemment posées sur JobNexus.
+                Vous avez des questions ? Nous avons les réponses. Voici les questions les plus fréquemment posées sur JobNexAI.
               </p>
             </div>
             
@@ -338,7 +339,7 @@ export function HowItWorksPage() {
               Prêt à commencer votre nouvelle aventure professionnelle ?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-              Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexus.
+              Rejoignez des milliers de professionnels qui ont déjà transformé leur recherche d'emploi avec JobNexAI.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
