@@ -187,7 +187,7 @@ const recruiterPlans = [
   },
 ]
 
-import { formatPrice } from '../../utils/formatPrice'
+import { formatPrice } from '../utils/formatPrice'
 
 function Pricing() {
   const { user } = useAuth()
