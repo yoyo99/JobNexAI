@@ -1,44 +1,40 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-import { PasswordStrengthMeter } from './PasswordStrengthMeter'
-import { AuthService } from '../lib/auth-service'
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { PasswordStrengthMeter } from './PasswordStrengthMeter';
+import { AuthService } from '../lib/auth-service';
 
-function Auth() {
-  // --- Ajout pour CGU ---
+const Auth: React.FC = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [termsError, setTermsError] = useState<string | null>(null);
 
-  const [isLogin, setIsLogin] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
-  const [showHelp, setShowHelp] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Récupérer l'URL de redirection si elle existe
-  const from = location.state?.from?.pathname || '/dashboard'
+  const from = location.state?.from?.pathname || '/dashboard';
 
   // Vérifier si l'utilisateur est déjà connecté
   useEffect(() => {
     const checkSession = async () => {
-      const { session } = await AuthService.getSession()
+      const { session } = await AuthService.getSession();
       if (session) {
-        navigate('/dashboard')
+        navigate('/dashboard');
       }
-
-    }
-
-    
-    checkSession()
-  }, [navigate])
+    };
+    checkSession();
+  }, [navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     setTermsError(null);
@@ -46,167 +42,114 @@ function Auth() {
       setTermsError(t('auth.errors.acceptTerms'));
       return;
     }
-
-    e.preventDefault()
-    setMessage(null)
-    
+    e.preventDefault();
+    setMessage(null);
     if (!email || !password) {
-      setMessage({ type: 'error', text: t('auth.errors.requiredFields') })
-      return
+      setMessage({ type: 'error', text: t('auth.errors.requiredFields') });
+      return;
     }
-
     if (password.length < 12) {
-      setMessage({ type: 'error', text: t('auth.errors.passwordLength') })
-      return
+      setMessage({ type: 'error', text: t('auth.errors.passwordLength') });
+      return;
     }
-
-
     try {
-      setLoading(true)
-      const { user, error } = await AuthService.signUp(email, password, fullName)
-
+      setLoading(true);
+      const { user, error } = await AuthService.signUp(email, password, fullName);
       if (error) {
-        setMessage({ type: 'error', text: error.message })
-        return
+        setMessage({ type: 'error', text: error.message });
+        return;
       }
-
-
       if (!user) {
-        setMessage({ type: 'error', text: t('auth.errors.signup') })
-        return
+        setMessage({ type: 'error', text: t('auth.errors.signup') });
+        return;
       }
-
-
-      setMessage({ 
-        type: 'success', 
-        text: t('auth.success.signup') 
-      })
-      
-      // Rediriger vers la page de tarification après un court délai
+      setMessage({ type: 'success', text: t('auth.success.signup') });
       setTimeout(() => {
-        navigate('/pricing')
-      }, 2000)
+        navigate('/pricing');
+      }, 2000);
     } catch (error: any) {
-      console.error('Error signing up:', error)
-      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
+      console.error('Error signing up:', error);
+      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
-  }
-
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
-  console.log('[LOGIN] handleSignIn called');
-    e.preventDefault()
-  setMessage(null)
-  setShowHelp(false)
-  console.log('[LOGIN] Email:', email, '| Password:', password ? '[provided]' : '[empty]');
-
-  if (!email || !password) {
-      setMessage({ type: 'error', text: t('auth.errors.requiredFields') })
-      return
+    e.preventDefault();
+    setMessage(null);
+    setShowHelp(false);
+    if (!email || !password) {
+      setMessage({ type: 'error', text: t('auth.errors.requiredFields') });
+      return;
     }
-
     if (password.length < 12) {
-      setMessage({ type: 'error', text: t('auth.errors.passwordLength') })
-      return
+      setMessage({ type: 'error', text: t('auth.errors.passwordLength') });
+      return;
     }
-
-
     try {
-    setLoading(true)
-    console.log('[LOGIN] Calling AuthService.signIn');
-    const { user, error, ...rest } = await AuthService.signIn(email, password)
-    console.log('[LOGIN] AuthService.signIn response:', { user, error, ...rest });
-
-    if (error) {
-        setMessage({ type: 'error', text: error.message })
-        setShowHelp(true)
-        return
+      setLoading(true);
+      const { user, error } = await AuthService.signIn(email, password);
+      if (error) {
+        setMessage({ type: 'error', text: error.message });
+        setShowHelp(true);
+        return;
       }
-
       if (!user) {
-      console.warn('[LOGIN] No user returned from AuthService.signIn');
-      setMessage({ type: 'error', text: t('auth.errors.login') })
-      setShowHelp(true)
-      return
+        setMessage({ type: 'error', text: t('auth.errors.login') });
+        setShowHelp(true);
+        return;
+      }
+      setMessage({ type: 'success', text: t('auth.success.login') });
+      navigate(from);
+    } catch (error: any) {
+      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
+      setShowHelp(true);
+    } finally {
+      setLoading(false);
     }
-
-    setMessage({ type: 'success', text: t('auth.success.login') })
-    console.log('[LOGIN] Success - navigating to', from);
-    // Rediriger vers le dashboard ou la page précédente
-    navigate(from)
-  } catch (error: any) {
-    console.error('[LOGIN] Exception thrown in handleSignIn:', error)
-    setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') })
-    setShowHelp(true)
-  } finally {
-    setLoading(false)
-    console.log('[LOGIN] setLoading(false) called (finally block)');
-  }
-
-
-
+  };
 
   const handleForgotPassword = async () => {
     if (!email) {
-      setMessage({ type: 'error', text: t('auth.errors.emailRequired') })
-      return
+      setMessage({ type: 'error', text: t('auth.errors.emailRequired') });
+      return;
     }
-
-
     try {
-      setLoading(true)
-      const { error } = await AuthService.resetPassword(email)
-
+      setLoading(true);
+      const { error } = await AuthService.resetPassword(email);
       if (error) {
-        setMessage({ type: 'error', text: error.message })
-        return
+        setMessage({ type: 'error', text: error.message });
+        return;
       }
-
-
-      setMessage({ 
-        type: 'success', 
-        text: t('auth.success.reset') 
-      })
+      setMessage({ type: 'success', text: t('auth.success.reset') });
     } catch (error: any) {
-      console.error('Error resetting password:', error)
-      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') })
+      setMessage({ type: 'error', text: error.message || t('auth.errors.unknown') });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
-  }
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-
         animate={{ opacity: 1, y: 0 }}
-
         className="max-w-md w-full space-y-8"
       >
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
             {isLogin ? t('auth.login') : t('auth.signup')}
-
           </h2>
           <p className="mt-2 text-center text-sm text-gray-400">
             {t('common.or')}{' '}
-
             <a href="/pricing" className="font-medium text-primary-400 hover:text-primary-300">
               {t('auth.startTrial')}
-
             </a>
           </p>
         </div>
-
         <form className="mt-8 space-y-6" onSubmit={isLogin ? handleSignIn : handleSignUp}>
           {/* Ajout de la case à cocher pour les CGU */}
-
           {!isLogin && (
             <div className="flex items-center mb-2">
               <input
@@ -214,22 +157,21 @@ function Auth() {
                 name="acceptTerms"
                 type="checkbox"
                 checked={acceptTerms}
-
                 onChange={e => setAcceptTerms(e.target.checked)}
-
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-white/10 rounded"
                 required
               />
               <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-300">
-                {t('auth.acceptTerms')} <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline text-primary-400 hover:text-primary-300">{t('auth.termsLink')}</a>
+                {t('auth.acceptTerms')}{' '}
+                <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline text-primary-400 hover:text-primary-300">
+                  {t('auth.termsLink')}
+                </a>
               </label>
             </div>
           )}
-
           {termsError && (
             <div className="bg-red-900/50 text-red-400 p-2 rounded mb-2 text-sm">{termsError}</div>
           )}
-
           <div className="rounded-md shadow-sm -space-y-px">
             {!isLogin && (
               <div>
@@ -242,22 +184,18 @@ function Auth() {
                   type="text"
                   autoComplete="name"
                   value={fullName}
-
                   onChange={(e) => {
-                    setFullName(e.target.value)
-                    setMessage(null)
+                    setFullName(e.target.value);
+                    setMessage(null);
                   }}
-
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5"
                   placeholder={t('auth.fullName')}
                 />
               </div>
             )}
-
             <div>
               <label htmlFor="email-address" className="sr-only">
                 {t('auth.email')}
-
               </label>
               <input
                 id="email-address"
@@ -266,43 +204,32 @@ function Auth() {
                 autoComplete="email"
                 required
                 value={email}
-
                 onChange={(e) => {
-                  setEmail(e.target.value)
-                  setMessage(null)
+                  setEmail(e.target.value);
+                  setMessage(null);
                 }}
-
                 className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white ${isLogin && !fullName ? 'rounded-t-md' : ''} focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5`}
-
                 placeholder={t('auth.email')}
-
               />
             </div>
             <div className="relative">
               <label htmlFor="password" className="sr-only">
                 {t('auth.password')}
-
               </label>
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"}
-
-                autoComplete={isLogin ? "current-password" : "new-password"}
-
+                type={showPassword ? 'text' : 'password'}
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
                 required
                 minLength={9}
-
                 value={password}
-
                 onChange={(e) => {
-                  setPassword(e.target.value)
-                  setMessage(null)
+                  setPassword(e.target.value);
+                  setMessage(null);
                 }}
-
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/10 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm bg-white/5 pr-10"
                 placeholder={t('auth.password')}
-
               />
               <button
                 type="button"
@@ -321,9 +248,8 @@ function Auth() {
             </div>
           </div>
           {!isLogin && <PasswordStrengthMeter password={password} />}
-          {/* Astuce sécurité : Pensez à activer l'authentification à deux facteurs dans les paramètres de sécurité de votre compte ! */}
           {message && (
-            <div 
+            <div
               className={`rounded-md p-4 ${
                 message.type === 'error' ? 'bg-red-900/50 text-red-400' : 'bg-green-900/50 text-green-400'
               }`}
@@ -332,7 +258,6 @@ function Auth() {
               <p className="text-sm">{message.text}</p>
             </div>
           )}
-
           {showHelp && isLogin && (
             <div className="bg-blue-900/50 text-blue-400 p-4 rounded-md">
               <h4 className="text-sm font-medium mb-2">{t('auth.help.title')}</h4>
@@ -344,7 +269,6 @@ function Auth() {
               </ul>
             </div>
           )}
-
           <div className="space-y-3">
             <button
               type="submit"
@@ -356,9 +280,9 @@ function Auth() {
             <button
               type="button"
               onClick={() => {
-                setIsLogin(!isLogin)
-                setMessage(null)
-                setShowHelp(false)
+                setIsLogin(!isLogin);
+                setMessage(null);
+                setShowHelp(false);
               }}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white btn-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
@@ -369,8 +293,6 @@ function Auth() {
       </motion.div>
     </div>
   );
-}
-
-}
+};
 
 export default Auth;
