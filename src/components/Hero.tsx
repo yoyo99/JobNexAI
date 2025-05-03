@@ -245,6 +245,7 @@ export function Hero() {
           </div>
         </div>
       </div>
+    {/* Testimonials section END */}
 
       {/* CTA section */}
       <div className="relative isolate mt-32 px-6 py-32 sm:mt-56 sm:py-40 lg:px-8">
