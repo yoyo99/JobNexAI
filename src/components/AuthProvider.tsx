@@ -24,9 +24,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     )
 
-    // Nettoyer l'abonnement
+    // Écouteur d'événement storage pour synchroniser la session sur tous les onglets
+    const handleStorage = () => {
+      loadUser();
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // Nettoyer l'abonnement et l'écouteur
     return () => {
-      subscription.unsubscribe()
+      subscription.unsubscribe();
+      window.removeEventListener('storage', handleStorage);
     }
   }, [loadUser])
 

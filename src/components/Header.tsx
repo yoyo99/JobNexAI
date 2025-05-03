@@ -24,7 +24,7 @@ const privateNavigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { t } = useTranslation('common')
+  const { t } = useTranslation(['common', 'auth'])
   const { user } = useAuth()
   const location = useLocation()
 
@@ -68,16 +68,16 @@ export function Header() {
           <LanguageSwitcher />
           {!user && (
             <Link to="/login" className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors">
-              {t('auth.login')}
+              {t('login', { ns: 'auth' })}
             </Link>
           )}
           {user && (
             <span className="text-sm text-gray-300 mr-4">
-              {t('common.connectedAs', { name: user.full_name || user.email })}
+              {t('connectedAs', { ns: 'common', name: user.full_name || user.email })}
             </span>
           )}
           <Link to="/pricing" className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors">
-            {t('auth.startTrial')}
+            {t('startTrial', { ns: 'auth' })}
           </Link>
         </div>
       </nav>
