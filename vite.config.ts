@@ -35,6 +35,7 @@ export default defineConfig({
     sourcemap: true,
     target: 'esnext', // Set the build target to esnext to support top-level await
     rollupOptions: {
+      external: ['pnpapi'],
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
