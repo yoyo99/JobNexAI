@@ -7,7 +7,7 @@ import { MarketAnalysis } from './components/MarketAnalysis';
 import { Dashboard } from './components/Dashboard';
 import { JobApplications } from './components/JobApplications';
 import { Auth } from './components/Auth';
-import { Pricing } from './components/Pricing';
+import Pricing from './components/Pricing';
 import { Profile } from './components/Profile';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { PrivacyConsent } from './components/PrivacyConsent';
