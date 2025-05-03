@@ -7,11 +7,13 @@ const resources = {
   en: {
     auth: enAuth.auth,
     common: enAuth.common || {},
+    hero: enAuth.hero || {},
     translation: enAuth
   },
   fr: {
     auth: frAuth.auth,
     common: frAuth.common || {},
+    hero: frAuth.hero || {},
     translation: frAuth
   }
 };
@@ -27,7 +29,7 @@ i18n
     resources,
     lng: 'fr', // langue par défaut
     fallbackLng: 'en',
-    ns: ['auth', 'common'],
+    ns: ['auth', 'common', 'hero'],
     defaultNS: 'common',
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
