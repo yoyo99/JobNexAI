@@ -5,6 +5,15 @@
   "a": "À traduire",
   "application_exported_pdf": "À traduire",
   "auth": {
+    "login": "Se connecter",
+    "startTrial": "Essayer gratuitement",
+    "errors": {
+      "login": "Erreur lors de la connexion",
+      "signup": "Erreur lors de l'inscription",
+      "passwordLength": "Le mot de passe doit comporter au moins 9 caractères.",
+      "requiredFields": "Veuillez remplir tous les champs",
+      "unknown": "Une erreur est survenue"
+    },
     "acceptTerms": "",
     "alreadyRegistered": "",
     "createAccount": "",
@@ -89,6 +98,13 @@
     }
   },
   "common": {
+    "connectedAs": "Connecté en tant que {{name}}",
+    "loading": "Chargement...",
+    "or": "ou",
+    "save": "Sauvegarder",
+    "search": "Rechercher",
+    "view": "Voir"
+  ,
     "connectedAs": "À traduire",
     "loading": "",
     "or": "",

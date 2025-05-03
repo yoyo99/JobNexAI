@@ -1,5 +1,14 @@
 {
   "auth": {
+    "login": "Login",
+    "startTrial": "Start free trial",
+    "errors": {
+      "login": "An error occurred during login",
+      "signup": "An error occurred during sign up",
+      "passwordLength": "Password must be at least 9 characters.",
+      "requiredFields": "Please fill in all fields",
+      "unknown": "An error occurred"
+    },
     "acceptTerms": "I accept the",
     "alreadyRegistered": "Already registered? Login",
     "createAccount": "Create an account",
@@ -61,6 +70,13 @@
     }
   },
   "common": {
+    "connectedAs": "Connected as {{name}}",
+    "loading": "Loading...",
+    "or": "or",
+    "save": "Save",
+    "search": "Search",
+    "view": "View"
+  ,
     "connectedAs": "",
     "loading": "Loading...",
     "or": "or",
