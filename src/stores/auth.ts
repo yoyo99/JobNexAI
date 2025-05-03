@@ -26,9 +26,11 @@ export const useAuth = create<AuthState>((set, get) => ({
       
       // Vérifier si l'utilisateur est connecté
       const { user: authUser } = await AuthService.getCurrentUser()
+      console.log('[AUTH][loadUser] authUser =', authUser);
       
       if (!authUser) {
         set({ user: null, subscription: null, loading: false, initialized: true })
+        console.log('[AUTH][loadUser] Aucun utilisateur connecté');
         return
       }
 
