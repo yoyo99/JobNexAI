@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import { VideoModal } from './VideoModal'
-import { PlayCircleIcon, CheckIcon } from '@heroicons/react/24/outline'
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { VideoModal } from './VideoModal';
+import { PlayCircleIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -46,20 +46,20 @@ export function Hero() {
   const steps = [
     {
       title: t('hero.steps.0.title'),
-      description: t('hero.steps.0.description')
+      description: t('hero.steps.0.description'),
     },
     {
       title: t('hero.steps.1.title'),
-      description: t('hero.steps.1.description')
+      description: t('hero.steps.1.description'),
     },
     {
       title: t('hero.steps.2.title'),
-      description: t('hero.steps.2.description')
-    }
+      description: t('hero.steps.2.description'),
+    },
   ];
   const [showVideo, setShowVideo] = useState(false)
 
-  const features = t('hero.features', { returnObjects: true }) as string[]
+  const features = t('hero.features', { returnObjects: true }) as string[];
   function getFeatureDescription(index: number): string {
     const descriptions = t('hero.featureDescriptions', { returnObjects: true }) as string[];
     return descriptions[index] || '';
@@ -206,7 +206,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Testimonials section */}
+      {/* Testimonials section */
       <div className="bg-white/5 py-24 sm:py-32" id="about">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
@@ -274,7 +274,7 @@ export function Hero() {
 
       <VideoModal isOpen={showVideo} onClose={() => setShowVideo(false)} />
     </div>
-  )
+  );
 }
 
-
+export default Hero;
