@@ -1,6 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ToastContainer from './ToastContainer.js';
+import ToastContainer from './ToastContainer';
 import { DashboardLayout } from './components/DashboardLayout';
 import { JobSearch } from './components/JobSearch';
 import { MarketAnalysis } from './components/MarketAnalysis';
