@@ -29,6 +29,7 @@ export function NotificationCenter() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (user) {
@@ -41,19 +42,24 @@ export function NotificationCenter() {
   const loadNotifications = async () => {
     try {
       setLoading(true)
-      const { data } = await supabase
+      setError(null)
+      const { data, error } = await supabase
         .from('notifications')
         .select('*')
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false })
         .limit(20)
 
+      if (error) {
+        setError("Impossible de charger les notifications. Veuillez réessayer.")
+      }
       if (data) {
         setNotifications(data)
         setUnreadCount(data.filter(n => !n.read).length)
       }
     } catch (error) {
       console.error('Error loading notifications:', error)
+      setError("Impossible de charger les notifications. Veuillez réessayer.")
     } finally {
       setLoading(false)
     }
@@ -159,11 +165,16 @@ export function NotificationCenter() {
                   </div>
 
                   <div className="space-y-4">
-                    {notifications.length === 0 ? (
+                    {error && (
+                      <p className="text-center text-red-500 py-4">
+                        {error}
+                      </p>
+                    )}
+                    {!error && notifications.length === 0 ? (
                       <p className="text-center text-gray-400 py-4">
                         Aucune notification
                       </p>
-                    ) : (
+                    ) : !error && (
                       notifications.map((notification) => (
                         <motion.div
                           key={notification.id}

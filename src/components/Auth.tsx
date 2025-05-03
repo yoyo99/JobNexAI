@@ -91,7 +91,12 @@ const Auth: React.FC = () => {
       setLoading(true);
       const { user, error } = await AuthService.signIn(email, password);
       if (error) {
-        setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
+        // Mapping des messages d’erreur Supabase vers des clés i18n si possible
+        let errorKey = '';
+        if (error.message === 'Invalid login credentials') errorKey = 'auth.errors.login';
+        if (error.message === 'User already registered') errorKey = 'auth.errors.signup';
+        if (error.message === 'Password should be at least 12 characters') errorKey = 'auth.errors.passwordLength';
+        setMessage({ type: 'error', text: errorKey !== '' ? t(errorKey) : error.message || t('auth.errors.unknown') });
         setShowHelp(true);
         return;
       }
@@ -103,7 +108,12 @@ const Auth: React.FC = () => {
       setMessage({ type: 'success', text: t('auth.success.login') });
       navigate(from);
     } catch (error: any) {
-      setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
+      // Mapping des messages d’erreur JS génériques
+      let errorKey = '';
+      if (error?.message === 'Invalid login credentials') errorKey = 'auth.errors.login';
+      if (error?.message === 'User already registered') errorKey = 'auth.errors.signup';
+      if (error?.message === 'Password should be at least 12 characters') errorKey = 'auth.errors.passwordLength';
+      setMessage({ type: 'error', text: errorKey !== '' ? t(errorKey) : error?.message || t('auth.errors.unknown') });
       setShowHelp(true);
     } finally {
       setLoading(false);
