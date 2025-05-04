@@ -18,10 +18,9 @@
     "alreadyRegistered": "",
     "createAccount": "",
     "email": "",
-    "errors": {
+    "errorsForm": {
       "acceptTerms": "",
       "emailRequired": "",
-      "login": "",
       "passwordLength": "",
       "requiredFields": "",
       "signup": "",
@@ -37,7 +36,6 @@
       "title": ""
     },
     "hidePassword": "",
-    "login": "",
     "logout": "À traduire",
     "mfa": {
       "sms": {
@@ -65,9 +63,9 @@
     "signup": {
       "success": "À traduire"
     },
-    "startTrial": "",
+
     "success": {
-      "login": "",
+  
       "reset": "",
       "signup": ""
     },
@@ -104,13 +102,6 @@
     "save": "Sauvegarder",
     "search": "Rechercher",
     "view": "Voir"
-  ,
-    "connectedAs": "À traduire",
-    "loading": "",
-    "or": "",
-    "save": "À traduire",
-    "search": "À traduire",
-    "view": "À traduire"
   },
   "content": "À traduire",
   "dashboard": {
@@ -161,7 +152,7 @@
   "documentTitle": "Tableau de bord - JobNexus",
   "edit": "À traduire",
   "footer": {
-    "copyright": "© {{year}} JobNexus. Tous droits réservés.",
+    "copyright": " JobNexus. Tous droits réservés.",
     "navigation": {
       "cgu": "CGU",
       "community": "Communauté",
@@ -185,85 +176,48 @@
   "gdpr_consent": "À traduire",
   "greeting": "Bonjour {{name}}",
   "hero": {
-    "ctaFinalLogin": "Déjà inscrit ? Connexion",
-    "ctaFinalStart": "Commencer maintenant",
-    "ctaFinalSubtitle": "Rejoins JobNexAI et décroche plus d’entretiens, plus vite.",
-    "ctaFinalTitle": "Prêt à booster ta carrière ?",
-    "ctaStart": "Commencer l’essai gratuit",
-    "featureDescriptions": [
-      "À traduire",
-      "À traduire",
-      "À traduire",
-      "À traduire",
-      "À traduire"
-    ],
-    "features": [
-      "À traduire",
-      "À traduire",
-      "À traduire",
-      "À traduire",
-      "À traduire"
-    ],
-    "featuresSectionDescription": "À traduire",
-    "featuresSectionSubtitle": "À traduire",
-    "featuresSectionTitle": "Fonctionnalités à traduire",
-    "howItWorksSectionDescription": "À traduire",
-    "howItWorksSectionSubtitle": "À traduire",
-    "howItWorksSectionTitle": "À traduire",
-    "imageAlt": "À traduire",
-    "startTrial": "",
-    "stepNumber": "Étape {{number}}",
-    "steps": [
-      {
-        "description": "À traduire",
-        "title": "À traduire"
-      },
-      {
-        "description": "À traduire",
-        "title": "À traduire"
-      },
-      {
-        "description": "À traduire",
-        "title": "À traduire"
-      }
-    ],
-    "subtitle": "Automatise, analyse et décroche plus d’entretiens avec JobNexAI.",
-    "testimonials": [
-      {
-        "name": "Sophie",
-        "quote": "À traduire",
-        "role": "Développeuse React"
-      },
-      {
-        "name": "Lucas",
-        "quote": "À traduire",
-        "role": "Chef de projet"
-      },
-      {
-        "name": "Emma",
-        "quote": "À traduire",
-        "role": "Designer UX/UI"
-      },
-      {
-        "name": "Yann",
-        "quote": "À traduire",
-        "role": "Ingénieur DevOps"
-      },
-      {
-        "name": "Fatima",
-        "quote": "À traduire",
-        "role": "Product Owner"
-      },
-      {
-        "name": "Marco",
-        "quote": "À traduire",
-        "role": "Data Scientist"
-      }
-    ],
-    "testimonialsSectionSubtitle": "Ils ont trouvé un job grâce à JobNexAI",
-    "testimonialsSectionTitle": "Témoignages",
     "title": "L’IA qui accélère ta recherche d’emploi !",
-    "watchDemo": "Regarder la démo"
+    "subtitle": "Automatise, analyse et décroche plus d’entretiens avec JobNexAI.",
+    "ctaStart": "Commencer maintenant",
+    "ctaFinalTitle": "Prêt à booster ta carrière ?",
+    "ctaFinalSubtitle": "Rejoins JobNexAI et décroche plus d’entretiens, plus vite.",
+    "ctaFinalStart": "Commencer gratuitement",
+    "ctaFinalLogin": "Déjà inscrit ? Connexion",
+    "featuresSectionTitle": "Fonctionnalités",
+    "featuresSectionSubtitle": "Tout ce dont vous avez besoin pour réussir",
+    "featuresSectionDescription": "Découvrez toutes les fonctionnalités innovantes de JobNexAI qui transforment votre recherche d'emploi en une expérience efficace, personnalisée et sans stress.",
+    "features": [
+      "Recherche d'emploi intelligente",
+      "CV builder professionnel",
+      "Suivi des candidatures",
+      "Analyses de marché",
+      "Suggestions personnalisées",
+      "Réseau professionnel",
+      "Alertes emploi en temps réel",
+      "Optimisation IA de candidature",
+      "Protection des données",
+      "Automatisation des tâches",
+      "Intégration IA avancée",
+      "Multilingue et international"
+    ],
+    "featureDescriptions": [
+      "Notre algorithme d'IA analyse votre profil et les offres disponibles pour vous proposer les emplois les plus pertinents avec un score de compatibilité.",
+      "Créez un CV professionnel optimisé pour les ATS avec nos modèles élégants et nos conseils d'amélioration personnalisés.",
+      "Suivez toutes vos candidatures en un seul endroit, avec des rappels automatiques pour les entretiens et les relances.",
+      "Accédez à des données en temps réel sur les salaires, les compétences recherchées et les tendances du marché de l'emploi.",
+      "Recevez des suggestions d'emploi personnalisées basées sur vos compétences, votre expérience et vos préférences.",
+      "Connectez-vous avec d'autres professionnels, échangez des messages et développez votre réseau directement depuis la plateforme.",
+      "Soyez informé dès qu'une nouvelle offre correspondant à vos critères est publiée, par email ou notification push.",
+      "Notre IA analyse chaque offre d'emploi et vous suggère des optimisations pour votre CV et lettre de motivation afin de maximiser vos chances.",
+      "Vos données sont sécurisées et protégées selon les normes RGPD les plus strictes, avec un contrôle total sur vos informations personnelles.",
+      "Automatisez les tâches répétitives de votre recherche d'emploi comme les relances, les suivis et les mises à jour de statut.",
+      "Notre plateforme utilise les dernières avancées en intelligence artificielle pour vous offrir une expérience personnalisée et efficace.",
+      "JobNexAI est disponible en plusieurs langues et couvre les offres d'emploi dans de nombreux pays pour une recherche sans frontières."
+    ],
+    "imageAlt": "Capture d'écran de la plateforme JobNexAI",
+    "watchDemo": "Voir la démo",
+    "testimonialsSectionTitle": "Témoignages",
+    "testimonialsSectionSubtitle": "Ils ont trouvé un job grâce à JobNexAI"
   },
   "howItWorks": {
     "description": "Notre processus simplifié vous guide à chaque étape pour maximiser vos chances.",
