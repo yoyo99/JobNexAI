@@ -65,7 +65,7 @@ function MarketAnalysis() {
             <h2 className="text-lg font-semibold text-white">{t('marketAnalysis.jobTypes')}</h2>
           </div>
           <div className="space-y-4">
-            {trends.jobTypes.map((trend) => (
+            {(Array.isArray(trends.jobTypes) ? trends.jobTypes : []).map((trend) => (
               <div key={trend.category}>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">{trend.category}</span>
@@ -95,7 +95,7 @@ function MarketAnalysis() {
             <h2 className="text-lg font-semibold text-white">{t('marketAnalysis.topLocations')}</h2>
           </div>
           <div className="space-y-4">
-            {trends.locations.map((trend) => (
+            {(Array.isArray(trends.locations) ? trends.locations : []).map((trend) => (
               <div key={trend.category}>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-400">{trend.category}</span>

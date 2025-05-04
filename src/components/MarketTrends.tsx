@@ -39,7 +39,7 @@ const MarketTrends: React.FC = () => {
       <h2>{t('marketTrends.title')}</h2>
       <h3>{t('marketTrends.jobTypes')}</h3>
       <ul>
-        {trends.jobTypes.map((tItem) => (
+        {(Array.isArray(trends.jobTypes) ? trends.jobTypes : []).map((tItem) => (
           <li key={tItem.category}>
             {tItem.category} : {tItem.count} ({tItem.percentage.toFixed(1)}%)
           </li>
@@ -47,7 +47,7 @@ const MarketTrends: React.FC = () => {
       </ul>
       <h3>{t('marketTrends.locations')}</h3>
       <ul>
-        {trends.locations.map((lItem) => (
+        {(Array.isArray(trends.locations) ? trends.locations : []).map((lItem) => (
           <li key={lItem.category}>
             {lItem.category} : {lItem.count} ({lItem.percentage.toFixed(1)}%)
           </li>
