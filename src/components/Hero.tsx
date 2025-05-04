@@ -66,72 +66,74 @@ export function Hero() {
   }
 
   return (
-    <div className="relative isolate pt-14">
-      <div
-        className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-        aria-hidden="true"
-      >
+    <div>
+      <div className="relative isolate pt-14">
         <div
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary-600 to-secondary-600 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-          }}
-        />
-      </div>
+          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+          aria-hidden="true"
+        >
+          <div
+            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary-600 to-secondary-600 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+            style={{
+              clipPath:
+                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+            }}
+          />
+        </div>
 
-      <div className="py-24 sm:py-32 lg:pb-40">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text"
-            >
-              {t('hero.title')}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6 text-lg leading-8 text-gray-300"
-            >
-              {t('hero.subtitle')}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-10 flex items-center justify-center gap-x-6"
-            >
-              <Link to="/pricing" className="btn-primary">
-                {t('hero.ctaStart')}
-              </Link>
-              <button
-                onClick={() => setShowVideo(true)}
-                className="btn-secondary inline-flex items-center gap-2"
+        <div className="py-24 sm:py-32 lg:pb-40">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text"
               >
-                <PlayCircleIcon className="h-5 w-5" />
-                {t('hero.watchDemo', 'Voir la démo')}
-              </button>
+                {t('hero.title')}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mt-6 text-lg leading-8 text-gray-300"
+              >
+                {t('hero.subtitle')}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="mt-10 flex items-center justify-center gap-x-6"
+              >
+                <Link to="/pricing" className="btn-primary">
+                  {t('hero.ctaStart')}
+                </Link>
+                <button
+                  onClick={() => setShowVideo(true)}
+                  className="btn-secondary inline-flex items-center gap-2"
+                >
+                  <PlayCircleIcon className="h-5 w-5" />
+                  {t('hero.watchDemo', 'Voir la démo')}
+                </button>
+              </motion.div>
+            </div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="mt-16 flow-root sm:mt-24"
+            >
+              <div className="rounded-xl bg-white/5 p-2 ring-1 ring-inset ring-white/10 lg:rounded-2xl">
+                <img
+                  src="/landing.jpg"
+                  alt={t('hero.imageAlt')}
+                  className="rounded-md shadow-2xl ring-1 ring-white/10 w-full h-auto"
+                />
+              </div>
             </motion.div>
           </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-16 flow-root sm:mt-24"
-          >
-            <div className="rounded-xl bg-white/5 p-2 ring-1 ring-inset ring-white/10 lg:rounded-2xl">
-              <img
-                src="/landing.jpg"
-                alt={t('hero.imageAlt')}
-                className="rounded-md shadow-2xl ring-1 ring-white/10 w-full h-auto"
-              />
-            </div>
-          </motion.div>
         </div>
       </div>
 
@@ -206,7 +208,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Testimonials section */
+      {/* Testimonials section */}
       <div className="bg-white/5 py-24 sm:py-32" id="about">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
@@ -245,35 +247,33 @@ export function Hero() {
           </div>
         </div>
       </div>
-    {/* Testimonials section END */}
 
-      {/* CTA section */}
       <div className="relative isolate mt-32 px-6 py-32 sm:mt-56 sm:py-40 lg:px-8">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 bg-gradient-to-tr from-primary-600 to-secondary-600 opacity-10 sm:left-[calc(50%-40rem)]"></div>
-        </div>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            {t('hero.ctaFinalTitle')}
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-            {t('hero.ctaFinalSubtitle')}
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Link
-              to="/pricing"
-              className="btn-primary"
-            >
-              {t('hero.ctaFinalStart')}
-            </Link>
-            <Link to="/login" className="text-sm font-semibold leading-6 text-white">
-              {t('hero.ctaFinalLogin')} <span aria-hidden="true">→</span>
-            </Link>
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 bg-gradient-to-tr from-primary-600 to-secondary-600 opacity-10 sm:left-[calc(50%-40rem)]"></div>
+          </div>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {t('hero.ctaFinalTitle')}
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
+              {t('hero.ctaFinalSubtitle')}
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                to="/pricing"
+                className="btn-primary"
+              >
+                {t('hero.ctaFinalStart')}
+              </Link>
+              <Link to="/login" className="text-sm font-semibold leading-6 text-white">
+                {t('hero.ctaFinalLogin')} <span aria-hidden="true">→</span>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      <VideoModal isOpen={showVideo} onClose={() => setShowVideo(false)} />
+        <VideoModal isOpen={showVideo} onClose={() => setShowVideo(false)} />
     </div>
   );
 }
