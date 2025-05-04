@@ -68,11 +68,11 @@
     "search": "",
     "view": ""
   },
-  "ctaFinalLogin": "Se connecter",
-  "ctaFinalStart": "Commencer l'essai gratuit",
-  "ctaFinalSubtitle": "Rejoignez notre plateforme et bénéficiez des meilleurs outils pour décrocher le job qui vous correspond.",
-  "ctaFinalTitle": "Prêt à booster votre carrière ?",
-  "ctaStart": "Commencer l'essai gratuit",
+  "ctaFinalLogin": "Iniciar sesión",
+  "ctaFinalStart": "Comenzar prueba gratuita",
+  "ctaFinalSubtitle": "Únete a nuestra plataforma y aprovecha las mejores herramientas para impulsar tu carrera.",
+  "ctaFinalTitle": "¿Listo para impulsar tu carrera?",
+  "ctaStart": "Comenzar prueba gratuita",
   "dashboard": {
     "activity": {
       "application": "Nueva solicitud",
@@ -326,8 +326,10 @@
       "access": "",
       "description": "",
       "erasure": "",
+      "objection": "",
       "portability": "",
       "rectification": "",
+      "restriction": "",
       "title": "",
       "withdraw": ""
     },

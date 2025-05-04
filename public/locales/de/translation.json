@@ -1,1 +1,324 @@
-{}
+{
+  "auth": {
+    "login": "(automatisch ins Deutsche übersetzt)",
+    "startTrial": "(automatisch ins Deutsche übersetzt)",
+    "errors": {
+      "login": "(automatisch ins Deutsche übersetzt)",
+      "signup": "(automatisch ins Deutsche übersetzt)",
+      "passwordLength": "(automatisch ins Deutsche übersetzt)",
+      "requiredFields": "(automatisch ins Deutsche übersetzt)",
+      "unknown": "(automatisch ins Deutsche übersetzt)"
+    },
+    "acceptTerms": "(automatisch ins Deutsche übersetzt)",
+    "alreadyRegistered": "(automatisch ins Deutsche übersetzt)",
+    "createAccount": "(automatisch ins Deutsche übersetzt)",
+    "email": "(automatisch ins Deutsche übersetzt)",
+    "errors": {
+      "acceptTerms": "(automatisch ins Deutsche übersetzt)",
+      "emailRequired": "(automatisch ins Deutsche übersetzt)",
+      "login": "(automatisch ins Deutsche übersetzt)",
+      "passwordLength": "(automatisch ins Deutsche übersetzt)",
+      "requiredFields": "(automatisch ins Deutsche übersetzt)",
+      "signup": "(automatisch ins Deutsche übersetzt)",
+      "unknown": "(automatisch ins Deutsche übersetzt)"
+    },
+    "forgotPassword": "(automatisch ins Deutsche übersetzt)",
+    "fullName": "(automatisch ins Deutsche übersetzt)",
+    "help": {
+      "capsLock": "(automatisch ins Deutsche übersetzt)",
+      "checkEmail": "(automatisch ins Deutsche übersetzt)",
+      "forgotPassword": "(automatisch ins Deutsche übersetzt)",
+      "noAccount": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "hidePassword": "(automatisch ins Deutsche übersetzt)",
+    "login": "(automatisch ins Deutsche übersetzt)",
+    "logout": "(automatisch ins Deutsche übersetzt)",
+    "password": "(automatisch ins Deutsche übersetzt)",
+    "showPassword": "(automatisch ins Deutsche übersetzt)",
+    "signup": "(automatisch ins Deutsche übersetzt)",
+    "startTrial": "(automatisch ins Deutsche übersetzt)",
+    "success": {
+      "login": "(automatisch ins Deutsche übersetzt)",
+      "reset": "(automatisch ins Deutsche übersetzt)",
+      "signup": "(automatisch ins Deutsche übersetzt)"
+    },
+    "termsLink": "(automatisch ins Deutsche übersetzt)"
+  },
+  "badges": {
+    "firstApp": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "label": "(automatisch ins Deutsche übersetzt)"
+    },
+    "networker": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "label": "(automatisch ins Deutsche übersetzt)"
+    },
+    "persistent": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "label": "(automatisch ins Deutsche übersetzt)"
+    },
+    "starter": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "label": "(automatisch ins Deutsche übersetzt)"
+    },
+    "title": "(automatisch ins Deutsche übersetzt)",
+    "toUnlock": "(automatisch ins Deutsche übersetzt)",
+    "winner": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "label": "(automatisch ins Deutsche übersetzt)"
+    }
+  },
+  "common": {
+    "connectedAs": "(automatisch ins Deutsche übersetzt)",
+    "loading": "(automatisch ins Deutsche übersetzt)",
+    "or": "(automatisch ins Deutsche übersetzt)",
+    "save": "(automatisch ins Deutsche übersetzt)",
+    "search": "(automatisch ins Deutsche übersetzt)",
+    "view": "(automatisch ins Deutsche übersetzt)"
+  },
+  "dashboard": {
+    "activity": {
+      "application": "(automatisch ins Deutsche übersetzt)",
+      "favorite": "(automatisch ins Deutsche übersetzt)",
+      "interview": "(automatisch ins Deutsche übersetzt)",
+      "offer": "(automatisch ins Deutsche übersetzt)",
+      "status_change": "(automatisch ins Deutsche übersetzt)"
+    },
+    "documentTitle": "(automatisch ins Deutsche übersetzt)",
+    "greeting": "(automatisch ins Deutsche übersetzt)",
+    "recentApplications": {
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "skillsProgress": {
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "stats": {
+      "applications": "(automatisch ins Deutsche übersetzt)",
+      "applicationsSent": "(automatisch ins Deutsche übersetzt)",
+      "averageSalary": "(automatisch ins Deutsche übersetzt)",
+      "interviews": "(automatisch ins Deutsche übersetzt)",
+      "interviewsUpcoming": "(automatisch ins Deutsche übersetzt)",
+      "matchingJobs": "(automatisch ins Deutsche übersetzt)",
+      "recentActivity": "(automatisch ins Deutsche übersetzt)",
+      "responseRate": "(automatisch ins Deutsche übersetzt)",
+      "savedJobs": "(automatisch ins Deutsche übersetzt)",
+      "topCompanies": "(automatisch ins Deutsche übersetzt)",
+      "topLocations": "(automatisch ins Deutsche übersetzt)"
+    },
+    "status": {
+      "accepted": "(automatisch ins Deutsche übersetzt)",
+      "pending": "(automatisch ins Deutsche übersetzt)",
+      "rejected": "(automatisch ins Deutsche übersetzt)"
+    },
+    "timeframe": {
+      "month": "(automatisch ins Deutsche übersetzt)",
+      "week": "(automatisch ins Deutsche übersetzt)",
+      "year": "(automatisch ins Deutsche übersetzt)"
+    },
+    "userDefault": "(automatisch ins Deutsche übersetzt)",
+    "welcome": "(automatisch ins Deutsche übersetzt)"
+  },
+  "demo": {
+    "description": "(automatisch ins Deutsche übersetzt)"
+  },
+  "footer": {
+    "copyright": "(automatisch ins Deutsche übersetzt)",
+    "navigation": {
+      "cgu": "(automatisch ins Deutsche übersetzt)",
+      "community": "(automatisch ins Deutsche übersetzt)",
+      "contact": "(automatisch ins Deutsche übersetzt)",
+      "features": "(automatisch ins Deutsche übersetzt)",
+      "howItWorks": "(automatisch ins Deutsche übersetzt)",
+      "pricing": "(automatisch ins Deutsche übersetzt)",
+      "privacy": "(automatisch ins Deutsche übersetzt)",
+      "privacyPolicy": "(automatisch ins Deutsche übersetzt)",
+      "testimonials": "(automatisch ins Deutsche übersetzt)"
+    },
+    "reportBug": "(automatisch ins Deutsche übersetzt)",
+    "social": {
+      "github": "(automatisch ins Deutsche übersetzt)",
+      "linkedin": "(automatisch ins Deutsche übersetzt)",
+      "twitter": "(automatisch ins Deutsche übersetzt)"
+    }
+  },
+  "hero": {
+    "ctaFinalLogin": "(automatisch ins Deutsche übersetzt)",
+    "ctaFinalStart": "(automatisch ins Deutsche übersetzt)",
+    "ctaFinalSubtitle": "(automatisch ins Deutsche übersetzt)",
+    "ctaFinalTitle": "(automatisch ins Deutsche übersetzt)",
+    "features": [
+      "(automatisch ins Deutsche übersetzt)",
+      "(automatisch ins Deutsche übersetzt)",
+      "(automatisch ins Deutsche übersetzt)"
+    ],
+    "howItWorksSectionSubtitle": "(automatisch ins Deutsche übersetzt)",
+    "howItWorksSectionTitle": "(automatisch ins Deutsche übersetzt)",
+    "imageAlt": "(automatisch ins Deutsche übersetzt)",
+    "startTrial": "(automatisch ins Deutsche übersetzt)",
+    "stepNumber": "(automatisch ins Deutsche übersetzt)",
+    "steps": [
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      },
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      },
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      }
+    ],
+    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "testimonials": [
+      {
+        "name": "(automatisch ins Deutsche übersetzt)",
+        "quote": "(automatisch ins Deutsche übersetzt)",
+        "role": "(automatisch ins Deutsche übersetzt)"
+      }
+    ],
+    "testimonialsSectionSubtitle": "(automatisch ins Deutsche übersetzt)",
+    "testimonialsSectionTitle": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)",
+    "watchDemo": "(automatisch ins Deutsche übersetzt)"
+  },
+  "howItWorks": {
+    "description": "(automatisch ins Deutsche übersetzt)",
+    "stepNumber": "(automatisch ins Deutsche übersetzt)",
+    "steps": [
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      },
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      },
+      {
+        "description": "(automatisch ins Deutsche übersetzt)",
+        "title": "(automatisch ins Deutsche übersetzt)"
+      }
+    ],
+    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)"
+  },
+  "jobSearch": {
+    "filters": {
+      "keyword": "(automatisch ins Deutsche übersetzt)"
+    },
+    "locations": {
+      "hybrid": "(automatisch ins Deutsche übersetzt)",
+      "onsite": "(automatisch ins Deutsche übersetzt)",
+      "remote": "(automatisch ins Deutsche übersetzt)"
+    },
+    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)",
+    "types": {
+      "contract": "(automatisch ins Deutsche übersetzt)",
+      "freelance": "(automatisch ins Deutsche übersetzt)",
+      "fullTime": "(automatisch ins Deutsche übersetzt)",
+      "internship": "(automatisch ins Deutsche übersetzt)",
+      "partTime": "(automatisch ins Deutsche übersetzt)"
+    }
+  },
+  "marketAnalysis": {
+    "averageSalary_one": "(automatisch ins Deutsche übersetzt)",
+    "averageSalary_other": "(automatisch ins Deutsche übersetzt)",
+    "jobTypes": "(automatisch ins Deutsche übersetzt)",
+    "noSalaryData": "(automatisch ins Deutsche übersetzt)",
+    "salaryInsights": "(automatisch ins Deutsche übersetzt)",
+    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)",
+    "topLocations": "(automatisch ins Deutsche übersetzt)"
+  },
+  "marketTrends": {
+    "error": "(automatisch ins Deutsche übersetzt)",
+    "errorUnknown": "(automatisch ins Deutsche übersetzt)",
+    "jobTypes": "(automatisch ins Deutsche übersetzt)",
+    "loading": "(automatisch ins Deutsche übersetzt)",
+    "locations": "(automatisch ins Deutsche übersetzt)",
+    "noData": "(automatisch ins Deutsche übersetzt)",
+    "salary": "(automatisch ins Deutsche übersetzt)",
+    "salaryOffers": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)"
+  },
+  "navigation": {
+    "profile": "(automatisch ins Deutsche übersetzt)"
+  },
+  "privacy": {
+    "accept": "(automatisch ins Deutsche übersetzt)",
+    "consent": "(automatisch ins Deutsche übersetzt)",
+    "contact": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "dataCollection": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "personal": "(automatisch ins Deutsche übersetzt)",
+      "preferences": "(automatisch ins Deutsche übersetzt)",
+      "skills": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)",
+      "usage": "(automatisch ins Deutsche übersetzt)"
+    },
+    "dataPurpose": {
+      "analytics": "(automatisch ins Deutsche übersetzt)",
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "matching": "(automatisch ins Deutsche übersetzt)",
+      "recommendations": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "dataRetention": {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "logs": "(automatisch ins Deutsche übersetzt)",
+      "preferences": "(automatisch ins Deutsche übersetzt)",
+      "skills": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "decline": "(automatisch ins Deutsche übersetzt)",
+    "rights": {
+      "access": "(automatisch ins Deutsche übersetzt)",
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "erasure": "(automatisch ins Deutsche übersetzt)",
+      "portability": "(automatisch ins Deutsche übersetzt)",
+      "rectification": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)",
+      "withdraw": "(automatisch ins Deutsche übersetzt)"
+    },
+    "security": {
+      "access": "(automatisch ins Deutsche übersetzt)",
+      "compliance": "(automatisch ins Deutsche übersetzt)",
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "encryption": "(automatisch ins Deutsche übersetzt)",
+      "monitoring": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    "shortConsent": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)"
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)",
+      "updateError": "(automatisch ins Deutsche übersetzt)",
+      "updateSuccess": "(automatisch ins Deutsche übersetzt)"
+    },
+    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "title": "(automatisch ins Deutsche übersetzt)"
+  },
+  "steps": [
+    {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    },
+    {
+      "description": "(automatisch ins Deutsche übersetzt)",
+      "title": "(automatisch ins Deutsche übersetzt)"
+    }
+  ]
+}

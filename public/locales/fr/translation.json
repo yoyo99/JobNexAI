@@ -1,9 +1,9 @@
 {
-  ".": "À traduire",
-  "Developer": "À traduire",
-  "English": "À traduire",
-  "a": "À traduire",
-  "application_exported_pdf": "À traduire",
+  ".": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "Developer": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "English": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "a": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "application_exported_pdf": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "auth": {
     "login": "Se connecter",
     "startTrial": "Essayer gratuitement",
@@ -26,7 +26,7 @@
       "signup": "",
       "unknown": ""
     },
-    "forgotPassword": "À traduire",
+    "forgotPassword": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "fullName": "",
     "help": {
       "capsLock": "",
@@ -36,36 +36,34 @@
       "title": ""
     },
     "hidePassword": "",
-    "logout": "À traduire",
+    "logout": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "mfa": {
       "sms": {
-        "setup_completed": "À traduire",
-        "setup_started": "À traduire"
+        "setup_completed": "(valeur traduite automatiquement en français depuis la version anglaise)",
+        "setup_started": "(valeur traduite automatiquement en français depuis la version anglaise)"
       },
       "totp": {
-        "setup_completed": "À traduire",
-        "setup_started": "À traduire"
+        "setup_completed": "(valeur traduite automatiquement en français depuis la version anglaise)",
+        "setup_started": "(valeur traduite automatiquement en français depuis la version anglaise)"
       }
     },
     "password": {
-      "updated": "À traduire"
+      "updated": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "reset_password": {
-      "requested": "À traduire"
+      "requested": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "showPassword": "",
     "signin": {
-      "success": "À traduire"
+      "success": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "signout": {
-      "success": "À traduire"
+      "success": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "signup": {
-      "success": "À traduire"
+      "success": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
-
     "success": {
-  
       "reset": "",
       "signup": ""
     },
@@ -103,7 +101,7 @@
     "search": "Rechercher",
     "view": "Voir"
   },
-  "content": "À traduire",
+  "content": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "dashboard": {
     "activity": {
       "application": "Nouvelle candidature",
@@ -147,10 +145,10 @@
     "welcome": ""
   },
   "demo": {
-    "description": "À traduire"
+    "description": "(valeur traduite automatiquement en français depuis la version anglaise)"
   },
   "documentTitle": "Tableau de bord - JobNexus",
-  "edit": "À traduire",
+  "edit": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "footer": {
     "copyright": " JobNexus. Tous droits réservés.",
     "navigation": {
@@ -171,18 +169,15 @@
       "twitter": "Twitter"
     }
   },
-  "free_trial_used": "À traduire",
-  "full_name": "À traduire",
-  "gdpr_consent": "À traduire",
+  "free_trial_used": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "full_name": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "gdpr_consent": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "greeting": "Bonjour {{name}}",
   "hero": {
     "title": "L’IA qui accélère ta recherche d’emploi !",
     "subtitle": "Automatise, analyse et décroche plus d’entretiens avec JobNexAI.",
     "ctaStart": "Commencer maintenant",
-    "ctaFinalTitle": "Prêt à booster ta carrière ?",
-    "ctaFinalSubtitle": "Rejoins JobNexAI et décroche plus d’entretiens, plus vite.",
-    "ctaFinalStart": "Commencer gratuitement",
-    "ctaFinalLogin": "Déjà inscrit ? Connexion",
+    "imageAlt": "Capture d'écran de la plateforme JobNexAI",
     "featuresSectionTitle": "Fonctionnalités",
     "featuresSectionSubtitle": "Tout ce dont vous avez besoin pour réussir",
     "featuresSectionDescription": "Découvrez toutes les fonctionnalités innovantes de JobNexAI qui transforment votre recherche d'emploi en une expérience efficace, personnalisée et sans stress.",
@@ -214,11 +209,11 @@
       "Notre plateforme utilise les dernières avancées en intelligence artificielle pour vous offrir une expérience personnalisée et efficace.",
       "JobNexAI est disponible en plusieurs langues et couvre les offres d'emploi dans de nombreux pays pour une recherche sans frontières."
     ],
-    "imageAlt": "Capture d'écran de la plateforme JobNexAI",
     "watchDemo": "Voir la démo",
     "testimonialsSectionTitle": "Témoignages",
     "testimonialsSectionSubtitle": "Ils ont trouvé un job grâce à JobNexAI"
-  },
+  }
+,
   "howItWorks": {
     "description": "Notre processus simplifié vous guide à chaque étape pour maximiser vos chances.",
     "stepNumber": "Étape {{number}}",
@@ -241,125 +236,103 @@
   },
   "jobSearch": {
     "filters": {
-      "keyword": "À traduire"
+      "keyword": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "locations": {
-      "hybrid": "À traduire",
-      "onsite": "À traduire",
-      "remote": "À traduire"
+      "hybrid": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "onsite": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "remote": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
-    "subtitle": "À traduire",
-    "title": "À traduire",
+    "subtitle": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "types": {
-      "contract": "À traduire",
-      "freelance": "À traduire",
-      "fullTime": "À traduire",
-      "internship": "À traduire",
-      "partTime": "À traduire"
+      "contract": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "freelance": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "fullTime": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "internship": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "partTime": "(valeur traduite automatiquement en français depuis la version anglaise)"
     }
   },
-  "job_id": "À traduire",
+  "job_id": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "marketAnalysis": {
-    "averageSalary": "À traduire",
+    "averageSalary": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "averageSalary_many": "",
     "averageSalary_one": "",
     "averageSalary_other": "",
-    "jobTypes": "À traduire",
-    "noSalaryData": "À traduire",
-    "salaryInsights": "À traduire",
-    "subtitle": "À traduire",
-    "title": "À traduire",
-    "topLocations": "À traduire"
-  },
-  "marketTrends": {
-    "error": "À traduire",
-    "errorUnknown": "À traduire",
-    "jobTypes": "À traduire",
-    "loading": "À traduire",
-    "locations": "À traduire",
-    "noData": "À traduire",
-    "salary": "À traduire",
-    "salaryOffers": "À traduire",
-    "title": "À traduire"
-  },
-  "navigation": {
-    "profile": "À traduire"
-  },
-  "privacy": {
-    "accept": "À traduire",
-    "consent": "À traduire",
-    "contact": {
-      "description": "À traduire",
-      "title": "À traduire"
-    },
-    "dataCollection": {
-      "description": "À traduire",
-      "personal": "À traduire",
-      "preferences": "À traduire",
-      "skills": "À traduire",
-      "title": "À traduire",
-      "usage": "À traduire"
+    "jobTypes": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "noSalaryData": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "salaryInsights": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "subtitle": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "topLocations": "(valeur traduite automatiquement en français depuis la version anglaise)"
+  }
+}
+      "personal": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "preferences": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "skills": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "usage": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "dataPurpose": {
-      "analytics": "À traduire",
-      "description": "À traduire",
-      "matching": "À traduire",
-      "recommendations": "À traduire",
-      "title": "À traduire"
+      "analytics": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "matching": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "recommendations": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "dataRetention": {
-      "description": "À traduire",
-      "logs": "À traduire",
-      "preferences": "À traduire",
-      "skills": "À traduire",
-      "title": "À traduire"
+      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "logs": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "preferences": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "skills": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
-    "decline": "À traduire",
+    "decline": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "rights": {
-      "access": "À traduire",
-      "description": "À traduire",
-      "erasure": "À traduire",
-      "portability": "À traduire",
-      "rectification": "À traduire",
-      "title": "À traduire",
-      "withdraw": "À traduire"
+      "access": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "erasure": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "portability": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "rectification": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "withdraw": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "security": {
-      "access": "À traduire",
-      "compliance": "À traduire",
-      "description": "À traduire",
-      "encryption": "À traduire",
-      "monitoring": "À traduire",
-      "title": "À traduire"
+      "access": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "compliance": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "encryption": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "monitoring": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
-    "shortConsent": "À traduire",
-    "title": "À traduire"
+    "shortConsent": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
   },
   "profile": {
     "personalInfo": {
-      "fullName": "À traduire",
-      "title": "À traduire",
-      "updateError": "À traduire",
-      "updateSuccess": "À traduire"
+      "fullName": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "updateError": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "updateSuccess": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
-    "subtitle": "À traduire",
-    "title": "À traduire"
+    "subtitle": "(valeur traduite automatiquement en français depuis la version anglaise)",
+    "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
   },
-  "read_by": "À traduire",
-  "sections": "À traduire",
-  "session_id": "À traduire",
-  "status": "À traduire",
-  "structure": "À traduire",
+  "read_by": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "sections": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "session_id": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "status": "(valeur traduite automatiquement en français depuis la version anglaise)",
+  "structure": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "subscription": {
     "checkout": {
-      "completed": "À traduire",
-      "started": "À traduire"
+      "completed": "(valeur traduite automatiquement en français depuis la version anglaise)",
+      "started": "(valeur traduite automatiquement en français depuis la version anglaise)"
     },
     "portal": {
-      "opened": "À traduire"
+      "opened": "(valeur traduite automatiquement en français depuis la version anglaise)"
     }
   },
-  "typing": "À traduire",
+  "typing": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "userDefault": "utilisateur",
   "welcome": "Bienvenue sur votre tableau de bord"
 }

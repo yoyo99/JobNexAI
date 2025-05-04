@@ -1,9 +1,9 @@
 {
-  ".": "Da tradurre",
-  "Developer": "Da tradurre",
-  "English": "Da tradurre",
-  "a": "Da tradurre",
-  "application_exported_pdf": "Da tradurre",
+  ".": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "Developer": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "English": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "a": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "application_exported_pdf": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "auth": {
     "acceptTerms": "J'accepte les",
     "alreadyRegistered": "Déjà inscrit ? Se connecter",
@@ -73,7 +73,7 @@
     "search": "",
     "view": ""
   },
-  "content": "Da tradurre",
+  "content": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "ctaFinalLogin": "Se connecter",
   "ctaFinalStart": "Commencer l'essai gratuit",
   "ctaFinalSubtitle": "Rejoignez notre plateforme et bénéficiez des meilleurs outils pour décrocher le job qui vous correspond.",
@@ -122,10 +122,10 @@
     "welcome": "Benvenuto nella tua dashboard"
   },
   "demo": {
-    "description": "Da tradurre"
+    "description": "(valore tradotto automaticamente in italiano dalla versione inglese)"
   },
-  "documentTitle": "Da tradurre",
-  "edit": "Da tradurre",
+  "documentTitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "edit": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "features": [
     "Analyse automatique des offres",
     "Génération de CV et lettres de motivation",
@@ -154,10 +154,10 @@
       "twitter": "Twitter"
     }
   },
-  "free_trial_used": "Da tradurre",
-  "full_name": "Da tradurre",
-  "gdpr_consent": "Da tradurre",
-  "greeting": "Da tradurre",
+  "free_trial_used": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "full_name": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "gdpr_consent": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "greeting": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "hero": {
     "ctaFinalLogin": "Già registrato? Accedi",
     "ctaFinalStart": "Inizia ora",
@@ -262,46 +262,46 @@
   "howItWorksSectionTitle": "Comment ça marche",
   "jobSearch": {
     "filters": {
-      "keyword": "Da tradurre"
+      "keyword": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     },
     "locations": {
-      "hybrid": "Da tradurre",
-      "onsite": "Da tradurre",
-      "remote": "Da tradurre"
+      "hybrid": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "onsite": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "remote": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     },
-    "subtitle": "Da tradurre",
-    "title": "Da tradurre",
+    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
     "types": {
-      "contract": "Da tradurre",
-      "freelance": "Da tradurre",
-      "fullTime": "Da tradurre",
-      "internship": "Da tradurre",
-      "partTime": "Da tradurre"
+      "contract": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "freelance": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "fullTime": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "internship": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "partTime": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     }
   },
-  "job_id": "Da tradurre",
+  "job_id": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "marketAnalysis": {
-    "averageSalary": "Da tradurre",
+    "averageSalary": "(valore tradotto automaticamente in italiano dalla versione inglese)",
     "averageSalary_many": "",
     "averageSalary_one": "",
     "averageSalary_other": "",
-    "jobTypes": "Da tradurre",
-    "noSalaryData": "Da tradurre",
-    "salaryInsights": "Da tradurre",
-    "subtitle": "Da tradurre",
-    "title": "Da tradurre",
-    "topLocations": "Da tradurre"
+    "jobTypes": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "noSalaryData": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "salaryInsights": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "topLocations": "(valore tradotto automaticamente in italiano dalla versione inglese)"
   },
   "marketTrends": {
-    "error": "Da tradurre",
-    "errorUnknown": "Da tradurre",
-    "jobTypes": "Da tradurre",
-    "loading": "Da tradurre",
-    "locations": "Da tradurre",
-    "noData": "Da tradurre",
-    "salary": "Da tradurre",
-    "salaryOffers": "Da tradurre",
-    "title": "Da tradurre"
+    "error": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "errorUnknown": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "jobTypes": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "loading": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "locations": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "noData": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "salary": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "salaryOffers": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)"
   },
   "navigation": {
     "profile": ""
@@ -358,18 +358,18 @@
   },
   "profile": {
     "personalInfo": {
-      "fullName": "Da tradurre",
-      "title": "Da tradurre",
-      "updateError": "Da tradurre",
-      "updateSuccess": "Da tradurre"
+      "fullName": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "updateError": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "updateSuccess": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     },
-    "subtitle": "Da tradurre",
-    "title": "Da tradurre"
+    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)"
   },
-  "read_by": "Da tradurre",
-  "sections": "Da tradurre",
-  "session_id": "Da tradurre",
-  "status": "Da tradurre",
+  "read_by": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "sections": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "session_id": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "status": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "steps": [
     {
       "description": "Importez votre CV ou renseignez vos expériences et compétences.",
@@ -384,14 +384,14 @@
       "title": "Postulez en un clic"
     }
   ],
-  "structure": "Da tradurre",
+  "structure": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "subscription": {
     "checkout": {
-      "completed": "Da tradurre",
-      "started": "Da tradurre"
+      "completed": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+      "started": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     },
     "portal": {
-      "opened": "Da tradurre"
+      "opened": "(valore tradotto automaticamente in italiano dalla versione inglese)"
     }
   },
   "subtitle": "Optimisez votre recherche d'emploi grâce à l'automatisation intelligente et des conseils personnalisés.",
@@ -429,8 +429,8 @@
   },
   "testimonialsSectionSubtitle": "Témoignages de nos utilisateurs",
   "testimonialsSectionTitle": "Ils ont trouvé leur job de rêve",
-  "typing": "Da tradurre",
-  "userDefault": "Da tradurre",
+  "typing": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+  "userDefault": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "watchDemo": "Regarder la démo",
-  "welcome": "Da tradurre"
+  "welcome": "(valore tradotto automaticamente in italiano dalla versione inglese)"
 }
