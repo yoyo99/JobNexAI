@@ -123,7 +123,7 @@ export function UserPreferences() {
       <div>
         <h3 className="text-lg font-medium text-white mb-4">Types de poste</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {jobTypes.map((type) => (
+          {(Array.isArray(jobTypes) ? jobTypes : []).map((type) => (
             <button
               key={type.value}
               onClick={() => toggleJobType(type.value)}
@@ -156,7 +156,7 @@ export function UserPreferences() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {preferences?.preferred_locations.map((location) => (
+            {(Array.isArray(preferences?.preferred_locations) ? preferences.preferred_locations : []).map((location) => (
               <span
                 key={location}
                 className="bg-white/5 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2"
