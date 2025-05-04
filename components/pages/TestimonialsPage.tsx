@@ -23,7 +23,7 @@ const testimonials = [
     role: 'Développeuse Full Stack',
     company: 'TechInnovate',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    quote: 'Grâce à JobNexus, j\'ai trouvé un poste qui correspond parfaitement à mes compétences en seulement 3 semaines. L\'outil d\'analyse de CV m\'a permis d\'optimiser mon profil pour chaque candidature et le système de matching m\'a fait gagner un temps précieux.',
+    quote: 'Grâce à JobNexAI, j\'ai trouvé un poste qui correspond parfaitement à mes compétences en seulement 3 semaines. L\'outil d\'analyse de CV m\'a permis d\'optimiser mon profil pour chaque candidature et le système de matching m\'a fait gagner un temps précieux.',
     rating: 5,
   },
   {
@@ -55,7 +55,7 @@ const testimonials = [
     role: 'Chef de projet',
     company: 'ProjectLead',
     image: 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    quote: 'Le réseau professionnel intégré m\'a permis de rentrer en contact avec des recruteurs directement. C\'est comme ça que j\'ai obtenu mon poste actuel, sans même passer par une annonce classique. JobNexus a complètement transformé ma façon de chercher du travail.',
+    quote: 'Le réseau professionnel intégré m\'a permis de rentrer en contact avec des recruteurs directement. C\'est comme ça que j\'ai obtenu mon poste actuel, sans même passer par une annonce classique. JobNexAI a complètement transformé ma façon de chercher du travail.',
     rating: 5,
   },
   {
@@ -74,7 +74,7 @@ const recruiterTestimonials = [
     role: 'Directrice des Ressources Humaines',
     company: 'TechGlobal',
     image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    quote: 'JobNexus nous a permis de trouver des candidats de qualité beaucoup plus rapidement qu\'avec les méthodes traditionnelles. Le système de matching est impressionnant et nous a fait gagner un temps précieux dans notre processus de recrutement.',
+    quote: 'JobNexAI nous a permis de trouver des candidats de qualité beaucoup plus rapidement qu\'avec les méthodes traditionnelles. Le système de matching est impressionnant et nous a fait gagner un temps précieux dans notre processus de recrutement.',
     rating: 5,
   },
   {
@@ -82,7 +82,7 @@ const recruiterTestimonials = [
     role: 'Talent Acquisition Manager',
     company: 'InnovCorp',
     image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    quote: 'La qualité des profils proposés par JobNexus est remarquable. Les candidats correspondent parfaitement à nos critères et sont déjà bien préparés grâce aux outils d\'optimisation de CV. Cela facilite grandement notre travail de recrutement.',
+    quote: 'La qualité des profils proposés par JobNexAI est remarquable. Les candidats correspondent parfaitement à nos critères et sont déjà bien préparés grâce aux outils d\'optimisation de CV. Cela facilite grandement notre travail de recrutement.',
     rating: 5,
   },
   {
@@ -90,7 +90,7 @@ const recruiterTestimonials = [
     role: 'Responsable Recrutement',
     company: 'DigitalSolutions',
     image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    quote: 'Nous utilisons JobNexus depuis plus d\'un an et les résultats sont exceptionnels. Le temps de recrutement a été réduit de 40% et la qualité des candidats est nettement supérieure. L\'interface de gestion des candidatures est intuitive et efficace.',
+    quote: 'Nous utilisons JobNexAI depuis plus d\'un an et les résultats sont exceptionnels. Le temps de recrutement a été réduit de 40% et la qualité des candidats est nettement supérieure. L\'interface de gestion des candidatures est intuitive et efficace.',
     rating: 4,
   },
 ]
@@ -107,9 +107,9 @@ export function TestimonialsPage() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexus</span>
+              <span className="sr-only">JobNexAI</span>
               <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexus
+                JobNexAI
               </div>
             </Link>
           </div>
@@ -159,9 +159,9 @@ export function TestimonialsPage() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
-                <span className="sr-only">JobNexus</span>
+                <span className="sr-only">JobNexAI</span>
                 <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                  JobNexus
+                  JobNexAI
                 </div>
               </Link>
               <button
@@ -246,7 +246,7 @@ export function TestimonialsPage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="mt-6 text-lg leading-8 text-gray-300"
                 >
-                  Découvrez ce que nos utilisateurs disent de JobNexus et comment notre plateforme a transformé leur recherche d'emploi et leur processus de recrutement.
+                  Découvrez ce que nos utilisateurs disent de JobNexAI et comment notre plateforme a transformé leur recherche d'emploi et leur processus de recrutement.
                 </motion.p>
               </div>
             </div>
@@ -259,10 +259,10 @@ export function TestimonialsPage() {
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-primary-400">Témoignages de candidats</h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Ils ont trouvé leur emploi idéal avec JobNexus
+                Ils ont trouvé leur emploi idéal avec JobNexAI
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Découvrez comment JobNexus a aidé ces professionnels à trouver le poste de leurs rêves et à accélérer leur carrière.
+                Découvrez comment JobNexAI a aidé ces professionnels à trouver le poste de leurs rêves et à accélérer leur carrière.
               </p>
             </div>
             
@@ -314,7 +314,7 @@ export function TestimonialsPage() {
                 Ils ont optimisé leur processus de recrutement
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Découvrez comment JobNexus aide les recruteurs à trouver les meilleurs talents plus rapidement et plus efficacement.
+                Découvrez comment JobNexAI aide les recruteurs à trouver les meilleurs talents plus rapidement et plus efficacement.
               </p>
             </div>
             
@@ -366,7 +366,7 @@ export function TestimonialsPage() {
                 Des chiffres qui parlent d'eux-mêmes
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Découvrez l'impact concret de JobNexus sur la recherche d'emploi et le recrutement.
+                Découvrez l'impact concret de JobNexAI sur la recherche d'emploi et le recrutement.
               </p>
             </div>
             
@@ -424,7 +424,7 @@ export function TestimonialsPage() {
               Rejoignez notre communauté de professionnels satisfaits
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300">
-              Commencez dès aujourd'hui et découvrez comment JobNexus peut transformer votre recherche d'emploi ou votre processus de recrutement.
+              Commencez dès aujourd'hui et découvrez comment JobNexAI peut transformer votre recherche d'emploi ou votre processus de recrutement.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a

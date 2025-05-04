@@ -62,7 +62,7 @@ export function UserTypeSelection() {
       >
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-white">
-            Bienvenue sur JobNexus
+            Bienvenue sur JobNexAI
           </h2>
           <p className="mt-2 text-gray-400">
             Veuillez sélectionner votre profil pour continuer

@@ -1,4 +1,4 @@
-# robots.txt for JobNexus
+# robots.txt for JobNexAI
 User-agent: *
 Allow: /
 

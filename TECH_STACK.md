@@ -1,4 +1,4 @@
-# Stack Technique de JobNexus-FireStudio
+# Stack Technique de JobNexAI-FireStudio
 
 ## Frontend
 - React / TypeScript

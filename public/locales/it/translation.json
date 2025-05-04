@@ -1,64 +1,59 @@
 {
-  ".": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "Developer": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "English": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "a": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "application_exported_pdf": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "auth": {
-    "acceptTerms": "J'accepte les",
-    "alreadyRegistered": "Déjà inscrit ? Se connecter",
-    "createAccount": "Créer un compte",
-    "email": "Adresse email",
+    "login": "Login",
+    "startTrial": "Inizia la prova gratuita",
     "errors": {
-      "acceptTerms": "Vous devez accepter les conditions générales pour vous inscrire.",
-      "emailRequired": "Veuillez entrer votre adresse email",
-      "login": "Une erreur est survenue lors de la connexion",
-      "passwordLength": "Le mot de passe doit contenir au moins 9 caractères.",
-      "requiredFields": "Veuillez remplir tous les champs",
-      "signup": "Une erreur est survenue lors de l'inscription",
-      "unknown": "Une erreur est survenue"
+      "acceptTerms": "Per registrarti devi accettare i termini del servizio.",
+      "emailRequired": "Inserisci il tuo indirizzo email",
+      "login": "Si è verificato un errore durante l'accesso",
+      "passwordLength": "La password deve contenere almeno 9 caratteri.",
+      "requiredFields": "Si prega di compilare tutti i campi",
+      "signup": "Si è verificato un errore durante la registrazione",
+      "unknown": "Si è verificato un errore"
     },
+    "acceptTerms": "Accetto il",
+    "alreadyRegistered": "Già registrato? Accedi",
+    "createAccount": "Creare un account",
+    "email": "Indirizzo e-mail",
     "forgotPassword": "",
-    "fullName": "Nom complet",
+    "fullName": "Nome e cognome",
     "help": {
-      "capsLock": "Assurez-vous que le verrouillage des majuscules est désactivé",
-      "checkEmail": "Vérifiez que votre adresse email est correcte",
-      "forgotPassword": "Si vous avez oublié votre mot de passe, utilisez le lien \"Mot de passe oublié\"",
-      "noAccount": "Si vous n'avez pas encore de compte, cliquez sur \"Créer un compte\"",
-      "title": "Besoin d'aide pour vous connecter ?"
+      "capsLock": "Assicurati che il Blocco Maiuscole sia disattivato",
+      "checkEmail": "Controlla che il tuo indirizzo email sia corretto",
+      "forgotPassword": "Se hai dimenticato la password, utilizza il link \"Password dimenticata\"",
+      "noAccount": "Se non hai ancora un account, clicca su \"Crea un account\"",
+      "title": "Hai bisogno di aiuto per accedere?"
     },
-    "hidePassword": "Masquer le mot de passe",
-    "login": "Connexion",
+    "hidePassword": "Nascondi password",
     "logout": "",
-    "password": "Mot de passe",
-    "showPassword": "Afficher le mot de passe",
-    "signup": "Créer un compte",
-    "startTrial": "Commencer l’essai gratuit",
+    "password": "Password",
+    "showPassword": "Mostra password",
+    "signup": "Iscrizione",
     "success": {
-      "login": "Connexion réussie !",
-      "reset": "Instructions de réinitialisation envoyées à votre adresse email",
-      "signup": "Inscription réussie ! Vous pouvez maintenant vous connecter."
+      "login": "Accesso effettuato con successo!",
+      "reset": "Istruzioni per la reimpostazione della password inviate al tuo indirizzo email",
+      "signup": "Registrazione avvenuta con successo! Ora puoi accedere."
     },
-    "termsLink": "conditions générales d'utilisation"
+    "termsLink": "termini di servizio"
   },
   "badges": {
     "firstApp": {
       "description": "Invia la tua prima candidatura.",
-      "label": "Prima candidatura"
+      "label": "Prima applicazione"
     },
     "networker": {
       "description": "Aggiungi un contatto alla tua rete.",
       "label": "Networker"
     },
     "persistent": {
-      "description": "Invia 10 candidature.",
+      "description": "Inviare 10 candidature.",
       "label": "Persistente"
     },
     "starter": {
-      "description": "Benvenuto su JobNexAI!",
+      "description": "Benvenuti su JobNexAI!",
       "label": "Nuovo arrivato"
     },
-    "title": "Badge di progresso",
+    "title": "Distintivi di progresso",
     "toUnlock": "Sblocca questo badge raggiungendo l'obiettivo!",
     "winner": {
       "description": "Ricevi un'offerta di lavoro.",
@@ -67,28 +62,22 @@
   },
   "common": {
     "connectedAs": "",
-    "loading": "Chargement...",
-    "or": "ou",
+    "loading": "Caricamento...",
+    "or": "O",
     "save": "",
     "search": "",
     "view": ""
   },
-  "content": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "ctaFinalLogin": "Se connecter",
-  "ctaFinalStart": "Commencer l'essai gratuit",
-  "ctaFinalSubtitle": "Rejoignez notre plateforme et bénéficiez des meilleurs outils pour décrocher le job qui vous correspond.",
-  "ctaFinalTitle": "Prêt à booster votre carrière ?",
-  "ctaStart": "Commencer l'essai gratuit",
   "dashboard": {
     "activity": {
-      "application": "Nuova candidatura",
+      "application": "Nuova applicazione",
       "favorite": "Preferito",
       "interview": "Colloquio",
       "offer": "Offerta",
-      "status_change": "Cambio di stato"
+      "status_change": "Cambiamento di stato"
     },
-    "documentTitle": "Dashboard - JobNexus",
-    "greeting": "Ciao {{name}}",
+    "documentTitle": "Pannello di controllo - JobNexAI",
+    "greeting": "Ciao {{nome}}",
     "recentApplications": {
       "title": ""
     },
@@ -97,21 +86,21 @@
     },
     "stats": {
       "applications": "",
-      "applicationsSent": "Candidature inviate",
+      "applicationsSent": "Domande inviate",
       "averageSalary": "",
       "interviews": "",
-      "interviewsUpcoming": "Colloqui in arrivo",
+      "interviewsUpcoming": "Prossime interviste",
       "matchingJobs": "",
-      "recentActivity": "Attività recente",
+      "recentActivity": "Attività recenti",
       "responseRate": "",
       "savedJobs": "",
-      "topCompanies": "Aziende principali",
-      "topLocations": "Località principali"
+      "topCompanies": "Le migliori aziende",
+      "topLocations": "Posizioni principali"
     },
     "status": {
-      "accepted": "Accettata",
-      "pending": "In attesa",
-      "rejected": "Respinta"
+      "accepted": "Accettato",
+      "pending": "In attesa di",
+      "rejected": "Respinto"
     },
     "timeframe": {
       "month": "Mese",
@@ -119,189 +108,171 @@
       "year": "Anno"
     },
     "userDefault": "utente",
-    "welcome": "Benvenuto nella tua dashboard"
+    "welcome": "Benvenuti nella vostra dashboard"
   },
   "demo": {
-    "description": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+    "description": ""
   },
-  "documentTitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "edit": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "features": [
-    "Analyse automatique des offres",
-    "Génération de CV et lettres de motivation",
-    "Suivi des candidatures",
-    "Statistiques personnalisées",
-    "Veille marché intelligente"
-  ],
-  "featuresSectionTitle": "Voir les fonctionnalités",
   "footer": {
-    "copyright": "© {{year}} JobNexus. Tous droits réservés.",
+    "copyright": "© {{year}} JobNexAI. Tutti i diritti riservati.",
     "navigation": {
-      "cgu": "CGU",
-      "community": "Communauté",
-      "contact": "Contact",
-      "features": "Fonctionnalités",
-      "howItWorks": "Comment ça marche",
-      "pricing": "Tarifs",
-      "privacy": "Confidentialité",
-      "privacyPolicy": "Politique de confidentialité",
-      "testimonials": "Témoignages"
+      "cgu": "Termini di servizio",
+      "community": "Comunità",
+      "contact": "Contatto",
+      "features": "Caratteristiche",
+      "howItWorks": "Come funziona",
+      "pricing": "Prezzi",
+      "privacy": "Riservatezza",
+      "privacyPolicy": "politica sulla riservatezza",
+      "testimonials": "Testimonianze"
     },
-    "reportBug": "Signaler un bug / Donner un avis",
+    "reportBug": "Segnala un bug / Invia feedback",
     "social": {
       "github": "GitHub",
       "linkedin": "LinkedIn",
-      "twitter": "Twitter"
+      "twitter": "Cinguettio"
     }
   },
-  "free_trial_used": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "full_name": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "gdpr_consent": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "greeting": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "hero": {
     "ctaFinalLogin": "Già registrato? Accedi",
     "ctaFinalStart": "Inizia ora",
     "ctaFinalSubtitle": "Unisciti a JobNexAI e ottieni più colloqui, più velocemente.",
-    "ctaFinalTitle": "Pronto a far decollare la tua carriera?",
+    "ctaFinalTitle": "Pronti a dare una spinta alla vostra carriera?",
     "ctaStart": "Inizia la prova gratuita",
     "featureDescriptions": [
-      "L'IA si candida automaticamente alle offerte più adatte a te.",
-      "Visualizza e prepara facilmente i tuoi colloqui.",
-      "Analizza il tuo CV e ricevi consigli su misura.",
-      "Goditi un matching ultra preciso tra il tuo profilo e le offerte.",
-      "Monitora i tuoi progressi e ricevi raccomandazioni personalizzate."
+      "L'intelligenza artificiale si applica automaticamente ai lavori più adatti a te.",
+      "Visualizza e prepara facilmente le tue interviste.",
+      "Analizza il tuo CV e ricevi consigli personalizzati.",
+      "Approfitta di una corrispondenza estremamente precisa tra il tuo profilo e le offerte di lavoro.",
+      "Tieni traccia dei tuoi progressi e ricevi consigli personalizzati."
     ],
     "features": [
-      "Candidature automatiche AI",
-      "Monitoraggio intelligente dei colloqui",
-      "Analisi CV e consigli personalizzati",
-      "Matching avanzato tra offerte e competenze",
-      "Statistiche e raccomandazioni AI"
+      "Applicazioni auto basate sull'intelligenza artificiale",
+      "Monitoraggio intelligente delle interviste",
+      "Analisi del CV e consulenza personalizzata",
+      "Corrispondenza avanzata tra lavoro e competenze",
+      "Statistiche e raccomandazioni sull'intelligenza artificiale"
     ],
     "featuresSectionDescription": "Tutto ciò di cui hai bisogno per avere successo nella ricerca di lavoro.",
-    "featuresSectionSubtitle": "Funzionalità principali",
+    "featuresSectionSubtitle": "Caratteristiche principali",
     "featuresSectionTitle": "",
-    "howItWorksSectionDescription": "3 semplici passi per trovare il lavoro ideale.",
+    "howItWorksSectionDescription": "3 semplici passaggi per trovare il lavoro ideale.",
     "howItWorksSectionSubtitle": "Come funziona?",
     "howItWorksSectionTitle": "",
     "imageAlt": "Illustrazione della dashboard di JobNexAI",
     "startTrial": "",
-    "stepNumber": "Passo {{number}}",
+    "stepNumber": "Passo {{numero}}",
     "steps": [
       {
         "description": "Descrivi i tuoi obiettivi e il tuo background in 2 minuti.",
         "title": "Crea il tuo profilo AI"
       },
       {
-        "description": "L'IA trova e si candida per te alle migliori offerte.",
-        "title": "Avvia la candidatura automatica"
+        "description": "L'intelligenza artificiale trova e propone per te i lavori migliori.",
+        "title": "Avvia l'applicazione automatica"
       },
       {
-        "description": "Analizza i risultati e prepara i colloqui con l'IA.",
-        "title": "Monitora i tuoi progressi"
+        "description": "Analizza i risultati e prepara le interviste con l'intelligenza artificiale.",
+        "title": "Tieni traccia dei tuoi progressi"
       }
     ],
     "subtitle": "Automatizza, analizza e ottieni più colloqui con JobNexAI.",
     "testimonials": [
       {
         "name": "Sophie",
-        "quote": "JobNexAI mi ha fatto ottenere 3 colloqui in 2 settimane!",
-        "role": "Sviluppatrice React"
+        "quote": "JobNexAI mi ha aiutato a ottenere 3 colloqui in 2 settimane!",
+        "role": "Sviluppatore React"
       },
       {
         "name": "Lucas",
-        "quote": "Automatizzare le candidature fa risparmiare davvero tempo.",
-        "role": "Project Manager"
+        "quote": "L'automazione delle applicazioni consente di risparmiare davvero tempo.",
+        "role": "Responsabile del progetto"
       },
       {
         "name": "Emma",
-        "quote": "L'IA mi ha aiutato a preparare meglio i colloqui.",
-        "role": "UX/UI Designer"
+        "quote": "L'intelligenza artificiale mi ha aiutato a prepararmi meglio per i colloqui.",
+        "role": "Progettista UX/UI"
       },
       {
         "name": "Yann",
-        "quote": "Ho trovato un lavoro a tempo indeterminato grazie a JobNexAI!",
-        "role": "DevOps Engineer"
+        "quote": "Ho trovato un lavoro fisso grazie a JobNexAI!",
+        "role": "Ingegnere DevOps"
       },
       {
         "name": "Fatima",
         "quote": "La piattaforma è semplice, efficiente e motivante.",
-        "role": "Product Owner"
+        "role": "Proprietario del prodotto"
       },
       {
         "name": "Marco",
         "quote": "Ho ricevuto più risposte positive rispetto a prima.",
-        "role": "Data Scientist"
+        "role": "Scienziato dei dati"
       }
     ],
     "testimonialsSectionSubtitle": "Hanno trovato lavoro grazie a JobNexAI",
     "testimonialsSectionTitle": "Testimonianze",
-    "title": "L'IA che accelera la tua ricerca di lavoro!",
-    "watchDemo": "Voir la démo"
+    "title": "L'intelligenza artificiale che accelera la tua ricerca di lavoro!",
+    "watchDemo": "Guarda la demo"
   },
   "howItWorks": {
-    "description": "Il nostro processo semplificato ti guida in ogni fase per massimizzare le tue possibilità.",
-    "stepNumber": "Passo {{number}}",
+    "description": "Il nostro processo semplificato ti guida in ogni fase del percorso per massimizzare le tue possibilità.",
+    "stepNumber": "Passo {{numero}}",
     "steps": [
       {
         "description": "Importa il tuo CV o completa le tue informazioni in pochi clic.",
         "title": "Crea il tuo profilo"
       },
       {
-        "description": "L'IA analizza le tue competenze e il mercato per suggerirti le migliori offerte.",
-        "title": "Ricevi raccomandazioni"
+        "description": "L'intelligenza artificiale analizza le tue competenze e il mercato per suggerirti le offerte migliori.",
+        "title": "Ottieni consigli"
       },
       {
-        "description": "Genera candidature personalizzate e monitora i tuoi progressi in tempo reale.",
-        "title": "Candidati facilmente"
+        "description": "Genera applicazioni personalizzate e monitora i tuoi progressi in tempo reale.",
+        "title": "Applica facilmente"
       }
     ],
-    "subtitle": "Scopri come JobNexus ottimizza la tua ricerca di lavoro.",
+    "subtitle": "Scopri come JobNexAI ottimizza la tua ricerca di lavoro.",
     "title": "Come funziona?"
   },
-  "howItWorksSectionTitle": "Comment ça marche",
   "jobSearch": {
     "filters": {
-      "keyword": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+      "keyword": ""
     },
     "locations": {
-      "hybrid": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "onsite": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "remote": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+      "hybrid": "",
+      "onsite": "",
+      "remote": ""
     },
-    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
+    "subtitle": "",
+    "title": "",
     "types": {
-      "contract": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "freelance": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "fullTime": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "internship": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "partTime": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+      "contract": "",
+      "freelance": "",
+      "fullTime": "",
+      "internship": "",
+      "partTime": ""
     }
   },
-  "job_id": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "marketAnalysis": {
-    "averageSalary": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "averageSalary_many": "",
     "averageSalary_one": "",
     "averageSalary_other": "",
-    "jobTypes": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "noSalaryData": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "salaryInsights": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "topLocations": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+    "jobTypes": "",
+    "noSalaryData": "",
+    "salaryInsights": "",
+    "subtitle": "",
+    "title": "",
+    "topLocations": ""
   },
   "marketTrends": {
-    "error": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "errorUnknown": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "jobTypes": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "loading": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "locations": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "noData": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "salary": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "salaryOffers": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+    "error": "",
+    "errorUnknown": "",
+    "jobTypes": "",
+    "loading": "",
+    "locations": "",
+    "noData": "",
+    "salary": "",
+    "salaryOffers": "",
+    "title": ""
   },
   "navigation": {
     "profile": ""
@@ -358,79 +329,26 @@
   },
   "profile": {
     "personalInfo": {
-      "fullName": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "title": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "updateError": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "updateSuccess": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+      "fullName": "",
+      "title": "",
+      "updateError": "",
+      "updateSuccess": ""
     },
-    "subtitle": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-    "title": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+    "subtitle": "",
+    "title": ""
   },
-  "read_by": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "sections": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "session_id": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "status": "(valore tradotto automaticamente in italiano dalla versione inglese)",
   "steps": [
     {
-      "description": "Importez votre CV ou renseignez vos expériences et compétences.",
-      "title": "Créez votre profil en 2 minutes"
+      "description": "Importa il tuo CV o inserisci le tue esperienze e competenze.",
+      "title": "Crea il tuo profilo in 2 minuti"
     },
     {
-      "description": "Laissez l'IA analyser le marché et vous proposer les meilleures opportunités.",
-      "title": "Recevez des offres personnalisées"
+      "description": "Lascia che l'intelligenza artificiale analizzi il mercato e suggerisca le migliori opportunità.",
+      "title": "Ricevi offerte personalizzate"
     },
     {
-      "description": "Générez des candidatures sur-mesure et suivez vos avancées en temps réel.",
-      "title": "Postulez en un clic"
+      "description": "Genera applicazioni personalizzate e monitora i tuoi progressi in tempo reale.",
+      "title": "Applica in un clic"
     }
-  ],
-  "structure": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "subscription": {
-    "checkout": {
-      "completed": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-      "started": "(valore tradotto automaticamente in italiano dalla versione inglese)"
-    },
-    "portal": {
-      "opened": "(valore tradotto automaticamente in italiano dalla versione inglese)"
-    }
-  },
-  "subtitle": "Optimisez votre recherche d'emploi grâce à l'automatisation intelligente et des conseils personnalisés.",
-  "testimonials": {
-    "0": {
-      "name": "Alice",
-      "quote": "JobNexus m'a permis de décrocher 3 entretiens en 2 semaines !",
-      "role": "Développeuse Web"
-    },
-    "1": {
-      "name": "Mehdi",
-      "quote": "La génération automatique de CV est bluffante.",
-      "role": "Product Manager"
-    },
-    "2": {
-      "name": "Sophie",
-      "quote": "J'ai gagné un temps fou pour postuler à mes offres préférées.",
-      "role": "Designer UX"
-    },
-    "3": {
-      "name": "Luca",
-      "quote": "Enfin une plateforme qui comprend vraiment mes besoins.",
-      "role": "Data Scientist"
-    },
-    "4": {
-      "name": "Fatima",
-      "quote": "L'accompagnement personnalisé fait la différence.",
-      "role": "Ingénieure IA"
-    },
-    "5": {
-      "name": "Paul",
-      "quote": "La veille marché intégrée m'a permis de cibler les meilleures opportunités.",
-      "role": "Consultant"
-    }
-  },
-  "testimonialsSectionSubtitle": "Témoignages de nos utilisateurs",
-  "testimonialsSectionTitle": "Ils ont trouvé leur job de rêve",
-  "typing": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "userDefault": "(valore tradotto automaticamente in italiano dalla versione inglese)",
-  "watchDemo": "Regarder la démo",
-  "welcome": "(valore tradotto automaticamente in italiano dalla versione inglese)"
+  ]
 }

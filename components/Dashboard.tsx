@@ -10,7 +10,7 @@ export function Dashboard() {
   const { user } = useAuth()
 
   useEffect(() => {
-    document.title = 'Dashboard - JobNexus'
+    document.title = 'Dashboard - JobNexAI'
   }, [])
 
   return (

@@ -72,7 +72,7 @@ export function Footer() {
           ))}
         </div>
         <p className="mt-10 text-center text-xs leading-5 text-gray-400">
-          &copy; {new Date().getFullYear()} JobNexus, Inc. Tous droits réservés.
+          &copy; {new Date().getFullYear()} JobNexAI, Inc. Tous droits réservés.
         </p>
       </div>
     </footer>

@@ -57,7 +57,7 @@ export function Features() {
             Tout ce dont vous avez besoin pour trouver le job idéal
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-300">
-            JobNexus combine intelligence artificielle et outils professionnels pour vous aider à décrocher votre prochain emploi plus rapidement et plus efficacement.
+            JobNexAI combine intelligence artificielle et outils professionnels pour vous aider à décrocher votre prochain emploi plus rapidement et plus efficacement.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

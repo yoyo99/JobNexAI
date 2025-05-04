@@ -92,7 +92,7 @@
       "offer": "Offer",
       "status_change": "Status change"
     },
-    "documentTitle": "Dashboard - JobNexus",
+    "documentTitle": "Dashboard - JobNexAI",
     "greeting": "Hello {{name}}",
     "recentApplications": {
       "title": ""
@@ -130,7 +130,7 @@
     "description": ""
   },
   "footer": {
-    "copyright": "© {{year}} JobNexus. All rights reserved.",
+    "copyright": "© {{year}} JobNexAI. All rights reserved.",
     "navigation": {
       "cgu": "Terms of Service",
       "community": "Community",
@@ -247,7 +247,7 @@
         "title": "Apply easily"
       }
     ],
-    "subtitle": "Discover how JobNexus optimizes your job search.",
+    "subtitle": "Discover how JobNexAI optimizes your job search.",
     "title": "How does it work?"
   },
   "jobSearch": {

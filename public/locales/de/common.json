@@ -270,7 +270,7 @@
       "offer": "Angebot",
       "status_change": "Statusänderung"
     },
-    "documentTitle": "Dashboard - JobNexus",
+    "documentTitle": "Dashboard - JobNexAI",
     "greeting": "Hallo {{name}}",
     "recentApplications": {
       "title": ""
@@ -332,7 +332,7 @@
         "title": "Bewirb dich einfach"
       }
     ],
-    "subtitle": "Entdecke, wie JobNexus deine Jobsuche optimiert.",
+    "subtitle": "Entdecke, wie JobNexAI deine Jobsuche optimiert.",
     "title": "Wie funktioniert es?"
   },
   "howItWorksSectionTitle": "Comment ça marche",
@@ -414,7 +414,7 @@
   "testimonials": {
     "0": {
       "name": "Alice",
-      "quote": "JobNexus m'a permis de décrocher 3 entretiens en 2 semaines !",
+      "quote": "JobNexAI m'a permis de décrocher 3 entretiens en 2 semaines !",
       "role": "Développeuse Web"
     },
     "1": {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const steps = [
   {
-    title: "Bienvenue sur JobNexus-FireStudio !",
+    title: "Bienvenue sur JobNexAI-FireStudio !",
     content: "Ce SaaS vous aide à gérer vos candidatures, abonnements et à tirer parti de l'IA pour booster votre carrière."
   },
   {

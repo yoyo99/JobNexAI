@@ -147,10 +147,10 @@
   "demo": {
     "description": "(valeur traduite automatiquement en français depuis la version anglaise)"
   },
-  "documentTitle": "Tableau de bord - JobNexus",
+  "documentTitle": "Tableau de bord - JobNexAI",
   "edit": "(valeur traduite automatiquement en français depuis la version anglaise)",
   "footer": {
-    "copyright": " JobNexus. Tous droits réservés.",
+    "copyright": " JobNexAI. Tous droits réservés.",
     "navigation": {
       "cgu": "CGU",
       "community": "Communauté",
@@ -231,7 +231,7 @@
         "title": "Postulez facilement"
       }
     ],
-    "subtitle": "Découvrez comment JobNexus optimise votre recherche d'emploi.",
+    "subtitle": "Découvrez comment JobNexAI optimise votre recherche d'emploi.",
     "title": "Comment ça marche ?"
   },
   "jobSearch": {
@@ -266,73 +266,4 @@
     "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
     "topLocations": "(valeur traduite automatiquement en français depuis la version anglaise)"
   }
-}
-      "personal": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "preferences": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "skills": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "usage": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "dataPurpose": {
-      "analytics": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "matching": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "recommendations": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "dataRetention": {
-      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "logs": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "preferences": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "skills": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "decline": "(valeur traduite automatiquement en français depuis la version anglaise)",
-    "rights": {
-      "access": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "erasure": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "portability": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "rectification": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "withdraw": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "security": {
-      "access": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "compliance": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "description": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "encryption": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "monitoring": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "shortConsent": "(valeur traduite automatiquement en français depuis la version anglaise)",
-    "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
-  },
-  "profile": {
-    "personalInfo": {
-      "fullName": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "title": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "updateError": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "updateSuccess": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "subtitle": "(valeur traduite automatiquement en français depuis la version anglaise)",
-    "title": "(valeur traduite automatiquement en français depuis la version anglaise)"
-  },
-  "read_by": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "sections": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "session_id": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "status": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "structure": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "subscription": {
-    "checkout": {
-      "completed": "(valeur traduite automatiquement en français depuis la version anglaise)",
-      "started": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    },
-    "portal": {
-      "opened": "(valeur traduite automatiquement en français depuis la version anglaise)"
-    }
-  },
-  "typing": "(valeur traduite automatiquement en français depuis la version anglaise)",
-  "userDefault": "utilisateur",
-  "welcome": "Bienvenue sur votre tableau de bord"
 }

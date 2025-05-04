@@ -1,6 +1,6 @@
 {
-  "name": "JobNexus",
-  "short_name": "JobNexus",
+  "name": "JobNexAI",
+  "short_name": "JobNexAI",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#181c24",
