@@ -218,8 +218,11 @@
     "testimonialsSectionSubtitle": "Ils ont trouvé un job grâce à JobNexAI"
   },
   "howItWorks": {
-    "description": "Notre processus simplifié vous guide à chaque étape pour maximiser vos chances.",
+    "title": "Comment ça marche ?",
+    "subtitle": "Découvrez les étapes du fonctionnement de JobNexAI.",
+    "description": "Suivez ces étapes simples pour maximiser vos chances de trouver un emploi.",
     "stepNumber": "Étape {{number}}",
+
     "steps": [
       {
         "description": "Importez votre CV ou complétez vos informations en quelques clics.",
@@ -234,8 +237,7 @@
         "title": "Postulez facilement"
       }
     ],
-    "subtitle": "Découvrez comment JobNexAI optimise votre recherche d'emploi.",
-    "title": "Comment ça marche ?"
+
   },
   "jobSearch": {
     "filters": {
