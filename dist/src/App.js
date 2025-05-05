@@ -1,0 +1,45 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import ToastContainer from './ToastContainer';
+import { DashboardLayout } from './components/DashboardLayout';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './components/AuthProvider';
+import { PrivacyConsent } from './components/PrivacyConsent';
+import { SecurityBadge } from './components/SecurityBadge';
+import { SubscriptionBanner } from './components/SubscriptionBanner';
+import { ErrorBoundary } from './components/ErrorBoundary';
+// Code splitting (React.lazy) pour les pages principales
+const JobNexAILanding = React.lazy(() => import('./components/JobNexAILanding'));
+const Auth = React.lazy(() => import('./components/Auth'));
+const Pricing = React.lazy(() => import('./components/Pricing'));
+const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
+const FeaturesPage = React.lazy(() => import('./components/pages/FeaturesPage'));
+const HowItWorksPage = React.lazy(() => import('./components/pages/HowItWorksPage'));
+const TestimonialsPage = React.lazy(() => import('./components/pages/TestimonialsPage'));
+const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
+const AuthCallback = React.lazy(() => import('./components/AuthCallback'));
+const StripeCheckoutStatus = React.lazy(() => import('./components/StripeCheckoutStatus'));
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Profile = React.lazy(() => import('./components/Profile'));
+const Billing = React.lazy(() => import('./components/Billing'));
+const JobSearch = React.lazy(() => import('./components/JobSearch'));
+const JobApplications = React.lazy(() => import('./components/JobApplications'));
+const MarketAnalysis = React.lazy(() => import('./components/MarketAnalysis'));
+const CVBuilder = React.lazy(() => import('./components/cv/CVBuilder'));
+const NetworkPage = React.lazy(() => import('./components/NetworkPage'));
+const MarketTrendsPage = React.lazy(() => import('./components/pages/MarketTrendsPage'));
+const FreelanceProjects = React.lazy(() => import('./components/freelance/FreelanceProjects'));
+const FreelanceProfile = React.lazy(() => import('./components/freelance/FreelanceProfile'));
+const RecruiterDashboard = React.lazy(() => import('./components/recruiter/RecruiterDashboard'));
+const CandidateSearch = React.lazy(() => import('./components/recruiter/CandidateSearch'));
+const JobPostings = React.lazy(() => import('./components/recruiter/JobPostings'));
+const CreateJobPosting = React.lazy(() => import('./components/recruiter/CreateJobPosting'));
+const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelection'));
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
+function App() {
+    console.log('[i18n-debug] Langue courante:', i18n.language, '| Ressources:', Object.keys(i18n.services.resourceStore.data), '| Namespaces:', i18n.options.ns);
+    return (_jsx(ErrorBoundary, { children: _jsx(I18nextProvider, { i18n: i18n, children: _jsx(Router, { children: _jsxs(AuthProvider, { children: [_jsxs(Routes, { children: [_jsx(Route, { path: "/", element: _jsx(JobNexAILanding, {}) }), _jsx(Route, { path: "/login", element: _jsx(Auth, {}) }), _jsx(Route, { path: "/pricing", element: _jsx(Pricing, {}) }), _jsx(Route, { path: "/privacy", element: _jsx(PrivacyPolicy, {}) }), _jsx(Route, { path: "/features", element: _jsx(FeaturesPage, {}) }), _jsx(Route, { path: "/how-it-works", element: _jsx(HowItWorksPage, {}) }), _jsx(Route, { path: "/testimonials", element: _jsx(TestimonialsPage, {}) }), _jsx(Route, { path: "/auth/reset-password", element: _jsx(ResetPassword, {}) }), _jsx(Route, { path: "/auth/callback", element: _jsx(AuthCallback, {}) }), _jsx(Route, { path: "/checkout/success", element: _jsx(StripeCheckoutStatus, {}) }), _jsx(Route, { path: "/user-type", element: _jsx(ProtectedRoute, { children: _jsx(Navigate, { to: "/dashboard", replace: true }) }) }), _jsxs(Route, { element: _jsx(ProtectedRoute, { children: _jsx(DashboardLayout, {}) }), children: [_jsx(Route, { path: "/dashboard", element: _jsx(Dashboard, {}) }), _jsx(Route, { path: "/profile", element: _jsx(Profile, {}) }), _jsx(Route, { path: "/billing", element: _jsx(Billing, {}) }), _jsx(Route, { path: "/jobs", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(JobSearch, {}) }) }), _jsx(Route, { path: "/applications", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(JobApplications, {}) }) }), _jsx(Route, { path: "/market-analysis", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(MarketAnalysis, {}) }) }), _jsx(Route, { path: "/cv-builder", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(CVBuilder, {}) }) }), _jsx(Route, { path: "/network", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(NetworkPage, {}) }) }), _jsx(Route, { path: "/market-trends", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(MarketTrendsPage, {}) }) }), _jsx(Route, { path: "/freelance/projects", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(FreelanceProjects, {}) }) }), _jsx(Route, { path: "/freelance/profile", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(FreelanceProfile, {}) }) }), _jsx(Route, { path: "/recruiter/dashboard", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(RecruiterDashboard, {}) }) }), _jsx(Route, { path: "/recruiter/candidates", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(CandidateSearch, {}) }) }), _jsx(Route, { path: "/recruiter/job-postings", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(JobPostings, {}) }) }), _jsx(Route, { path: "/recruiter/create-job", element: _jsx(ProtectedRoute, { requiresSubscription: true, children: _jsx(CreateJobPosting, {}) }) })] })] }), _jsx(PrivacyConsent, {}), _jsx(SecurityBadge, {}), _jsx(SubscriptionBanner, {}), _jsx(ToastContainer, {})] }) }) }) }));
+}
+export default App;
