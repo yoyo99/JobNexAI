@@ -1,0 +1,354 @@
+{
+  "auth": {
+    "login": "Acceso",
+    "startTrial": "Comience una prueba gratuita",
+    "errors": {
+      "acceptTerms": "Debes aceptar los términos del servicio para registrarte.",
+      "emailRequired": "Por favor, introduzca su dirección de correo electrónico",
+      "login": "Se produjo un error durante el inicio de sesión",
+      "passwordLength": "La contraseña debe tener al menos 9 caracteres.",
+      "requiredFields": "Por favor, rellene todos los campos",
+      "signup": "Se produjo un error durante el registro",
+      "unknown": "Se produjo un error"
+    },
+    "acceptTerms": "Acepto el",
+    "alreadyRegistered": "¿Ya estás registrado? Iniciar sesión",
+    "createAccount": "Crear una cuenta",
+    "email": "Dirección de correo electrónico",
+    "forgotPassword": "",
+    "fullName": "Nombre completo",
+    "help": {
+      "capsLock": "Asegúrese de que la tecla Bloq Mayús esté desactivada",
+      "checkEmail": "Comprueba que tu dirección de correo electrónico sea correcta",
+      "forgotPassword": "Si olvidó su contraseña, utilice el enlace 'Olvidé mi contraseña'",
+      "noAccount": "Si aún no tienes una cuenta, haz clic en “Crear una cuenta”",
+      "title": "¿Necesitas ayuda para iniciar sesión?"
+    },
+    "hidePassword": "Ocultar contraseña",
+    "logout": "",
+    "password": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "signup": "Inscribirse",
+    "success": {
+      "login": "¡Inicio de sesión exitoso!",
+      "reset": "Instrucciones para restablecer la contraseña enviadas a su dirección de correo electrónico",
+      "signup": "¡Registro exitoso! Ya puedes iniciar sesión."
+    },
+    "termsLink": "Condiciones de servicio"
+  },
+  "badges": {
+    "firstApp": {
+      "description": "Envía tu primera solicitud.",
+      "label": "Primera solicitud"
+    },
+    "networker": {
+      "description": "Añade un contacto a tu red.",
+      "label": "Networker"
+    },
+    "persistent": {
+      "description": "Enviar 10 solicitudes.",
+      "label": "Persistente"
+    },
+    "starter": {
+      "description": "¡Bienvenido a JobNexAI!",
+      "label": "Recién llegado"
+    },
+    "title": "Insignias de progreso",
+    "toUnlock": "¡Desbloquea esta insignia al llegar a la meta!",
+    "winner": {
+      "description": "Consiga una oferta de trabajo.",
+      "label": "¡Ganador!"
+    }
+  },
+  "common": {
+    "connectedAs": "",
+    "loading": "Cargando...",
+    "or": "o",
+    "save": "",
+    "search": "",
+    "view": ""
+  },
+  "dashboard": {
+    "activity": {
+      "application": "Nueva aplicación",
+      "favorite": "Favorito",
+      "interview": "Entrevista",
+      "offer": "Oferta",
+      "status_change": "Cambio de estado"
+    },
+    "documentTitle": "Panel de control - JobNexAI",
+    "greeting": "Hola {{nombre}}",
+    "recentApplications": {
+      "title": ""
+    },
+    "skillsProgress": {
+      "title": ""
+    },
+    "stats": {
+      "applications": "",
+      "applicationsSent": "Solicitudes enviadas",
+      "averageSalary": "",
+      "interviews": "",
+      "interviewsUpcoming": "Próximas entrevistas",
+      "matchingJobs": "",
+      "recentActivity": "Actividad reciente",
+      "responseRate": "",
+      "savedJobs": "",
+      "topCompanies": "Principales empresas",
+      "topLocations": "Ubicaciones principales"
+    },
+    "status": {
+      "accepted": "Aceptado",
+      "pending": "Pendiente",
+      "rejected": "Rechazado"
+    },
+    "timeframe": {
+      "month": "Mes",
+      "week": "Semana",
+      "year": "Año"
+    },
+    "userDefault": "usuario",
+    "welcome": "Bienvenido a tu panel de control"
+  },
+  "demo": {
+    "description": ""
+  },
+  "footer": {
+    "copyright": "© {{year}} JobNexAI. Todos los derechos reservados.",
+    "navigation": {
+      "cgu": "Condiciones de servicio",
+      "community": "Comunidad",
+      "contact": "Contacto",
+      "features": "Características",
+      "howItWorks": "Cómo funciona",
+      "pricing": "Precios",
+      "privacy": "Privacidad",
+      "privacyPolicy": "política de privacidad",
+      "testimonials": "Testimonios"
+    },
+    "reportBug": "Informar un error / Dar retroalimentación",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Gorjeo"
+    }
+  },
+  "hero": {
+    "ctaFinalLogin": "¿Ya estás registrado? Iniciar sesión",
+    "ctaFinalStart": "Empieza ahora",
+    "ctaFinalSubtitle": "Únase a JobNexAI y obtenga más entrevistas, más rápido.",
+    "ctaFinalTitle": "¿Estás listo para impulsar tu carrera?",
+    "ctaStart": "Comience una prueba gratuita",
+    "featureDescriptions": [
+      "La IA se aplica automáticamente a los trabajos que se adaptan a usted.",
+      "Visualiza y prepara tus entrevistas fácilmente.",
+      "Analiza tu CV y recibe asesoramiento personalizado.",
+      "Benefíciate de una correspondencia ultraprecisa entre tu perfil y tus empleos.",
+      "Realice un seguimiento de su progreso y obtenga recomendaciones personalizadas."
+    ],
+    "features": [
+      "Aplicaciones automotrices impulsadas por IA",
+      "Seguimiento inteligente de entrevistas",
+      "Análisis de CV y asesoramiento personalizado",
+      "Adecuación avanzada de trabajo/habilidades",
+      "Estadísticas y recomendaciones de IA"
+    ],
+    "featuresSectionDescription": "Todo lo que necesitas para tener éxito en tu búsqueda de empleo.",
+    "featuresSectionSubtitle": "Características principales",
+    "featuresSectionTitle": "",
+    "howItWorksSectionDescription": "3 sencillos pasos para encontrar tu trabajo ideal.",
+    "howItWorksSectionSubtitle": "¿Cómo funciona?",
+    "howItWorksSectionTitle": "",
+    "imageAlt": "Ilustración del panel de control de JobNexAI",
+    "startTrial": "",
+    "stepNumber": "Paso {{number}}",
+    "steps": [
+      {
+        "description": "Describe tus objetivos y antecedentes en 2 minutos.",
+        "title": "Crea tu perfil de IA"
+      },
+      {
+        "description": "La IA encuentra y postula para ti los mejores trabajos.",
+        "title": "Iniciar aplicación automática"
+      },
+      {
+        "description": "Analiza tus resultados y prepara entrevistas con IA.",
+        "title": "Sigue tu progreso"
+      }
+    ],
+    "subtitle": "Automatice, analice y consiga más entrevistas con JobNexAI.",
+    "testimonials": [
+      {
+        "name": "Sophie",
+        "quote": "¡JobNexAI me ayudó a conseguir 3 entrevistas en 2 semanas!",
+        "role": "Desarrollador de React"
+      },
+      {
+        "name": "Lucas",
+        "quote": "La automatización de aplicaciones es un verdadero ahorro de tiempo.",
+        "role": "Gerente de proyecto"
+      },
+      {
+        "name": "Emma",
+        "quote": "La IA me ayudó a prepararme mejor para las entrevistas.",
+        "role": "Diseñador UX/UI"
+      },
+      {
+        "name": "Yann",
+        "quote": "¡Encontré un trabajo permanente gracias a JobNexAI!",
+        "role": "Ingeniero de DevOps"
+      },
+      {
+        "name": "Fátima",
+        "quote": "La plataforma es sencilla, eficiente y motivadora.",
+        "role": "Propietario del producto"
+      },
+      {
+        "name": "Marco",
+        "quote": "Recibí más respuestas positivas que antes.",
+        "role": "Científico de datos"
+      }
+    ],
+    "testimonialsSectionSubtitle": "Encontraron trabajo gracias a JobNexAI",
+    "testimonialsSectionTitle": "Testimonios",
+    "title": "¡La IA que acelera tu búsqueda de empleo!",
+    "watchDemo": "Mira la demostración"
+  },
+  "howItWorks": {
+    "description": "Nuestro proceso simplificado lo guía en cada paso del camino para maximizar sus posibilidades.",
+    "stepNumber": "Paso {{number}}",
+    "steps": [
+      {
+        "description": "Importa tu CV o completa tu información en unos pocos clics.",
+        "title": "Crea tu perfil"
+      },
+      {
+        "description": "La IA analiza tus habilidades y el mercado para sugerirte las mejores ofertas.",
+        "title": "Obtenga recomendaciones"
+      },
+      {
+        "description": "Genere aplicaciones personalizadas y realice un seguimiento de su progreso en tiempo real.",
+        "title": "Aplicar fácilmente"
+      }
+    ],
+    "subtitle": "Descubra cómo JobNexAI optimiza su búsqueda de empleo.",
+    "title": "¿Cómo funciona?"
+  },
+  "jobSearch": {
+    "filters": {
+      "keyword": ""
+    },
+    "locations": {
+      "hybrid": "",
+      "onsite": "",
+      "remote": ""
+    },
+    "subtitle": "",
+    "title": "",
+    "types": {
+      "contract": "",
+      "freelance": "",
+      "fullTime": "",
+      "internship": "",
+      "partTime": ""
+    }
+  },
+  "marketAnalysis": {
+    "averageSalary_one": "",
+    "averageSalary_other": "",
+    "jobTypes": "",
+    "noSalaryData": "",
+    "salaryInsights": "",
+    "subtitle": "",
+    "title": "",
+    "topLocations": ""
+  },
+  "marketTrends": {
+    "error": "",
+    "errorUnknown": "",
+    "jobTypes": "",
+    "loading": "",
+    "locations": "",
+    "noData": "",
+    "salary": "",
+    "salaryOffers": "",
+    "title": ""
+  },
+  "navigation": {
+    "profile": ""
+  },
+  "privacy": {
+    "accept": "",
+    "consent": "",
+    "contact": {
+      "description": "",
+      "title": ""
+    },
+    "dataCollection": {
+      "description": "",
+      "personal": "",
+      "preferences": "",
+      "skills": "",
+      "title": "",
+      "usage": ""
+    },
+    "dataPurpose": {
+      "analytics": "",
+      "description": "",
+      "matching": "",
+      "recommendations": "",
+      "title": ""
+    },
+    "dataRetention": {
+      "description": "",
+      "logs": "",
+      "preferences": "",
+      "skills": "",
+      "title": ""
+    },
+    "decline": "",
+    "rights": {
+      "access": "",
+      "description": "",
+      "erasure": "",
+      "portability": "",
+      "rectification": "",
+      "title": "",
+      "withdraw": ""
+    },
+    "security": {
+      "access": "",
+      "compliance": "",
+      "description": "",
+      "encryption": "",
+      "monitoring": "",
+      "title": ""
+    },
+    "shortConsent": "",
+    "title": ""
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "",
+      "title": "",
+      "updateError": "",
+      "updateSuccess": ""
+    },
+    "subtitle": "",
+    "title": ""
+  },
+  "steps": [
+    {
+      "description": "Importa tu CV o completa tu experiencia y habilidades.",
+      "title": "Crea tu perfil en 2 minutos"
+    },
+    {
+      "description": "Deje que la IA analice el mercado y sugiera las mejores oportunidades.",
+      "title": "Reciba ofertas personalizadas"
+    },
+    {
+      "description": "Genere aplicaciones personalizadas y realice un seguimiento de su progreso en tiempo real.",
+      "title": "Aplicar en un clic"
+    }
+  ]
+}

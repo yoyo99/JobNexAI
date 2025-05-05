@@ -1,324 +1,324 @@
 {
   "auth": {
-    "login": "(automatisch ins Deutsche übersetzt)",
-    "startTrial": "(automatisch ins Deutsche übersetzt)",
+    "login": "[Übersetzung erforderlich]",
+    "startTrial": "[Übersetzung erforderlich]",
     "errors": {
-      "login": "(automatisch ins Deutsche übersetzt)",
-      "signup": "(automatisch ins Deutsche übersetzt)",
-      "passwordLength": "(automatisch ins Deutsche übersetzt)",
-      "requiredFields": "(automatisch ins Deutsche übersetzt)",
-      "unknown": "(automatisch ins Deutsche übersetzt)"
+      "login": "[Übersetzung erforderlich]",
+      "signup": "[Übersetzung erforderlich]",
+      "passwordLength": "[Übersetzung erforderlich]",
+      "requiredFields": "[Übersetzung erforderlich]",
+      "unknown": "[Übersetzung erforderlich]"
     },
-    "acceptTerms": "(automatisch ins Deutsche übersetzt)",
-    "alreadyRegistered": "(automatisch ins Deutsche übersetzt)",
-    "createAccount": "(automatisch ins Deutsche übersetzt)",
-    "email": "(automatisch ins Deutsche übersetzt)",
+    "acceptTerms": "[Übersetzung erforderlich]",
+    "alreadyRegistered": "[Übersetzung erforderlich]",
+    "createAccount": "[Übersetzung erforderlich]",
+    "email": "[Übersetzung erforderlich]",
     "errors": {
-      "acceptTerms": "(automatisch ins Deutsche übersetzt)",
-      "emailRequired": "(automatisch ins Deutsche übersetzt)",
-      "login": "(automatisch ins Deutsche übersetzt)",
-      "passwordLength": "(automatisch ins Deutsche übersetzt)",
-      "requiredFields": "(automatisch ins Deutsche übersetzt)",
-      "signup": "(automatisch ins Deutsche übersetzt)",
-      "unknown": "(automatisch ins Deutsche übersetzt)"
+      "acceptTerms": "[Übersetzung erforderlich]",
+      "emailRequired": "[Übersetzung erforderlich]",
+      "login": "[Übersetzung erforderlich]",
+      "passwordLength": "[Übersetzung erforderlich]",
+      "requiredFields": "[Übersetzung erforderlich]",
+      "signup": "[Übersetzung erforderlich]",
+      "unknown": "[Übersetzung erforderlich]"
     },
-    "forgotPassword": "(automatisch ins Deutsche übersetzt)",
-    "fullName": "(automatisch ins Deutsche übersetzt)",
+    "forgotPassword": "[Übersetzung erforderlich]",
+    "fullName": "[Übersetzung erforderlich]",
     "help": {
-      "capsLock": "(automatisch ins Deutsche übersetzt)",
-      "checkEmail": "(automatisch ins Deutsche übersetzt)",
-      "forgotPassword": "(automatisch ins Deutsche übersetzt)",
-      "noAccount": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "capsLock": "[Übersetzung erforderlich]",
+      "checkEmail": "[Übersetzung erforderlich]",
+      "forgotPassword": "[Übersetzung erforderlich]",
+      "noAccount": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
-    "hidePassword": "(automatisch ins Deutsche übersetzt)",
-    "login": "(automatisch ins Deutsche übersetzt)",
-    "logout": "(automatisch ins Deutsche übersetzt)",
-    "password": "(automatisch ins Deutsche übersetzt)",
-    "showPassword": "(automatisch ins Deutsche übersetzt)",
-    "signup": "(automatisch ins Deutsche übersetzt)",
-    "startTrial": "(automatisch ins Deutsche übersetzt)",
+    "hidePassword": "[Übersetzung erforderlich]",
+    "login": "[Übersetzung erforderlich]",
+    "logout": "[Übersetzung erforderlich]",
+    "password": "[Übersetzung erforderlich]",
+    "showPassword": "[Übersetzung erforderlich]",
+    "signup": "[Übersetzung erforderlich]",
+    "startTrial": "[Übersetzung erforderlich]",
     "success": {
-      "login": "(automatisch ins Deutsche übersetzt)",
-      "reset": "(automatisch ins Deutsche übersetzt)",
-      "signup": "(automatisch ins Deutsche übersetzt)"
+      "login": "[Übersetzung erforderlich]",
+      "reset": "[Übersetzung erforderlich]",
+      "signup": "[Übersetzung erforderlich]"
     },
-    "termsLink": "(automatisch ins Deutsche übersetzt)"
+    "termsLink": "[Übersetzung erforderlich]"
   },
   "badges": {
     "firstApp": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "label": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "label": "[Übersetzung erforderlich]"
     },
     "networker": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "label": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "label": "[Übersetzung erforderlich]"
     },
     "persistent": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "label": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "label": "[Übersetzung erforderlich]"
     },
     "starter": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "label": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "label": "[Übersetzung erforderlich]"
     },
-    "title": "(automatisch ins Deutsche übersetzt)",
-    "toUnlock": "(automatisch ins Deutsche übersetzt)",
+    "title": "[Übersetzung erforderlich]",
+    "toUnlock": "[Übersetzung erforderlich]",
     "winner": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "label": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "label": "[Übersetzung erforderlich]"
     }
   },
   "common": {
-    "connectedAs": "(automatisch ins Deutsche übersetzt)",
-    "loading": "(automatisch ins Deutsche übersetzt)",
-    "or": "(automatisch ins Deutsche übersetzt)",
-    "save": "(automatisch ins Deutsche übersetzt)",
-    "search": "(automatisch ins Deutsche übersetzt)",
-    "view": "(automatisch ins Deutsche übersetzt)"
+    "connectedAs": "[Übersetzung erforderlich]",
+    "loading": "[Übersetzung erforderlich]",
+    "or": "[Übersetzung erforderlich]",
+    "save": "[Übersetzung erforderlich]",
+    "search": "[Übersetzung erforderlich]",
+    "view": "[Übersetzung erforderlich]"
   },
   "dashboard": {
     "activity": {
-      "application": "(automatisch ins Deutsche übersetzt)",
-      "favorite": "(automatisch ins Deutsche übersetzt)",
-      "interview": "(automatisch ins Deutsche übersetzt)",
-      "offer": "(automatisch ins Deutsche übersetzt)",
-      "status_change": "(automatisch ins Deutsche übersetzt)"
+      "application": "[Übersetzung erforderlich]",
+      "favorite": "[Übersetzung erforderlich]",
+      "interview": "[Übersetzung erforderlich]",
+      "offer": "[Übersetzung erforderlich]",
+      "status_change": "[Übersetzung erforderlich]"
     },
-    "documentTitle": "(automatisch ins Deutsche übersetzt)",
-    "greeting": "(automatisch ins Deutsche übersetzt)",
+    "documentTitle": "[Übersetzung erforderlich]",
+    "greeting": "[Übersetzung erforderlich]",
     "recentApplications": {
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "title": "[Übersetzung erforderlich]"
     },
     "skillsProgress": {
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "title": "[Übersetzung erforderlich]"
     },
     "stats": {
-      "applications": "(automatisch ins Deutsche übersetzt)",
-      "applicationsSent": "(automatisch ins Deutsche übersetzt)",
-      "averageSalary": "(automatisch ins Deutsche übersetzt)",
-      "interviews": "(automatisch ins Deutsche übersetzt)",
-      "interviewsUpcoming": "(automatisch ins Deutsche übersetzt)",
-      "matchingJobs": "(automatisch ins Deutsche übersetzt)",
-      "recentActivity": "(automatisch ins Deutsche übersetzt)",
-      "responseRate": "(automatisch ins Deutsche übersetzt)",
-      "savedJobs": "(automatisch ins Deutsche übersetzt)",
-      "topCompanies": "(automatisch ins Deutsche übersetzt)",
-      "topLocations": "(automatisch ins Deutsche übersetzt)"
+      "applications": "[Übersetzung erforderlich]",
+      "applicationsSent": "[Übersetzung erforderlich]",
+      "averageSalary": "[Übersetzung erforderlich]",
+      "interviews": "[Übersetzung erforderlich]",
+      "interviewsUpcoming": "[Übersetzung erforderlich]",
+      "matchingJobs": "[Übersetzung erforderlich]",
+      "recentActivity": "[Übersetzung erforderlich]",
+      "responseRate": "[Übersetzung erforderlich]",
+      "savedJobs": "[Übersetzung erforderlich]",
+      "topCompanies": "[Übersetzung erforderlich]",
+      "topLocations": "[Übersetzung erforderlich]"
     },
     "status": {
-      "accepted": "(automatisch ins Deutsche übersetzt)",
-      "pending": "(automatisch ins Deutsche übersetzt)",
-      "rejected": "(automatisch ins Deutsche übersetzt)"
+      "accepted": "[Übersetzung erforderlich]",
+      "pending": "[Übersetzung erforderlich]",
+      "rejected": "[Übersetzung erforderlich]"
     },
     "timeframe": {
-      "month": "(automatisch ins Deutsche übersetzt)",
-      "week": "(automatisch ins Deutsche übersetzt)",
-      "year": "(automatisch ins Deutsche übersetzt)"
+      "month": "[Übersetzung erforderlich]",
+      "week": "[Übersetzung erforderlich]",
+      "year": "[Übersetzung erforderlich]"
     },
-    "userDefault": "(automatisch ins Deutsche übersetzt)",
-    "welcome": "(automatisch ins Deutsche übersetzt)"
+    "userDefault": "[Übersetzung erforderlich]",
+    "welcome": "[Übersetzung erforderlich]"
   },
   "demo": {
-    "description": "(automatisch ins Deutsche übersetzt)"
+    "description": "[Übersetzung erforderlich]"
   },
   "footer": {
-    "copyright": "(automatisch ins Deutsche übersetzt)",
+    "copyright": "[Übersetzung erforderlich]",
     "navigation": {
-      "cgu": "(automatisch ins Deutsche übersetzt)",
-      "community": "(automatisch ins Deutsche übersetzt)",
-      "contact": "(automatisch ins Deutsche übersetzt)",
-      "features": "(automatisch ins Deutsche übersetzt)",
-      "howItWorks": "(automatisch ins Deutsche übersetzt)",
-      "pricing": "(automatisch ins Deutsche übersetzt)",
-      "privacy": "(automatisch ins Deutsche übersetzt)",
-      "privacyPolicy": "(automatisch ins Deutsche übersetzt)",
-      "testimonials": "(automatisch ins Deutsche übersetzt)"
+      "cgu": "[Übersetzung erforderlich]",
+      "community": "[Übersetzung erforderlich]",
+      "contact": "[Übersetzung erforderlich]",
+      "features": "[Übersetzung erforderlich]",
+      "howItWorks": "[Übersetzung erforderlich]",
+      "pricing": "[Übersetzung erforderlich]",
+      "privacy": "[Übersetzung erforderlich]",
+      "privacyPolicy": "[Übersetzung erforderlich]",
+      "testimonials": "[Übersetzung erforderlich]"
     },
-    "reportBug": "(automatisch ins Deutsche übersetzt)",
+    "reportBug": "[Übersetzung erforderlich]",
     "social": {
-      "github": "(automatisch ins Deutsche übersetzt)",
-      "linkedin": "(automatisch ins Deutsche übersetzt)",
-      "twitter": "(automatisch ins Deutsche übersetzt)"
+      "github": "[Übersetzung erforderlich]",
+      "linkedin": "[Übersetzung erforderlich]",
+      "twitter": "[Übersetzung erforderlich]"
     }
   },
   "hero": {
-    "ctaFinalLogin": "(automatisch ins Deutsche übersetzt)",
-    "ctaFinalStart": "(automatisch ins Deutsche übersetzt)",
-    "ctaFinalSubtitle": "(automatisch ins Deutsche übersetzt)",
-    "ctaFinalTitle": "(automatisch ins Deutsche übersetzt)",
+    "ctaFinalLogin": "[Übersetzung erforderlich]",
+    "ctaFinalStart": "[Übersetzung erforderlich]",
+    "ctaFinalSubtitle": "[Übersetzung erforderlich]",
+    "ctaFinalTitle": "[Übersetzung erforderlich]",
     "features": [
-      "(automatisch ins Deutsche übersetzt)",
-      "(automatisch ins Deutsche übersetzt)",
-      "(automatisch ins Deutsche übersetzt)"
+      "[Übersetzung erforderlich]",
+      "[Übersetzung erforderlich]",
+      "[Übersetzung erforderlich]"
     ],
-    "howItWorksSectionSubtitle": "(automatisch ins Deutsche übersetzt)",
-    "howItWorksSectionTitle": "(automatisch ins Deutsche übersetzt)",
-    "imageAlt": "(automatisch ins Deutsche übersetzt)",
-    "startTrial": "(automatisch ins Deutsche übersetzt)",
-    "stepNumber": "(automatisch ins Deutsche übersetzt)",
+    "howItWorksSectionSubtitle": "[Übersetzung erforderlich]",
+    "howItWorksSectionTitle": "[Übersetzung erforderlich]",
+    "imageAlt": "[Übersetzung erforderlich]",
+    "startTrial": "[Übersetzung erforderlich]",
+    "stepNumber": "[Übersetzung erforderlich]",
     "steps": [
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       },
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       },
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       }
     ],
-    "subtitle": "(automatisch ins Deutsche übersetzt)",
+    "subtitle": "[Übersetzung erforderlich]",
     "testimonials": [
       {
-        "name": "(automatisch ins Deutsche übersetzt)",
-        "quote": "(automatisch ins Deutsche übersetzt)",
-        "role": "(automatisch ins Deutsche übersetzt)"
+        "name": "[Übersetzung erforderlich]",
+        "quote": "[Übersetzung erforderlich]",
+        "role": "[Übersetzung erforderlich]"
       }
     ],
-    "testimonialsSectionSubtitle": "(automatisch ins Deutsche übersetzt)",
-    "testimonialsSectionTitle": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)",
-    "watchDemo": "(automatisch ins Deutsche übersetzt)"
+    "testimonialsSectionSubtitle": "[Übersetzung erforderlich]",
+    "testimonialsSectionTitle": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]",
+    "watchDemo": "[Übersetzung erforderlich]"
   },
   "howItWorks": {
-    "description": "(automatisch ins Deutsche übersetzt)",
-    "stepNumber": "(automatisch ins Deutsche übersetzt)",
+    "description": "[Übersetzung erforderlich]",
+    "stepNumber": "[Übersetzung erforderlich]",
     "steps": [
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       },
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       },
       {
-        "description": "(automatisch ins Deutsche übersetzt)",
-        "title": "(automatisch ins Deutsche übersetzt)"
+        "description": "[Übersetzung erforderlich]",
+        "title": "[Übersetzung erforderlich]"
       }
     ],
-    "subtitle": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)"
+    "subtitle": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]"
   },
   "jobSearch": {
     "filters": {
-      "keyword": "(automatisch ins Deutsche übersetzt)"
+      "keyword": "[Übersetzung erforderlich]"
     },
     "locations": {
-      "hybrid": "(automatisch ins Deutsche übersetzt)",
-      "onsite": "(automatisch ins Deutsche übersetzt)",
-      "remote": "(automatisch ins Deutsche übersetzt)"
+      "hybrid": "[Übersetzung erforderlich]",
+      "onsite": "[Übersetzung erforderlich]",
+      "remote": "[Übersetzung erforderlich]"
     },
-    "subtitle": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)",
+    "subtitle": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]",
     "types": {
-      "contract": "(automatisch ins Deutsche übersetzt)",
-      "freelance": "(automatisch ins Deutsche übersetzt)",
-      "fullTime": "(automatisch ins Deutsche übersetzt)",
-      "internship": "(automatisch ins Deutsche übersetzt)",
-      "partTime": "(automatisch ins Deutsche übersetzt)"
+      "contract": "[Übersetzung erforderlich]",
+      "freelance": "[Übersetzung erforderlich]",
+      "fullTime": "[Übersetzung erforderlich]",
+      "internship": "[Übersetzung erforderlich]",
+      "partTime": "[Übersetzung erforderlich]"
     }
   },
   "marketAnalysis": {
-    "averageSalary_one": "(automatisch ins Deutsche übersetzt)",
-    "averageSalary_other": "(automatisch ins Deutsche übersetzt)",
-    "jobTypes": "(automatisch ins Deutsche übersetzt)",
-    "noSalaryData": "(automatisch ins Deutsche übersetzt)",
-    "salaryInsights": "(automatisch ins Deutsche übersetzt)",
-    "subtitle": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)",
-    "topLocations": "(automatisch ins Deutsche übersetzt)"
+    "averageSalary_one": "[Übersetzung erforderlich]",
+    "averageSalary_other": "[Übersetzung erforderlich]",
+    "jobTypes": "[Übersetzung erforderlich]",
+    "noSalaryData": "[Übersetzung erforderlich]",
+    "salaryInsights": "[Übersetzung erforderlich]",
+    "subtitle": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]",
+    "topLocations": "[Übersetzung erforderlich]"
   },
   "marketTrends": {
-    "error": "(automatisch ins Deutsche übersetzt)",
-    "errorUnknown": "(automatisch ins Deutsche übersetzt)",
-    "jobTypes": "(automatisch ins Deutsche übersetzt)",
-    "loading": "(automatisch ins Deutsche übersetzt)",
-    "locations": "(automatisch ins Deutsche übersetzt)",
-    "noData": "(automatisch ins Deutsche übersetzt)",
-    "salary": "(automatisch ins Deutsche übersetzt)",
-    "salaryOffers": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)"
+    "error": "[Übersetzung erforderlich]",
+    "errorUnknown": "[Übersetzung erforderlich]",
+    "jobTypes": "[Übersetzung erforderlich]",
+    "loading": "[Übersetzung erforderlich]",
+    "locations": "[Übersetzung erforderlich]",
+    "noData": "[Übersetzung erforderlich]",
+    "salary": "[Übersetzung erforderlich]",
+    "salaryOffers": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]"
   },
   "navigation": {
-    "profile": "(automatisch ins Deutsche übersetzt)"
+    "profile": "[Übersetzung erforderlich]"
   },
   "privacy": {
-    "accept": "(automatisch ins Deutsche übersetzt)",
-    "consent": "(automatisch ins Deutsche übersetzt)",
+    "accept": "[Übersetzung erforderlich]",
+    "consent": "[Übersetzung erforderlich]",
     "contact": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
     "dataCollection": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "personal": "(automatisch ins Deutsche übersetzt)",
-      "preferences": "(automatisch ins Deutsche übersetzt)",
-      "skills": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)",
-      "usage": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "personal": "[Übersetzung erforderlich]",
+      "preferences": "[Übersetzung erforderlich]",
+      "skills": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]",
+      "usage": "[Übersetzung erforderlich]"
     },
     "dataPurpose": {
-      "analytics": "(automatisch ins Deutsche übersetzt)",
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "matching": "(automatisch ins Deutsche übersetzt)",
-      "recommendations": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "analytics": "[Übersetzung erforderlich]",
+      "description": "[Übersetzung erforderlich]",
+      "matching": "[Übersetzung erforderlich]",
+      "recommendations": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
     "dataRetention": {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "logs": "(automatisch ins Deutsche übersetzt)",
-      "preferences": "(automatisch ins Deutsche übersetzt)",
-      "skills": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "logs": "[Übersetzung erforderlich]",
+      "preferences": "[Übersetzung erforderlich]",
+      "skills": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
-    "decline": "(automatisch ins Deutsche übersetzt)",
+    "decline": "[Übersetzung erforderlich]",
     "rights": {
-      "access": "(automatisch ins Deutsche übersetzt)",
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "erasure": "(automatisch ins Deutsche übersetzt)",
-      "portability": "(automatisch ins Deutsche übersetzt)",
-      "rectification": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)",
-      "withdraw": "(automatisch ins Deutsche übersetzt)"
+      "access": "[Übersetzung erforderlich]",
+      "description": "[Übersetzung erforderlich]",
+      "erasure": "[Übersetzung erforderlich]",
+      "portability": "[Übersetzung erforderlich]",
+      "rectification": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]",
+      "withdraw": "[Übersetzung erforderlich]"
     },
     "security": {
-      "access": "(automatisch ins Deutsche übersetzt)",
-      "compliance": "(automatisch ins Deutsche übersetzt)",
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "encryption": "(automatisch ins Deutsche übersetzt)",
-      "monitoring": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "access": "[Übersetzung erforderlich]",
+      "compliance": "[Übersetzung erforderlich]",
+      "description": "[Übersetzung erforderlich]",
+      "encryption": "[Übersetzung erforderlich]",
+      "monitoring": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
-    "shortConsent": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)"
+    "shortConsent": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]"
   },
   "profile": {
     "personalInfo": {
-      "fullName": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)",
-      "updateError": "(automatisch ins Deutsche übersetzt)",
-      "updateSuccess": "(automatisch ins Deutsche übersetzt)"
+      "fullName": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]",
+      "updateError": "[Übersetzung erforderlich]",
+      "updateSuccess": "[Übersetzung erforderlich]"
     },
-    "subtitle": "(automatisch ins Deutsche übersetzt)",
-    "title": "(automatisch ins Deutsche übersetzt)"
+    "subtitle": "[Übersetzung erforderlich]",
+    "title": "[Übersetzung erforderlich]"
   },
   "steps": [
     {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
     {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     },
     {
-      "description": "(automatisch ins Deutsche übersetzt)",
-      "title": "(automatisch ins Deutsche übersetzt)"
+      "description": "[Übersetzung erforderlich]",
+      "title": "[Übersetzung erforderlich]"
     }
   ]
 }

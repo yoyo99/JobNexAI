@@ -1,0 +1,370 @@
+{
+  "auth": {
+    "login": "Login",
+    "startTrial": "Start free trial",
+    "errors": {
+      "login": "An error occurred during login",
+      "signup": "An error occurred during sign up",
+      "passwordLength": "Password must be at least 9 characters.",
+      "requiredFields": "Please fill in all fields",
+      "unknown": "An error occurred"
+    },
+    "acceptTerms": "I accept the",
+    "alreadyRegistered": "Already registered? Login",
+    "createAccount": "Create an account",
+    "email": "Email address",
+    "errors": {
+      "acceptTerms": "You must accept the terms of service to sign up.",
+      "emailRequired": "Please enter your email address",
+      "login": "An error occurred during login",
+      "passwordLength": "Password must be at least 9 characters.",
+      "requiredFields": "Please fill in all fields",
+      "signup": "An error occurred during sign up",
+      "unknown": "An error occurred"
+    },
+    "forgotPassword": "",
+    "fullName": "Full name",
+    "help": {
+      "capsLock": "Make sure Caps Lock is off",
+      "checkEmail": "Check that your email address is correct",
+      "forgotPassword": "If you forgot your password, use the 'Forgot password' link",
+      "noAccount": "If you don't have an account yet, click 'Create an account'",
+      "title": "Need help signing in?"
+    },
+    "hidePassword": "Hide password",
+    "login": "Login",
+    "logout": "",
+    "password": "Password",
+    "showPassword": "Show password",
+    "signup": "Sign up",
+    "startTrial": "Start free trial",
+    "success": {
+      "login": "Login successful!",
+      "reset": "Password reset instructions sent to your email address",
+      "signup": "Sign up successful! You can now log in."
+    },
+    "termsLink": "terms of service"
+  },
+  "badges": {
+    "firstApp": {
+      "description": "Send your first application.",
+      "label": "First Application"
+    },
+    "networker": {
+      "description": "Add a contact to your network.",
+      "label": "Networker"
+    },
+    "persistent": {
+      "description": "Send 10 applications.",
+      "label": "Persistent"
+    },
+    "starter": {
+      "description": "Welcome to JobNexAI!",
+      "label": "Newcomer"
+    },
+    "title": "Progress Badges",
+    "toUnlock": "Unlock this badge by reaching the goal!",
+    "winner": {
+      "description": "Get a job offer.",
+      "label": "Winner!"
+    }
+  },
+  "common": {
+    "connectedAs": "Connected as {{name}}",
+    "loading": "Loading...",
+    "or": "or",
+    "save": "Save",
+    "search": "Search",
+    "view": "View"
+  ,
+    "connectedAs": "",
+    "loading": "Loading...",
+    "or": "or",
+    "save": "",
+    "search": "",
+    "view": ""
+  },
+  "dashboard": {
+    "activity": {
+      "application": "New application",
+      "favorite": "Favorite",
+      "interview": "Interview",
+      "offer": "Offer",
+      "status_change": "Status change"
+    },
+    "documentTitle": "Dashboard - JobNexAI",
+    "greeting": "Hello {{name}}",
+    "recentApplications": {
+      "title": ""
+    },
+    "skillsProgress": {
+      "title": ""
+    },
+    "stats": {
+      "applications": "",
+      "applicationsSent": "Applications sent",
+      "averageSalary": "",
+      "interviews": "",
+      "interviewsUpcoming": "Upcoming interviews",
+      "matchingJobs": "",
+      "recentActivity": "Recent Activity",
+      "responseRate": "",
+      "savedJobs": "",
+      "topCompanies": "Top Companies",
+      "topLocations": "Top Locations"
+    },
+    "status": {
+      "accepted": "Accepted",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "timeframe": {
+      "month": "Month",
+      "week": "Week",
+      "year": "Year"
+    },
+    "userDefault": "user",
+    "welcome": "Welcome to your dashboard"
+  },
+  "demo": {
+    "description": ""
+  },
+  "footer": {
+    "copyright": "© {{year}} JobNexAI. All rights reserved.",
+    "navigation": {
+      "cgu": "Terms of Service",
+      "community": "Community",
+      "contact": "Contact",
+      "features": "Features",
+      "howItWorks": "How it works",
+      "pricing": "Pricing",
+      "privacy": "Privacy",
+      "privacyPolicy": "Privacy Policy",
+      "testimonials": "Testimonials"
+    },
+    "reportBug": "Report a bug / Give feedback",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    }
+  },
+  "hero": {
+    "ctaFinalLogin": "Already registered? Login",
+    "ctaFinalStart": "Start now",
+    "ctaFinalSubtitle": "Join JobNexAI and get more interviews, faster.",
+    "ctaFinalTitle": "Ready to boost your career?",
+    "ctaStart": "Start free trial",
+    "featureDescriptions": [
+      "AI automatically applies to jobs that fit you.",
+      "Visualize and prepare your interviews easily.",
+      "Analyze your CV and get tailored advice.",
+      "Benefit from ultra-precise matching between your profile and jobs.",
+      "Track your progress and get personalized recommendations."
+    ],
+    "features": [
+      "AI-powered auto applications",
+      "Smart interview tracking",
+      "CV analysis and personalized advice",
+      "Advanced job/skills matching",
+      "AI statistics and recommendations"
+    ],
+    "featuresSectionDescription": "Everything you need to succeed in your job search.",
+    "featuresSectionSubtitle": "Key features",
+    "featuresSectionTitle": "",
+    "howItWorksSectionDescription": "3 simple steps to find your ideal job.",
+    "howItWorksSectionSubtitle": "How does it work?",
+    "howItWorksSectionTitle": "",
+    "imageAlt": "JobNexAI dashboard illustration",
+    "startTrial": "",
+    "stepNumber": "Step {{number}}",
+    "steps": [
+      {
+        "description": "Describe your goals and background in 2 minutes.",
+        "title": "Create your AI profile"
+      },
+      {
+        "description": "AI finds and applies for you to the best jobs.",
+        "title": "Launch auto-apply"
+      },
+      {
+        "description": "Analyze your results and prepare interviews with AI.",
+        "title": "Track your progress"
+      }
+    ],
+    "subtitle": "Automate, analyze, and land more interviews with JobNexAI.",
+    "testimonials": [
+      {
+        "name": "Sophie",
+        "quote": "JobNexAI helped me get 3 interviews in 2 weeks!",
+        "role": "React Developer"
+      },
+      {
+        "name": "Lucas",
+        "quote": "Automating applications is a real time saver.",
+        "role": "Project Manager"
+      },
+      {
+        "name": "Emma",
+        "quote": "The AI helped me prepare better for interviews.",
+        "role": "UX/UI Designer"
+      },
+      {
+        "name": "Yann",
+        "quote": "I found a permanent job thanks to JobNexAI!",
+        "role": "DevOps Engineer"
+      },
+      {
+        "name": "Fatima",
+        "quote": "The platform is simple, efficient, and motivating.",
+        "role": "Product Owner"
+      },
+      {
+        "name": "Marco",
+        "quote": "I received more positive responses than before.",
+        "role": "Data Scientist"
+      }
+    ],
+    "testimonialsSectionSubtitle": "They found a job thanks to JobNexAI",
+    "testimonialsSectionTitle": "Testimonials",
+    "title": "The AI that accelerates your job search!",
+    "watchDemo": "Voir la démo"
+  },
+  "howItWorks": {
+    "description": "Our simplified process guides you every step of the way to maximize your chances.",
+    "stepNumber": "Step {{number}}",
+    "steps": [
+      {
+        "description": "Import your CV or complete your information in a few clicks.",
+        "title": "Create your profile"
+      },
+      {
+        "description": "AI analyzes your skills and the market to suggest the best offers.",
+        "title": "Get recommendations"
+      },
+      {
+        "description": "Generate tailored applications and track your progress in real time.",
+        "title": "Apply easily"
+      }
+    ],
+    "subtitle": "Discover how JobNexAI optimizes your job search.",
+    "title": "How does it work?"
+  },
+  "jobSearch": {
+    "filters": {
+      "keyword": ""
+    },
+    "locations": {
+      "hybrid": "",
+      "onsite": "",
+      "remote": ""
+    },
+    "subtitle": "",
+    "title": "",
+    "types": {
+      "contract": "",
+      "freelance": "",
+      "fullTime": "",
+      "internship": "",
+      "partTime": ""
+    }
+  },
+  "marketAnalysis": {
+    "averageSalary_one": "",
+    "averageSalary_other": "",
+    "jobTypes": "",
+    "noSalaryData": "",
+    "salaryInsights": "",
+    "subtitle": "",
+    "title": "",
+    "topLocations": ""
+  },
+  "marketTrends": {
+    "error": "",
+    "errorUnknown": "",
+    "jobTypes": "",
+    "loading": "",
+    "locations": "",
+    "noData": "",
+    "salary": "",
+    "salaryOffers": "",
+    "title": ""
+  },
+  "navigation": {
+    "profile": ""
+  },
+  "privacy": {
+    "accept": "",
+    "consent": "",
+    "contact": {
+      "description": "",
+      "title": ""
+    },
+    "dataCollection": {
+      "description": "",
+      "personal": "",
+      "preferences": "",
+      "skills": "",
+      "title": "",
+      "usage": ""
+    },
+    "dataPurpose": {
+      "analytics": "",
+      "description": "",
+      "matching": "",
+      "recommendations": "",
+      "title": ""
+    },
+    "dataRetention": {
+      "description": "",
+      "logs": "",
+      "preferences": "",
+      "skills": "",
+      "title": ""
+    },
+    "decline": "",
+    "rights": {
+      "access": "",
+      "description": "",
+      "erasure": "",
+      "portability": "",
+      "rectification": "",
+      "title": "",
+      "withdraw": ""
+    },
+    "security": {
+      "access": "",
+      "compliance": "",
+      "description": "",
+      "encryption": "",
+      "monitoring": "",
+      "title": ""
+    },
+    "shortConsent": "",
+    "title": ""
+  },
+  "profile": {
+    "personalInfo": {
+      "fullName": "",
+      "title": "",
+      "updateError": "",
+      "updateSuccess": ""
+    },
+    "subtitle": "",
+    "title": ""
+  },
+  "steps": [
+    {
+      "description": "Import your CV or fill in your experience and skills.",
+      "title": "Create your profile in 2 minutes"
+    },
+    {
+      "description": "Let AI analyze the market and suggest the best opportunities.",
+      "title": "Get personalized offers"
+    },
+    {
+      "description": "Generate tailored applications and track your progress in real time.",
+      "title": "Apply in one click"
+    }
+  ]
+}
