@@ -16,15 +16,17 @@ const plugins = [
   }),
 ]
 
-// Add Sentry plugin with the provided auth token
-plugins.push(
-  sentryVitePlugin({
-    org: process.env.VITE_SENTRY_ORG,
-    project: process.env.VITE_SENTRY_PROJECT,
-    authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
-    telemetry: false,
-  })
-)
+// Conditionally add Sentry plugin only if auth token is available
+if (process.env.VITE_SENTRY_AUTH_TOKEN) {
+  plugins.push(
+    sentryVitePlugin({
+      org: process.env.VITE_SENTRY_ORG,
+      project: process.env.VITE_SENTRY_PROJECT,
+      authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
+      telemetry: false,
+    })
+  )
+}
 
 export default defineConfig({
   plugins,
@@ -36,8 +38,10 @@ export default defineConfig({
     sourcemap: true,
     target: 'esnext', // Set the build target to esnext to support top-level await
     rollupOptions: {
-      external: ['pnpapi', 'node_modules', 'puppeteer'],
+      // Exclure les modules problématiques pour Netlify
+      external: ['pnpapi', 'node_modules', /^puppeteer($|\/.*$)/],
       output: {
+        // Optimisation des chunks pour une meilleure performance
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           ui: ['@headlessui/react', '@heroicons/react'],

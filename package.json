@@ -42,7 +42,6 @@
     "openai": "^4.0.0",
     "pdfkit": "^0.17.0",
     "pdfmake": "^0.2.19",
-    "puppeteer": "^24.8.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
