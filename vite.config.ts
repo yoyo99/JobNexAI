@@ -45,9 +45,14 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: true,
     target: 'esnext', // Set the build target to esnext to support top-level await
+    // Assurer que des fichiers spécifiques sont exclus du build
+    outDir: 'dist',
+    assetsDir: 'assets',
+    // Ne pas copier les fichiers statiques qui ne sont pas nécessaires
+    copyPublicDir: true,
     rollupOptions: {
       // Exclure les modules problématiques pour Netlify
-      external: ['pnpapi', 'node_modules', /^puppeteer($|\/.*$)/],
+      external: ['pnpapi', 'node_modules', /^puppeteer($|\/.*$)/, /\.git\//],
       output: {
         // Optimisation des chunks pour une meilleure performance
         manualChunks: {

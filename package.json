@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node clean-build.js",
+    "build:clean": "rimraf dist && tsc && vite build && node clean-build.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "listfiles": "find .",
+    "listfiles": "find . -not -path \"*/node_modules/*\" -not -path \"*/.git/*\"",
     "check-translations": "node scripts/check-translations.mjs"
   },
   "dependencies": {

@@ -1,8 +1,22 @@
 [build]
-  command = "npm run listfiles && export NODE_OPTIONS=\"--max-old-space-size=4096\" && npm run build"
+  command = "npm run listfiles && export NODE_OPTIONS=\"--max-old-space-size=4096\" && npm run build:clean"
   publish = "dist"
   functions = "functions"
   ignore_warnings = true
+  
+  # Fichiers et répertoires à exclure explicitement du déploiement
+  [build.processing]
+    skip_processing = false
+  [build.processing.css]
+    bundle = true
+    minify = true
+  [build.processing.js]
+    bundle = true
+    minify = true
+  [build.processing.html]
+    pretty_urls = true
+  [build.processing.images]
+    compress = true
   
 [build.environment]
   NODE_VERSION = "18.17.0"
