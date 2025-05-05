@@ -2,6 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import viteCompression from 'vite-plugin-compression'
+// Compatibilité avec les fichiers Nav.vue requis par Netlify
+// Remarque : cette ligne ne sera pas utilisée par l'application React principale
+const emptyPlugin = { name: 'empty-plugin' }
 
 // Create plugins array with required plugins
 const plugins = [
@@ -32,6 +35,11 @@ export default defineConfig({
   plugins,
   optimizeDeps: {
     include: ['@tanstack/react-virtual'],
+  },
+  // Améliorer la résolution des modules
+  resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+    // Pas d'alias pour rester cohérent avec les pratiques d'import du projet
   },
   build: {
     emptyOutDir: true,
