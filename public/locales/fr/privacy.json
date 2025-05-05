@@ -1,50 +1,8 @@
 {
-  "title": "Politique de confidentialité",
-  "shortConsent": "Nous utilisons vos données pour améliorer votre expérience",
-  "consent": "Nous collectons et traitons vos données personnelles conformément au RGPD pour vous fournir un service personnalisé de recherche d'emploi",
-  "accept": "Accepter",
-  "decline": "Refuser",
-  "dataCollection": {
-    "title": "Collecte de données",
-    "description": "Nous collectons les données suivantes :",
-    "personal": "Informations personnelles (nom, email)",
-    "preferences": "Préférences de recherche d'emploi",
-    "skills": "Compétences et expérience professionnelle",
-    "usage": "Données d'utilisation du service"
-  },
-  "dataPurpose": {
-    "title": "Utilisation des données",
-    "description": "Vos données sont utilisées pour :",
-    "matching": "Correspondance avec les offres d'emploi",
-    "recommendations": "Recommandations personnalisées",
-    "analytics": "Analyses et statistiques anonymes"
-  },
-  "dataRetention": {
-    "title": "Conservation des données",
-    "description": "Durée de conservation de vos données :",
-    "preferences": "Préférences : 3 ans",
-    "skills": "Compétences : durée du compte",
-    "logs": "Logs d'audit : 1 an"
-  },
-  "security": {
-    "title": "Sécurité",
-    "description": "Mesures de sécurité mises en place :",
-    "encryption": "Chiffrement des données sensibles",
-    "access": "Contrôle d'accès strict",
-    "monitoring": "Surveillance continue",
-    "compliance": "Conformité ISO27001"
-  },
-  "rights": {
-    "title": "Vos droits",
-    "description": "Vous disposez des droits suivants :",
-    "access": "Droit d'accès à vos données",
-    "rectification": "Droit de rectification",
-    "erasure": "Droit à l'effacement",
-    "portability": "Droit à la portabilité",
-    "withdraw": "Droit de retirer votre consentement"
-  },
-  "contact": {
-    "title": "Contact",
-    "description": "Pour toute question concernant vos données personnelles, contactez notre DPO à privacy@JobNexAI.com"
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "consent": "Je consens à...",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }
