@@ -50,12 +50,12 @@
     Cross-Origin-Opener-Policy = "same-origin"
     Cross-Origin-Resource-Policy = "same-origin"
 
-# Configuration du plugin Netlify pour le monitoring
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-  [plugins.inputs]
-    output_path = "reports/lighthouse.html"
+# Plugin désactivé car il utilise Puppeteer qui n'est pas autorisé sur Netlify
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
+#
+#   [plugins.inputs]
+#     output_path = "reports/lighthouse.html"
 
 # Configuration de la fonction Edge pour le monitoring des performances
 [[edge_functions]]
