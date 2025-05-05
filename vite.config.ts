@@ -32,10 +32,11 @@ export default defineConfig({
     include: ['@tanstack/react-virtual'],
   },
   build: {
+    emptyOutDir: true,
     sourcemap: true,
     target: 'esnext', // Set the build target to esnext to support top-level await
     rollupOptions: {
-      external: ['pnpapi'],
+      external: ['pnpapi', 'node_modules'],
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
