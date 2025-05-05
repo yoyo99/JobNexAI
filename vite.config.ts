@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import viteCompression from 'vite-plugin-compression'
+import path from 'path'
 // Compatibilité avec les fichiers Nav.vue requis par Netlify
 // Remarque : cette ligne ne sera pas utilisée par l'application React principale
 const emptyPlugin = { name: 'empty-plugin' }
@@ -39,7 +40,14 @@ export default defineConfig({
   // Améliorer la résolution des modules
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
-    // Pas d'alias pour rester cohérent avec les pratiques d'import du projet
+    alias: {
+      // Utiliser path.resolve pour garantir des chemins absolus corrects
+      '@': path.resolve(__dirname, 'src'),
+      'src': path.resolve(__dirname, 'src')
+    },
+    // Activer ces options pour aider à la résolution des modules
+    preserveSymlinks: true,
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'browser', 'main']
   },
   build: {
     emptyOutDir: true,

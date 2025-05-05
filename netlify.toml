@@ -1,5 +1,5 @@
 [build]
-  command = "npm run listfiles && export NODE_OPTIONS=\"--max-old-space-size=4096\" && npm run build:clean"
+  command = "npm run listfiles && export NODE_OPTIONS=\"--max-old-space-size=4096\" && npm run build:netlify"
   publish = "dist"
   functions = "functions"
   ignore_warnings = true
