@@ -1,4 +1,10 @@
-// Patch pour la configuration Vite pour résoudre les problèmes de déploiement Netlify
+/**
+ * Script de correction pour vite.config.ts
+ * 
+ * Ce script remplace complètement le fichier vite.config.ts par une version optimisée
+ * qui fonctionne correctement dans l'environnement Netlify.
+ */
+
 const fs = require('fs');
 const path = require('path');
 
@@ -13,93 +19,98 @@ if (!fs.existsSync(viteConfigPath)) {
   process.exit(1);
 }
 
-// Lire le contenu du fichier
-let viteConfig = fs.readFileSync(viteConfigPath, 'utf8');
+// Lire le contenu du fichier original
+let originalConfig = fs.readFileSync(viteConfigPath, 'utf8');
 
-// Vérifier quelle version de Vite est utilisée
-const packageJsonPath = path.resolve(__dirname, 'package.json');
-let viteVersion = "";
-if (fs.existsSync(packageJsonPath)) {
-  try {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    viteVersion = packageJson.devDependencies?.vite || "";
-    console.log(`Version de Vite détectée: ${viteVersion}`);
-  } catch (error) {
-    console.error('❌ Erreur lors de la lecture du package.json:', error);
+// Créer une nouvelle configuration Vite complète
+const newViteConfig = `import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import viteCompression from 'vite-plugin-compression'
+import path from 'path'
+
+// Compatibilité avec les fichiers Nav.vue requis par Netlify
+const emptyPlugin = { name: 'empty-plugin' }
+
+// Create plugins array with required plugins
+const plugins = [
+  react(),
+  viteCompression({
+    algorithm: 'gzip',
+    ext: '.gz',
+  }),
+  viteCompression({
+    algorithm: 'brotliCompress',
+    ext: '.br',
+  }),
+]
+
+// Conditionally add Sentry plugin only if auth token is available
+if (process.env.VITE_SENTRY_AUTH_TOKEN) {
+  plugins.push(
+    sentryVitePlugin({
+      org: process.env.VITE_SENTRY_ORG,
+      project: process.env.VITE_SENTRY_PROJECT,
+      authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
+      telemetry: false,
+    })
+  )
+}
+
+export default defineConfig({
+  plugins,
+  optimizeDeps: {
+    include: ['@tanstack/react-virtual'],
+  },
+  resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      'src': path.resolve(__dirname, 'src'),
+      // Ajouter les alias pour les dépendances problématiques
+      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom/dist/index.js'),
+      '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js/dist/index.js')
+    },
+    preserveSymlinks: true,
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'browser', 'main'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', 'i18next', 'react-i18next']
+  },
+  build: {
+    emptyOutDir: true,
+    sourcemap: true,
+    target: 'esnext',
+    outDir: 'dist',
+    assetsDir: 'assets',
+    copyPublicDir: true,
+    // Configuration spécifique pour Netlify
+    ...(process.env.NETLIFY ? {
+      minify: false, // Désactiver la minification pour éviter les problèmes
+      chunkSizeWarningLimit: 1000, // Augmenter la limite d'avertissement
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-ui': ['framer-motion', '@headlessui/react', '@heroicons/react'],
+            'vendor-i18n': ['i18next', 'react-i18next', 'i18next-http-backend', 'i18next-browser-languagedetector'],
+            'vendor-stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+            'vendor-utils': ['zustand', '@tanstack/react-virtual', 'react-dropzone', 'react-beautiful-dnd', 'react-chartjs-2']
+          }
+        }
+      }
+    } : {})
   }
-}
-
-// Contenu à ajouter pour optimiser le build pour Netlify
-const optimizationPatch = `
-// Modification directe de la configuration pour Netlify sans utiliser mergeConfig
-if (process.env.NETLIFY) {
-  console.log('💶 Optimisations Netlify activées');
-  
-  // Paramètres de build
-  config.build = config.build || {};
-  config.build.minify = false; // Désactiver la minification pour éviter les problèmes
-  config.build.chunkSizeWarningLimit = 1000; // Augmenter la limite d'avertissement
-  
-  // Configuration des rollupOptions
-  config.build.rollupOptions = config.build.rollupOptions || {};
-  config.build.rollupOptions.output = config.build.rollupOptions.output || {};
-  config.build.rollupOptions.output.manualChunks = {
-    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-    'vendor-ui': ['framer-motion', '@headlessui/react', '@heroicons/react'],
-    'vendor-i18n': ['i18next', 'react-i18next', 'i18next-http-backend', 'i18next-browser-languagedetector'],
-    'vendor-stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
-    'vendor-utils': ['zustand', '@tanstack/react-virtual', 'react-dropzone', 'react-beautiful-dnd', 'react-chartjs-2']
-  };
-  
-  // Alias pour résoudre les problèmes d'importation
-  config.resolve = config.resolve || {};
-  config.resolve.alias = config.resolve.alias || {};
-  
-  // Ajouter les alias pour les dépendances problématiques
-  Object.assign(config.resolve.alias, {
-    'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom/dist/index.js'),
-    '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js/dist/index.js')
-  });
-  
-  // Déduplication des modules
-  config.resolve.dedupe = ['react', 'react-dom', 'react-router-dom', 'i18next', 'react-i18next'];
-}
+});
 `;
 
-// Trouver l'endroit où insérer le patch (juste avant l'export)
-if (viteConfig.includes('export default defineConfig')) {
-  // Insérer avant l'export
-  viteConfig = viteConfig.replace(
-    'export default defineConfig',
-    optimizationPatch + '\nexport default defineConfig'
-  );
-} else {
-  console.log('⚠️ Pattern export default defineConfig non trouvé, essai avec export default');
-  // Alternative si le pattern exact n'est pas trouvé
-  viteConfig = viteConfig.replace(
-    'export default',
-    optimizationPatch + '\nexport default'
-  );
-}
+// Sauvegarder la configuration originale
+console.log('💾 Sauvegarde de la configuration originale...');
+fs.writeFileSync(viteConfigPath + '.backup', originalConfig);
 
-// Ne pas ajouter d'import pour mergeConfig car nous n'utilisons plus cette fonction
-// Au lieu de cela, nous nous assurons simplement que l'import de path est présent
-if (!viteConfig.includes('import path from')) {
-  if (viteConfig.includes('import')) {
-    // Ajouter l'import de path à la ligne d'import existante
-    viteConfig = viteConfig.replace(
-      /import\s+([^;]+)\s+from\s+['|"]([^'|"]+)['|"]/,
-      (match) => `import path from 'path';\n${match}`
-    );
-  } else {
-    // Si aucun import n'est trouvé, ajouter une ligne complète
-    viteConfig = `import path from 'path';\n` + viteConfig;
-  }
-}
+// Écrire la nouvelle configuration
+console.log('✏️ Écriture de la nouvelle configuration Vite...');
+fs.writeFileSync(viteConfigPath, newViteConfig);
 
-// Écrire le fichier modifié
-fs.writeFileSync(viteConfigPath, viteConfig);
-console.log('✅ Patch appliqué avec succès à vite.config.ts');
+console.log('✅ Configuration Vite mise à jour avec succès!');
 
 // Bonus: Ajouter un indice visuel pour savoir si l'application fonctionne
 console.log('📝 Ajout d\'un indicateur visuel au HTML...');
