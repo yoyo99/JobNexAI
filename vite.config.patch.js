@@ -16,46 +16,53 @@ if (!fs.existsSync(viteConfigPath)) {
 // Lire le contenu du fichier
 let viteConfig = fs.readFileSync(viteConfigPath, 'utf8');
 
+// Vérifier quelle version de Vite est utilisée
+const packageJsonPath = path.resolve(__dirname, 'package.json');
+let viteVersion = "";
+if (fs.existsSync(packageJsonPath)) {
+  try {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    viteVersion = packageJson.devDependencies?.vite || "";
+    console.log(`Version de Vite détectée: ${viteVersion}`);
+  } catch (error) {
+    console.error('❌ Erreur lors de la lecture du package.json:', error);
+  }
+}
+
 // Contenu à ajouter pour optimiser le build pour Netlify
 const optimizationPatch = `
-// Configuration spécifique pour Netlify
-const netlifyOptimizations = {
-  build: {
-    // Empêcher le minification qui peut causer des problèmes
-    minify: process.env.NETLIFY ? false : 'esbuild',
-    
-    // Définir manuellement les chunks pour éviter les problèmes de résolution
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['framer-motion', '@headlessui/react', '@heroicons/react'],
-          'vendor-i18n': ['i18next', 'react-i18next', 'i18next-http-backend', 'i18next-browser-languagedetector'],
-          'vendor-stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
-          'vendor-utils': ['zustand', '@tanstack/react-virtual', 'react-dropzone', 'react-beautiful-dnd', 'react-chartjs-2']
-        }
-      }
-    },
-    
-    // Augmenter la limite d'avertissement pour la taille des chunks
-    chunkSizeWarningLimit: 1000,
-  },
-  
-  // Forcer la résolution des dépendances problématiques
-  resolve: {
-    alias: {
-      // Forcer l'utilisation de versions spécifiques
-      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom/dist/index.js'),
-      '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js/dist/index.js'),
-    },
-    dedupe: ['react', 'react-dom', 'react-router-dom', 'i18next', 'react-i18next']
-  }
-};
-
-// Fusionner avec la configuration existante
+// Modification directe de la configuration pour Netlify sans utiliser mergeConfig
 if (process.env.NETLIFY) {
-  console.log('📦 Optimisations Netlify activées');
-  config = mergeConfig(config, netlifyOptimizations);
+  console.log('💶 Optimisations Netlify activées');
+  
+  // Paramètres de build
+  config.build = config.build || {};
+  config.build.minify = false; // Désactiver la minification pour éviter les problèmes
+  config.build.chunkSizeWarningLimit = 1000; // Augmenter la limite d'avertissement
+  
+  // Configuration des rollupOptions
+  config.build.rollupOptions = config.build.rollupOptions || {};
+  config.build.rollupOptions.output = config.build.rollupOptions.output || {};
+  config.build.rollupOptions.output.manualChunks = {
+    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+    'vendor-ui': ['framer-motion', '@headlessui/react', '@heroicons/react'],
+    'vendor-i18n': ['i18next', 'react-i18next', 'i18next-http-backend', 'i18next-browser-languagedetector'],
+    'vendor-stripe': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+    'vendor-utils': ['zustand', '@tanstack/react-virtual', 'react-dropzone', 'react-beautiful-dnd', 'react-chartjs-2']
+  };
+  
+  // Alias pour résoudre les problèmes d'importation
+  config.resolve = config.resolve || {};
+  config.resolve.alias = config.resolve.alias || {};
+  
+  // Ajouter les alias pour les dépendances problématiques
+  Object.assign(config.resolve.alias, {
+    'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom/dist/index.js'),
+    '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js/dist/index.js')
+  });
+  
+  // Déduplication des modules
+  config.resolve.dedupe = ['react', 'react-dom', 'react-router-dom', 'i18next', 'react-i18next'];
 }
 `;
 
@@ -75,15 +82,19 @@ if (viteConfig.includes('export default defineConfig')) {
   );
 }
 
-// Ajouter l'import de mergeConfig s'il n'existe pas déjà
-if (!viteConfig.includes('mergeConfig')) {
-  viteConfig = viteConfig.replace(
-    'import { defineConfig }',
-    'import { defineConfig, mergeConfig }'
-  );
-} else if (!viteConfig.includes('import')) {
-  // Si aucun import n'est trouvé, ajouter une ligne complète
-  viteConfig = `import { defineConfig, mergeConfig } from 'vite';\n` + viteConfig;
+// Ne pas ajouter d'import pour mergeConfig car nous n'utilisons plus cette fonction
+// Au lieu de cela, nous nous assurons simplement que l'import de path est présent
+if (!viteConfig.includes('import path from')) {
+  if (viteConfig.includes('import')) {
+    // Ajouter l'import de path à la ligne d'import existante
+    viteConfig = viteConfig.replace(
+      /import\s+([^;]+)\s+from\s+['|"]([^'|"]+)['|"]/,
+      (match) => `import path from 'path';\n${match}`
+    );
+  } else {
+    // Si aucun import n'est trouvé, ajouter une ligne complète
+    viteConfig = `import path from 'path';\n` + viteConfig;
+  }
 }
 
 // Écrire le fichier modifié
