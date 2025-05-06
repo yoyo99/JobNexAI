@@ -24,7 +24,7 @@ const fallbackHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JobNexus</title>
+  <title>JobNexAI</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -102,7 +102,7 @@ const fallbackHtml = `<!DOCTYPE html>
 </head>
 <body>
   <div class="container">
-    <h1>JobNexus</h1>
+    <h1>JobNexAI</h1>
     <p>
       L'application est en cours de chargement ou a rencontré un problème. Nous travaillons à résoudre cela au plus vite.
     </p>
@@ -111,7 +111,7 @@ const fallbackHtml = `<!DOCTYPE html>
     </p>
     <div class="buttons">
       <a href="/" class="button">Rafraîchir la page</a>
-      <a href="mailto:support@jobnexus.example.com" class="button secondary">Contacter le support</a>
+      <a href="mailto:contact@jobnexai.fr" class="button secondary">Contacter le support</a>
     </div>
     <div class="language-switcher">
       <button class="language-button">FR</button>
@@ -130,7 +130,7 @@ const fallbackHtml = `<!DOCTYPE html>
     });
     
     // Indiquer en console que le fallback est chargé
-    console.log('JobNexus fallback page loaded');
+    console.log('JobNexAI fallback page loaded');
     
     // Si la page principale n'a pas fini de charger après 10 secondes, on considère que c'est un problème
     setTimeout(function() {
