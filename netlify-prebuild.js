@@ -144,6 +144,44 @@ if (fs.existsSync(reactRouterPath)) {
   }
 }
 
+// Vérification spécifique pour @heroicons/react et ses sous-dossiers
+console.log('\n🔍 Vérification spécifique pour @heroicons/react...');
+const heroiconsPath = path.resolve(nodeModulesPath, '@heroicons/react');
+
+if (fs.existsSync(heroiconsPath)) {
+  console.log('✅ @heroicons/react est présent');
+  
+  // Vérifier le contenu du répertoire
+  console.log('Contenu du répertoire @heroicons/react:');
+  const heroiconsFiles = fs.readdirSync(heroiconsPath);
+  console.log(heroiconsFiles.join(', '));
+  
+  // Vérifier si les sous-répertoires nécessaires existent
+  const requiredDirs = ['24', 'outline', 'solid'];
+  const outlinePath = path.resolve(heroiconsPath, '24/outline');
+  const solidPath = path.resolve(heroiconsPath, '24/solid');
+  
+  // Si les sous-répertoires n'existent pas, créer des liens symboliques
+  if (!fs.existsSync(outlinePath) || !fs.existsSync(solidPath)) {
+    console.log('Tentative de correction de la structure @heroicons/react...');
+    try {
+      // Réinstallation explicite avec des options spécifiques
+      execSync('npm install @heroicons/react --force', { stdio: 'inherit' });
+      console.log('✅ @heroicons/react réinstallé');
+    } catch (error) {
+      console.error('❌ Erreur lors de la réinstallation de @heroicons/react:', error);
+    }
+  }
+} else {
+  console.log('❌ @heroicons/react est manquant, tentative d\'installation...');
+  try {
+    execSync('npm install @heroicons/react --force', { stdio: 'inherit' });
+    console.log('✅ @heroicons/react installé');
+  } catch (error) {
+    console.error('❌ Erreur lors de l\'installation de @heroicons/react:', error);
+  }
+}
+
 // Correction finale: nettoyer le cache npm
 console.log('\n🧹 Nettoyage du cache npm pour les dépendances problématiques...');
 try {
