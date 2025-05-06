@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState, Fragment } from 'react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon, UserCircleIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import { Link, useLocation } from 'react-router-dom'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
@@ -72,9 +72,62 @@ export function Header() {
             </Link>
           )}
           {user && (
-            <span className="text-sm text-gray-300 mr-4">
-              {t('connectedAs', { ns: 'common', name: user.full_name || user.email })}
-            </span>
+            <Menu as="div" className="relative ml-3 mr-4">
+              <div>
+                <Menu.Button className="flex items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500">
+                  <span className="sr-only">Open user menu</span>
+                  <div className="flex items-center space-x-2">
+                    <UserCircleIcon className="h-8 w-8 text-gray-300" />
+                    <span className="text-sm text-gray-300 font-medium">
+                      {user.full_name || user.email.split('@')[0]}
+                    </span>
+                    <ChevronDownIcon className="h-4 w-4 text-gray-300" />
+                  </div>
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/profile"
+                        className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm text-gray-700`}
+                      >
+                        {t('profile', { ns: 'common' })}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/settings"
+                        className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm text-gray-700`}
+                      >
+                        {t('settings', { ns: 'common' })}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() => useAuth.getState().signOut()}
+                        className={`${active ? 'bg-gray-100' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
+                      >
+                        {t('logout', { ns: 'auth' })}
+                      </button>
+                    )}
+                  </Menu.Item>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           )}
           <Link to="/pricing" className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors">
             {t('startTrial', { ns: 'auth' })}
@@ -118,19 +171,53 @@ export function Header() {
                 <div className="mb-4">
                   <LanguageSwitcher />
                 </div>
-                {!user && (
+                {user ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center px-3 py-2 mb-2">
+                      <UserCircleIcon className="h-8 w-8 text-gray-300 mr-2" />
+                      <span className="text-sm text-gray-300 font-medium">
+                        {user.full_name || user.email.split('@')[0]}
+                      </span>
+                    </div>
+                    <Link
+                      to="/profile"
+                      className="block text-sm px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t('profile', { ns: 'common' })}
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className="block text-sm px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t('settings', { ns: 'common' })}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        useAuth.getState().signOut();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="block w-full text-left text-sm px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                    >
+                      {t('logout', { ns: 'auth' })}
+                    </button>
+                  </div>
+                ) : (
                   <div className="space-y-4">
                     <Link
                       to="/login"
                       className="block text-center text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
-                      {t('auth.login')}
+                      {t('login', { ns: 'auth' })}
                     </Link>
                     <Link
                       to="/pricing"
                       className="block text-center text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
-                      {t('auth.startTrial')}
+                      {t('startTrial', { ns: 'auth' })}
                     </Link>
                   </div>
                 )}

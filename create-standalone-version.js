@@ -408,13 +408,54 @@ const standaloneHtml = `<!DOCTYPE html>
       height: 2.5rem;
       background-color: rgba(255, 255, 255, 0.1);
       color: var(--white);
-      border-radius: 50%;
-      text-decoration: none;
-      transition: background-color 0.2s;
+      background-color: rgba(255, 255, 255, 0.2);
     }
     
-    .social-link:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+    /* Animations et effets visuels */
+    .page-loaded h1,
+    .page-loaded .hero p,
+    .page-loaded .notice-box,
+    .page-loaded .button {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s forwards;
+    }
+    
+    .page-loaded h1 { animation-delay: 0.1s; }
+    .page-loaded .hero p { animation-delay: 0.3s; }
+    .page-loaded .notice-box { animation-delay: 0.5s; }
+    .page-loaded .button { animation-delay: 0.7s; }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .loading-dots:after {
+      content: '.';
+      animation: dots 1.5s steps(5, end) infinite;
+    }
+    
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60% { content: '...'; }
+      80%, 100% { content: ''; }
+    }
+    
+    #reload-app {
+      transition: all 0.3s ease;
+    }
+    
+    #reload-app:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
     @media (max-width: 768px) {
@@ -471,10 +512,10 @@ const standaloneHtml = `<!DOCTYPE html>
       <h1>Trouvez votre emploi idéal avec JobNexAI</h1>
       <p>Notre plateforme utilise l'intelligence artificielle pour connecter les demandeurs d'emploi avec les meilleures opportunités correspondant à leurs compétences et aspirations.</p>
       <div class="notice-box">
-        <h3>Site en maintenance</h3>
-        <p>Notre application complète est actuellement en maintenance. Cette version allégée vous permet de découvrir nos services en attendant.</p>
+        <h3>Bienvenue sur JobNexAI !</h3>
+        <p>Notre application est en cours de chargement. Si vous voyez cette page, cliquez sur le bouton ci-dessous pour accéder à toutes nos fonctionnalités. Nous travaillons continuellement à améliorer votre expérience.</p>
       </div>
-      <a href="#features" class="button">Découvrir nos fonctionnalités</a>
+      <a href="/" class="button" id="reload-app">Accéder à l'application complète</a>
       <a href="mailto:contact@jobnexai.fr" class="button secondary">Contactez-nous</a>
     </div>
   </section>
@@ -680,7 +721,34 @@ const standaloneHtml = `<!DOCTYPE html>
   </footer>
   
   <script>
-    // Script minimal pour la navigation fluide
+    // Fonction pour vérifier si l'application principale est disponible
+    function checkMainAppAvailability() {
+      return fetch('/', {
+        method: 'HEAD',
+        cache: 'no-cache'
+      })
+      .then(response => response.ok)
+      .catch(() => false);
+    }
+
+    // Gestionnaire du bouton de rechargement
+    document.getElementById('reload-app').addEventListener('click', (e) => {
+      e.preventDefault();
+      const button = e.currentTarget;
+      
+      // Animation simple pour indiquer le chargement
+      button.innerHTML = 'Chargement en cours... <span class="loading-dots"></span>';
+      button.style.opacity = '0.7';
+      button.style.pointerEvents = 'none';
+      
+      // Timeout court pour montrer l'animation
+      setTimeout(() => {
+        // Rediriger avec un paramètre de timestamp pour éviter le cache
+        window.location.href = '/?reload=' + Date.now();
+      }, 800);
+    });
+
+    // Script pour la navigation fluide
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -700,6 +768,41 @@ const standaloneHtml = `<!DOCTYPE html>
       button.addEventListener('click', function() {
         alert('Fonctionnalité de changement de langue non disponible dans cette version simplifiée.');
       });
+    });
+
+    // Ajouter des animations simples au chargement de la page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ajouter une classe spéciale pour les animations CSS
+      document.body.classList.add('page-loaded');
+      
+      // Vérifier si l'application principale est disponible toutes les 10 secondes
+      const checkInterval = setInterval(() => {
+        checkMainAppAvailability().then(available => {
+          if (available) {
+            const reloadButton = document.getElementById('reload-app');
+            reloadButton.textContent = 'Application prête ! Cliquez pour accéder';
+            reloadButton.style.backgroundColor = '#10b981'; // Couleur verte
+            reloadButton.style.opacity = '1';
+            reloadButton.style.pointerEvents = 'auto';
+            clearInterval(checkInterval);
+          }
+        });
+      }, 10000);
+
+      // Tentative automatique de vérification et rechargement après 30 secondes
+      setTimeout(() => {
+        checkMainAppAvailability().then(available => {
+          if (available) {
+            window.location.href = '/?auto_reload=' + Date.now();
+          }
+        });
+      }, 30000);
+    });
+
+    // Ajouter un gestionnaire d'erreurs global pour capturer les problèmes JavaScript
+    window.addEventListener('error', (event) => {
+      console.error('Erreur JavaScript capturée:', event.error);
+      // Vous pourriez envoyer ces erreurs à un service de monitoring
     });
   </script>
 </body>
