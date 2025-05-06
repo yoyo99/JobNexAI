@@ -1,5 +1,5 @@
 import '../shims/supabase-shim';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '../compat/supabase';
 
 export const supabase = createClient(
   'https://klwugophjvzctlautsqz.supabase.co',

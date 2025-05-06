@@ -136,7 +136,7 @@ if (fs.existsSync(indexHtmlPath)) {
       '<div id="root"></div>',
       `<div id="root">
         <div id="app-loading-indicator" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #f9fafb; color: #111827; font-family: system-ui, -apple-system, sans-serif;">
-          <h1 style="font-size: 24px; margin-bottom: 16px;">JobNexus</h1>
+          <h1 style="font-size: 24px; margin-bottom: 16px;">JobNexAI</h1>
           <p>Loading application...</p>
         </div>
       </div>`

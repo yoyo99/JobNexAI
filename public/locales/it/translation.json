@@ -17,7 +17,7 @@
         "placements": "Successful Placements"
       },
       "features": {
-        "title": "Why Choose JobNexus",
+        "title": "Why Choose JobNexAI",
         "aiMatching": {
           "title": "AI-Powered Job Matching",
           "description": "Our advanced algorithms match your skills and preferences with the perfect job opportunities."
@@ -66,13 +66,13 @@
   },
   "landingPage": {
     "hero": {
-      "title": "Trouvez l'emploi de vos rêves avec JobNexus",
+      "title": "Trouvez l'emploi de vos rêves avec JobNexAI",
       "subtitle": "Découvrez des opportunités qui correspondent à vos compétences et objectifs de carrière",
       "searchPlaceholder": "Rechercher des emplois, des compétences ou des entreprises",
       "ctaButton": "Commencer votre recherche"
     },
     "features": {
-      "title": "Why Choose JobNexus",
+      "title": "Why Choose JobNexAI",
       "subtitle": "A smarter way to find your next career opportunity",
       "aiMatching": {
         "title": "AI-Powered Matching",
@@ -112,10 +112,10 @@
     },
     "testimonials": {
       "title": "Success Stories",
-      "subtitle": "Hear from professionals who found their dream job with JobNexus"
+      "subtitle": "Hear from professionals who found their dream job with JobNexAI"
     },
     "stats": {
-      "title": "JobNexus by the Numbers",
+      "title": "JobNexAI by the Numbers",
       "users": "Active Users",
       "companies": "Partner Companies",
       "jobs": "Jobs Available",
@@ -123,7 +123,7 @@
     },
     "cta": {
       "title": "Ready to Take the Next Step in Your Career?",
-      "subtitle": "Join thousands of professionals who have found their dream job with JobNexus",
+      "subtitle": "Join thousands of professionals who have found their dream job with JobNexAI",
       "button": "Create Your Free Account"
     }
   }

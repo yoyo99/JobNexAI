@@ -1,5 +1,5 @@
 import '../shims/supabase-shim';
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "../compat/supabase";
 
 // --- Types et interfaces ---
 export interface Profile {
