@@ -835,8 +835,7 @@ console.log(`✅ Script de redirection créé: ${redirectJsPath}`);
 
 console.log('✨ Création de la version autonome terminée avec succès!');
 } catch (error) {
-  console.error('
-❌ ERREUR CRITIQUE dans create-standalone-version.js:', error);
+  console.error('❌ ERREUR CRITIQUE dans create-standalone-version.js:', error);
   console.error('Détails de l\'erreur:', error.stack);
   console.error('Tentative de création d\'une page de secours minimale...');
   
