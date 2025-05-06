@@ -170,7 +170,6 @@ export const {
   Navigate,
   Outlet,
   Route,
-  Router,
   Routes,
   useHref,
   useInRouterContext,
@@ -189,7 +188,7 @@ export const {
 } = ReactRouterDOM;
 
 // Exporter également les alias courants
-export const BrowserRouter as Router = ReactRouterDOM.BrowserRouter;
+export const Router = ReactRouterDOM.BrowserRouter;
 
 // Exporter le module entier comme défaut
 export default ReactRouterDOM;
