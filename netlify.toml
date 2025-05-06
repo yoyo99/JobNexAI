@@ -1,48 +1,26 @@
+# Configuration Netlify simplifiée
 [build]
   command = "npm ci --no-audit --no-fund --loglevel=error && export NODE_OPTIONS=\"--max-old-space-size=4096\" && npm run build:netlify"
   publish = "dist"
-  functions = "functions"
-  ignore_warnings = true
-  
-  # Fichiers et répertoires à exclure explicitement du déploiement
-  [build.processing]
-    skip_processing = false
-  [build.processing.css]
-    bundle = true
-    minify = true
-  [build.processing.js]
-    bundle = true
-    minify = true
-  [build.processing.html]
-    pretty_urls = true
-  [build.processing.images]
-    compress = true
-  
+
 [build.environment]
   NODE_VERSION = "20.9.0"
   NPM_VERSION = "10.1.0"
   NETLIFY_USE_YARN = "false"
   NETLIFY_USE_PNPM = "false"
 
+# Configuration de base des fonctions
 [functions]
   directory = "functions"
   node_bundler = "esbuild"
-  included_files = [""] # Format correct pour un tableau avec une chaîne vide
-  timeout = "60" # Timeout en format string
 
-# Désactiver pour simplifier
-# [[functions]]
-#   pattern = "emails"
-#   included_files = ["./emails/**"]
-
+# Configuration des redirections
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# NODE_VERSION est déjà défini plus haut
-
-# Configuration CDN et cache
+# Configuration du cache
 [[headers]]
   for = "/assets/*"
   [headers.values]
@@ -57,28 +35,3 @@
   for = "/*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Configuration de sécurité
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://images.unsplash.com https://randomuser.me; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://rsms.me; font-src 'self' https://rsms.me; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.stripe.com; frame-src https://js.stripe.com;"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-    Cross-Origin-Opener-Policy = "same-origin"
-    Cross-Origin-Resource-Policy = "same-origin"
-
-# Plugin désactivé car il utilise Puppeteer qui n'est pas autorisé sur Netlify
-# [[plugins]]
-#   package = "@netlify/plugin-lighthouse"
-#
-#   [plugins.inputs]
-#     output_path = "reports/lighthouse.html"
-
-# Configuration de la fonction Edge pour le monitoring des performances
-[[edge_functions]]
-  path = "/api/performance"
-  function = "performance-monitoring"
