@@ -50,24 +50,29 @@ if (!fs.existsSync(supabasePath)) {
 
 // Vérifier les sous-dépendances requises par Supabase
 const requiredDeps = [
-  'cross-fetch',
-  'postgrest-js',
-  'realtime-js',
-  'storage-js',
-  'functions-js',
-  'gotrue-js'
+  { name: 'cross-fetch', scope: null }, // Pas dans le scope @supabase
+  { name: 'postgrest-js', scope: '@supabase' },
+  { name: 'realtime-js', scope: '@supabase' },
+  { name: 'storage-js', scope: '@supabase' },
+  { name: 'functions-js', scope: '@supabase' },
+  { name: 'gotrue-js', scope: '@supabase' }
 ];
 
 console.log('\n🔍 Vérification des sous-dépendances de Supabase...');
 const missingDeps = [];
 
 for (const dep of requiredDeps) {
-  const depPath = path.resolve(nodeModulesPath, '@supabase', dep);
+  const depPath = dep.scope 
+    ? path.resolve(nodeModulesPath, dep.scope, dep.name)
+    : path.resolve(nodeModulesPath, dep.name);
+    
+  const depName = dep.scope ? `${dep.scope}/${dep.name}` : dep.name;
+  
   if (!fs.existsSync(depPath)) {
-    console.log(`❌ @supabase/${dep} est manquant`);
-    missingDeps.push(`@supabase/${dep}`);
+    console.log(`❌ ${depName} est manquant`);
+    missingDeps.push(depName);
   } else {
-    console.log(`✅ @supabase/${dep} est présent`);
+    console.log(`✅ ${depName} est présent`);
   }
 }
 
