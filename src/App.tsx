@@ -2,6 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import React, { Suspense, useState, useEffect } from 'react';
 import ToastContainer from './ToastContainer';
 
+// Importer les styles CSS ici, avant tout autre import
+import './index.css';
+import './App.css';
+
 // Import immédiat des composants critiques pour la navigation
 import { DashboardLayout } from './components/DashboardLayout'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -25,52 +29,21 @@ const LoadingFallback = ({ message = 'Chargement de la page...' }) => {
   }, []);
 
   return (
-    <div className="loading-container" style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '2rem',
-      textAlign: 'center',
-      minHeight: '200px'
-    }}>
-      <div className="loading-spinner" style={{
-        border: '4px solid #f3f3f3',
-        borderTop: '4px solid #3498db',
-        borderRadius: '50%',
-        width: '50px',
-        height: '50px',
-        animation: 'spin 1s linear infinite',
-        marginBottom: '1rem'
-      }}></div>
-      <div>{message}</div>
+    <div className="flex flex-col items-center justify-center p-8 text-center min-h-[200px] bg-background">
+      <div className="w-12 h-12 mb-4 rounded-full border-4 border-white/10 border-t-primary-600 animate-spin"></div>
+      <div className="text-white font-medium">{message}</div>
       
       {isStuck && (
-        <div style={{ marginTop: '1rem', color: '#e74c3c' }}>
+        <div className="mt-6 text-secondary-300">
           <p>Le chargement semble prendre plus de temps que prévu.</p>
           <button 
             onClick={() => window.location.reload()}
-            style={{
-              background: '#3498db',
-              color: 'white',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              marginTop: '0.5rem',
-              cursor: 'pointer'
-            }}
+            className="btn-primary mt-4"
           >
             Recharger la page
           </button>
         </div>
       )}
-      
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };
@@ -78,20 +51,12 @@ const LoadingFallback = ({ message = 'Chargement de la page...' }) => {
 // Wrapper pour les composants lazy-loaded avec ErrorBoundary spécifique
 const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ErrorBoundary fallback={<div className="error-container" style={{ padding: '2rem', textAlign: 'center' }}>
-      <h2>Un problème est survenu lors du chargement de cette page</h2>
-      <p>Nous nous excusons pour cet inconvénient. L'équipe technique a été informée du problème.</p>
+    <ErrorBoundary fallback={<div className="card m-8 text-center bg-background/80 backdrop-blur-lg">
+      <h2 className="text-xl font-semibold text-primary-400 mb-4">Un problème est survenu lors du chargement de cette page</h2>
+      <p className="text-white/80 mb-6">Nous nous excusons pour cet inconvénient. L'équipe technique a été informée du problème.</p>
       <button 
         onClick={() => window.location.reload()}
-        style={{
-          background: '#3498db',
-          color: 'white',
-          border: 'none',
-          padding: '0.5rem 1rem',
-          borderRadius: '4px',
-          marginTop: '1rem',
-          cursor: 'pointer'
-        }}
+        className="btn-primary"
       >
         Essayer de recharger
       </button>
@@ -159,23 +124,17 @@ function App() {
   }, []);
 
   return (
-    <ErrorBoundary fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h2>Un problème critique est survenu</h2>
-      <p>L'application a rencontré une erreur et n'a pas pu charger correctement.</p>
-      <button 
-        onClick={() => window.location.reload()}
-        style={{
-          background: '#3498db',
-          color: 'white',
-          border: 'none',
-          padding: '0.5rem 1rem',
-          borderRadius: '4px',
-          marginTop: '1rem',
-          cursor: 'pointer'
-        }}
-      >
-        Recharger l'application
-      </button>
+    <ErrorBoundary fallback={<div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
+      <div className="card max-w-lg mx-auto w-full bg-gradient-to-b from-background to-background/80 border-primary-500/20">
+        <h2 className="text-2xl font-bold text-primary-400 mb-4">Un problème critique est survenu</h2>
+        <p className="text-white/80 mb-6">L'application a rencontré une erreur et n'a pas pu charger correctement.</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="btn-primary w-full"
+        >
+          Recharger l'application
+        </button>
+      </div>
     </div>}>
       <I18nextProvider i18n={i18n}>
         <Router>
