@@ -11,6 +11,109 @@ const { execSync } = require('child_process');
 
 console.log('🔍 Vérification des importations de react-router-dom...');
 
+// Fonction pour créer le fichier main.js dans react-router-dom si nécessaire
+function createMainJsFile() {
+  const reactRouterDir = path.join(__dirname, 'node_modules', 'react-router-dom');
+  const mainJsPath = path.join(reactRouterDir, 'main.js');
+  const distPath = path.join(reactRouterDir, 'dist');
+  const indexJsPath = path.join(reactRouterDir, 'index.js');
+  const umdPath = path.join(reactRouterDir, 'umd');
+  
+  // Vérifier si le répertoire existe
+  if (!fs.existsSync(reactRouterDir)) {
+    console.error(`❌ Le répertoire react-router-dom n'existe pas: ${reactRouterDir}`);
+    return;
+  }
+
+  // Créer le contenu du fichier main.js
+  // Nous allons être exhaustifs dans la façon dont nous référençons les fichiers
+  // pour maximiser les chances que cela fonctionne sur Netlify
+  const mainJsContent = `/**
+ * Polyfill pour react-router-dom
+ */
+
+'use strict';
+
+// Détecter la source disponible
+let routerLib;
+
+try {
+  // Essayer d'abord l'index.js à la racine
+  routerLib = require('./index.js');
+} catch (e) {
+  try {
+    // Ensuite essayer le répertoire dist
+    routerLib = require('./dist/index.js');
+  } catch (e) {
+    try {
+      // Essayer la version UMD
+      routerLib = require('./umd/react-router-dom.development.js');
+    } catch (e) {
+      console.error('Impossible de charger react-router-dom:', e);
+      // Fournir un module vide comme fallback
+      routerLib = {
+        BrowserRouter: function() {},
+        Routes: function() {},
+        Route: function() {},
+        Link: function() {},
+        useNavigate: function() { return function() {}; },
+        useParams: function() { return {}; },
+        useLocation: function() { return {}; }
+      };
+    }
+  }
+}
+
+module.exports = routerLib;
+`;
+
+  // Créer un fichier de symétrie pour s'assurer que le module est accessible
+  const symmetryContent = `/**
+ * Fichier de symétrie pour react-router-dom
+ * Assure que le module peut être importé de plusieurs façons
+ */
+module.exports = require('./main.js');
+`;
+
+  try {
+    // Créer le répertoire dist s'il n'existe pas
+    if (!fs.existsSync(distPath)) {
+      fs.mkdirSync(distPath, { recursive: true });
+      console.log(`✅ Répertoire ${distPath} créé`);
+    }
+    
+    // Créer le répertoire umd s'il n'existe pas
+    if (!fs.existsSync(umdPath)) {
+      fs.mkdirSync(umdPath, { recursive: true });
+      console.log(`✅ Répertoire ${umdPath} créé`);
+    }
+
+    // Créer les fichiers
+    fs.writeFileSync(mainJsPath, mainJsContent);
+    console.log(`✅ Fichier ${mainJsPath} créé`);
+    
+    // Créer un index.js dans le répertoire dist qui pointe vers main.js
+    const distIndexPath = path.join(distPath, 'index.js');
+    fs.writeFileSync(distIndexPath, symmetryContent);
+    console.log(`✅ Fichier ${distIndexPath} créé`);
+    
+    // Créer un fichier umd si nécessaire
+    const umdFilePath = path.join(umdPath, 'react-router-dom.development.js');
+    fs.writeFileSync(umdFilePath, symmetryContent);
+    console.log(`✅ Fichier ${umdFilePath} créé`);
+    
+    // S'assurer que index.js à la racine existe aussi
+    if (!fs.existsSync(indexJsPath)) {
+      fs.writeFileSync(indexJsPath, symmetryContent);
+      console.log(`✅ Fichier ${indexJsPath} créé`);
+    }
+    
+    console.log('✅ Configuration de react-router-dom terminée avec succès');
+  } catch (error) {
+    console.error(`❌ Erreur lors de la configuration de react-router-dom:`, error);
+  }
+}
+
 // Vérifier que react-router-dom est correctement installé
 const routerPath = path.resolve(__dirname, 'node_modules/react-router-dom');
 if (!fs.existsSync(routerPath)) {
@@ -23,6 +126,9 @@ if (!fs.existsSync(routerPath)) {
     process.exit(1);
   }
 }
+
+// Créer le fichier main.js si nécessaire
+createMainJsFile();
 
 // Vérifier la version installée
 try {

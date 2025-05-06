@@ -16,7 +16,7 @@
     "fix-imports": "node fix-imports.js",
     "fix-router-imports": "node fix-router-imports.js",
     "fix-supabase-imports": "node fix-supabase-imports.js",
-    "build:netlify": "node netlify-prebuild.js && node fix-supabase.js && node fix-supabase-imports.js && node fix-imports.js && node fix-router-imports.js && node cleanup-functions.js && node vite.config.patch.js && npm run update-deps && npm run verify-deps && npm run check-imports && rimraf dist && NETLIFY=true tsc && NETLIFY=true vite build && node create-fallback.js && node clean-build.js",
+    "build:netlify": "node netlify-setup.js && node netlify-prebuild.js && node fix-supabase.js && node fix-supabase-imports.js && node fix-imports.js && node fix-router-imports.js && node cleanup-functions.js && node vite.config.patch.js && npm run update-deps && npm run verify-deps && npm run check-imports && rimraf dist && NETLIFY=true tsc && NETLIFY=true vite build && node create-fallback.js && node update-brand.js && node clean-build.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "listfiles": "find . -not -path \"*/node_modules/*\" -not -path \"*/.git/*\" -not -path \"*/dist/*\"",
