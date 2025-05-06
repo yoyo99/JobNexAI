@@ -1,6 +1,6 @@
 # Configuration Netlify simplifiée
 [build]
-  command = "npm ci --no-audit --no-fund --loglevel=error && export NODE_OPTIONS=\"--max-old-space-size=4096\" && node fix-router-imports.js && npm run build:netlify && node update-brand.js && node resilient-loader.js && node create-standalone-version.js && node inject-supabase-preloader.js && node static-version-generator.js"
+  command = "npm ci --no-audit --no-fund --loglevel=error && export NODE_OPTIONS=\"--max-old-space-size=4096\" && node netlify-tailwind.js && node fix-router-imports.js && npm run build:netlify && node update-brand.js && node resilient-loader.js && node create-standalone-version.js && node inject-supabase-preloader.js && node static-version-generator.js"
   publish = "dist"
 
 [build.environment]
