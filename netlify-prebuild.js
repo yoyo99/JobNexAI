@@ -20,7 +20,7 @@ const CRITICAL_PACKAGES = [
   'react-i18next',
   'framer-motion',
   '@headlessui/react',
-  '@heroicons/react',
+  '@heroicons/react', // Le package principal, pas les chemins internes
   '@stripe/stripe-js',
   '@stripe/react-stripe-js',
   'react-beautiful-dnd',
@@ -28,6 +28,32 @@ const CRITICAL_PACKAGES = [
   'i18next-http-backend',
   'i18next-browser-languagedetector'
 ];
+
+// Fonction pour normaliser les noms de packages
+// Convertit les chemins d'importation comme '@heroicons/react/24/outline' en noms de packages npm comme '@heroicons/react'
+function normalizePackageName(importPath) {
+  // Cas spécial pour @heroicons/react
+  if (importPath.startsWith('@heroicons/react/')) {
+    return '@heroicons/react';
+  }
+  
+  // Cas général: prendre le premier segment pour les packages scoped
+  if (importPath.startsWith('@')) {
+    const parts = importPath.split('/');
+    if (parts.length >= 2) {
+      return `${parts[0]}/${parts[1]}`;
+    }
+  }
+  
+  // Pour les packages normaux, prendre tout jusqu'au premier slash
+  const slashIndex = importPath.indexOf('/');
+  if (slashIndex !== -1) {
+    return importPath.substring(0, slashIndex);
+  }
+  
+  // Sinon retourner le chemin tel quel
+  return importPath;
+}
 
 // Vérification de répertoire node_modules
 console.log('\n📂 Vérification du répertoire node_modules...');
@@ -46,12 +72,17 @@ console.log('\n🔍 Vérification des dépendances critiques...');
 const missingPackages = [];
 
 CRITICAL_PACKAGES.forEach(pkg => {
-  const pkgPath = path.resolve(nodeModulesPath, pkg);
+  // Normaliser le nom du package (pour gérer les cas comme @heroicons/react/24/outline)
+  const normalizedPkg = normalizePackageName(pkg);
+  const pkgPath = path.resolve(nodeModulesPath, normalizedPkg);
+  
   if (!fs.existsSync(pkgPath)) {
-    console.log(`❌ ${pkg} est manquant`);
-    missingPackages.push(pkg);
+    console.log(`❌ ${normalizedPkg} est manquant`);
+    if (!missingPackages.includes(normalizedPkg)) {
+      missingPackages.push(normalizedPkg);
+    }
   } else {
-    console.log(`✅ ${pkg} est présent`);
+    console.log(`✅ ${normalizedPkg} est présent`);
   }
 });
 

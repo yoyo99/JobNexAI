@@ -19,8 +19,7 @@ const CRITICAL_DEPENDENCIES = [
   'react-i18next',
   'framer-motion',
   '@headlessui/react',
-  '@heroicons/react/24/outline',
-  '@heroicons/react/24/solid',
+  '@heroicons/react', // Package principal, pas les sous-chemins
   '@stripe/stripe-js',
   '@stripe/react-stripe-js',
   'react-beautiful-dnd',
@@ -31,11 +30,39 @@ const CRITICAL_DEPENDENCIES = [
   '@sentry/react'
 ];
 
+// Fonction pour normaliser les noms de packages
+// Convertit les chemins comme @heroicons/react/24/outline en noms de packages npm comme @heroicons/react
+function normalizePackageName(importPath) {
+  // Cas spécial pour @heroicons/react
+  if (importPath.startsWith('@heroicons/react/')) {
+    return '@heroicons/react';
+  }
+  
+  // Cas général: prendre le premier segment pour les packages scoped
+  if (importPath.startsWith('@')) {
+    const parts = importPath.split('/');
+    if (parts.length >= 2) {
+      return `${parts[0]}/${parts[1]}`;
+    }
+  }
+  
+  // Pour les packages normaux, prendre tout jusqu'au premier slash
+  const slashIndex = importPath.indexOf('/');
+  if (slashIndex !== -1) {
+    return importPath.substring(0, slashIndex);
+  }
+  
+  // Sinon retourner le chemin tel quel
+  return importPath;
+}
+
 console.log('🔍 Vérification des dépendances critiques...');
 
 // Vérifier si un module est correctement installé
 function isModuleInstalled(moduleName) {
-  const nodeModulesPath = path.resolve(__dirname, 'node_modules', moduleName);
+  // Normaliser le nom du module (pour gérer les cas comme @heroicons/react/24/outline)
+  const normalizedName = normalizePackageName(moduleName);
+  const nodeModulesPath = path.resolve(__dirname, 'node_modules', normalizedName);
   
   // Vérifier si le répertoire du module existe
   if (!fs.existsSync(nodeModulesPath)) {
@@ -51,9 +78,11 @@ function isModuleInstalled(moduleName) {
   // Lire le fichier package.json pour confirmer que c'est le bon module
   try {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-    return packageJson.name === moduleName;
+    // Pour les packages scoped comme @heroicons/react, le nom dans package.json doit correspondre
+    // au nom normalisé, pas nécessairement au chemin d'importation complet
+    return packageJson.name === normalizedName;
   } catch (error) {
-    console.error(`Erreur lors de la lecture du package.json pour ${moduleName}:`, error);
+    console.error(`Erreur lors de la lecture du package.json pour ${normalizedName}:`, error);
     return false;
   }
 }
