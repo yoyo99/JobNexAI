@@ -66,10 +66,7 @@ export default defineConfig({
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      'src': path.resolve(__dirname, 'src'),
-      // Ajouter les alias pour les dépendances problématiques
-      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom/dist/index.js'),
-      '@supabase/supabase-js': path.resolve(__dirname, 'node_modules/@supabase/supabase-js/dist/index.js')
+      'src': path.resolve(__dirname, 'src')
     },
     preserveSymlinks: true,
     mainFields: ['module', 'jsnext:main', 'jsnext', 'browser', 'main'],

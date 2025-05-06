@@ -30,14 +30,14 @@ const problematicImports = [
   {
     packageName: '@supabase/supabase-js',
     importPattern: /import\s+\{([^}]*)\}\s+from\s+['"]@supabase\/supabase-js['"]/g,
-    replacement: (match, imports) => `// Import direct pour éviter les problèmes de résolution Netlify
-import {${imports}} from '../../node_modules/@supabase/supabase-js/dist/index.js'`
+    replacement: (match, imports) => `// Import standard
+import {${imports}} from '@supabase/supabase-js'`
   },
   {
     packageName: 'react-router-dom',
-    importPattern: /import\s+\{([^}]*)\}\s+from\s+['"]react-router-dom['"]/g,
-    replacement: (match, imports) => `// Import direct pour éviter les problèmes de résolution Netlify
-import {${imports}} from '../../node_modules/react-router-dom/dist/index.js'`
+    importPattern: /import\s+\{([^}]*)\}\s+from\s+['"](react-router-dom)['"]/g,
+    replacement: (match, imports) => `// Import standard
+import {${imports}} from 'react-router-dom'`
   }
 ];
 
