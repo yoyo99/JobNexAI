@@ -138,7 +138,6 @@ function initWebVitalsWithSentry() {
     initWebVitalsOnly()
   }
 }
-}
 
 export function trackError(error: Error, context?: Record<string, any>) {
   Sentry.captureException(error, {

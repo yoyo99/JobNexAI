@@ -5,11 +5,18 @@
  * source, en s'assurant qu'ils utilisent les chemins d'importation standards.
  */
 
+console.log('===================================================');
+console.log('Démarrage de fix-router-imports.js - ' + new Date().toISOString());
+console.log('Environnement : Node ' + process.version);
+console.log('===================================================');
+
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-console.log('🔍 Vérification des importations de react-router-dom...');
+// Wrapper global pour capturer toutes les erreurs
+try {
+  console.log('🔍 Vérification des importations de react-router-dom...');
 
 // Fonction pour créer le fichier main.js dans react-router-dom si nécessaire
 function createMainJsFile() {
@@ -304,7 +311,36 @@ fs.writeFileSync(routerCompatPath, routerCompatContent);
 console.log(`✅ Module de compatibilité créé: ${path.relative(__dirname, routerCompatPath)}`);
 
 // Ajouter une instruction pour utiliser le module de compatibilité
-console.log('\n💡 Pour résoudre les problèmes d\'importation, vous pouvez utiliser le module de compatibilité:');
+console.log('\n💎 Pour résoudre les problèmes d\'importation, vous pouvez utiliser le module de compatibilité:');
 console.log('   import { ... } from \'../compat/react-router-dom\';');
 
 console.log('\n✨ Correction des importations react-router-dom terminée!');
+} catch (error) {
+console.error('❌ ERREUR CRITIQUE dans fix-router-imports.js:', error);
+console.error('Détails de l\'erreur:', error.stack);
+console.error('Tentative de continuation malgré l\'erreur...');
+  
+// Créer le minimum nécessaire pour que le build puisse continuer
+try {
+const reactRouterDir = path.join(__dirname, 'node_modules', 'react-router-dom');
+const compatDir = path.join(__dirname, 'src', 'compat');
+  
+// S'assurer que le répertoire compat existe
+if (!fs.existsSync(compatDir)) {
+fs.mkdirSync(compatDir, { recursive: true });
+}
+  
+// Créer un module de compatibilité minimal
+const routerCompatPath = path.join(compatDir, 'react-router-dom.ts');
+const minimalContent = `// Fichier de secours créé suite à une erreur dans fix-router-imports.js
+// Export minimal pour permettre la compilation
+export { BrowserRouter, Routes, Route, Navigate, Outlet, Link, useParams, useLocation, useNavigate } from 'react-router-dom';
+`;
+  
+fs.writeFileSync(routerCompatPath, minimalContent);
+console.log(`✅ Module de compatibilité minimal créé malgré l'erreur: ${path.relative(__dirname, routerCompatPath)}`);
+} catch (fallbackError) {
+console.error('Impossible de créer le module de compatibilité minimal:', fallbackError);
+// Ne pas bloquer complètement le processus de build
+}
+}

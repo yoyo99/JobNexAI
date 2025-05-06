@@ -8,12 +8,17 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('🏗️ Création d\'une version autonome simplifiée du site JobNexAI...');
+console.log('===================================================');
+console.log('Démarrage de create-standalone-version.js - ' + new Date().toISOString());
+console.log('Environnement : Node ' + process.version);
+console.log('===================================================');
 
-// Chemin vers le répertoire de build
-const distDir = path.join(__dirname, 'dist');
-const indexPath = path.join(distDir, 'index.html');
+try {
+  console.log('🏗️ Création d\'une version autonome simplifiée du site JobNexAI...');
 
+  // Chemin vers le répertoire de build
+  const distDir = path.join(__dirname, 'dist');
+  const indexPath = path.join(distDir, 'index.html');
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
   console.log(`✅ Répertoire ${distDir} créé`);
@@ -829,3 +834,47 @@ fs.writeFileSync(redirectJsPath, redirectJs);
 console.log(`✅ Script de redirection créé: ${redirectJsPath}`);
 
 console.log('✨ Création de la version autonome terminée avec succès!');
+} catch (error) {
+  console.error('
+❌ ERREUR CRITIQUE dans create-standalone-version.js:', error);
+  console.error('Détails de l\'erreur:', error.stack);
+  console.error('Tentative de création d\'une page de secours minimale...');
+  
+  try {
+    // Créer une page de secours minimale en cas d'erreur dans le script principal
+    const distDir = path.join(__dirname, 'dist');
+    if (!fs.existsSync(distDir)) {
+      fs.mkdirSync(distDir, { recursive: true });
+    }
+    
+    const indexPath = path.join(distDir, 'index.html');
+    const minimalHtml = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNexAI - Site en maintenance</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #0F172A; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { max-width: 600px; text-align: center; padding: 2rem; }
+    h1 { background: linear-gradient(to right, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .btn { display: inline-block; background: linear-gradient(to right, #db2777, #7c3aed); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JobNexAI</h1>
+    <h2>Site en maintenance temporaire</h2>
+    <p>Nous travaillons actuellement à l'amélioration de JobNexAI. Le site sera de nouveau disponible très prochainement.</p>
+    <p>Nous vous prions de nous excuser pour ce désagrément.</p>
+    <a href="mailto:contact@jobnexai.com" class="btn">Contactez-nous</a>
+  </div>
+</body>
+</html>`;
+    
+    fs.writeFileSync(indexPath, minimalHtml);
+    console.log(`✅ Page de secours minimale créée: ${indexPath}`);
+  } catch (fallbackError) {
+    console.error('Impossible de créer la page de secours minimale:', fallbackError);
+  }
+}

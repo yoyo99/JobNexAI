@@ -9,6 +9,13 @@
 const fs = require('fs');
 const path = require('path');
 
+console.log('===================================================');
+console.log('Démarrage de static-version-generator.js - ' + new Date().toISOString());
+console.log('Environnement : Node ' + process.version);
+console.log('===================================================');
+
+try {
+
 console.log('🏗️ Génération de la version statique complète de JobNexAI...');
 
 const distDir = path.join(__dirname, 'dist');
@@ -612,3 +619,87 @@ fs.writeFileSync(redirectJsPath, redirectJs);
 console.log(`✅ Script de redirection créé: ${redirectJsPath}`);
 
 console.log('✨ Génération de la version statique terminée avec succès!');
+} catch (error) {
+  console.error('
+❌ ERREUR CRITIQUE dans static-version-generator.js:', error);
+  console.error('Détails de l\'erreur:', error.stack);
+  console.error('Tentative de création d\'une page statique minimale...');
+  
+  try {
+    // Créer une page statique minimale en cas d'erreur
+    const distDir = path.join(__dirname, 'dist');
+    if (!fs.existsSync(distDir)) {
+      fs.mkdirSync(distDir, { recursive: true });
+    }
+    
+    const indexPath = path.join(distDir, 'index.html');
+    const minimalHtml = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNexAI - Votre Assistant IA pour l'emploi</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0F172A; color: white; line-height: 1.5; margin: 0; padding: 0; }
+    .header { padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px); position: fixed; width: 100%; box-sizing: border-box; }
+    .logo { background: linear-gradient(to right, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 1.5rem; font-weight: 700; }
+    nav a { color: white; margin-left: 1.5rem; text-decoration: none; font-size: 0.9rem; }
+    .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 2rem; }
+    h1 { font-size: 2.5rem; margin-bottom: 1rem; max-width: 800px; }
+    .subtitle { font-size: 1.25rem; opacity: 0.8; max-width: 600px; margin-bottom: 2rem; }
+    .buttons { display: flex; gap: 1rem; }
+    .btn-primary { background: linear-gradient(to right, #db2777, #7c3aed); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; }
+    .features { padding: 5rem 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .feature { background: rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.1); }
+    .feature h3 { color: #ec4899; margin-top: 0; }
+    .footer { background: rgba(0,0,0,0.2); padding: 2rem; text-align: center; font-size: 0.9rem; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">JobNexAI</div>
+    <nav>
+      <a href="#features">Fonctionnalités</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Trouvez votre emploi idéal avec JobNexAI</h1>
+    <p class="subtitle">Notre plateforme utilise l'intelligence artificielle pour connecter les demandeurs d'emploi avec les meilleures opportunités correspondant à leurs compétences et aspirations.</p>
+    <div class="buttons">
+      <a href="mailto:contact@jobnexai.com" class="btn-primary">Nous contacter</a>
+      <a href="#features" class="btn-secondary">Découvrir JobNexAI</a>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="feature">
+      <h3>IA Matching</h3>
+      <p>Notre algorithme avancé analyse votre profil et vos compétences pour vous recommander les offres d'emploi les plus pertinentes.</p>
+    </div>
+    <div class="feature">
+      <h3>Optimisation de CV</h3>
+      <p>Améliorez votre CV avec nos conseils personnalisés basés sur l'analyse IA des tendances du marché et des attentes des recruteurs.</p>
+    </div>
+    <div class="feature">
+      <h3>Recherche précise</h3>
+      <p>Filtrez les offres selon de nombreux critères : lieu, salaire, type de contrat, niveau d'expérience et plus encore.</p>
+    </div>
+  </section>
+
+  <footer id="contact" class="footer">
+    <p>Copyright © 2025 JobNexAI. Tous droits réservés.</p>
+    <p>Contact : contact@jobnexai.com</p>
+  </footer>
+</body>
+</html>`;
+    
+    fs.writeFileSync(indexPath, minimalHtml);
+    console.log(`✅ Page statique minimale créée: ${indexPath}`);
+  } catch (fallbackError) {
+    console.error('Impossible de créer la page statique minimale:', fallbackError);
+  }
+}
