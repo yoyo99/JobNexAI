@@ -16,7 +16,19 @@ const CRITICAL_DEPENDENCIES = [
   'react-router-dom',
   '@supabase/supabase-js',
   'i18next',
-  'react-i18next'
+  'react-i18next',
+  'framer-motion',
+  '@headlessui/react',
+  '@heroicons/react/24/outline',
+  '@heroicons/react/24/solid',
+  '@stripe/stripe-js',
+  '@stripe/react-stripe-js',
+  'react-beautiful-dnd',
+  'react-chartjs-2',
+  'react-dropzone',
+  'react-share',
+  '@tanstack/react-virtual',
+  '@sentry/react'
 ];
 
 console.log('🔍 Vérification des dépendances critiques...');

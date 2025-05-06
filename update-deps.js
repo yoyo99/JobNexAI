@@ -26,24 +26,70 @@ try {
 
 // Liste des dépendances à mettre à jour avec leurs versions recommandées
 const dependenciesToUpdate = {
-  // Dépendances principales
+  // Dépendances principales problématiques identifiées dans les logs
+  'react-router-dom': {
+    version: '^6.30.0',
+    note: 'Dépendance critique, assurer sa disponibilité'
+  },
+  'react-i18next': {
+    version: '^14.1.0',
+    note: 'Dépendance critique pour l\'internationalisation'
+  },
+  'framer-motion': {
+    version: '^11.0.8',
+    note: 'Dépendance pour les animations'
+  },
+  '@heroicons/react/24/outline': {
+    version: '^2.1.1',
+    note: 'Module spécifique de heroicons nécessaire'
+  },
+  '@heroicons/react/24/solid': {
+    version: '^2.1.1',
+    note: 'Module spécifique de heroicons nécessaire'
+  },
+  '@headlessui/react': {
+    version: '^1.7.18',
+    note: 'Dépendance interface utilisateur'
+  },
+  '@stripe/stripe-js': {
+    version: '^3.0.10',
+    note: 'Dépendance pour l\'intégration Stripe'
+  },
+  '@stripe/react-stripe-js': {
+    version: '^2.5.0',
+    note: 'Dépendance pour l\'intégration Stripe avec React'
+  },
   'react-beautiful-dnd': {
     version: '^13.1.1',
     note: 'Package obsolète mais encore utilisé. Ignorer les avertissements.'
   },
-  'emailjs-com': {
-    version: '^3.2.0',
-    note: 'Considérer "@emailjs/browser" dans une future mise à jour.'
+  'react-chartjs-2': {
+    version: '^5.2.0',
+    note: 'Dépendance pour les graphiques'
   },
-  'spdy': {
-    version: '^4.0.2',
-    note: 'Package peu maintenu mais encore fonctionnel. À remplacer par une alternative moderne à l\'avenir.'
+  'react-dropzone': {
+    version: '^14.2.3',
+    note: 'Dépendance pour l\'upload de fichiers'
   },
-  
-  // Dépendances de développement
-  '@testing-library/react': {
-    version: '^16.3.0',
-    note: 'Version récente, conserver telle quelle.'
+  'react-share': {
+    version: '^5.1.0',
+    note: 'Dépendance pour le partage social'
+  },
+  '@tanstack/react-virtual': {
+    version: '^3.1.3',
+    note: 'Dépendance pour les listes virtualisées'
+  },
+  '@sentry/react': {
+    version: '^7.107.0',
+    note: 'Dépendance pour le monitoring d\'erreurs'
+  },
+  'i18next-http-backend': {
+    version: '^2.5.0',
+    note: 'Backend pour i18next'
+  },
+  'i18next-browser-languagedetector': {
+    version: '^7.2.0',
+    note: 'Détection de langue pour i18next'
   }
 };
 

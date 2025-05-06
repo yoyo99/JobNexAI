@@ -3,9 +3,21 @@
     "dashboard": "Tableau de bord",
     "jobSearch": "Recherche d'emploi",
     "applications": "Candidatures",
-    "cvBuilder": "CV Builder",
+    "cvBuilder": "Créateur de CV",
     "network": "Réseau",
     "profile": "Profil",
     "settings": "Paramètres",
-    "marketAnalysis": "Analyse du marché"
+    "marketAnalysis": "Analyse de marché"
   },
+  "auth": {
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "logout": "Déconnexion"
+  },
+  "common": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "search": "Rechercher",
+    "view": "Voir"
+  }
+}

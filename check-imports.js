@@ -132,15 +132,42 @@ walkDir(SRC_DIR, (filePath) => {
   });
 });
 
-// Ajouter quelques chemins supplémentaires à ignorer qui causent des problèmes sur Netlify
+// Ajouter tous les chemins supplémentaires à ignorer qui causent des problèmes sur Netlify
 const ADDITIONAL_IGNORE_PATHS = [
+  // Imports identifiés comme problématiques dans les logs
   'react-router-dom',
+  'framer-motion',
+  'react-i18next',
+  '@heroicons/react',
+  'react',
+  '@headlessui/react',
+  '@stripe/stripe-js',
+  '@stripe/react-stripe-js',
+  'react-beautiful-dnd',
+  'react-chartjs-2',
+  'react-dropzone',
+  'react-share',
+  '@tanstack/react-virtual',
+  '@sentry/react',
+  'i18next-http-backend',
+  'i18next-browser-languagedetector',
+  
+  // Autres dépendances standard à ignorer
   'zustand',
   'socket.io-client',
   'web-vitals',
   '@vimeo/player',
   'chart.js',
-  'date-fns'
+  'date-fns',
+  'compromise',
+  'clsx',
+  'cheerio',
+  'pdfmake',
+  'jspdf',
+  'react-dom',
+  'uuid',
+  'tailwind-merge',
+  'emailjs-com'
 ];
 
 // Détecter si nous sommes sur Netlify

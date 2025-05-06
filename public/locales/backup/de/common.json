@@ -9,3 +9,15 @@
     "settings": "Einstellungen",
     "marketAnalysis": "Marktanalyse"
   },
+  "auth": {
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "logout": "Abmelden"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "search": "Suchen",
+    "view": "Ansehen"
+  }
+}

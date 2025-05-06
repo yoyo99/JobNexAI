@@ -9,3 +9,15 @@
     "settings": "Configuración",
     "marketAnalysis": "Análisis de mercado"
   },
+  "auth": {
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "search": "Buscar",
+    "view": "Ver"
+  }
+}
