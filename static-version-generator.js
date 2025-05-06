@@ -620,8 +620,7 @@ console.log(`✅ Script de redirection créé: ${redirectJsPath}`);
 
 console.log('✨ Génération de la version statique terminée avec succès!');
 } catch (error) {
-  console.error('
-❌ ERREUR CRITIQUE dans static-version-generator.js:', error);
+  console.error('❌ ERREUR CRITIQUE dans static-version-generator.js:', error);
   console.error('Détails de l\'erreur:', error.stack);
   console.error('Tentative de création d\'une page statique minimale...');
   
