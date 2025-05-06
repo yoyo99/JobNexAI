@@ -27,11 +27,15 @@
 [functions]
   directory = "functions"
   node_bundler = "esbuild"
-  included_files = ["!node_modules/puppeteer/**/*"]
-  external_node_modules = ["puppeteer"]
+  # Réduire les inclusions et exclusions pour éviter les problèmes de déploiement
+  included_files = []
+  external_node_modules = []
+  # Augmenter le timeout pour permettre un déploiement plus long
+  timeout = 60
 
-[functions.emails]
-  included_files = ["./emails/**"]
+# Désactiver temporairement les fonctions spécifiques pour simplifier le déploiement
+# [functions.emails]
+#   included_files = ["./emails/**"]
 
 [[redirects]]
   from = "/*"
