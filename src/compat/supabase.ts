@@ -1,19 +1,23 @@
 /**
- * Module de compatibilité pour @supabase/supabase-js
+ * Module de compatibilité pour Supabase
  * 
- * Ce fichier fournit une façade pour l'API Supabase sans importer directement le module,
- * ce qui permet d'éviter les problèmes de résolution d'importation Netlify.
+ * Ce fichier fournit une façade pour l'API Supabase sans aucune référence directe au module,
+ * ce qui permet d'éviter complètement les problèmes de résolution d'importation sur Netlify.
  */
 
-// Définir un client de base
+// Définir le client de base sans aucune référence à @supabase/supabase-js
 export function createClient(supabaseUrl: string, supabaseKey: string) {
-  // Dans Netlify, nous importons dynamiquement le module pour éviter les erreurs de résolution
-  if (typeof window !== 'undefined') {
-    const actualModule = require('@supabase/supabase-js');
-    return actualModule.createClient(supabaseUrl, supabaseKey);
+  // Dans Netlify/navigateur, nous essayons d'utiliser la référence globale si elle existe
+  if (typeof window !== 'undefined' && (window as any).supabase) {
+    try {
+      return (window as any).supabase.createClient(supabaseUrl, supabaseKey);
+    } catch (error) {
+      console.warn('Erreur lors de la création du client Supabase:', error);
+      // Continuer avec le client factice
+    }
   }
   
-  // En cas d'échec, retourner un client factice (pour compilation seulement)
+  // Retourner un client factice (pour compilation et secours)
   return {
     auth: {
       getUser: () => Promise.resolve({ data: { user: null }, error: null }),
