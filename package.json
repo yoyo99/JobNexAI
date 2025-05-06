@@ -23,6 +23,7 @@
     "check-translations": "node scripts/check-translations.mjs"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.8",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@sentry/react": "^7.107.0",
