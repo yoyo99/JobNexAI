@@ -1,3 +1,4 @@
+import '../shims/supabase-shim';
 import { createClient } from "@supabase/supabase-js";
 
 // --- Types et interfaces ---

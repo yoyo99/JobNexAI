@@ -60,7 +60,21 @@ if (process.env.VITE_SENTRY_AUTH_TOKEN) {
 export default defineConfig({
   plugins,
   optimizeDeps: {
-    include: ['@tanstack/react-virtual'],
+    include: [
+      '@tanstack/react-virtual',
+      '@supabase/supabase-js',
+      '@supabase/gotrue-js',
+      '@supabase/postgrest-js',
+      '@supabase/realtime-js',
+      '@supabase/storage-js',
+      '@supabase/functions-js'
+    ],
+    esbuildOptions: {
+      // Configuration spécifique pour Node.js polyfills
+      define: {
+        global: 'globalThis'
+      }
+    }
   },
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
