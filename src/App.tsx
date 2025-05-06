@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import ToastContainer from './ToastContainer';
 
+// Import immédiat des composants critiques pour la navigation
 import { DashboardLayout } from './components/DashboardLayout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AuthProvider } from './components/AuthProvider'
@@ -9,6 +10,98 @@ import { PrivacyConsent } from './components/PrivacyConsent'
 import { SecurityBadge } from './components/SecurityBadge'
 import { SubscriptionBanner } from './components/SubscriptionBanner'
 import { ErrorBoundary } from './components/ErrorBoundary'
+
+// Composant de chargement amélioré avec timeout pour détecter les blocages
+const LoadingFallback = ({ message = 'Chargement de la page...' }) => {
+  const [isStuck, setIsStuck] = useState(false);
+
+  useEffect(() => {
+    // Après 10 secondes, considérer que le chargement est bloqué
+    const timer = setTimeout(() => {
+      setIsStuck(true);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="loading-container" style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem',
+      textAlign: 'center',
+      minHeight: '200px'
+    }}>
+      <div className="loading-spinner" style={{
+        border: '4px solid #f3f3f3',
+        borderTop: '4px solid #3498db',
+        borderRadius: '50%',
+        width: '50px',
+        height: '50px',
+        animation: 'spin 1s linear infinite',
+        marginBottom: '1rem'
+      }}></div>
+      <div>{message}</div>
+      
+      {isStuck && (
+        <div style={{ marginTop: '1rem', color: '#e74c3c' }}>
+          <p>Le chargement semble prendre plus de temps que prévu.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              background: '#3498db',
+              color: 'white',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
+              marginTop: '0.5rem',
+              cursor: 'pointer'
+            }}
+          >
+            Recharger la page
+          </button>
+        </div>
+      )}
+      
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Wrapper pour les composants lazy-loaded avec ErrorBoundary spécifique
+const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ErrorBoundary fallback={<div className="error-container" style={{ padding: '2rem', textAlign: 'center' }}>
+      <h2>Un problème est survenu lors du chargement de cette page</h2>
+      <p>Nous nous excusons pour cet inconvénient. L'équipe technique a été informée du problème.</p>
+      <button 
+        onClick={() => window.location.reload()}
+        style={{
+          background: '#3498db',
+          color: 'white',
+          border: 'none',
+          padding: '0.5rem 1rem',
+          borderRadius: '4px',
+          marginTop: '1rem',
+          cursor: 'pointer'
+        }}
+      >
+        Essayer de recharger
+      </button>
+    </div>}>
+      <Suspense fallback={<LoadingFallback />}>
+        {children}
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
 
 // Code splitting (React.lazy) pour les pages principales
 const JobNexAILanding = React.lazy(() => import('./components/JobNexAILanding'));
@@ -41,25 +134,63 @@ const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelectio
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 function App() {
+  console.log('[App] Démarrage de l\'application...');
   console.log('[i18n-debug] Langue courante:', i18n.language, '| Ressources:', Object.keys(i18n.services.resourceStore.data), '| Namespaces:', i18n.options.ns);
 
+  // Ajouter des gestionnaires d'événements globaux pour détecter les erreurs non capturées
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      console.error('[App] Erreur globale non capturée:', event.error || event.message);
+      // Afficher une notification erreur si possible
+    };
+
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      console.error('[App] Promesse rejetée non gérée:', event.reason);
+      // Afficher une notification erreur si possible
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleRejection);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleRejection);
+    };
+  }, []);
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>
+      <h2>Un problème critique est survenu</h2>
+      <p>L'application a rencontré une erreur et n'a pas pu charger correctement.</p>
+      <button 
+        onClick={() => window.location.reload()}
+        style={{
+          background: '#3498db',
+          color: 'white',
+          border: 'none',
+          padding: '0.5rem 1rem',
+          borderRadius: '4px',
+          marginTop: '1rem',
+          cursor: 'pointer'
+        }}
+      >
+        Recharger l'application
+      </button>
+    </div>}>
       <I18nextProvider i18n={i18n}>
         <Router>
           <AuthProvider>
             <Routes>
-            <Route path="/" element={<JobNexAILanding />} />
-            <Route path="/login" element={<Auth />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/features" element={<FeaturesPage />} />
-            <Route path="/how-it-works" element={<HowItWorksPage />} />
-            <Route path="/testimonials" element={<TestimonialsPage />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/checkout/success" element={<StripeCheckoutStatus />} />
+            <Route path="/" element={<LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>} />
+            <Route path="/login" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
+            <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
+            <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
+            <Route path="/features" element={<LazyComponentWrapper><FeaturesPage /></LazyComponentWrapper>} />
+            <Route path="/how-it-works" element={<LazyComponentWrapper><HowItWorksPage /></LazyComponentWrapper>} />
+            <Route path="/testimonials" element={<LazyComponentWrapper><TestimonialsPage /></LazyComponentWrapper>} />
+            <Route path="/auth/reset-password" element={<LazyComponentWrapper><ResetPassword /></LazyComponentWrapper>} />
+            <Route path="/auth/callback" element={<LazyComponentWrapper><AuthCallback /></LazyComponentWrapper>} />
+            <Route path="/checkout/success" element={<LazyComponentWrapper><StripeCheckoutStatus /></LazyComponentWrapper>} />
             <Route path="/user-type" element={
               <ProtectedRoute>
                 <Navigate to="/dashboard" replace />
@@ -70,69 +201,69 @@ function App() {
                 <DashboardLayout />
               </ProtectedRoute>
             }>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/billing" element={<Billing />} />
+              <Route path="/dashboard" element={<LazyComponentWrapper><Dashboard /></LazyComponentWrapper>} />
+              <Route path="/profile" element={<LazyComponentWrapper><Profile /></LazyComponentWrapper>} />
+              <Route path="/billing" element={<LazyComponentWrapper><Billing /></LazyComponentWrapper>} />
               <Route path="/jobs" element={
                 <ProtectedRoute requiresSubscription>
-                  <JobSearch />
+                  <LazyComponentWrapper><JobSearch /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/applications" element={
                 <ProtectedRoute requiresSubscription>
-                  <JobApplications />
+                  <LazyComponentWrapper><JobApplications /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/market-analysis" element={
                 <ProtectedRoute requiresSubscription>
-                  <MarketAnalysis />
+                  <LazyComponentWrapper><MarketAnalysis /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/cv-builder" element={
                 <ProtectedRoute requiresSubscription>
-                  <CVBuilder />
+                  <LazyComponentWrapper><CVBuilder /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/network" element={
                 <ProtectedRoute requiresSubscription>
-                  <NetworkPage />
+                  <LazyComponentWrapper><NetworkPage /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/market-trends" element={
                 <ProtectedRoute requiresSubscription>
-                  <MarketTrendsPage />
+                  <LazyComponentWrapper><MarketTrendsPage /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               {/* Routes pour les freelances */}
               <Route path="/freelance/projects" element={
                 <ProtectedRoute requiresSubscription>
-                  <FreelanceProjects />
+                  <LazyComponentWrapper><FreelanceProjects /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/freelance/profile" element={
                 <ProtectedRoute requiresSubscription>
-                  <FreelanceProfile />
+                  <LazyComponentWrapper><FreelanceProfile /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               {/* Routes pour les recruteurs */}
               <Route path="/recruiter/dashboard" element={
                 <ProtectedRoute requiresSubscription>
-                  <RecruiterDashboard />
+                  <LazyComponentWrapper><RecruiterDashboard /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/recruiter/candidates" element={
                 <ProtectedRoute requiresSubscription>
-                  <CandidateSearch />
+                  <LazyComponentWrapper><CandidateSearch /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/recruiter/job-postings" element={
                 <ProtectedRoute requiresSubscription>
-                  <JobPostings />
+                  <LazyComponentWrapper><JobPostings /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
               <Route path="/recruiter/create-job" element={
                 <ProtectedRoute requiresSubscription>
-                  <CreateJobPosting />
+                  <LazyComponentWrapper><CreateJobPosting /></LazyComponentWrapper>
                 </ProtectedRoute>
               } />
             </Route>

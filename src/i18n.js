@@ -3,50 +3,19 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Importation des fichiers de traduction pour toutes les langues supportées
-import enCommon from '../public/locales/en/common.json';
-import enTranslation from '../public/locales/en/translation.json';
-import frCommon from '../public/locales/fr/common.json';
-import frTranslation from '../public/locales/fr/translation.json';
-import deCommon from '../public/locales/de/common.json';
-import deTranslation from '../public/locales/de/translation.json';
-import esCommon from '../public/locales/es/common.json';
-import esTranslation from '../public/locales/es/translation.json';
-import itCommon from '../public/locales/it/common.json';
-import itTranslation from '../public/locales/it/translation.json';
+// Version résiliente pour éviter les problèmes d'importation statique
+// Utilisation du backend HTTP pour charger les traductions en runtime au lieu de les importer
 
-// Configuration des ressources pour i18next
-const resources = {
-  en: {
-    common: enCommon,
-    translation: enTranslation
-  },
-  fr: {
-    common: frCommon,
-    translation: frTranslation
-  },
-  de: {
-    common: deCommon,
-    translation: deTranslation
-  },
-  es: {
-    common: esCommon,
-    translation: esTranslation
-  },
-  it: {
-    common: itCommon,
-    translation: itTranslation
-  }
-};
+// Initialisation de i18next avec backend HTTP
+console.log('Initialisation du module i18n...');
 
-// Initialisation de i18next avec les fichiers de traduction
-// et configuration de la langue par défaut
-i18n
-  .use(Backend) // Charge les traductions depuis le serveur si nécessaire
-  .use(LanguageDetector) // Détecte la langue du navigateur
-  .use(initReactI18next)
-  .init({
-    resources,
+try {
+  i18n
+    .use(Backend) // Charge les traductions depuis le serveur (public/locales)
+    .use(LanguageDetector) // Détecte la langue du navigateur
+    .use(initReactI18next)
+    .init({
+    // Plus besoin de pré-charger les ressources, elles seront chargées dynamiquement
     lng: 'fr', // langue par défaut
     fallbackLng: 'en',
     ns: [
@@ -56,6 +25,12 @@ i18n
     defaultNS: 'common',
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
+    // Améliorations pour la résilience
+    partialBundledLanguages: true,
+    // Configuration du backend pour charger les traductions
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
     // Ajout de la détection de la langue
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
@@ -64,6 +39,50 @@ i18n
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage', 'cookie']
     }
+  }).catch(error => {
+    console.error("Erreur lors de l'initialisation d'i18next:", error);
+    // Fallback minimal pour éviter de bloquer l'application
+    i18n.init({
+      lng: 'fr',
+      resources: {
+        fr: {
+          translation: {
+            welcome: 'Bienvenue sur JobNexAI',
+            error: 'Une erreur est survenue'
+          }
+        },
+        en: {
+          translation: {
+            welcome: 'Welcome to JobNexAI',
+            error: 'An error occurred'
+          }
+        }
+      }
+    });
   });
+} catch (error) {
+  console.error("Erreur critique lors de l'initialisation d'i18next:", error);
+  // Créer une instance minimale en cas d'erreur critique
+  i18n
+    .use(initReactI18next)
+    .init({
+      lng: 'fr',
+      resources: {
+        fr: {
+          translation: {
+            welcome: 'Bienvenue sur JobNexAI',
+            error: 'Une erreur est survenue'
+          }
+        },
+        en: {
+          translation: {
+            welcome: 'Welcome to JobNexAI',
+            error: 'An error occurred'
+          }
+        }
+      },
+      interpolation: { escapeValue: false }
+    });
+}
 
 export default i18n;
