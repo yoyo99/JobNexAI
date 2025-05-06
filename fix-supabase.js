@@ -142,11 +142,26 @@ export default supabasePolyfill;
       console.log(`📝 Mise à jour de ${filePath}...`);
       
       let content = fs.readFileSync(filePath, 'utf-8');
+      
+      // 1. Ajouter le polyfill s'il n'est pas déjà inclus
       if (!content.includes('supabase-polyfill')) {
-        const newContent = `import './supabase-polyfill';\n${content}`;
-        fs.writeFileSync(filePath, newContent);
-        console.log(`✅ ${filePath} mis à jour avec le polyfill`);
+        content = `import './supabase-polyfill';\n${content}`;
+        console.log(`✅ Polyfill ajouté à ${filePath}`);
       }
+      
+      // 2. Corriger l'importation de @supabase/supabase-js
+      if (content.includes('from "@supabase/supabase-js"') || content.includes("from '@supabase/supabase-js'")) {
+        // Remplacer l'importation par une importation directe du chemin absolu
+        content = content.replace(
+          /import\s+\{\s*createClient\s*\}\s+from\s+['"]@supabase\/supabase-js['"];?/,
+          `// Import direct pour éviter les problèmes de résolution Netlify\nimport { createClient } from '../../node_modules/@supabase/supabase-js/dist/index.js';`
+        );
+        console.log(`✅ Import de Supabase corrigé dans ${filePath}`);
+      }
+      
+      // Écrire les modifications
+      fs.writeFileSync(filePath, content);
+      console.log(`✅ ${filePath} mis à jour avec succès`);
     }
   }
 }
