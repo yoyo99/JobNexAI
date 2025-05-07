@@ -156,7 +156,7 @@ export function UserPreferences() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {(Array.isArray(preferences?.preferred_locations) ? preferences?.preferred_locations : []).map((location) => (
+            {(preferences?.preferred_locations?.filter(loc => typeof loc === 'string' && loc.trim() !== '') || []).map((location) => (
               <span
                 key={location}
                 className="bg-white/5 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2"

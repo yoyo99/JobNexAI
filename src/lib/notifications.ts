@@ -73,8 +73,8 @@ export async function markNotificationAsRead(notificationId: string) {
     if (error) throw error
 
     // Mettre à jour le badge
-    if ('clearAppBadge' in navigator) {
-      navigator.clearAppBadge().catch(() => {
+    if ('clearAppBadge' in navigator && typeof navigator.clearAppBadge === 'function') {
+      (navigator as any).clearAppBadge().catch(() => {
         // Ignorer les erreurs de badge
       })
     }
@@ -95,8 +95,8 @@ export async function markAllNotificationsAsRead(userId: string) {
     if (error) throw error
 
     // Mettre à jour le badge
-    if ('clearAppBadge' in navigator) {
-      navigator.clearAppBadge().catch(() => {
+    if ('clearAppBadge' in navigator && typeof navigator.clearAppBadge === 'function') {
+      (navigator as any).clearAppBadge().catch(() => {
         // Ignorer les erreurs de badge
       })
     }

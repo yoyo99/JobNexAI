@@ -37,13 +37,13 @@ const createMockClient = (supabaseUrl: string, supabaseKey: string) => ({
       eq: (column: string, value: any) => ({
         single: () => Promise.resolve({ data: null, error: null }),
         maybeSingle: () => Promise.resolve({ data: null, error: null }),
-        then: (callback: Function) => Promise.resolve({ data: [], error: null }).then(callback)
+        then: (callback: (value: { data: any[]; error: null }) => any) => Promise.resolve({ data: [], error: null }).then(callback)
       }),
       order: (column: string, options?: any) => ({
         range: (from: number, to: number) => Promise.resolve({ data: [], error: null })
       }),
       range: (from: number, to: number) => Promise.resolve({ data: [], error: null }),
-      then: (callback: Function) => Promise.resolve({ data: [], error: null }).then(callback)
+      then: (callback: (value: { data: any[]; error: null }) => any) => Promise.resolve({ data: [], error: null }).then(callback)
     }),
     insert: (data: any) => Promise.resolve({ data: null, error: null }),
     update: (data: any) => ({
