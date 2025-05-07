@@ -169,7 +169,7 @@ export function NotificationCenter() {
         )}
       </button>
 
-      <AnimatePresence>
+      <>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -265,7 +265,7 @@ export function NotificationCenter() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </>
     </div>
   )
 }

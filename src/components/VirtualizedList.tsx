@@ -57,7 +57,9 @@ export function VirtualizedList<T>({
   }, [items.length])
 
   const MemoizedItem = memo(({ index }: { index: number }) => {
-    return renderItem(items[index], index)
+    const element = renderItem(items[index], index)
+    // Assurer que le retour est un ReactElement
+    return element as React.ReactElement
   })
 
   return (

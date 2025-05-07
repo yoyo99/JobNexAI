@@ -15,7 +15,7 @@ const languages = [
 
 import { useEffect } from 'react';
 
-export default function LanguageSwitcher() {
+export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
 
   // Détection automatique de la langue du navigateur au premier chargement

@@ -43,7 +43,7 @@ export function ContactSalesModal({ open, onClose }: ContactSalesModalProps) {
   }
 
   return (
-    <AnimatePresence>
+    <>
       {open && (
         <motion.div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
@@ -131,6 +131,6 @@ export function ContactSalesModal({ open, onClose }: ContactSalesModalProps) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   )
 }
