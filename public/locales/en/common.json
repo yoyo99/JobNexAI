@@ -411,5 +411,9 @@
     "noJobs": "No jobs found",
     "tryNewSearch": "Try a new search",
     "jobsNearby": "Jobs nearby"
+  },
+  "hero": {
+    "startTrial": "Start Trial",
+    "watchDemo": "Watch Demo"
   }
 }

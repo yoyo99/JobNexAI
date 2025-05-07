@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { GlobeAltIcon } from '@heroicons/react/24/outline'
-import { motion } from 'framer-motion'
+import { Fragment, useEffect } from 'react';
+import { Menu, Transition } from '@headlessui/react';
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { motion } from 'framer-motion';
 
 const languages = [
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
@@ -11,23 +11,43 @@ const languages = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
   { code: 'it', name: 'Italiano', flag: '🇮🇹' },
-]
-
-import { useEffect } from 'react';
+];
 
 export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
 
-  // Détection automatique de la langue du navigateur au premier chargement
   useEffect(() => {
     const storedLang = localStorage.getItem('i18nextLng');
-    if (!storedLang) {
+    const currentI18nLang = i18n.language.split('-')[0]; // Normalise (ex: 'en-US' -> 'en')
+
+    let targetLang: string;
+
+    if (storedLang) {
+      const supportedStoredLang = languages.find(l => l.code === storedLang)?.code;
+      if (supportedStoredLang) {
+        targetLang = supportedStoredLang;
+      } else {
+        // Langue invalide dans localStorage, la supprimer et utiliser le fallback
+        localStorage.removeItem('i18nextLng');
+        const browserLang = navigator.languages?.[0]?.split('-')[0] || navigator.language?.split('-')[0] || 'en';
+        targetLang = languages.find(l => l.code === browserLang)?.code || 'en';
+      }
+    } else {
+      // Aucune langue dans localStorage, détecter depuis le navigateur ou utiliser le fallback
       const browserLang = navigator.languages?.[0]?.split('-')[0] || navigator.language?.split('-')[0] || 'en';
-      const supportedLang = languages.find(l => l.code === browserLang)?.code || 'en';
-      i18n.changeLanguage(supportedLang);
-      localStorage.setItem('i18nextLng', supportedLang);
+      targetLang = languages.find(l => l.code === browserLang)?.code || 'en';
     }
-  }, [i18n]);
+
+    // Si la langue cible déterminée est différente de la langue actuelle d'i18n, la changer
+    if (targetLang !== currentI18nLang) {
+      i18n.changeLanguage(targetLang);
+    }
+
+    // S'assurer que localStorage est défini sur la langue cible
+    if (localStorage.getItem('i18nextLng') !== targetLang) {
+      localStorage.setItem('i18nextLng', targetLang);
+    }
+  }, [i18n]); // Dépendance à l'instance i18n (s'exécute une fois au montage typiquement)
 
   return (
     <Menu as="div" className="relative">
