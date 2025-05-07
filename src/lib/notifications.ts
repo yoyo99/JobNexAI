@@ -49,8 +49,8 @@ export function subscribeToNotifications(userId: string) {
         })
 
         // Mise à jour du badge
-        if ('setAppBadge' in navigator) {
-          navigator.setAppBadge(1).catch(() => {
+        if ('setAppBadge' in navigator && typeof navigator.setAppBadge === 'function') {
+          (navigator as any).setAppBadge(1).catch(() => {
             // Ignorer les erreurs de badge
           })
         }
