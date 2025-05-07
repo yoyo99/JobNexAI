@@ -13,7 +13,7 @@
     "patch-vite-config": "node vite.config.patch.js",
     "build": "node verify-deps.js && node check-imports.js && tsc && vite build && node clean-build.js",
     "build:clean": "rimraf dist && node verify-deps.js && node check-imports.js && tsc && vite build && node clean-build.js",
-    "fix-imports": "node fix-imports.js",
+    "fix-imports": "node fix-component-imports.js",
     "fix-router-imports": "node fix-router-imports.js",
     "fix-supabase-imports": "node fix-supabase-imports.js",
     "build:netlify": "node netlify-setup.js && node netlify-prebuild.js && node fix-supabase.js && node fix-supabase-imports.js && node fix-imports.js && node fix-router-imports.js && node cleanup-functions.js && node vite.config.patch.js && npm run update-deps && npm run verify-deps && npm run check-imports && rimraf dist && NETLIFY=true tsc && NETLIFY=true vite build && node create-fallback.js && node update-brand.js && node clean-build.js && node create-standalone-version.js",
@@ -107,7 +107,7 @@
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "typescript": "^4.9.0",
     "vite": "^6.3.2",
     "vite-plugin-compression": "^0.5.1"
   },

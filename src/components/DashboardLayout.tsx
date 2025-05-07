@@ -19,7 +19,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom' // Alr
 import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'
-import LanguageSwitcher from './LanguageSwitcher'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import ResendQuotaBanner from './ResendQuotaBanner.jsx';
 import { NotificationCenter } from './notifications/NotificationCenter';
 
