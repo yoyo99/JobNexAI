@@ -17,10 +17,9 @@ const publicNavigation = [
   { name: 'Comment ça marche', href: '/how-it-works' },
   { name: 'Tarifs', href: '/pricing' },
   { name: 'Témoignages', href: '/testimonials' },
-  { name: 'CGU', href: '/cgu.html' },
 ]
 
-export default function JobNexAILanding() {
+export function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -32,9 +31,9 @@ export default function JobNexAILanding() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexAI</span>
+              <span className="sr-only">JobNexus</span>
               <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexAI
+                JobNexus
               </div>
             </Link>
           </div>
@@ -84,9 +83,9 @@ export default function JobNexAILanding() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
-                <span className="sr-only">JobNexAI</span>
+                <span className="sr-only">JobNexus</span>
                 <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                  JobNexAI
+                  JobNexus
                 </div>
               </Link>
               <button
