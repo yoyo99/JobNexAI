@@ -1,7 +1,5 @@
-import { fontFamily } from 'tailwindcss/defaultTheme'
-
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -36,7 +34,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter var', ...fontFamily.sans],
+        sans: ['Inter var', ...require('tailwindcss/defaultTheme').fontFamily.sans],
       },
     },
   },
