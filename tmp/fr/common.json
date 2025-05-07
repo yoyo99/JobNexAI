@@ -35,13 +35,12 @@
     "accessibility": "Accessibilité",
     "subscriptions": "Abonnements",
     "billing": "Facturation",
-    "security": "Sécurité",
-    "changeLanguage": "Changer de langue"
+    "security": "Sécurité"
   },
   "auth": {
-    "login": "Se connecter",
+    "login": "Connexion",
     "signup": "S'inscrire",
-    "logout": "Se déconnecter",
+    "logout": "Déconnexion",
     "forgotPassword": "Mot de passe oublié ?",
     "resetPassword": "Réinitialiser le mot de passe",
     "email": "E-mail",
@@ -56,17 +55,17 @@
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "dontHaveAccount": "Vous n'avez pas de compte ?",
     "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères",
-    "emailVerification": "Vérification de l'e-mail",
-    "checkYourEmail": "Vérifiez votre e-mail pour vérifier votre compte",
+    "emailVerification": "Vérification de l'email",
+    "checkYourEmail": "Vérifiez votre e-mail pour valider votre compte",
     "resendEmail": "Renvoyer l'e-mail de vérification",
-    "verificationSent": "L'e-mail de vérification a été envoyé",
-    "passwordChanged": "Votre mot de passe a été changé avec succès",
+    "verificationSent": "Un e-mail de vérification a été envoyé",
+    "passwordChanged": "Votre mot de passe a été modifié avec succès",
     "accountCreated": "Compte créé avec succès ! Veuillez vérifier votre e-mail.",
     "invalidCredentials": "E-mail ou mot de passe invalide",
-    "accountLocked": "Votre compte a été bloqué. Veuillez contacter le support.",
+    "accountLocked": "Votre compte a été verrouillé. Veuillez contacter le support.",
     "accountNotVerified": "Votre compte n'est pas vérifié. Veuillez vérifier votre e-mail.",
-    "requiredField": "Ce champ est requis",
-    "invalidEmail": "Veuillez entrer une adresse e-mail valide",
+    "requiredField": "Ce champ est obligatoire",
+    "invalidEmail": "Veuillez saisir une adresse e-mail valide",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
     "agreeToTerms": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
     "termsRequired": "Vous devez accepter les Conditions d'utilisation et la Politique de confidentialité",
@@ -74,8 +73,7 @@
     "passwordStrength": "Force du mot de passe",
     "weak": "Faible",
     "medium": "Moyen",
-    "strong": "Fort",
-    "startTrial": "Démarrer l'essai"
+    "strong": "Fort"
   },
   "common": {
     "save": "Enregistrer",
@@ -145,7 +143,6 @@
     "contract": "Contrat",
     "temporary": "Temporaire",
     "internship": "Stage",
-    "freelance": "Freelance",
     "entrylevel": "Débutant",
     "midLevel": "Confirmé",
     "seniorLevel": "Senior",
@@ -180,7 +177,6 @@
     "postedToday": "Publié aujourd'hui",
     "postedThisWeek": "Publié cette semaine",
     "postedThisMonth": "Publié ce mois-ci",
-    "anyTime": "N'importe quand",
     "companySize": "Taille de l'entreprise",
     "small": "Petite (1-50 employés)",
     "medium": "Moyenne (51-200 employés)",
@@ -416,66 +412,8 @@
     "tryNewSearch": "Essayer une nouvelle recherche",
     "jobsNearby": "Emplois à proximité"
   },
-  "badges": {
-    "title": "Badges",
-    "toUnlock": "À débloquer"
-  },
   "hero": {
-    "title": "La plateforme tout-en-un pour l'emploi",
     "startTrial": "Démarrer l'essai",
     "watchDemo": "Voir la démo"
-  },
-  "freelance": {
-    "projects": {
-      "title": "Projets Freelance",
-      "budgetFilterTitle": "Budget",
-      "durationFilterTitle": "Durée",
-      "allDurationsOption": "Toutes les durées",
-      "noProjectsFound": "Aucun projet ne correspond à vos critères",
-      "remoteTag": "(Remote)",
-      "findProjectsDescription": "Trouvez des projets qui correspondent à vos compétences et à vos intérêts",
-      "searchPlaceholder": "Rechercher un projet...",
-      "advancedFiltersButton": "Filtres avancés",
-      "loadingProjects": "Chargement des projets...",
-      "updatingProjects": "Mise à jour des projets...",
-      "noProjectsFoundTitle": "Aucun projet trouvé",
-      "clearFiltersButton": "Effacer les filtres",
-      "cancelButton": "Annuler",
-      "resetFiltersButton": "Réinitialiser les filtres",
-      "jobTypeAll": "Tous",
-      "jobTypeRemote": "À distance",
-      "jobTypeOnSite": "Sur site",
-      "applyButton": "Proposer mes services",
-      "skills": {
-        "webDevelopment": "Développement Web",
-        "uxUiDesign": "Design UX/UI",
-        "copywriting": "Rédaction",
-        "translation": "Traduction",
-        "digitalMarketing": "Marketing Digital",
-        "seo": "SEO",
-        "projectManagement": "Gestion de Projet",
-        "mobileDevelopment": "Développement Mobile",
-        "devOps": "DevOps",
-        "dataScience": "Data Science",
-        "illustration": "Illustration",
-        "videoEditing": "Montage Vidéo"
-      },
-      "durations": {
-        "oneWeek": "1 semaine",
-        "twoWeeks": "2 semaines",
-        "oneMonth": "1 mois",
-        "twoMonths": "2 mois",
-        "threeMonthsPlus": "3 mois+"
-      },
-      "budgetPlaceholderMin": "Ex: 1000 €",
-      "budgetPlaceholderMax": "Ex: 5000 €",
-      "publishedByXDaysAgo_one": "Publié par {{clientName}} • il y a {{days}} jour",
-      "publishedByXDaysAgo_other": "Publié par {{clientName}} • il y a {{days}} jours",
-      "anonymousClient": "Un client",
-      "budgetRange": "Budget: {{minPrice}} - {{maxPrice}}",
-      "durationValue": "Durée: {{weeks}} sem.",
-      "durationNotApplicable": "Durée: N/A",
-      "proposalsCount": "Propositions: {{count}}"
-    }
   }
 }

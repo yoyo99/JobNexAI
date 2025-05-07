@@ -58,7 +58,7 @@ export function LanguageSwitcher() {
         <Menu.Button
           className="flex items-center gap-2 px-3 py-2 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-white/5"
           aria-haspopup="listbox"
-          aria-label={t('Change language')}
+          aria-label={t('navigation.changeLanguage')}
         >
           <GlobeAltIcon className="h-5 w-5" aria-hidden="true" />
           <span className="hidden md:block">{languages.find(l => l.code === i18n.language)?.name || 'Language'}</span>

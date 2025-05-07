@@ -32,7 +32,7 @@ function Profile() {
       if (error) throw error
 
       await loadUser()
-      setMessage({ type: 'success', text: t('profile.personalInfo.updateSuccess') })
+      setMessage({ type: 'success', text: t('forms.changesSaved') })
     } catch (error) {
       setMessage({ type: 'error', text: t('profile.personalInfo.updateError') })
     } finally {

@@ -22,17 +22,17 @@ export function UserPreferences() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const jobTypes = [
-    { value: 'FULL_TIME', label: t('jobSearch.types.fullTime') },
-    { value: 'PART_TIME', label: t('jobSearch.types.partTime') },
-    { value: 'CONTRACT', label: t('jobSearch.types.contract') },
-    { value: 'FREELANCE', label: t('jobSearch.types.freelance') },
-    { value: 'INTERNSHIP', label: t('jobSearch.types.internship') },
+    { value: 'fullTime', label: t('search.fullTime') },
+    { value: 'partTime', label: t('search.partTime') },
+    { value: 'contract', label: t('search.contract') },
+    { value: 'freelance', label: t('search.freelance') },
+    { value: 'internship', label: t('search.internship') },
   ]
 
   const remotePreferences = [
-    { value: 'remote', label: t('jobSearch.locations.remote') },
-    { value: 'hybrid', label: t('jobSearch.locations.hybrid') },
-    { value: 'onsite', label: t('jobSearch.locations.onsite') },
+    { value: 'remote', label: t('search.remote') },
+    { value: 'hybrid', label: t('search.hybrid') },
+    { value: 'onsite', label: t('search.onSite') },
     { value: 'any', label: 'Indifférent' },
   ]
 
@@ -75,10 +75,10 @@ export function UserPreferences() {
         })
 
       if (error) throw error
-      setMessage({ type: 'success', text: t('profile.personalInfo.updateSuccess') })
+      setMessage({ type: 'success', text: t('forms.changesSaved') })
     } catch (error) {
       console.error('Error saving preferences:', error)
-      setMessage({ type: 'error', text: t('profile.personalInfo.updateError') })
+      setMessage({ type: 'error', text: t('forms.errorSaving') })
     } finally {
       setSaving(false)
     }
@@ -235,7 +235,7 @@ export function UserPreferences() {
           disabled={saving}
           className="btn-primary"
         >
-          {saving ? t('common.loading') : t('common.save')}
+          {saving ? t('forms.loading') : t('common.save')}
         </button>
       </div>
     </div>

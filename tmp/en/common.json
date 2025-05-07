@@ -35,8 +35,7 @@
     "accessibility": "Accessibility",
     "subscriptions": "Subscriptions",
     "billing": "Billing",
-    "security": "Security",
-    "changeLanguage": "Change language"
+    "security": "Security"
   },
   "auth": {
     "login": "Login",
@@ -74,8 +73,7 @@
     "passwordStrength": "Password strength",
     "weak": "Weak",
     "medium": "Medium",
-    "strong": "Strong",
-    "startTrial": "Start Trial"
+    "strong": "Strong"
   },
   "common": {
     "save": "Save",
@@ -145,7 +143,6 @@
     "contract": "Contract",
     "temporary": "Temporary",
     "internship": "Internship",
-    "freelance": "Freelance",
     "entrylevel": "Entry level",
     "midLevel": "Mid level",
     "seniorLevel": "Senior level",
@@ -415,66 +412,8 @@
     "tryNewSearch": "Try a new search",
     "jobsNearby": "Jobs nearby"
   },
-  "badges": {
-    "title": "Badges",
-    "toUnlock": "To unlock"
-  },
   "hero": {
-    "title": "The all-in-one platform for employment",
     "startTrial": "Start Trial",
     "watchDemo": "Watch Demo"
-  },
-  "freelance": {
-    "projects": {
-      "title": "Freelance Projects",
-      "budgetFilterTitle": "Budget",
-      "durationFilterTitle": "Duration",
-      "allDurationsOption": "All durations",
-      "noProjectsFound": "No projects match your criteria",
-      "remoteTag": "(Remote)",
-      "findProjectsDescription": "Find projects that match your skills and interests",
-      "searchPlaceholder": "Search for a project...",
-      "advancedFiltersButton": "Advanced Filters",
-      "loadingProjects": "Loading projects...",
-      "updatingProjects": "Updating projects...",
-      "noProjectsFoundTitle": "No projects found",
-      "clearFiltersButton": "Clear Filters",
-      "cancelButton": "Cancel",
-      "resetFiltersButton": "Reset Filters",
-      "jobTypeAll": "All",
-      "jobTypeRemote": "Remote",
-      "jobTypeOnSite": "On-site",
-      "applyButton": "Submit Proposal",
-      "skills": {
-        "webDevelopment": "Web Development",
-        "uxUiDesign": "UX/UI Design",
-        "copywriting": "Copywriting",
-        "translation": "Translation",
-        "digitalMarketing": "Digital Marketing",
-        "seo": "SEO",
-        "projectManagement": "Project Management",
-        "mobileDevelopment": "Mobile Development",
-        "devOps": "DevOps",
-        "dataScience": "Data Science",
-        "illustration": "Illustration",
-        "videoEditing": "Video Editing"
-      },
-      "durations": {
-        "oneWeek": "1 week",
-        "twoWeeks": "2 weeks",
-        "oneMonth": "1 month",
-        "twoMonths": "2 months",
-        "threeMonthsPlus": "3 months+"
-      },
-      "budgetPlaceholderMin": "Ex: 1000 €",
-      "budgetPlaceholderMax": "Ex: 5000 €",
-      "publishedByXDaysAgo_one": "Published by {{clientName}} • {{days}} day ago",
-      "publishedByXDaysAgo_other": "Published by {{clientName}} • {{days}} days ago",
-      "anonymousClient": "A client",
-      "budgetRange": "Budget: {{minPrice}} - {{maxPrice}}",
-      "durationValue": "Duration: {{weeks}} wk.",
-      "durationNotApplicable": "Duration: N/A",
-      "proposalsCount": "Proposals: {{count}}"
-    }
   }
 }
