@@ -69,7 +69,11 @@ const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Code splitting (React.lazy) pour les pages principales
-const JobNexAILanding = React.lazy(() => import('./components/JobNexAILanding'));
+const JobNexAILanding = lazy(() => 
+  import('./components/JobNexAILanding').then(module => ({
+    default: module.JobNexAILanding
+  }))
+)
 const Auth = React.lazy(() => import('./components/Auth'));
 const Pricing = React.lazy(() => import('./components/Pricing'));
 const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
