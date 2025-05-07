@@ -73,7 +73,8 @@
     "passwordStrength": "Password strength",
     "weak": "Weak",
     "medium": "Medium",
-    "strong": "Strong"
+    "strong": "Strong",
+    "startTrial": "Start Trial"
   },
   "common": {
     "save": "Save",
@@ -413,6 +414,7 @@
     "jobsNearby": "Jobs nearby"
   },
   "hero": {
+    "title": "The all-in-one platform for employment",
     "startTrial": "Start Trial",
     "watchDemo": "Watch Demo"
   }

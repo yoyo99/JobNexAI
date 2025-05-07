@@ -38,9 +38,9 @@
     "security": "Sécurité"
   },
   "auth": {
-    "login": "Connexion",
+    "login": "Se connecter",
     "signup": "S'inscrire",
-    "logout": "Déconnexion",
+    "logout": "Se déconnecter",
     "forgotPassword": "Mot de passe oublié ?",
     "resetPassword": "Réinitialiser le mot de passe",
     "email": "E-mail",
@@ -55,17 +55,17 @@
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "dontHaveAccount": "Vous n'avez pas de compte ?",
     "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères",
-    "emailVerification": "Vérification de l'email",
-    "checkYourEmail": "Vérifiez votre e-mail pour valider votre compte",
+    "emailVerification": "Vérification de l'e-mail",
+    "checkYourEmail": "Vérifiez votre e-mail pour vérifier votre compte",
     "resendEmail": "Renvoyer l'e-mail de vérification",
-    "verificationSent": "Un e-mail de vérification a été envoyé",
-    "passwordChanged": "Votre mot de passe a été modifié avec succès",
+    "verificationSent": "L'e-mail de vérification a été envoyé",
+    "passwordChanged": "Votre mot de passe a été changé avec succès",
     "accountCreated": "Compte créé avec succès ! Veuillez vérifier votre e-mail.",
     "invalidCredentials": "E-mail ou mot de passe invalide",
-    "accountLocked": "Votre compte a été verrouillé. Veuillez contacter le support.",
+    "accountLocked": "Votre compte a été bloqué. Veuillez contacter le support.",
     "accountNotVerified": "Votre compte n'est pas vérifié. Veuillez vérifier votre e-mail.",
-    "requiredField": "Ce champ est obligatoire",
-    "invalidEmail": "Veuillez saisir une adresse e-mail valide",
+    "requiredField": "Ce champ est requis",
+    "invalidEmail": "Veuillez entrer une adresse e-mail valide",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
     "agreeToTerms": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
     "termsRequired": "Vous devez accepter les Conditions d'utilisation et la Politique de confidentialité",
@@ -73,7 +73,8 @@
     "passwordStrength": "Force du mot de passe",
     "weak": "Faible",
     "medium": "Moyen",
-    "strong": "Fort"
+    "strong": "Fort",
+    "startTrial": "Démarrer l'essai"
   },
   "common": {
     "save": "Enregistrer",
@@ -413,6 +414,7 @@
     "jobsNearby": "Emplois à proximité"
   },
   "hero": {
+    "title": "La plateforme tout-en-un pour l'emploi",
     "startTrial": "Démarrer l'essai",
     "watchDemo": "Voir la démo"
   }
