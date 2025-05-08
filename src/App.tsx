@@ -75,7 +75,7 @@ const JobNexAILanding = React.lazy(() =>
   }))
 )
 const Auth = React.lazy(() => import('./components/Auth'));
-const Pricing = React.lazy(() => import('./components/Pricing'));
+const Pricing = React.lazy(() => import('./pages/PricingPage')); 
 const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
 const FeaturesPage = React.lazy(() => import('./components/pages/FeaturesPage'));
 const HowItWorksPage = React.lazy(() => import('./components/pages/HowItWorksPage'));
