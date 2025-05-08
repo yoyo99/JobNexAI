@@ -44,7 +44,7 @@ const formatPrice = (price: number | null | undefined) => {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(price);
 };
 
-export function FreelanceProjects() {
+function FreelanceProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -441,3 +441,5 @@ export function FreelanceProjects() {
     </div>
   );
 }
+
+export default FreelanceProjects;

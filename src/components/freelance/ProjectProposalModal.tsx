@@ -6,8 +6,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 interface Project {
   id: string
   title: string
-  client: {
-    name: string
+  client_info?: {
+    company_name: string
   }
   budget_min: number
   budget_max: number
@@ -73,7 +73,7 @@ export function ProjectProposalModal({ isOpen, onClose, project, onSubmit }: Pro
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-white">{project.title}</h2>
-            <p className="text-gray-400">Client: {project.client.name}</p>
+            <p className="text-gray-400">Client: {project.client_info?.company_name || 'N/A'}</p>
             <p className="text-gray-400">Budget: {formatPrice(project.budget_min)} - {formatPrice(project.budget_max)}</p>
           </div>
 
