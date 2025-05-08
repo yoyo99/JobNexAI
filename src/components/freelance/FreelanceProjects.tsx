@@ -187,6 +187,14 @@ function FreelanceProjects() {
     setShowFilters(false);
   };
 
+  const handleSubmitProposal = async (projectId: string, proposal: any) => {
+    // TODO: Implémenter la logique d'envoi de la proposition à Supabase
+    console.log('Submitting proposal for project:', projectId, 'Proposal data:', proposal);
+    // Simuler un succès pour l'instant
+    alert('Proposition envoyée ! (Simulation)');
+    setIsProposalModalOpen(false); // Fermer le modal après soumission
+  };
+
   if (loading && projects.length === 0) {
     return <div className="text-center py-10 text-white">{t('freelance.projects.loadingProjects')}</div>;
   }
@@ -436,6 +444,7 @@ function FreelanceProjects() {
           isOpen={isProposalModalOpen}
           onClose={() => setIsProposalModalOpen(false)}
           project={selectedProject}
+          onSubmit={handleSubmitProposal}
         />
       )}
     </div>
