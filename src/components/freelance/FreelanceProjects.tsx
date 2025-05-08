@@ -92,8 +92,8 @@ function FreelanceProjects() {
     setLoading(true);
     try {
       let query = supabase
-        .from('freelance_projects')
-        .select('*, client_info:profiles(company_name), proposals_count:proposals(count)')
+        .from('jobs') 
+        .select('*, proposals_count:project_proposals(count), client_info:profiles(company_name)') 
         .eq('status', 'open');
 
       if (search) {
@@ -187,12 +187,52 @@ function FreelanceProjects() {
     setShowFilters(false);
   };
 
-  const handleSubmitProposal = async (projectId: string, proposal: any) => {
-    // TODO: Implémenter la logique d'envoi de la proposition à Supabase
-    console.log('Submitting proposal for project:', projectId, 'Proposal data:', proposal);
-    // Simuler un succès pour l'instant
-    alert('Proposition envoyée ! (Simulation)');
-    setIsProposalModalOpen(false); // Fermer le modal après soumission
+  const handleSubmitProposal = async (projectId: string, proposalData: { bidAmount: number; deliveryTime: string; coverLetter: string }) => {
+    setLoading(true); 
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('User not authenticated to submit a proposal.');
+        // Idéalement, rediriger vers la connexion ou afficher un message plus clair.
+      }
+
+      const newProposal = {
+        project_id: projectId,
+        freelancer_id: user.id,
+        bid_amount: proposalData.bidAmount,
+        delivery_time: proposalData.deliveryTime,
+        cover_letter: proposalData.coverLetter,
+        status: 'pending', 
+        // created_at est généralement géré par Supabase
+      };
+
+      const { error } = await supabase
+        .from('project_proposals') 
+        .insert([newProposal]);
+
+      if (error) {
+        console.error('Error submitting proposal to Supabase:', error);
+        // Utiliser un système de notification plus robuste à l'avenir
+        alert(`Erreur lors de l'envoi de la proposition: ${error.message}`);
+        setLoading(false);
+        return;
+      }
+
+      // Mettre à jour l'UI si nécessaire, par exemple, rafraîchir la liste des projets ou des propositions
+      // Pour l'instant, juste un message de succès et fermeture du modal
+      alert(t('freelance.projects.proposalSubmittedSuccess')); 
+      setIsProposalModalOpen(false);
+
+      // Optionnel: Mettre à jour le compteur de propositions sur le projet si l'information est disponible et affichée
+      // Cela nécessiterait de re-fetcher les projets ou de mettre à jour l'état local des projets.
+      // Exemple: updateProjectProposalsCount(projectId);
+
+    } catch (error: any) {
+      console.error('Unexpected error during proposal submission:', error);
+      alert(`Une erreur inattendue est survenue: ${error.message || 'Erreur inconnue'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading && projects.length === 0) {
@@ -246,13 +286,13 @@ function FreelanceProjects() {
                   <button
                     key={skillValue}
                     type="button"
-                    onClick={() => handleSkillToggle(skillValue)} // Use raw skill value for toggling
+                    onClick={() => handleSkillToggle(skillValue)} 
                     className={`px-3 py-1.5 text-xs rounded-full transition-colors
-                      ${selectedSkills.includes(skillValue) // Check against raw skill value
+                      ${selectedSkills.includes(skillValue) 
                         ? 'bg-primary-500 text-white'
                         : 'bg-white/10 text-gray-300 hover:bg-white/20'}`}
                   >
-                    {t(skillsKeyMap[skillValue])} // Display translated skill
+                    {t(skillsKeyMap[skillValue])} 
                   </button>
                 ))}
               </div>

@@ -445,6 +445,7 @@
       "jobTypeRemote": "Remote",
       "jobTypeOnSite": "On-site",
       "applyButton": "Submit Proposal",
+      "proposalSubmittedSuccess": "Proposal submitted successfully!",
       "skills": {
         "webDevelopment": "Web Development",
         "uxUiDesign": "UX/UI Design",
@@ -475,6 +476,9 @@
       "durationValue": "Duration: {{weeks}} wk.",
       "durationNotApplicable": "Duration: N/A",
       "proposalsCount": "Proposals: {{count}}"
+    },
+    "dashboard": {
+      "dashboardTitle": "Dashboard"
     }
   }
 }

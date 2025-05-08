@@ -446,6 +446,7 @@
       "jobTypeRemote": "À distance",
       "jobTypeOnSite": "Sur site",
       "applyButton": "Proposer mes services",
+      "proposalSubmittedSuccess": "Proposition envoyée avec succès !",
       "skills": {
         "webDevelopment": "Développement Web",
         "uxUiDesign": "Design UX/UI",
