@@ -33,6 +33,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
   // Vous pourriez vouloir gérer cette erreur plus globalement
 }
 
+// Define the specific Price IDs for the Pro Monthly plan
+const PRO_MONTHLY_WITH_TRIAL_ID = 'price_1RMqzHQIOmiow8714WydjFom';
+const PRO_MONTHLY_NO_TRIAL_ID = 'price_1RCiVAQIOmiow871DNpiAQRx';
+
 serve(async (req: Request) => {
   // Gestion CORS - ajustez 'Access-Control-Allow-Origin' avec votre URL frontend si nécessaire
   if (req.method === 'OPTIONS') {
@@ -91,7 +95,7 @@ serve(async (req: Request) => {
     // et que les politiques RLS permettent à l'utilisateur de lire son propre profil.
     const { data: profileData, error: profileError } = await supabase
       .from('profiles') // Remplacez 'profiles' par le nom de votre table de profils si différent
-      .select('stripe_customer_id')
+      .select('stripe_customer_id, has_used_trial') // Added has_used_trial
       .eq('id', supabaseUserId) // Supposant que la clé primaire de 'profiles' est 'id' et correspond à supabaseUserId
       .single();
 
@@ -142,13 +146,24 @@ serve(async (req: Request) => {
       }
     }
 
+    const userHasUsedTrial = profileData && profileData.has_used_trial;
+
+    // Determine the final price ID to use
+    let finalPriceId = priceId;
+    if (userHasUsedTrial && priceId === PRO_MONTHLY_WITH_TRIAL_ID) {
+      console.log(`User ${user.id} has already used a trial and is requesting the trial plan. Switching to non-trial plan.`);
+      finalPriceId = PRO_MONTHLY_NO_TRIAL_ID;
+    } else {
+      console.log(`User ${user.id} is proceeding with priceId: ${priceId}. Trial status: ${userHasUsedTrial}`);
+    }
+
     // 3. Créer la session de paiement Stripe
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       mode: 'subscription', // ou 'payment' pour un achat unique
       line_items: [
         {
-          price: priceId,
+          price: finalPriceId,
           quantity: quantity,
         },
       ],
