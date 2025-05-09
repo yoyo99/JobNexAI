@@ -48,7 +48,7 @@ const Auth: React.FC = () => {
       setMessage({ type: 'error', text: t('auth.errors.requiredFields') });
       return;
     }
-    if (password.length < 12) {
+    if (password.length < 9) {
       setMessage({ type: 'error', text: t('auth.errors.passwordLength') });
       return;
     }
@@ -83,7 +83,7 @@ const Auth: React.FC = () => {
       setMessage({ type: 'error', text: t('auth.errors.requiredFields') });
       return;
     }
-    if (password.length < 12) {
+    if (password.length < 9) {
       setMessage({ type: 'error', text: t('auth.errors.passwordLength') });
       return;
     }
@@ -95,7 +95,7 @@ const Auth: React.FC = () => {
         let errorKey = '';
         if (error.message === 'Invalid login credentials') errorKey = 'auth.errors.login';
         if (error.message === 'User already registered') errorKey = 'auth.errors.signup';
-        if (error.message === 'Password should be at least 12 characters') errorKey = 'auth.errors.passwordLength';
+        if (error.message === 'Password should be at least 9 characters') errorKey = 'auth.errors.passwordLength';
         setMessage({ type: 'error', text: errorKey !== '' ? t(errorKey) : error.message || t('auth.errors.unknown') });
         setShowHelp(true);
         return;
@@ -112,7 +112,7 @@ const Auth: React.FC = () => {
       let errorKey = '';
       if (error?.message === 'Invalid login credentials') errorKey = 'auth.errors.login';
       if (error?.message === 'User already registered') errorKey = 'auth.errors.signup';
-      if (error?.message === 'Password should be at least 12 characters') errorKey = 'auth.errors.passwordLength';
+      if (error?.message === 'Password should be at least 9 characters') errorKey = 'auth.errors.passwordLength';
       setMessage({ type: 'error', text: errorKey !== '' ? t(errorKey) : error?.message || t('auth.errors.unknown') });
       setShowHelp(true);
     } finally {
