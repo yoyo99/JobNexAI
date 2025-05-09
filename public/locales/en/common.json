@@ -48,7 +48,6 @@
     "password": "Password",
     "confirmPassword": "Confirm Password",
     "rememberMe": "Remember Me",
-    "or": "Or",
     "continueWith": "Continue with",
     "google": "Google",
     "linkedin": "LinkedIn",
@@ -80,11 +79,12 @@
       "title": "Login Tips",
       "checkEmail": "Check your email spelling.",
       "capsLock": "Make sure Caps Lock is not on.",
-      "forgotPasswordLink": "Use the 'Forgot Password?' link if needed.",
-      "noAccountLink": "Don't have an account yet? Create one."
+      "forgotPassword": "Use the 'Forgot Password?' link if needed.",
+      "noAccount": "Don't have an account yet? Create one."
     }
   },
   "common": {
+    "or": "Or",
     "save": "Save",
     "cancel": "Cancel",
     "search": "Search",
@@ -92,6 +92,7 @@
   },
   "dashboard": {
     "welcome": "Welcome",
+    "greeting": "Welcome!",
     "jobsApplied": "Jobs Applied",
     "interviews": "Interviews",
     "savedJobs": "Saved Jobs",
@@ -114,12 +115,7 @@
     "profileCompleteness": "Profile Completeness",
     "complete": "Complete",
     "incomplete": "Incomplete",
-    "activityFeed": "Activity Feed",
-    "noActivity": "No recent activity",
-    "profileViews": "Profile Views",
-    "searchAppearances": "Search Appearances",
     "topSkills": "Top Skills",
-    "jobMatchScore": "Job Match Score",
     "suggestedSkills": "Suggested Skills to Add",
     "marketInsights": "Market Insights",
     "trendingSkills": "Trending Skills in Your Field",
@@ -130,7 +126,19 @@
     "pendingInvitations": "Pending Invitations",
     "peopleYouMayKnow": "People You May Know",
     "recentlyApplied": "Recently Applied Jobs",
-    "applicationDeadlines": "Application Deadlines"
+    "applicationDeadlines": "Application Deadlines",
+    "timeframe": {
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
+    },
+    "stats": {
+      "applications": "Applications",
+      "interviewsUpcoming": "Upcoming Interviews",
+      "topCompanies": "Top Companies",
+      "topLocations": "Top Locations",
+      "recentActivity": "Recent Activity Stats"
+    }
   },
   "search": {
     "searchJobs": "Search Jobs",
