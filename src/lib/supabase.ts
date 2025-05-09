@@ -163,53 +163,109 @@ if (typeof supabaseAnonKey !== 'string' || supabaseAnonKey.trim() === '') {
 
 let supabaseExport;
 
+// Simuler un client Supabase pour le développement local ou les tests si les clés ne sont pas définies
+const mockSupabaseClient = {
+  auth: {
+    getSession: async () => {
+      console.warn('[SupabaseInit] Using mock Supabase client: getSession');
+      return { data: { session: null }, error: null };
+    },
+    signInWithPassword: async (credentials: any) => {
+      console.warn('[SupabaseInit] Using mock Supabase client: signInWithPassword', credentials);
+      return { data: { user: { id: 'mock-user-id', email: credentials.email }, session: { access_token: 'mock-token' } }, error: null };
+    },
+    signUp: async (credentials: any) => {
+      console.warn('[SupabaseInit] Using mock Supabase client: signUp', credentials);
+      return { data: { user: { id: 'mock-user-id', email: credentials.email }, session: { access_token: 'mock-token' } }, error: null };
+    },
+    signOut: async () => {
+      console.warn('[SupabaseInit] Using mock Supabase client: signOut');
+      return { error: null };
+    },
+    onAuthStateChange: (callback: (event: string, session: any | null) => void) => {
+      console.warn('[SupabaseInit] Using mock Supabase client: onAuthStateChange');
+      // Simuler un changement d'état initial (non authentifié)
+      callback('INITIAL_SESSION', null);
+      return {
+        data: {
+          subscription: {
+            unsubscribe: () => {
+              console.warn('[SupabaseInit] Mock subscription unsubscribe.');
+            },
+          }
+        }
+      };
+    },
+    updateUser: async (attributes: any) => {
+      console.warn('[SupabaseInit] Using mock Supabase client: updateUser', attributes);
+      return { data: { user: { id: 'mock-user-id', ...attributes } }, error: null };
+    },
+    sendPasswordResetEmail: async (email: string) => {
+      console.warn('[SupabaseInit] Using mock Supabase client: sendPasswordResetEmail', email);
+      return { error: null };
+    },
+    getUser: async () => {
+      console.warn('[SupabaseInit] Using mock Supabase client: getUser');
+      return { data: { user: null }, error: null }; // ou simuler un utilisateur connecté
+    },
+  },
+  from: (table: string) => {
+    console.warn(`[SupabaseInit] Using mock Supabase client: from(${table})`);
+    const mockChain = {
+      select: (...args: any[]) => { console.warn('[SupabaseInit] Mock select', args); return mockChain; },
+      insert: (...args: any[]) => { console.warn('[SupabaseInit] Mock insert', args); return Promise.resolve({ data: [], error: null }); },
+      update: (...args: any[]) => { console.warn('[SupabaseInit] Mock update', args); return Promise.resolve({ data: [], error: null }); },
+      delete: (...args: any[]) => { console.warn('[SupabaseInit] Mock delete', args); return Promise.resolve({ data: [], error: null }); },
+      eq: (...args: any[]) => { console.warn('[SupabaseInit] Mock eq', args); return mockChain; },
+      single: () => Promise.resolve({ data: null, error: null }), // Simuler une réponse single()
+    };
+    return mockChain;
+  },
+  rpc: async (name: string, params?: any) => {
+    console.warn(`[SupabaseInit] Using mock Supabase client: rpc(${name})`, params);
+    if (name === 'calculate_total_price') {
+      return Promise.resolve({ data: 100, error: null }); // Simuler une réponse pour rpc
+    }
+    return Promise.resolve({ data: null, error: null });
+  },
+  functions: {
+    invoke: async (functionName: string, options?: any) => {
+      console.warn(`[SupabaseInit] Using mock Supabase client: functions.invoke(${functionName})`, options);
+      // Simuler la réponse pour create-stripe-checkout
+      if (functionName === 'create-stripe-checkout') {
+        return {
+          data: {
+            sessionId: 'mock_session_id_12345'
+          },
+          error: null
+        };
+      }
+      // Simuler la réponse pour get_user_roles
+      if (functionName === 'get_user_roles') {
+        return {
+          data: { roles: ['user'] }, // Simule un utilisateur avec le rôle 'user'
+          error: null
+        };
+      }
+      return { data: null, error: { message: 'Mock function not implemented' } }; // Réponse par défaut
+    }
+  },
+  realtime: null, // ou simuler un client realtime basique si besoin
+};
+
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    '[SupabaseInit] Supabase URL or Anon Key is missing. Falling back to mock client. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.'
-  );
-  // Création d'un client Supabase factice pour éviter les erreurs de build et permettre le développement local
-  // sans variables d'environnement, mais avec des fonctionnalités limitées.
-  const mockSupabase = {
-    auth: {
-      // @ts-expect-error Mock implementation
-      signInWithPassword: () => Promise.resolve({ error: { message: 'Mock client: Sign in failed' } }),
-      // @ts-expect-error Mock implementation
-      signUp: () => Promise.resolve({ error: { message: 'Mock client: Sign up failed' } }),
-      // @ts-expect-error Mock implementation
-      signOut: () => Promise.resolve({ error: null }),
-      // @ts-expect-error Mock implementation
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-      // @ts-expect-error Mock implementation
-      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
-      // @ts-expect-error Mock implementation
-      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-    },
-    // @ts-expect-error Mock implementation
-    from: (table: string) => ({
-      select: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot select from ${table}` } }),
-      insert: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot insert into ${table}` } }),
-      update: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot update ${table}` } }),
-      delete: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot delete from ${table}` } }),
-    }),
-    functions: {
-      // @ts-expect-error Mock implementation
-      invoke: (functionName: string) =>
-        Promise.resolve({ error: { message: `Mock client: Cannot invoke ${functionName}` } }),
-    },
-    // Ajoutez d'autres méthodes Supabase factices nécessaires pour éviter les erreurs
-  };
-  console.log('[SupabaseClient] Utilisation du client factice (fonctionnalités limitées).');
-  supabaseExport = mockSupabase as unknown as SupabaseClient;
+  console.warn('[SupabaseInit] Supabase URL or Anon Key is missing. Falling back to mock client.');
+  supabaseExport = mockSupabaseClient as unknown as SupabaseClient;
+  console.log('[SupabaseInit] Mock Supabase client assigned due to missing env vars.');
 } else {
   try {
-    console.log('[SupabaseInit] Creating actual Supabase client...');
+    console.log('[SupabaseInit] Initializing Supabase client with provided URL and Key.');
     supabaseExport = createClient(supabaseUrl, supabaseAnonKey);
-    console.log('[SupabaseInit] Actual Supabase client created successfully.');
-  } catch (e) {
-    console.error('[SupabaseInit] Error creating Supabase client:', e);
-    // Fallback vers le client factice en cas d'erreur de création
-    supabaseExport = { /* ... votre client factice ... */ } as unknown as SupabaseClient;
-    console.warn('[SupabaseInit] Fallback to mock client due to creation error.');
+    console.log('[SupabaseInit] Supabase client initialized successfully.');
+  } catch (error) {
+    console.error('[SupabaseInit] Error initializing Supabase client:', error);
+    console.warn('[SupabaseInit] Falling back to mock client due to initialization error.');
+    supabaseExport = mockSupabaseClient as unknown as SupabaseClient;
   }
 }
 
