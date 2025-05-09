@@ -319,7 +319,7 @@ export function DashboardStats() {
             <h3 className="text-lg font-semibold text-white">
               {stats.applications.total}
             </h3>
-            <p className="text-sm text-gray-400">{t('dashboard.stats.applicationsSent')}</p>
+            <p className="text-sm text-gray-400">{t('dashboard.stats.applications')}</p>
           </div>
         </motion.div>
 
