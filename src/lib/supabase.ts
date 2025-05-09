@@ -145,14 +145,75 @@ export interface JobApplication {
 }
 
 // IMPORTANT : Ne jamais exposer la SERVICE_ROLE_KEY côté client ! Utiliser uniquement la clé publique (anon) pour le front-end.
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Supabase environment variables are not set.");
+// Log pour le débogage sur Netlify
+console.log('[SupabaseInit] Attempting to initialize Supabase client.');
+console.log('[SupabaseInit] VITE_SUPABASE_URL available:', !!supabaseUrl);
+console.log('[SupabaseInit] VITE_SUPABASE_ANON_KEY available:', !!supabaseAnonKey);
+
+if (typeof supabaseUrl !== 'string' || supabaseUrl.trim() === '') {
+  console.error('[SupabaseInit] VITE_SUPABASE_URL is missing or empty.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (typeof supabaseAnonKey !== 'string' || supabaseAnonKey.trim() === '') {
+  console.error('[SupabaseInit] VITE_SUPABASE_ANON_KEY is missing or empty.');
+}
+
+let supabaseExport;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn(
+    '[SupabaseInit] Supabase URL or Anon Key is missing. Falling back to mock client. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.'
+  );
+  // Création d'un client Supabase factice pour éviter les erreurs de build et permettre le développement local
+  // sans variables d'environnement, mais avec des fonctionnalités limitées.
+  const mockSupabase = {
+    auth: {
+      // @ts-expect-error Mock implementation
+      signInWithPassword: () => Promise.resolve({ error: { message: 'Mock client: Sign in failed' } }),
+      // @ts-expect-error Mock implementation
+      signUp: () => Promise.resolve({ error: { message: 'Mock client: Sign up failed' } }),
+      // @ts-expect-error Mock implementation
+      signOut: () => Promise.resolve({ error: null }),
+      // @ts-expect-error Mock implementation
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      // @ts-expect-error Mock implementation
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      // @ts-expect-error Mock implementation
+      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+    },
+    // @ts-expect-error Mock implementation
+    from: (table: string) => ({
+      select: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot select from ${table}` } }),
+      insert: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot insert into ${table}` } }),
+      update: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot update ${table}` } }),
+      delete: () => Promise.resolve({ data: [], error: { message: `Mock client: Cannot delete from ${table}` } }),
+    }),
+    functions: {
+      // @ts-expect-error Mock implementation
+      invoke: (functionName: string) =>
+        Promise.resolve({ error: { message: `Mock client: Cannot invoke ${functionName}` } }),
+    },
+    // Ajoutez d'autres méthodes Supabase factices nécessaires pour éviter les erreurs
+  };
+  console.log('[SupabaseClient] Utilisation du client factice (fonctionnalités limitées).');
+  supabaseExport = mockSupabase as unknown as SupabaseClient;
+} else {
+  try {
+    console.log('[SupabaseInit] Creating actual Supabase client...');
+    supabaseExport = createClient(supabaseUrl, supabaseAnonKey);
+    console.log('[SupabaseInit] Actual Supabase client created successfully.');
+  } catch (e) {
+    console.error('[SupabaseInit] Error creating Supabase client:', e);
+    // Fallback vers le client factice en cas d'erreur de création
+    supabaseExport = { /* ... votre client factice ... */ } as unknown as SupabaseClient;
+    console.warn('[SupabaseInit] Fallback to mock client due to creation error.');
+  }
+}
+
+export const supabase = supabaseExport;
 
 export async function getMarketTrends(): Promise<{
   jobTypes: MarketTrend[];

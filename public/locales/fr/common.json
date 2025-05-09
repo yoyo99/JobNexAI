@@ -75,7 +75,14 @@
     "weak": "Faible",
     "medium": "Moyen",
     "strong": "Fort",
-    "startTrial": "Démarrer l'essai"
+    "startTrial": "Démarrer l'essai",
+    "help": {
+      "title": "Conseils de connexion",
+      "checkEmail": "Vérifiez l'orthographe de votre email.",
+      "capsLock": "Assurez-vous que la touche Verr. Maj. n'est pas activée.",
+      "forgotPasswordLink": "Utilisez le lien 'Mot de passe oublié ?' si besoin.",
+      "noAccountLink": "Pas encore de compte ? Créez-en un."
+    }
   },
   "common": {
     "save": "Enregistrer",
