@@ -92,6 +92,7 @@ export const AuthService = {
 
       return { user: data.user, error: null }
     } catch (error: any) {
+      console.error('>>> AuthService signUp - Original error:', error);
       trackError(new Error(error.message), {
         context: 'auth.signup',
         email,

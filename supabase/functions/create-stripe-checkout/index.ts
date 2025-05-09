@@ -10,7 +10,12 @@ import Stripe from 'npm:stripe@^14.0.0'; // Assurez-vous que la version est comp
 import { createClient, SupabaseClient } from 'npm:@supabase/supabase-js@^2.0.0';
 
 const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY');
-const stripe = new Stripe(STRIPE_SECRET_KEY as string, {
+if (!STRIPE_SECRET_KEY) {
+  console.error('FATAL: Missing STRIPE_SECRET_KEY environment variable. Stripe client cannot be initialized.');
+  // In a serverless function, throwing an error here will prevent the function from being served if Stripe isn't configured.
+  throw new Error("Stripe secret key is not configured. Function cannot start.");
+}
+const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16', // Utilisez la version API que vous ciblez
   httpClient: Stripe.createFetchHttpClient(), // Nécessaire pour Deno
 });
@@ -42,7 +47,7 @@ serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
       headers: {
-        'Access-Control-Allow-Origin': '*', // Ou votre domaine frontend spécifique
+        'Access-Control-Allow-Origin': '*', // IMPORTANT: For production, restrict this to your frontend's domain
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
       },
@@ -61,6 +66,15 @@ serve(async (req: Request) => {
     console.log('Received priceId:', priceId);
 
     // 2. Récupérer l'utilisateur Supabase à partir du token JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('Missing Authorization header in request.');
+      return new Response(JSON.stringify({ error: 'Authentication required: Missing Authorization header.' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      });
+    }
+
     if (!supabaseUrl || !supabaseAnonKey) {
       return new Response(JSON.stringify({ error: 'Supabase environment variables not set in Edge Function.' }), {
         status: 500,
@@ -69,7 +83,7 @@ serve(async (req: Request) => {
     }
     const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey,
       {
-        global: { headers: { Authorization: req.headers.get('Authorization')! } }
+        global: { headers: { Authorization: authHeader } } // Use the checked authHeader
       }
     );
 
