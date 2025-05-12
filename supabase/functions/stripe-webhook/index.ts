@@ -88,7 +88,9 @@ Deno.serve(async (req) => {
             stripe_subscription_id: subscriptionId,
             status: subscription.status,
             plan,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            current_period_end: typeof subscription.current_period_end === 'number' 
+              ? new Date(subscription.current_period_end * 1000).toISOString() 
+              : null, // Set to null if invalid
             cancel_at: subscription.cancel_at
               ? new Date(subscription.cancel_at * 1000).toISOString()
               : null,
@@ -115,7 +117,9 @@ Deno.serve(async (req) => {
           .from('subscriptions')
           .update({
             status: subscription.status,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            current_period_end: typeof subscription.current_period_end === 'number' 
+              ? new Date(subscription.current_period_end * 1000).toISOString() 
+              : null, // Set to null if invalid
             cancel_at: subscription.cancel_at
               ? new Date(subscription.cancel_at * 1000).toISOString()
               : null,
