@@ -46,6 +46,7 @@ Deno.serve(async (req) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object
+        console.log('Received checkout.session.completed:', JSON.stringify(session, null, 2));
         const customerId = session.customer
         const subscriptionId = session.subscription
         const userId = session.client_reference_id
