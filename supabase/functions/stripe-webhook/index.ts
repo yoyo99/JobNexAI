@@ -49,7 +49,12 @@ Deno.serve(async (req) => {
         console.log('Received checkout.session.completed:', JSON.stringify(session, null, 2));
         const customerId = session.customer
         const subscriptionId = session.subscription
-        const userId = session.client_reference_id
+        const userId = session.metadata?.supabase_user_id
+
+        if (!userId) {
+          throw new Error('No user ID provided in session metadata');
+        }
+
         const userType = session.metadata?.user_type
 
         // Récupérer les détails de l'abonnement
