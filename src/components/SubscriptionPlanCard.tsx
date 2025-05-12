@@ -17,6 +17,7 @@ const handleSubscription = async (priceId: string) => {
   }
   try {
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    console.log('Subscription attempt - Session:', session, 'Session Error:', sessionError);
     if (sessionError || !session) {
       console.error('User not authenticated:', sessionError);
       alert('Veuillez vous connecter pour vous abonner.');
