@@ -1,102 +1,57 @@
-import Stripe from 'npm:stripe@14.0.0'
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
-
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-)
+console.log('[create-checkout-session] SCRIPT START: Initializing simplified function...');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
-Deno.serve(async (req) => {
+Deno.serve(async (req: Request) => {
+  console.log(`[create-checkout-session] REQUEST HANDLER: Received request: ${req.method} ${req.url}`);
+
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    console.log('[create-checkout-session] REQUEST HANDLER: Handling OPTIONS request.');
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { priceId, userId, userType } = await req.json()
-
-    // Créer ou récupérer le client Stripe
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('email')
-      .eq('id', userId)
-      .single()
-
-    if (!profile) {
-      throw new Error('User not found')
+    console.log('[create-checkout-session] REQUEST HANDLER: Processing main request logic.');
+    // Essayons de lire le corps de la requête au cas où, mais sans que cela soit bloquant
+    let requestBody = null;
+    try {
+      if (req.body) {
+        requestBody = await req.json();
+        console.log('[create-checkout-session] REQUEST HANDLER: Parsed request body:', requestBody);
+      }
+    } catch (e) {
+      console.warn('[create-checkout-session] REQUEST HANDLER: Could not parse request body as JSON:', e.message);
     }
 
-    let customerId: string
+    const responsePayload = {
+      message: 'Simplified create-checkout-session reached successfully!',
+      timestamp: new Date().toISOString(),
+      invokedMethod: req.method,
+      invokedUrl: req.url,
+      bodyReceived: requestBody
+    };
 
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('stripe_customer_id')
-      .eq('user_id', userId)
-      .single()
-
-    if (subscription?.stripe_customer_id) {
-      customerId = subscription.stripe_customer_id
-    } else {
-      const customer = await stripe.customers.create({
-        email: profile.email,
-        metadata: {
-          supabase_user_id: userId,
-          user_type: userType
-        },
-      })
-      customerId = customer.id
-    }
-
-    // Mettre à jour le type d'utilisateur si nécessaire
-    if (userType) {
-      await supabase
-        .from('profiles')
-        .update({ user_type: userType })
-        .eq('id', userId)
-    }
-
-    // Créer la session de paiement
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      client_reference_id: userId,
-      payment_method_types: ['card'],
-      mode: 'subscription',
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
-      success_url: `${req.headers.get('origin')}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get('origin')}/pricing`,
-      subscription_data: {
-        metadata: {
-          supabase_user_id: userId,
-          user_type: userType
-        },
-      },
-    })
-
+    console.log('[create-checkout-session] REQUEST HANDLER: Sending success response.');
     return new Response(
-      JSON.stringify({ sessionId: session.id, url: session.url }),
+      JSON.stringify(responsePayload),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
+        status: 200, // Répondre avec un succès pour ce test
       }
-    )
+    );
   } catch (error) {
-    console.error('Error:', error)
+    console.error('[create-checkout-session] REQUEST HANDLER CRITICAL ERROR:', error.message, error.stack);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'Critical error in simplified function: ' + error.message }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
+        status: 500, // Erreur serveur interne
       }
-    )
+    );
   }
-})
+});
+
+console.log('[create-checkout-session] SCRIPT END: Deno.serve configured.');
