@@ -24,7 +24,9 @@ serve(async (req: Request) => { // Utilisation de req au lieu de _req car on vé
       });
     }
 
-    const response = await fetch("https://api.resend.com/v1/usage", {
+    // Essayer l'endpoint /usage avec la méthode POST
+    const response = await fetch("https://api.resend.com/usage", {
+      method: 'POST', // Spécifier POST explicitement
       headers: {
         "Authorization": `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",

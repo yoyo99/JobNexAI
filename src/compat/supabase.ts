@@ -64,6 +64,14 @@ const createMockClient = (supabaseUrl: string, supabaseKey: string) => ({
       list: (prefix?: string) => Promise.resolve({ data: [], error: null }),
       getPublicUrl: (path: string) => ({ data: { publicUrl: '' } })
     })
+  },
+  // Fonctions (Ajout Factice)
+  functions: {
+    invoke: (functionName: string, options?: any) => {
+      console.warn(`[SupabaseCompat] Appel factice à la fonction ${functionName}`);
+      // Retourner une promesse résolue avec une erreur pour indiquer que c'est factice
+      return Promise.resolve({ data: null, error: { message: 'Fonctionnalité indisponible avec le client factice' } });
+    }
   }
 });
 
