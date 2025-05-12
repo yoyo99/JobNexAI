@@ -1,5 +1,6 @@
 import React from 'react';
 import { supabase } from '../lib/supabaseClient'; // Mise à jour du chemin
+import { useAuth } from '../stores/auth'; // Importer useAuth
 
 interface SubscriptionPlanCardProps {
   planName: string;
@@ -9,48 +10,44 @@ interface SubscriptionPlanCardProps {
   isEnterprise?: boolean; // Pour un style potentiellement différent
 }
 
-const handleSubscription = async (priceId: string) => {
-  if (!supabase || !supabase.auth) {
-    console.error('Supabase client not initialized or auth module missing.');
-    alert('Erreur de configuration : client Supabase non initialisé.');
-    return;
-  }
-  try {
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    console.log('Subscription attempt - Session:', session, 'Session Error:', sessionError);
-    if (sessionError || !session) {
-      console.error('User not authenticated:', sessionError);
-      alert('Veuillez vous connecter pour vous abonner.');
-      // Idéalement, rediriger vers la page de connexion ici
-      return;
-    }
-
-    console.log(`Attempting to subscribe to price ID: ${priceId}`);
-
-    const { data, error } = await supabase.functions.invoke('create-stripe-checkout', {
-      body: { priceId: priceId },
-    });
-
-    if (error) {
-      console.error('Error invoking Stripe checkout function:', error);
-      alert(`Erreur lors de la création de la session de paiement: ${error.message}`);
-      return;
-    }
-
-    if (data && data.checkoutUrl) {
-      console.log('Received checkout URL:', data.checkoutUrl);
-      window.location.href = data.checkoutUrl;
-    } else {
-      console.error('No checkoutUrl received from function:', data);
-      alert('Erreur : URL de paiement non reçue.');
-    }
-  } catch (e) {
-    console.error('Unexpected error during subscription process:', e);
-    alert(`Une erreur inattendue est survenue: ${(e as Error).message}`);
-  }
-};
-
 const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, price, features, priceId, isEnterprise }) => {
+  const { user } = useAuth(); // Obtenir l'utilisateur depuis le store/hook
+
+  const handleSubscription = async (priceId: string) => {
+    // Vérifier si l'utilisateur existe (obtenu depuis useAuth)
+    if (!user) {
+      console.error('User not authenticated (checked via useAuth)');
+      alert('Veuillez vous connecter pour vous abonner.');
+      return;
+    }
+
+    // Plus besoin de getSession(), on utilise l'utilisateur du hook
+    console.log(`User ${user.id} attempting to subscribe to price ID: ${priceId}`);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-stripe-checkout', {
+        body: { priceId: priceId }, // Passer l'ID utilisateur si nécessaire par la fonction
+      });
+
+      if (error) {
+        console.error('Error invoking Stripe checkout function:', error);
+        alert(`Erreur lors de la création de la session de paiement: ${error.message}`);
+        return;
+      }
+
+      if (data && data.checkoutUrl) {
+        console.log('Received checkout URL:', data.checkoutUrl);
+        window.location.href = data.checkoutUrl;
+      } else {
+        console.error('No checkoutUrl received from function:', data);
+        alert('Erreur : URL de paiement non reçue.');
+      }
+    } catch (e) {
+      console.error('Unexpected error during subscription process:', e);
+      alert(`Une erreur inattendue est survenue: ${(e as Error).message}`);
+    }
+  };
+
   const cardStyle = `
     border rounded-lg p-6 shadow-lg 
     ${isEnterprise ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200'}
