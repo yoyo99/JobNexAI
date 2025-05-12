@@ -58,32 +58,9 @@ Deno.serve(async (req) => {
         const userType = session.metadata?.user_type
 
         // Récupérer les détails de l'abonnement
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId as string)
-        const priceId = subscription.items.data[0].price.id
-
-        // Déterminer le plan en fonction du prix
-        let plan = 'free'
-        
-        // Plans pour les candidats
-        if (priceId === Deno.env.get('VITE_STRIPE_PRICE_PRO')) {
-          plan = 'pro'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_ENTERPRISE')) {
-          plan = 'enterprise'
-        }
-        
-        // Plans pour les freelances
-        else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_FREELANCE_PRO')) {
-          plan = 'freelance_pro'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_FREELANCE_BUSINESS')) {
-          plan = 'freelance_business'
-        }
-        
-        // Plans pour les recruteurs
-        else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_RECRUITER_BUSINESS')) {
-          plan = 'recruiter_business'
-        } else if (priceId === Deno.env.get('VITE_STRIPE_PRICE_RECRUITER_ENTERPRISE')) {
-          plan = 'recruiter_enterprise'
-        }
+        const subscriptionDetails = await stripe.subscriptions.retrieve(subscriptionId as string)
+        console.log('Subscription Details Price Object:', JSON.stringify(subscriptionDetails.items.data[0].price, null, 2));
+        const plan = subscriptionDetails.items.data[0].price.lookup_key
 
         // Mettre à jour l'abonnement dans Supabase
         const { error: subscriptionError } = await supabase
@@ -92,13 +69,13 @@ Deno.serve(async (req) => {
             user_id: userId,
             stripe_customer_id: customerId,
             stripe_subscription_id: subscriptionId,
-            status: subscription.status,
+            status: subscriptionDetails.status,
             plan,
-            current_period_end: typeof subscription.current_period_end === 'number' 
-              ? new Date(subscription.current_period_end * 1000).toISOString() 
+            current_period_end: typeof subscriptionDetails.current_period_end === 'number' 
+              ? new Date(subscriptionDetails.current_period_end * 1000).toISOString() 
               : null, // Set to null if invalid
-            cancel_at: subscription.cancel_at
-              ? new Date(subscription.cancel_at * 1000).toISOString()
+            cancel_at: subscriptionDetails.cancel_at
+              ? new Date(subscriptionDetails.cancel_at * 1000).toISOString()
               : null,
           })
 
