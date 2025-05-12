@@ -19,5 +19,12 @@ serve(async (_req: Request) => {
   }
   const stats = await response.json();
   // { sent, limit, period }
-  return new Response(JSON.stringify(stats), { status: 200 });
+  return new Response(JSON.stringify(stats), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*', 
+      'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    },
+  });
 });
