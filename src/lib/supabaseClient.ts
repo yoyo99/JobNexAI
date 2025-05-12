@@ -1,7 +1,11 @@
-import '../shims/supabase-shim';
-import { createClient } from '../compat/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-export const supabase = createClient(
-  'https://klwugophjvzctlautsqz.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtsd3Vnb3BoanZ6Y3RsYXV0c3F6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjMwNzUsImV4cCI6MjA1ODQ5OTA3NX0.LWlKtDvRrlMxswfhJU5nd5OHTUulyN2xgd_bR-hkWiE'
-);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Supabase URL or Anon Key is missing from environment variables.');
+  throw new Error('Supabase configuration is missing.'); 
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
