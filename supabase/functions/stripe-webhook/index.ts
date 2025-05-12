@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
     
     if (webhookSecret) {
-      event = stripe.webhooks.constructEvent(
+      event = await stripe.webhooks.constructEventAsync(
         body,
         signature,
         webhookSecret
@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
-  } catch (error) {
+  } catch (error: any) { // Type error as any
     console.error('Error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
