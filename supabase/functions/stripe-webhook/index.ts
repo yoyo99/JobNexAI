@@ -91,13 +91,18 @@ Deno.serve(async (req) => {
         if (userEmail && plan && plan !== 'free') { 
           try {
             console.log(`Attempting to send confirmation email to ${userEmail} for plan ${plan}`);
+            const emailHtml = `<h1>Merci pour votre abonnement !</h1><p>Votre plan '${plan}' est maintenant actif.</p><p>Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.</p>`;
+            const emailText = `Merci pour votre abonnement ! Votre plan '${plan}' est maintenant actif. Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.`;
             const { data: emailSendData, error: emailError } = await supabase.functions.invoke("send-notification-email", {
               body: {
                 to: userEmail,
                 subject: "Confirmation de votre abonnement JobNexAI",
-                html: `<h1>Merci pour votre abonnement !</h1><p>Votre plan '${plan}' est maintenant actif.</p><p>Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.</p>`,
-                text: `Merci pour votre abonnement ! Votre plan '${plan}' est maintenant actif. Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.`
+                html: emailHtml,
+                text: emailText,
               },
+              headers: { 
+                'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
+              }
             });
 
             if (emailError) {
