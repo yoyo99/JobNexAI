@@ -4,7 +4,8 @@ import Stripe from 'npm:stripe@14.0.0';
 import process from "node:process";
 console.log('[create-checkout-session] Stripe import successful.');
 
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3';
+import { createClient, SupabaseClient } from 'npm:@supabase/supabase-js@2.39.3';
+import { Database } from '../../../src/lib/database.types.ts'; // Types générés par Supabase CLI
 console.log('[create-checkout-session] Supabase client import successful.');
 
 // Define the interface for the profile data we expect
@@ -27,7 +28,7 @@ const corsHeaders = {
 console.log('[create-checkout-session] CORS headers defined.');
 
 let stripe: Stripe;
-let supabase: ReturnType<typeof createClient>;
+let supabase: SupabaseClient<Database>;
 
 try {
   console.log('[create-checkout-session] Initializing Stripe client...');
@@ -46,7 +47,7 @@ try {
     console.error('[create-checkout-session] CRITICAL: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set.');
     throw new Error('CRITICAL: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set.');
   }
-  supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+  supabase = createClient<Database>(supabaseUrl, supabaseServiceRoleKey);
   console.log('[create-checkout-session] Supabase client initialized successfully.');
 
 } catch (initError: any) {
