@@ -1,10 +1,24 @@
 console.log('[create-checkout-session] SCRIPT EXECUTION STARTED - TOP OF FILE');
 
 import Stripe from 'npm:stripe@14.0.0';
+import process from "node:process";
 console.log('[create-checkout-session] Stripe import successful.');
 
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3';
 console.log('[create-checkout-session] Supabase client import successful.');
+
+// Define the interface for the profile data we expect
+interface ProfileInfo {
+  stripe_customer_id: string | null;
+  email: string | null;
+  user_type: 'job_seeker' | 'recruiter' | 'admin' | null;
+}
+
+interface RequestPayload {
+  priceId: string;
+  userId: string;
+  userType: 'job_seeker' | 'recruiter' | 'admin' | null;
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -62,15 +76,15 @@ Deno.serve(async (req: Request) => {
 
   try {
     console.log('[create-checkout-session] REQUEST HANDLER: Attempting to parse request JSON...');
-    const { priceId, userId, userType } = await req.json();
+    const { priceId, userId, userType } = await req.json() as RequestPayload;
     console.log('[create-checkout-session] REQUEST HANDLER: Request JSON parsed:', { priceId, userId, userType });
 
     console.log(`[create-checkout-session] REQUEST HANDLER: Fetching profile for userId: ${userId}`);
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('email') // Explicitly selecting only email
+      .select('stripe_customer_id, email, user_type') // Select all necessary fields
       .eq('id', userId)
-      .single();
+      .single<ProfileInfo>();
 
     if (profileError) {
       console.error(`[create-checkout-session] REQUEST HANDLER: Error fetching profile for userId ${userId}:`, profileError);
@@ -102,10 +116,10 @@ Deno.serve(async (req: Request) => {
     } else {
       console.log(`[create-checkout-session] REQUEST HANDLER: No existing Stripe customerId found. Creating new customer for email: ${profile.email}`);
       const customer = await stripe.customers.create({
-        email: profile.email,
+        email: profile?.email ?? undefined,
         metadata: {
           supabase_user_id: userId,
-          user_type: userType,
+          user_type: userType
         },
       });
       customerId = customer.id;
@@ -114,9 +128,15 @@ Deno.serve(async (req: Request) => {
 
     if (userType) {
       console.log(`[create-checkout-session] REQUEST HANDLER: Updating profile user_type to '${userType}' for userId: ${userId}`);
+      
+      type ProfileUpdatePayload = {
+        user_type: 'job_seeker' | 'recruiter' | 'admin';
+      };
+      const updatePayload: ProfileUpdatePayload = { user_type: userType };
+
       const { error: updateProfileError } = await supabase
         .from('profiles')
-        .update({ user_type: userType })
+        .update(updatePayload)
         .eq('id', userId);
       if (updateProfileError) {
         console.error(`[create-checkout-session] REQUEST HANDLER: Error updating profile user_type for userId ${userId}:`, updateProfileError);
@@ -137,12 +157,12 @@ Deno.serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.get('origin')}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success-v2?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/pricing`,
       subscription_data: {
         metadata: {
           supabase_user_id: userId,
-          user_type: userType,
+          user_type: userType
         },
       },
     });
