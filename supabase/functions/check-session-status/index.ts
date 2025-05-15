@@ -1,10 +1,16 @@
-import Stripe from 'npm:stripe@14.0.0';
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3';
+import Stripe from "npm:stripe@^14.0.0";
+import { createClient } from "npm:@supabase/supabase-js@^2.39.3";
 import { verify } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
+const textEncoder = new TextEncoder();
 import { type Payload } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 
 // Initialisation de Stripe avec la clé secrète
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+  // Permet une chaîne de version API personnalisée du dashboard Stripe
+  // deno-lint-ignore-next-line no-explicit-any
+  apiVersion: '2025-04-30.basil' as any,
+  // typescript: true, // Optionnel: pour une meilleure inférence de type si supporté
+});
 // Initialisation de Supabase avec l'URL et la clé de service
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -13,6 +19,7 @@ const supabase = createClient(
 
 // Récupération de la clé secrète JWT depuis les variables d'environnement
 const JWT_SECRET = Deno.env.get('JWT_SECRET');
+const JWT_SECRET_READ_REPLICA = Deno.env.get('JWT_SECRET_READ_REPLICA');
 
 // Vérification si la clé secrète JWT est définie
 if (!JWT_SECRET) throw new Error('JWT_SECRET is not defined');
@@ -40,15 +47,17 @@ interface InputData {
 }
 
 // Fonction pour valider les données d'entrée
-const validateInput = (data: any): data is InputData => {
+const validateInput = (data: unknown): data is InputData => {
     // Vérifier si les données sont bien un objet et non null
-    if (!data || typeof data !== 'object') {
+    if (!data || typeof data !== 'object' || data === null) { // Ajout de data === null pour la complétude
         console.error("validateInput : Invalid data type or null")
         return false;
     }
+    // Après la vérification, nous pouvons caster data vers un type plus spécifique
+    const potentialInput = data as { sessionId?: unknown };
     // Vérifier si sessionId est présent et est une chaîne de caractères
-    if (typeof data.sessionId !== 'string') {
-        console.error("validateInput : sessionId is not a string")
+    if (typeof potentialInput.sessionId !== 'string') {
+        console.error("validateInput : sessionId is not a string or missing")
         return false;
     }
     return true;
@@ -65,15 +74,61 @@ const authenticate = async (req: Request): Promise<string> => {
   const token = authHeader.split(' ')[1]
 
   // Vérifier si le token est valide
-  const payload: Payload = await verify(token, JWT_SECRET, 'HS512').catch((error) => {
-    console.error('JWT Verification Error:', error)
-    throw new Error('Invalid token')
-  })
-  const userId = payload.sub
-  if (!userId) {
-    throw new Error('User ID not found in token')
+  if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not set in environment variables.');
+    throw new Error('JWT_SECRET is not configured.');
   }
-  return userId
+
+  const mainCryptoKey = await crypto.subtle.importKey(
+    'raw',
+    textEncoder.encode(JWT_SECRET),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify']
+  );
+
+  let payload: Payload;
+  try {
+    payload = await verify(token, mainCryptoKey);
+  } catch (error) {
+    console.warn('Primary JWT verification failed. Attempting with read replica secret.', error);
+    if (!JWT_SECRET_READ_REPLICA) {
+      console.error('JWT_SECRET_READ_REPLICA is not set, and primary verification failed.');
+      throw new Error('Token verification failed, no fallback secret.');
+    }
+    const readCryptoKey = await crypto.subtle.importKey(
+      'raw',
+      textEncoder.encode(JWT_SECRET_READ_REPLICA),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['verify']
+    );
+    try {
+      payload = await verify(token, readCryptoKey);
+    } catch (readError) {
+      console.error('Read replica JWT verification also failed:', readError);
+      throw new Error('Invalid token (all verification attempts failed).');
+    }
+  }
+
+  // Suite du code si la vérification réussit avec l'une des clés...
+  // Exemple de log pour voir quel payload a été utilisé :
+  // console.log('JWT payload:', payload);
+
+  // Remplacer la ligne suivante si la capture d'erreur précédente est retirée :
+  // const payload: Payload = await verify(token, cryptoKeyRead).catch((error: unknown) => {
+  // Par exemple (si on ne garde que la vérification principale):
+  // const payload: Payload = await verify(token, mainCryptoKey).catch((error: unknown) => {
+  // Fin du bloc de code inséré précédemment, les lignes ci-dessus étaient orphelines et ont été supprimées.
+  const userId = payload.sub;
+  if (!userId) {
+    // Ceci ne devrait techniquement pas arriver si la vérification djwt réussit
+    // car la spec JWT exige un 'sub' dans la plupart des cas d'usage.
+    // Mais une vérification est une bonne pratique.
+    console.error('User ID (sub) not found in JWT payload after successful verification.');
+    throw new Error('User ID not found in token after verification.');
+  }
+  return userId;
 }
 
 // Fonction principale pour gérer les requêtes
@@ -83,7 +138,7 @@ async function handler(req: Request): Promise<Response> {
 
   try {
     // Authentification de l'utilisateur
-    const userId = await authenticate(req).catch((error) => {
+    const _userId = await authenticate(req).catch((error: Error) => {
         console.error('Error during authentication:', error.message);
         throw new Error(error.message)
     });
@@ -103,38 +158,75 @@ async function handler(req: Request): Promise<Response> {
     }
     const { sessionId } = data
 
-
     // Récupérer les informations de la session
-    const session = await stripe.checkout.sessions.retrieve(sessionId).catch((stripeError) => {
-      console.error('Stripe Error:', stripeError)
-      const responseError: ResponseError = {
-        error: stripeError.message,
-        code: stripeError.code
-      }
-    return false
-      throw responseError
-    })
-    
-    const response: SessionStatusResponse = {
-      status: session.status,
-      customer: session.customer,
-      subscription: session.subscription,
+    let session;
+    try {
+        session = await stripe.checkout.sessions.retrieve(sessionId);
+    } catch (stripeError: unknown) {
+        console.error('Stripe Error retrieving session:', stripeError);
+        let errorMessage = 'Failed to retrieve session from Stripe';
+        let errorCode: string | undefined = undefined;
+        if (stripeError instanceof Error) {
+            errorMessage = stripeError.message;
+        }
+        // Attempt to access Stripe-specific error code if available, 
+        // assuming stripeError might be an object with a code property even if not an Error instance.
+        if (typeof stripeError === 'object' && stripeError !== null && 'code' in stripeError) {
+            const potentialStripeError = stripeError as { code?: unknown };
+            if (typeof potentialStripeError.code === 'string') {
+                errorCode = potentialStripeError.code;
+            }
+        }
+        const responseErrorToThrow: ResponseError = {
+            error: errorMessage,
+            code: errorCode
+        };
+        throw responseErrorToThrow; // L'erreur sera attrapée par le bloc catch principal de la fonction handler
     }
+
+    // Si on arrive ici, la session a été récupérée avec succès
+    const response: SessionStatusResponse = {
+      status: session.status as string, // Stripe.Checkout.Session.status can be null, but retrieve() should populate it
+      customer: session.customer as string | null, // customer can be string or Stripe.Customer or Stripe.DeletedCustomer
+      subscription: session.subscription as string | null, // subscription can be string or Stripe.Subscription
+    };
 
     // Vérifier si la session est complétée et mettre à jour l'abonnement dans Supabase
     if (session.status === 'complete') {
       // Récupérer les informations de l'abonnement
-      const subscription = await stripe.subscriptions.retrieve(session.subscription as string).catch((stripeError) => {
-        console.error('Stripe Error:', stripeError)
-        if (stripeError.code === 'resource_missing'){
+      const subscription = await stripe.subscriptions.retrieve(session.subscription as string).catch((stripeError: unknown) => {
+        console.error('Stripe Error retrieving subscription:', stripeError)
+        let isResourceMissing = false;
+        if (typeof stripeError === 'object' && stripeError !== null && 'code' in stripeError) {
+            const potentialStripeError = stripeError as { code?: unknown };
+            if (typeof potentialStripeError.code === 'string' && potentialStripeError.code === 'resource_missing'){
+                isResourceMissing = true;
+            }
+        }
+        if (isResourceMissing){
             console.error('Subscription not found in Stripe');
-            throw new Error("Subscription not found in Stripe")
+            throw new Error("Subscription not found in Stripe") // This will be caught by the main handler
         }
-        const responseError: ResponseError = {
-          error: stripeError.message,
-          code: stripeError.code
+
+        // If not resource_missing, construct a generic error from stripeError
+        let subErrorMessage = 'Failed to retrieve subscription details from Stripe';
+        let subErrorCode: string | undefined = undefined;
+
+        if (stripeError instanceof Error) {
+            subErrorMessage = stripeError.message;
         }
-        throw responseError
+        if (typeof stripeError === 'object' && stripeError !== null && 'code' in stripeError) {
+            const potentialStripeError = stripeError as { code?: unknown };
+            if (typeof potentialStripeError.code === 'string') {
+                subErrorCode = potentialStripeError.code;
+            }
+        }
+        
+        const subscriptionResponseError: ResponseError = {
+          error: subErrorMessage,
+          code: subErrorCode
+        };
+        throw subscriptionResponseError; // This will be caught by the main handler
       })
 
       // Mettre à jour l'abonnement dans Supabase
@@ -167,10 +259,28 @@ async function handler(req: Request): Promise<Response> {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
-  } catch (error) {
+  } catch (error: unknown) {
     // Gérer les erreurs
-    console.error('Error:', error)
-    const errorResponse: ResponseError = { error: error.message, code: error.code }
+    console.error('Handler Error:', error)
+    let errorMessage = 'An unexpected error occurred';
+    let errorCode: string | undefined = undefined;
+
+    if (typeof error === 'object' && error !== null) {
+        const errObj = error as { message?: unknown; error?: unknown; code?: unknown };
+        if (typeof errObj.message === 'string') {
+            errorMessage = errObj.message;
+        } else if (typeof errObj.error === 'string') { // For our custom ResponseError like objects thrown
+            errorMessage = errObj.error;
+        }
+
+        if (typeof errObj.code === 'string') {
+            errorCode = errObj.code;
+        }
+    } else if (typeof error === 'string') { // Less common, but possible for errors to be strings
+        errorMessage = error;
+    }
+
+    const errorResponse: ResponseError = { error: errorMessage, code: errorCode };
 
     return new Response(
       JSON.stringify(errorResponse),

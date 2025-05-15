@@ -1,7 +1,12 @@
-import Stripe from 'npm:stripe@14.0.0'
-import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
+import Stripe from 'npm:stripe@^14.0.0';
+import { createClient } from 'npm:@supabase/supabase-js@^2.39.3';
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+  // Permet une chaîne de version API personnalisée du dashboard Stripe
+  // deno-lint-ignore-next-line no-explicit-any
+  apiVersion: '2025-04-30.basil' as any,
+  // typescript: true, // Optionnel: pour une meilleure inférence de type si supporté
+});
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
