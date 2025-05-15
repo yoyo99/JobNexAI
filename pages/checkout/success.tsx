@@ -18,6 +18,7 @@ interface SubscriptionDetails {
 }
 
 export default function CheckoutSuccessPage() {
+  console.log('SuccessPage: Component rendering'); // DEBUG 1
   const router = useRouter();
   const { t } = useTranslation('common'); // Assurez-vous d'avoir 'common.json' ou ajustez
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,10 @@ export default function CheckoutSuccessPage() {
   const [subscriptionDetails, setSubscriptionDetails] = useState<SubscriptionDetails | null>(null);
 
   useEffect(() => {
-    const { session_id } = router.query;
+    console.log('SuccessPage: Main useEffect triggered. router.isReady:', router.isReady, 'router.query:', router.query); // DEBUG 2
+    const sessionIdFromQuery = router.query.session_id as string;
+    console.log('SuccessPage: Extracted sessionIdFromQuery:', sessionIdFromQuery); // DEBUG 3
+    const { session_id } = router.query; // This is redundant if using sessionIdFromQuery, but let's keep for now
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF) {
       console.error('NEXT_PUBLIC_SUPABASE_PROJECT_REF is not set in environment variables.');
@@ -34,8 +38,8 @@ export default function CheckoutSuccessPage() {
       return;
     }
 
-    if (session_id) {
-      console.log('Checkout success page loaded, session_id:', session_id);
+    if (sessionIdFromQuery) { // Changed to use the consistently defined variable
+      console.log('SuccessPage: sessionId found. Attempting to call checkSession with sessionId:', sessionIdFromQuery); // DEBUG 4
       const checkSession = async () => {
         setLoading(true);
         setError(null);
@@ -49,7 +53,7 @@ export default function CheckoutSuccessPage() {
               // Si elle est protégée par JWT, vous devrez inclure le token d'authentification
               // 'Authorization': `Bearer ${supabase.auth.session()?.access_token}`,
             },
-            body: JSON.stringify({ session_id: session_id as string }),
+            body: JSON.stringify({ session_id: sessionIdFromQuery }),
           });
 
           console.log('Response status from check-session-status:', response.status);
@@ -72,9 +76,9 @@ export default function CheckoutSuccessPage() {
       };
 
       checkSession();
-    } else if (router.isReady) { // Ne s'exécute que lorsque router.query est peuplé
-      console.warn('session_id is missing from query parameters.');
-      setError(t('checkout.success.missingSessionId'));
+    } else if (router.isReady && !sessionIdFromQuery) { // More explicit condition
+      console.warn('SuccessPage: router is ready, but session_id is missing from query parameters.'); // DEBUG 5
+      setError(t('checkout.success.errorNoSessionId'));
       setLoading(false);
     }
   }, [router.query, router.isReady, t]);
