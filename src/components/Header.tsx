@@ -25,7 +25,7 @@ const privateNavigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, subscription } = useAuth()
   const location = useLocation()
 
   // Utiliser la navigation publique pour les utilisateurs non connectés
@@ -66,7 +66,20 @@ export function Header() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
           <LanguageSwitcher />
-          {!user && (
+          {user ? (
+            <div className="flex items-center gap-x-4">
+              <span className="text-sm font-semibold text-white">
+                {user.full_name || user.email}
+              </span>
+              {subscription && (
+                <span className="text-sm px-3 py-1 rounded-md bg-primary-500 text-white">
+                  {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
+                </span>
+              )}
+              {/* Optionnel: Lien vers la page de profil/facturation */}
+              {/* <Link to="/profile" className="text-sm font-semibold text-white hover:text-primary-400">Profil</Link> */}
+            </div>
+          ) : (
             <>
               <Link 
                 to="/login" 
@@ -121,7 +134,20 @@ export function Header() {
                 <div className="mb-4">
                   <LanguageSwitcher />
                 </div>
-                {!user && (
+                {user ? (
+                  <div className="py-6">
+                    <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white">
+                      {user.full_name || user.email}
+                    </span>
+                    {subscription && (
+                      <span className="-mx-3 block rounded-lg px-3 py-1 text-sm bg-primary-500 text-white w-fit">
+                        {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
+                      </span>
+                    )}
+                    {/* Optionnel: Lien vers la page de profil/facturation pour mobile */}
+                    {/* <Link to="/profile" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-white/10" onClick={() => setMobileMenuOpen(false)}>Profil</Link> */}
+                  </div>
+                ) : (
                   <div className="space-y-4">
                     <Link
                       to="/login"
