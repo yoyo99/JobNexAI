@@ -18,6 +18,8 @@ interface SubscriptionDetails {
 }
 
 export default function CheckoutSuccessPage() {
+  // ALERTE DE DÉBOGAGE AJOUTÉE ICI
+  alert("DEBUG: Success Page Loaded - Version Alert Test");
   console.log('SuccessPage: Component rendering'); // DEBUG 1
   const router = useRouter();
   const { t } = useTranslation('common'); // Assurez-vous d'avoir 'common.json' ou ajustez
