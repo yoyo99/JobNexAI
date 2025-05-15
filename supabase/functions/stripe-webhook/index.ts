@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
 
         // Récupérer les détails de l'abonnement
         const subscriptionDetails = await stripe.subscriptions.retrieve(subscriptionId as string)
-        console.log('Subscription Details Price Object:', JSON.stringify(subscriptionDetails.items.data[0].price, null, 2));
+        console.log('Subscription Details Price Object:', JSON.stringify(subscriptionDetails.items.data[0].price, null, 2)); // Gardons ce log utile
         const plan = subscriptionDetails.items.data[0].price.lookup_key
 
         // Mettre à jour l'abonnement dans Supabase
@@ -79,8 +79,48 @@ Deno.serve(async (req) => {
               : null,
           })
 
-        if (subscriptionError) throw subscriptionError
-        
+        if (subscriptionError) {
+          console.error("Error updating subscription in Supabase:", subscriptionError)
+          return new Response(`Supabase error: ${subscriptionError.message}`, { status: 400 })
+        }
+
+        console.log(`Subscription updated/inserted for user ${userId} to plan ${plan}`)
+
+        // Envoyer un email de confirmation après la mise à jour réussie de la BDD
+        const userEmail = session.customer_details?.email;
+        if (userEmail && plan && plan !== 'free') { 
+          try {
+            console.log(`Attempting to send confirmation email to ${userEmail} for plan ${plan}`);
+            const { data: emailSendData, error: emailError } = await supabase.functions.invoke("send-notification-email", {
+              body: {
+                to: userEmail,
+                subject: "Confirmation de votre abonnement JobNexAI",
+                html: `<h1>Merci pour votre abonnement !</h1><p>Votre plan '${plan}' est maintenant actif.</p><p>Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.</p>`,
+                text: `Merci pour votre abonnement ! Votre plan '${plan}' est maintenant actif. Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.`
+              },
+            });
+
+            if (emailError) {
+              console.error(`Error invoking send-notification-email function: ${emailError.message}`);
+              if(emailSendData) {
+                console.error('Response data from failed email invocation:', emailSendData);
+              }
+            } else {
+              console.log(`Successfully invoked send-notification-email for ${userEmail}. Response:`, emailSendData);
+            }
+          } catch (e: unknown) {
+            if (e instanceof Error) {
+              console.error(`Exception when trying to invoke send-notification-email: ${e.message}`);
+            } else {
+              console.error('An unknown error occurred during send-notification-email invocation:', e);
+            }
+          }
+        } else if (!userEmail) {
+          console.warn("Could not send confirmation email: User email not found in checkout session details.");
+        } else if (plan === 'free'){
+          console.log("Skipping email confirmation for free plan.");
+        }
+
         // Mettre à jour le type d'utilisateur si nécessaire
         if (userType) {
           const { error: userTypeError } = await supabase
@@ -132,14 +172,12 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
-  } catch (error: any) { // Type error as any
-    console.error('Error:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    )
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error('Webhook Error:', e.message);
+      return new Response(`Webhook error: ${e.message}`, { status: 400 });
+    }
+    console.error('Webhook Error: An unknown error occurred', e);
+    return new Response('Webhook error: An unknown error occurred', { status: 400 });
   }
 })
