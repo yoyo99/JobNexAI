@@ -257,6 +257,18 @@ const Auth: React.FC = () => {
               </button>
             </div>
           </div>
+          {/* Forgot Password Link */}
+          {isLogin && (
+            <div className="flex justify-end text-sm mt-2 mb-4"> {/* Ajout d'un peu d'espace vertical */}
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="font-medium text-primary-400 hover:text-primary-300 focus:outline-none underline"
+              >
+                {t('auth.forgotPasswordLink', 'Mot de passe oublié ?')}
+              </button>
+            </div>
+          )}
           {!isLogin && <PasswordStrengthMeter password={password} />}
           {message && (
             <div
