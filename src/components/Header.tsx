@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
-import Logo from '../assets/images/logo.svg';
+import Logo from '../assets/images/logo.svg?react';
 
 // Navigation pour les utilisateurs non connectés
 const publicNavigation = [
