@@ -32,6 +32,7 @@ export interface Profile {
   email: string;
   full_name: string | null;
   user_type?: string;
+  is_admin?: boolean | null;
   trial_ends_at: string | null;
   created_at: string;
   updated_at: string;

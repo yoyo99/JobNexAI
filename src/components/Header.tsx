@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
+import Logo from '../assets/images/logo.svg';
 
 // Navigation pour les utilisateurs non connectés
 const publicNavigation = [
@@ -37,10 +38,8 @@ export function Header() {
       <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">JobNexus</span>
-            <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-              JobNexus
-            </div>
+            <span className="sr-only">JobNexAI</span>
+            <Logo className="h-10 w-auto" />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -68,6 +67,14 @@ export function Header() {
           <LanguageSwitcher />
           {user ? (
             <div className="flex items-center gap-x-4">
+              {user.is_admin && (
+                <Link
+                  to="/admin"
+                  className="text-sm font-semibold leading-6 text-yellow-400 hover:text-yellow-300 transition-colors"
+                >
+                  Admin
+                </Link>
+              )}
               <span className="text-sm font-semibold text-white">
                 {user.full_name || user.email}
               </span>
@@ -102,10 +109,8 @@ export function Header() {
         <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
           <div className="flex items-center justify-between">
             <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexus</span>
-              <div className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 text-transparent bg-clip-text">
-                JobNexus
-              </div>
+              <span className="sr-only">JobNexAI</span>
+              <Logo className="h-10 w-auto" />
             </Link>
             <button
               type="button"
@@ -136,6 +141,15 @@ export function Header() {
                 </div>
                 {user ? (
                   <div className="py-6">
+                    {user.is_admin && (
+                      <Link
+                        to="/admin"
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400 hover:bg-white/10"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Admin
+                      </Link>
+                    )}
                     <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white">
                       {user.full_name || user.email}
                     </span>
