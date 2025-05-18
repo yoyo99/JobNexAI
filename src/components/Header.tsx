@@ -49,12 +49,14 @@ export function Header() {
     return (
       <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm border-b border-white/10">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+          {((): boolean => false)() && // Conditionally render Logo section
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
               <span className="sr-only">JobNexAI</span>
               <Logo className="h-10 w-auto" />
             </Link>
           </div>
+          }
           <div className="flex lg:hidden">
             <button
               type="button"
