@@ -42,6 +42,7 @@ export const useAuth = create<AuthState>((set, get) => ({
         .single()
 
       if (profileError) throw profileError
+      console.log('[AUTH][loadUser] Fetched profile =', profile); // AJOUTER CETTE LIGNE
 
       // Récupérer l'abonnement
       const { data: subscription, error: subscriptionError } = await supabase
@@ -61,6 +62,7 @@ export const useAuth = create<AuthState>((set, get) => ({
         loading: false,
         initialized: true
       })
+      console.log('[AUTH][loadUser] User set in store =', get().user); // AJOUTER CETTE LIGNE
     } catch (error) {
       console.error('Error loading user:', error)
       set({ loading: false, initialized: true })
