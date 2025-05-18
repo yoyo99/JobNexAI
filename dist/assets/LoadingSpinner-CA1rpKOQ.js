@@ -1,0 +1,2 @@
+import{j as e,m as n}from"./motion-DEFBAXox.js";function m({size:t="md",color:s="primary-400",className:a="",text:r}){const i={sm:"h-4 w-4",md:"h-8 w-8",lg:"h-12 w-12"};return e.jsxs("div",{className:`flex flex-col items-center justify-center ${a}`,children:[e.jsx(n.div,{animate:{rotate:360},transition:{duration:1,repeat:1/0,ease:"linear"},className:`rounded-full border-t-2 border-b-2 border-${s} ${i[t]}`}),r&&e.jsx("p",{className:"mt-2 text-gray-400 text-sm",children:r})]})}export{m as L};
+//# sourceMappingURL=LoadingSpinner-CA1rpKOQ.js.map

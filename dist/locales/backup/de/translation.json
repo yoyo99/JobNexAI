@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "login": "[Übersetzung erforderlich]",
+    "startTrial": "[Übersetzung erforderlich]",
+    "errors": {
+      "login": "[Übersetzung erforderlich]",
+      "signup": "[Übersetzung erforderlich]",
+      "passwordLength": "[Übersetzung erforderlich]",
+      "requiredFields": "[Übersetzung erforderlich]",
+      "unknown": "[Übersetzung erforderlich]"
+    },
