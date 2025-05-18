@@ -117,7 +117,7 @@ export function Header() {
             )}
           </div>
         </nav>
-        {/* Mobile menu Dialog component temporarily commented out for debugging
+        {((): boolean => false)() && // Conditionally render Mobile Menu Dialog for debugging
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
@@ -196,7 +196,7 @@ export function Header() {
             </div>
           </Dialog.Panel>
         </Dialog>
-        */}
+        }
       </header>
     );
   }
