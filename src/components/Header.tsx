@@ -27,6 +27,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
   const { user, subscription } = useAuth()
+  console.log('[Header] User from useAuth in Header:', user);
   const location = useLocation()
 
   // Utiliser la navigation publique pour les utilisateurs non connectés
