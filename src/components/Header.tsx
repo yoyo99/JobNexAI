@@ -78,6 +78,7 @@ export function Header() {
             ))}
           </div>
           }
+          {((): boolean => false)() && // Conditionally render user section
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
             <LanguageSwitcher />
             {user ? (
@@ -118,6 +119,7 @@ export function Header() {
               </>
             )}
           </div>
+          }
         </nav>
         {((): boolean => false)() && // Conditionally render Mobile Menu Dialog for debugging
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
