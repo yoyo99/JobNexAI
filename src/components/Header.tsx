@@ -58,7 +58,7 @@ export function Header() {
             </Link>
           </div>
           }
-          {((): boolean => false)() && // Disable mobile menu button
+          {((): boolean => true)() && // Enable mobile menu button
           <div className="flex lg:hidden">
             <button
               type="button"
@@ -126,7 +126,7 @@ export function Header() {
           </div>
           }
         </nav>
-        {((): boolean => false)() && // Conditionally render Mobile Menu Dialog for debugging
+        {((): boolean => true)() && // Re-enable Mobile Menu Dialog
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
