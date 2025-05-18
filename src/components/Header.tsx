@@ -70,7 +70,7 @@ export function Header() {
             </button>
           </div>
           }
-          {((): boolean => false)() && // KEEP desktop navigation links disabled
+          {((): boolean => true)() && // Re-enable desktop navigation links
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
               <Link
