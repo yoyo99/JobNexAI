@@ -54,7 +54,7 @@ export function Header() {
             <Link to="/" className="-m-1.5 p-1.5">
               <span className="sr-only">JobNexAI</span>
               {((): boolean => true)() && // Reactivate the logo component (now SimpleLogo)
-              <SimpleLogo className="h-10 w-auto" />
+              <SimpleLogo />
               }
             </Link>
           </div>
@@ -134,7 +134,7 @@ export function Header() {
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">JobNexAI</span>
-                <SimpleLogo className="h-10 w-auto" />
+                <SimpleLogo />
               </Link>
               <button
                 type="button"
