@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
-import SimpleLogo from '../assets/images/simple_logo.svg?react';
+import simpleLogoSrc from '../assets/images/simple_logo.svg'; // Import SVG as a source URL
 
 // Navigation pour les utilisateurs non connectés
 const publicNavigation = [
@@ -51,9 +51,9 @@ export function Header() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           {((): boolean => true)() && // Re-enable Logo section's parent div
           <div className="flex lg:flex-1">
-            <Link to="/" className="-m-1.5 p-1.5 flex items-center"> {/* Removed h-10 w-auto */}
+            <Link to="/" className="-m-1.5 p-1.5 flex items-center">
               <span className="sr-only">JobNexAI</span>
-              <SimpleLogo width={40} height={40} /> {/* Added width and height props */}
+              <img src={simpleLogoSrc} alt="JobNexAI Logo" className="h-10 w-auto" />
               {/* Link Text Test */}
             </Link>
           </div>
