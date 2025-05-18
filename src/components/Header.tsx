@@ -53,8 +53,8 @@ export function Header() {
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
               {/* <span className="sr-only">JobNexAI</span> */}
-              {/* <SimpleLogo /> */}
-              Link Text Test
+              <SimpleLogo />
+              {/* Link Text Test */}
             </Link>
           </div>
           }
