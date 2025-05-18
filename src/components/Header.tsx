@@ -24,6 +24,7 @@ const privateNavigation = [
 ]
 
 export function Header() {
+  console.log('[Header] FUNCTION EXECUTION STARTED'); // <--- NOUVEAU LOG AJOUTÉ ICI
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t } = useTranslation()
   const { user, subscription } = useAuth()
