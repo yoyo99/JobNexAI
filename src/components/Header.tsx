@@ -35,6 +35,8 @@ export function Header() {
   // et la navigation privée pour les utilisateurs connectés
   const navigation = user ? privateNavigation : publicNavigation
 
+  /*
+  // Original return content temporarily commented out for debugging
   return (
     <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm border-b border-white/10">
       <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -97,7 +99,7 @@ export function Header() {
                 {t('auth.login')}
               </Link>
               <Link 
-                to="/pricing" 
+                to="/pricing"
                 className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
               >
                 {t('auth.startTrial')}
@@ -185,5 +187,15 @@ export function Header() {
         </Dialog.Panel>
       </Dialog>
     </header>
-  )
+  );
+  */
+
+  // Simplified return for debugging
+  return (
+    <div style={{ padding: '20px', backgroundColor: 'lightcoral', color: 'white', textAlign: 'center' }}>
+      Test Header Content. Admin link should appear here if logic is correct: 
+      {user && user.is_admin && <a href="/admin" style={{ color: 'yellow', marginLeft: '10px' }}>ADMIN LINK TEST</a>}
+    </div>
+  );
+}
 }
