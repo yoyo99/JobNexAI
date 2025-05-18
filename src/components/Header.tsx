@@ -51,9 +51,9 @@ export function Header() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           {((): boolean => true)() && // Re-enable Logo section's parent div
           <div className="flex lg:flex-1">
-            <Link to="/" className="-m-1.5 p-1.5 h-10 w-auto flex items-center"> {/* Added h-10 w-auto and flex items-center */}
+            <Link to="/" className="-m-1.5 p-1.5 flex items-center"> {/* Removed h-10 w-auto */}
               <span className="sr-only">JobNexAI</span>
-              <SimpleLogo /> {/* Keep SimpleLogo without direct classes for now */}
+              <SimpleLogo width={40} height={40} /> {/* Added width and height props */}
               {/* Link Text Test */}
             </Link>
           </div>
