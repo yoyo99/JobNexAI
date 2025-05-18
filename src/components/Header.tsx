@@ -33,168 +33,169 @@ export function Header() {
 
   // Utiliser la navigation publique pour les utilisateurs non connectés
   // et la navigation privée pour les utilisateurs connectés
-  const navigation = user ? privateNavigation : publicNavigation
+  const navigation = user ? privateNavigation : publicNavigation;
+  const debugSimplifiedHeader = true; // Mettez à false pour afficher le header original
 
-  /*
-  // Original return content temporarily commented out for debugging
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm border-b border-white/10">
-      <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div className="flex lg:flex-1">
-          <Link to="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">JobNexAI</span>
-            <Logo className="h-10 w-auto" />
-          </Link>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className="text-sm font-semibold leading-6 text-white hover:text-primary-400 transition-colors"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
-          <LanguageSwitcher />
-          {user ? (
-            <div className="flex items-center gap-x-4">
-              {user.is_admin && (
-                <Link
-                  to="/admin"
-                  className="text-sm font-semibold leading-6 text-yellow-400 hover:text-yellow-300 transition-colors"
-                >
-                  Admin
-                </Link>
-              )}
-              <span className="text-sm font-semibold text-white">
-                {user.full_name || user.email}
-              </span>
-              {subscription && (
-                <span className="text-sm px-3 py-1 rounded-md bg-primary-500 text-white">
-                  {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
-                </span>
-              )}
-              {/* Optionnel: Lien vers la page de profil/facturation */}
-              {/* <Link to="/profile" className="text-sm font-semibold text-white hover:text-primary-400">Profil</Link> */}
-            </div>
-          ) : (
-            <>
-              <Link 
-                to="/login" 
-                className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
-              >
-                {t('auth.login')}
-              </Link>
-              <Link 
-                to="/pricing"
-                className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
-              >
-                {t('auth.startTrial')}
-              </Link>
-            </>
-          )}
-        </div>
-      </nav>
-      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
-          <div className="flex items-center justify-between">
+  if (debugSimplifiedHeader) {
+    // Simplified return for debugging
+    return (
+      <div style={{ padding: '20px', backgroundColor: 'lightcoral', color: 'white', textAlign: 'center' }}>
+        Test Header Content. Admin link should appear here if logic is correct: 
+        {user && user.is_admin && <a href="/admin" style={{ color: 'yellow', marginLeft: '10px' }}>ADMIN LINK TEST</a>}
+      </div>
+    );
+  } else {
+    // Original return content (previously commented out)
+    return (
+      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm border-b border-white/10">
+        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+          <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
               <span className="sr-only">JobNexAI</span>
               <Logo className="h-10 w-auto" />
             </Link>
+          </div>
+          <div className="flex lg:hidden">
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-white"
-              onClick={() => setMobileMenuOpen(false)}
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+              onClick={() => setMobileMenuOpen(true)}
             >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-white/10">
-              <div className="space-y-2 py-6">
-                {navigation.map((item) => (
+          <div className="hidden lg:flex lg:gap-x-12">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-sm font-semibold leading-6 text-white hover:text-primary-400 transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
+            <LanguageSwitcher />
+            {user ? (
+              <div className="flex items-center gap-x-4">
+                {user.is_admin && (
                   <Link
-                    key={item.name}
-                    to={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-white/10"
-                    onClick={() => setMobileMenuOpen(false)}
+                    to="/admin"
+                    className="text-sm font-semibold leading-6 text-yellow-400 hover:text-yellow-300 transition-colors"
                   >
-                    {item.name}
+                    Admin
                   </Link>
-                ))}
-              </div>
-              <div className="py-6">
-                <div className="mb-4">
-                  <LanguageSwitcher />
-                </div>
-                {user ? (
-                  <div className="py-6">
-                    {user.is_admin && (
-                      <Link
-                        to="/admin"
-                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400 hover:bg-white/10"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        Admin
-                      </Link>
-                    )}
-                    <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white">
-                      {user.full_name || user.email}
-                    </span>
-                    {subscription && (
-                      <span className="-mx-3 block rounded-lg px-3 py-1 text-sm bg-primary-500 text-white w-fit">
-                        {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
-                      </span>
-                    )}
-                    {/* Optionnel: Lien vers la page de profil/facturation pour mobile */}
-                    {/* <Link to="/profile" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-white/10" onClick={() => setMobileMenuOpen(false)}>Profil</Link> */}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <Link
-                      to="/login"
-                      className="block text-center text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
-                    >
-                      {t('auth.login')}
-                    </Link>
-                    <Link
-                      to="/pricing"
-                      className="block text-center text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
-                    >
-                      {t('auth.startTrial')}
-                    </Link>
-                  </div>
                 )}
+                <span className="text-sm font-semibold text-white">
+                  {user.full_name || user.email}
+                </span>
+                {subscription && (
+                  <span className="text-sm px-3 py-1 rounded-md bg-primary-500 text-white">
+                    {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
+                  </span>
+                )}
+                {/* Optionnel: Lien vers la page de profil/facturation */}
+                {/* <Link to="/profile" className="text-sm font-semibold text-white hover:text-primary-400">Profil</Link> */}
+              </div>
+            ) : (
+              <>
+                <Link 
+                  to="/login" 
+                  className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                >
+                  {t('auth.login')}
+                </Link>
+                <Link 
+                  to="/pricing"
+                  className="text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
+                >
+                  {t('auth.startTrial')}
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+          <div className="fixed inset-0 z-50" />
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+            <div className="flex items-center justify-between">
+              <Link to="/" className="-m-1.5 p-1.5">
+                <span className="sr-only">JobNexAI</span>
+                <Logo className="h-10 w-auto" />
+              </Link>
+              <button
+                type="button"
+                className="-m-2.5 rounded-md p-2.5 text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="sr-only">Close menu</span>
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mt-6 flow-root">
+              <div className="-my-6 divide-y divide-white/10">
+                <div className="space-y-2 py-6">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-white/10"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+                <div className="py-6">
+                  <div className="mb-4">
+                    <LanguageSwitcher />
+                  </div>
+                  {user ? (
+                    <div className="py-6">
+                      {user.is_admin && (
+                        <Link
+                          to="/admin"
+                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400 hover:bg-white/10"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Admin
+                        </Link>
+                      )}
+                      <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white">
+                        {user.full_name || user.email}
+                      </span>
+                      {subscription && (
+                        <span className="-mx-3 block rounded-lg px-3 py-1 text-sm bg-primary-500 text-white w-fit">
+                          {t(`plans.${subscription.plan}`, subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1))}
+                        </span>
+                      )}
+                      {/* Optionnel: Lien vers la page de profil/facturation pour mobile */}
+                      {/* <Link to="/profile" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-white/10" onClick={() => setMobileMenuOpen(false)}>Profil</Link> */}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Link
+                        to="/login"
+                        className="block text-center text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                      >
+                        {t('auth.login')}
+                      </Link>
+                      <Link
+                        to="/pricing"
+                        className="block text-center text-sm font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-500 hover:to-secondary-500 transition-colors"
+                      >
+                        {t('auth.startTrial')}
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
-    </header>
-  );
-  */
-
-  // Simplified return for debugging
-  return (
-    <div style={{ padding: '20px', backgroundColor: 'lightcoral', color: 'white', textAlign: 'center' }}>
-      Test Header Content. Admin link should appear here if logic is correct: 
-      {user && user.is_admin && <a href="/admin" style={{ color: 'yellow', marginLeft: '10px' }}>ADMIN LINK TEST</a>}
-    </div>
-  );
+          </Dialog.Panel>
+        </Dialog>
+      </header>
+    );
+  }
 }
