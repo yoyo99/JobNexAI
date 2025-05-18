@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
-import Logo from '../assets/images/logo.svg?react';
+import SimpleLogo from '../assets/images/simple_logo.svg?react';
 
 // Navigation pour les utilisateurs non connectés
 const publicNavigation = [
@@ -53,12 +53,13 @@ export function Header() {
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5">
               <span className="sr-only">JobNexAI</span>
-              {((): boolean => false)() && // Conditionally disable only the Logo component
-              <Logo className="h-10 w-auto" />
+              {((): boolean => true)() && // Reactivate the logo component (now SimpleLogo)
+              <SimpleLogo className="h-10 w-auto" />
               }
             </Link>
           </div>
           }
+          {((): boolean => false)() && // Disable mobile menu button
           <div className="flex lg:hidden">
             <button
               type="button"
@@ -69,7 +70,8 @@ export function Header() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          {((): boolean => false)() && // Conditionally render desktop navigation links
+          }
+          {((): boolean => false)() && // KEEP desktop navigation links disabled
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
               <Link
@@ -82,7 +84,7 @@ export function Header() {
             ))}
           </div>
           }
-          {((): boolean => false)() && // Conditionally render user section
+          {((): boolean => false)() && // KEEP user section disabled
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
             <LanguageSwitcher />
             {user ? (
