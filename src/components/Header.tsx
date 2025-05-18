@@ -15,13 +15,21 @@ const publicNavigation = [
   { name: 'Témoignages', href: '/testimonials' },
 ]
 
-// Navigation pour les utilisateurs connectés
-const privateNavigation = [
+// Navigation pour les utilisateurs connectés (avant admin)
+const userCoreNavigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Job Search', href: '/jobs' },
   { name: 'Applications', href: '/applications' },
   { name: 'CV Builder', href: '/cv-builder' },
-]
+  { name: 'Network', href: '/network' },
+  { name: 'Market Analysis', href: '/market-analysis' },
+  { name: 'Profile', href: '/profile' },
+  { name: 'Billing', href: '/billing' },
+];
+
+const adminSpecificNavigation = [
+  { name: 'Admin', href: '/admin' },
+];
 
 export function Header() {
   console.log('[Header] FUNCTION EXECUTION STARTED'); // <--- NOUVEAU LOG AJOUTÉ ICI
@@ -31,9 +39,16 @@ export function Header() {
   console.log('[Header] User from useAuth in Header:', user);
   const location = useLocation()
 
-  // Utiliser la navigation publique pour les utilisateurs non connectés
-  // et la navigation privée pour les utilisateurs connectés
-  const navigation = user ? privateNavigation : publicNavigation;
+  // Déterminer la navigation à afficher
+  let currentNavigation;
+  if (user) {
+    currentNavigation = [...userCoreNavigation];
+    if (user.is_admin) {
+      currentNavigation = [...currentNavigation, ...adminSpecificNavigation];
+    }
+  } else {
+    currentNavigation = publicNavigation;
+  }
   const debugSimplifiedHeader = false; // Mettez à false pour afficher le header original
 
   if (debugSimplifiedHeader) {
@@ -72,13 +87,13 @@ export function Header() {
           }
           {((): boolean => true)() && // Re-enable desktop navigation links
           <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
+            {currentNavigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className="text-sm font-semibold leading-6 text-white hover:text-primary-400 transition-colors"
               >
-                {item.name}
+                {t(item.name)}
               </Link>
             ))}
           </div>
@@ -147,14 +162,14 @@ export function Header() {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-white/10">
                 <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
+                  {currentNavigation.map((item) => (
                     <Link
                       key={item.name}
                       to={item.href}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-white/10"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {item.name}
+                      {t(item.name)}
                     </Link>
                   ))}
                 </div>

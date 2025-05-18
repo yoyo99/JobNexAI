@@ -7,7 +7,7 @@ let stripePromise: Promise<any> | null = null
 
 const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.VITE_STRIPE_PUBLIC_KEY!)
+    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!)
   }
   return stripePromise
 }
