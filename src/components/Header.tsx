@@ -34,7 +34,7 @@ export function Header() {
   // Utiliser la navigation publique pour les utilisateurs non connectés
   // et la navigation privée pour les utilisateurs connectés
   const navigation = user ? privateNavigation : publicNavigation;
-  const debugSimplifiedHeader = true; // Mettez à false pour afficher le header original
+  const debugSimplifiedHeader = false; // Mettez à false pour afficher le header original
 
   if (debugSimplifiedHeader) {
     // Simplified return for debugging
