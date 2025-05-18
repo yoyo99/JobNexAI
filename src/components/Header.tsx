@@ -51,12 +51,7 @@ export function Header() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           {((): boolean => true)() && // Re-enable Logo section's parent div
           <div className="flex lg:flex-1">
-            <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">JobNexAI</span>
-              {((): boolean => true)() && // Reactivate the logo component (now SimpleLogo)
-              <SimpleLogo />
-              }
-            </Link>
+            Test Logo Spot Sanity Check
           </div>
           }
           {((): boolean => false)() && // Disable mobile menu button
