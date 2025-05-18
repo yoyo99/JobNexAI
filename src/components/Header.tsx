@@ -133,7 +133,7 @@ export function Header() {
             <div className="flex items-center justify-between">
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">JobNexAI</span>
-                <SimpleLogo />
+                <img src={simpleLogoSrc} alt="JobNexAI Logo" className="h-10 w-auto" />
               </Link>
               <button
                 type="button"
