@@ -37,7 +37,7 @@ export function PaymentMethodList() {
       })
 
       if (error) throw error
-      setPaymentMethods(data || [])
+      setPaymentMethods(data?.paymentMethods || [])
     } catch (error: any) {
       console.error('Error loading payment methods:', error)
       setError(error.message || 'Une erreur est survenue')
