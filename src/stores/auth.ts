@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+
+let isLoadUserRunning = false; // Drapeau pour prévenir les exécutions concurrentes
 import { supabase, type Profile, type Subscription } from '../lib/supabase'
 import { AuthService } from '../lib/auth-service'
 
@@ -21,6 +23,12 @@ export const useAuth = create<AuthState>((set, get) => ({
   initialized: false,
 
   loadUser: async () => {
+    if (isLoadUserRunning) {
+      const callIdWarning = Date.now();
+      console.warn(`[AUTH][loadUser][${callIdWarning}] Aborted: execution already in progress.`);
+      return;
+    }
+    isLoadUserRunning = true;
     const callId = Date.now(); // Simple ID pour tracer l'appel
     console.log(`[AUTH][loadUser][${callId}] Execution started.`);
     try {
@@ -98,6 +106,9 @@ export const useAuth = create<AuthState>((set, get) => ({
         return { user: null, subscription: null, loading: false, initialized: true }; // Réinitialiser user/sub en cas d'erreur
       });
       console.log(`[AUTH][loadUser][${callId}] Catch block finished.`);
+    } finally {
+      isLoadUserRunning = false;
+      console.log(`[AUTH][loadUser][${callId}] Execution fully finished (finally block).`);
     }
   },
 
