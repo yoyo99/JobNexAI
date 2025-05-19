@@ -8,8 +8,8 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { loadUser, initialized: authStoreInitialized, loading: authStoreLoading } = useAuth();
-  // const [initialized, setInitialized] = useState(false); // État local moins pertinent
   const [error, setError] = useState<Error | null>(null);
+  const [hasBeenInitializedOnce, setHasBeenInitializedOnce] = useState(false); // NOUVEL ÉTAT
 
   useEffect(() => {
     console.log('AuthProvider: Initializing...')
@@ -91,6 +91,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [loadUser])
 
+  // NOUVEAU useEffect pour suivre la première initialisation
+  useEffect(() => {
+    if (authStoreInitialized) {
+      setHasBeenInitializedOnce(true);
+    }
+  }, [authStoreInitialized]);
+
   // Rendre simplement les enfants, même en cas d'erreur pour ne pas bloquer l'application
   if (error) {
     console.warn('AuthProvider is continuing despite initialization error:', error);
@@ -98,10 +105,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   // Attendre que le store auth soit initialisé
-  console.log(`[AuthProvider] Rendering. authStoreInitialized: ${authStoreInitialized}, authStoreLoading: ${authStoreLoading}`);
-  if (!authStoreInitialized) {
-    // Afficher un loader pendant que le store s'initialise
-    // Vous pouvez utiliser un composant LoadingSpinner plus sophistiqué ici
+  console.log(`[AuthProvider] Rendering. authStoreInitialized: ${authStoreInitialized}, authStoreLoading: ${authStoreLoading}, hasBeenInitializedOnce: ${hasBeenInitializedOnce}`);
+  
+  // MODIFICATION DE LA CONDITION
+  if (!hasBeenInitializedOnce) { 
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#1a202c', color: 'white' }}>Chargement de l'application...</div>;
   }
   
