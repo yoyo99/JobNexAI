@@ -90,6 +90,7 @@ const JobSearch = React.lazy(() => import('./components/JobSearch'));
 const JobApplications = React.lazy(() => import('./components/JobApplications'));
 const MarketAnalysis = React.lazy(() => import('./components/MarketAnalysis'));
 const CVBuilder = React.lazy(() => import('./components/cv/CVBuilder'));
+const Settings = React.lazy(() => import('./components/Settings')); // AJOUTÉ POUR LA PAGE SETTINGS
 const NetworkPage = React.lazy(() => import('./components/NetworkPage'));
 const MarketTrendsPage = React.lazy(() => import('./components/pages/MarketTrendsPage'));
 const FreelanceProjects = React.lazy(() => import('./components/freelance/FreelanceProjects'));
@@ -167,6 +168,7 @@ function App() {
               <Route path="/dashboard" element={<LazyComponentWrapper><Dashboard /></LazyComponentWrapper>} />
               <Route path="/profile" element={<LazyComponentWrapper><Profile /></LazyComponentWrapper>} />
               <Route path="/billing" element={<LazyComponentWrapper><Billing /></LazyComponentWrapper>} />
+              <Route path="/settings" element={<LazyComponentWrapper><Settings /></LazyComponentWrapper>} /> {/* AJOUTÉ POUR LA PAGE SETTINGS */}
               <Route path="/jobs" element={
                 <ProtectedRoute requiresSubscription>
                   <LazyComponentWrapper><JobSearch /></LazyComponentWrapper>
