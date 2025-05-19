@@ -64,8 +64,11 @@ const Auth: React.FC = () => {
         return;
       }
       setMessage({ type: 'success', text: t('auth.success.signup') });
+      // Délai pour lire le message, puis la navigation dans son propre tick
       setTimeout(() => {
-        navigate('/pricing');
+        setTimeout(() => {
+          navigate('/pricing');
+        }, 0);
       }, 2000);
     } catch (error: any) {
       console.error('Error signing up:', error);
@@ -106,7 +109,9 @@ const Auth: React.FC = () => {
         return;
       }
       setMessage({ type: 'success', text: t('auth.success.login') });
-      navigate(from);
+      setTimeout(() => {
+        navigate(from);
+      }, 0);
     } catch (error: any) {
       // Mapping des messages d’erreur JS génériques
       let errorKey = '';
