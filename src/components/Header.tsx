@@ -109,9 +109,11 @@ export function Header() {
             ))}
           </div>
           }
-          {((): boolean => false)() && // KEEP user section disabled
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
-            <LanguageSwitcher />
+          {((): boolean => true)() && // Restore user section display
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
+            <div className="mr-4">
+              <LanguageSwitcher />
+            </div>
             {user ? (
               <Menu as="div" className="relative">
                 <div>
@@ -197,11 +199,8 @@ export function Header() {
                   </Menu.Items>
                 </Transition>
               </Menu>
-                {/* Optionnel: Lien vers la page de profil/facturation */}
-                {/* <Link to="/profile" className="text-sm font-semibold text-white hover:text-primary-400">Profil</Link> */}
-              </div>
             ) : (
-              <>
+              <div className="flex items-center space-x-4">
                 <Link 
                   to="/login" 
                   className="text-sm font-semibold px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-colors"
