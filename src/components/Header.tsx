@@ -256,7 +256,7 @@ export function Header() {
                   </div>
                   {user ? (
                     <div className="py-6">
-                      {user.is_admin && (
+                      {/* {user.is_admin && (
                         <Link
                           to="/admin"
                           className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400 hover:bg-white/10"
@@ -264,6 +264,11 @@ export function Header() {
                         >
                           Admin
                         </Link>
+                      )} */}
+                      {user.is_admin && (
+                        <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400">
+                          {/* Admin Link Temporarily Commented */}
+                        </span>
                       )}
                       <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white">
                         {user.full_name || user.email}
