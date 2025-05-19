@@ -213,7 +213,7 @@ export function Header() {
                 >
                   {t('auth.startTrial')}
                 </Link>
-              </>
+              </div>
             )}
           </div>
           }
