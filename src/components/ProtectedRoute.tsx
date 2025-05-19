@@ -11,30 +11,44 @@ export function ProtectedRoute({ children, requiresSubscription = false }: Prote
   const { user, subscription, loading, initialized } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const navigationAttempted = React.useRef(false);
 
   React.useEffect(() => {
-    // Agir seulement quand le chargement initial est terminé et qu'on n'est plus en train de charger activement
-    if (!loading && initialized) {
-      if (!user) {
-        console.log('[ProtectedRoute] User not found after init, attempting to redirect to /login');
-        const timerId = setTimeout(() => {
-          console.log('[ProtectedRoute] Executing redirect to /login after timeout');
-          navigate('/login', { state: { from: location }, replace: true });
-        }, 0); // Un délai de 0ms est souvent suffisant pour passer au prochain tick
-        return () => clearTimeout(timerId); // Nettoyer le timeout si le composant est démonté
-      }
+    // Si on charge ou pas encore initialisé, on réinitialise le drapeau car l'état n'est pas stable
+    if (loading || !initialized) {
+      navigationAttempted.current = false;
+      return;
+    }
 
-      if (requiresSubscription) {
-        const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date();
-        const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
-        if (!isTrialValid && !hasActiveSubscription) {
-          console.log('[ProtectedRoute] Subscription required/invalid after init, attempting to redirect to /pricing');
-          const timerId = setTimeout(() => {
-            console.log('[ProtectedRoute] Executing redirect to /pricing after timeout');
-            navigate('/pricing', { state: { from: location }, replace: true });
-          }, 0);
-          return () => clearTimeout(timerId); // Nettoyer le timeout
+    // À ce point: loading is false, initialized is true
+
+    if (!user) {
+      if (!navigationAttempted.current && location.pathname !== '/login') {
+        console.log('[ProtectedRoute] User not found. Attempting redirect to /login ONCE.');
+        navigationAttempted.current = true;
+        navigate('/login', { state: { from: location }, replace: true });
+      }
+      return; // L'utilisateur est null, pas besoin de vérifier l'abonnement
+    } else {
+      // L'utilisateur est chargé, on peut réinitialiser le drapeau pour de futures déconnexions
+      navigationAttempted.current = false;
+    }
+
+    // Si l'utilisateur existe, vérifier l'abonnement
+    if (requiresSubscription) {
+      const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date();
+      const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
+      if (!isTrialValid && !hasActiveSubscription) {
+        if (!navigationAttempted.current && location.pathname !== '/pricing') {
+          console.log('[ProtectedRoute] Subscription invalid. Attempting redirect to /pricing ONCE.');
+          navigationAttempted.current = true;
+          navigate('/pricing', { state: { from: location }, replace: true });
         }
+      } else {
+        // L'abonnement est valide, on peut réinitialiser le drapeau (si on en utilisait un séparé pour /pricing)
+        // Pour l'instant, le même drapeau est partagé, ce qui est ok si les conditions sont mutuellement exclusives
+        // ou si on considère que toute redirection réussie réinitialise la nécessité de re-vérifier.
+        // Si `user` est true, navigationAttempted est déjà false grâce au bloc précédent.
       }
     }
   }, [user, loading, initialized, subscription, requiresSubscription, navigate, location]);
