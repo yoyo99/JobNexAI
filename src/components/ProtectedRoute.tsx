@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../stores/auth'
 
