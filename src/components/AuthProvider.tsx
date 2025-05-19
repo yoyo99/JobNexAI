@@ -98,6 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   // Attendre que le store auth soit initialisé
+  console.log(`[AuthProvider] Rendering. authStoreInitialized: ${authStoreInitialized}, authStoreLoading: ${authStoreLoading}`);
   if (!authStoreInitialized) {
     // Afficher un loader pendant que le store s'initialise
     // Vous pouvez utiliser un composant LoadingSpinner plus sophistiqué ici
