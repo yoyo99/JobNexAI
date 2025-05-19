@@ -109,7 +109,9 @@ const Auth: React.FC = () => {
         return;
       }
       setMessage({ type: 'success', text: t('auth.success.login') });
+      console.log(`[Auth.tsx] handleSignIn: Preparing to navigate. 'from' is: ${from}`);
       setTimeout(() => {
+        console.log(`[Auth.tsx] handleSignIn: Executing navigate(${from}) inside setTimeout.`);
         navigate(from);
       }, 0);
     } catch (error: any) {
