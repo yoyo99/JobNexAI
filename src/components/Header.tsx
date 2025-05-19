@@ -3,7 +3,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, UserCircleIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react' // Nécessaire pour Transition
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
