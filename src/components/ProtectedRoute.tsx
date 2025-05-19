@@ -16,17 +16,24 @@ export function ProtectedRoute({ children, requiresSubscription = false }: Prote
     // Agir seulement quand le chargement initial est terminé et qu'on n'est plus en train de charger activement
     if (!loading && initialized) {
       if (!user) {
-        console.log('[ProtectedRoute] User not found after init, redirecting to /login');
-        navigate('/login', { state: { from: location }, replace: true });
-        return; // Sortir tôt pour éviter la logique d'abonnement si pas d'utilisateur
+        console.log('[ProtectedRoute] User not found after init, attempting to redirect to /login');
+        const timerId = setTimeout(() => {
+          console.log('[ProtectedRoute] Executing redirect to /login after timeout');
+          navigate('/login', { state: { from: location }, replace: true });
+        }, 0); // Un délai de 0ms est souvent suffisant pour passer au prochain tick
+        return () => clearTimeout(timerId); // Nettoyer le timeout si le composant est démonté
       }
 
       if (requiresSubscription) {
         const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date();
         const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
         if (!isTrialValid && !hasActiveSubscription) {
-          console.log('[ProtectedRoute] Subscription required/invalid after init, redirecting to /pricing');
-          navigate('/pricing', { state: { from: location }, replace: true });
+          console.log('[ProtectedRoute] Subscription required/invalid after init, attempting to redirect to /pricing');
+          const timerId = setTimeout(() => {
+            console.log('[ProtectedRoute] Executing redirect to /pricing after timeout');
+            navigate('/pricing', { state: { from: location }, replace: true });
+          }, 0);
+          return () => clearTimeout(timerId); // Nettoyer le timeout
         }
       }
     }
