@@ -205,8 +205,20 @@ export const AuthService = {
    * Récupère l'utilisateur actuellement connecté
    */
   async getCurrentUser() {
+    const TIMEOUT_DURATION = 7000; // 7 secondes, ajustable
+
     try {
-      const { data, error } = await supabase.auth.getUser()
+      const getUserPromise = supabase.auth.getUser();
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout: supabase.auth.getUser() took too long')), TIMEOUT_DURATION)
+      );
+
+      // @ts-ignore // Pourrait se plaindre des types de Promise.race
+      const { data, error } = await Promise.race([
+        getUserPromise,
+        timeoutPromise
+      ]);
       if (error) throw error
       
       return { user: data.user, error: null }
