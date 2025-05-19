@@ -9,7 +9,9 @@ interface JWTData {
 }
 
 // Create a new instance of the Stripe API client using the secret key from environment variables
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+  apiVersion: '2023-10-16',
+})
 // Retrieve the JWT secret key from the environment variables
 const jwtSecret = Deno.env.get('JWT_SECRET')!
 
@@ -68,8 +70,9 @@ Deno.serve(async (req) => {
   // Try to authenticate the user
   try {
     await authenticate(req)
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.error || error.message || 'Invalid Token', code: error.code || 401 }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: error.code || 401 })
+  } catch (e) { // 'error' renommé en 'e' pour éviter confusion
+    const err = e as { error?: string; message?: string; code?: number }; // Assertion de type
+    return new Response(JSON.stringify({ error: err.error || err.message || 'Invalid Token', code: err.code || 401 }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: err.code || 401 });
   }
 
   try {
@@ -78,7 +81,7 @@ Deno.serve(async (req) => {
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${req.headers.get('origin')}/settings`,
+      return_url: `${req.headers.get('origin')}/billing`, // MODIFIÉ ICI
     })
 
     return new Response(
@@ -88,11 +91,12 @@ Deno.serve(async (req) => {
         status: 200,
       },
     )
-  } catch (error) {
+  } catch (e) { // 'error' renommé en 'e'
+    const err = e as { error?: string; message?: string; code?: number }; // Assertion de type
     // Handle any errors that occur during the process
-    const message = error.error || error.message || 'Internal Server Error'
-    const code = error.code || 500
-    console.error('Error:', message, error)
+    const message = err.error || err.message || 'Internal Server Error';
+    const code = err.code || 500;
+    console.error('Error in create-portal-session:', message, e); // Log l'erreur originale 'e' pour plus de détails
     // Return an error response
     return new Response(
       JSON.stringify({ error: message, code } as createPortalSessionResponse),
@@ -100,6 +104,6 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: code,
       }
-    )
+    );
   }
 })
