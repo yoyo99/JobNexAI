@@ -308,7 +308,6 @@ export function Header() {
             </div>
           </Dialog.Panel>
         </Dialog>
-        }
       </header>
     );
   }
