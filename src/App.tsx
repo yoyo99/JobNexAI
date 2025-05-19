@@ -104,15 +104,13 @@ const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelectio
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 function App() {
-  const version = 'APP_MINIMAL_TEST_V2'; // Changez V2 en V3, V4 pour chaque test
+  const version = 'APP_MINIMAL_TEST_V3';
   console.log(`--- ${version} --- App.tsx minimal est déployé ! ---`);
   return (
-    <div style={{ padding: '50px', textAlign: 'center', fontSize: '24px', color: 'white', background: 'darkblue' }}>
-      {version} - Test de déploiement minimal.
+    <div style={{ padding: '50px', textAlign: 'center', fontSize: '24px', color: 'white', background: 'green' }}>
+      {version} - Test de déploiement minimal (CORRIGÉ).
       Si vous voyez ceci, le NOUVEAU App.tsx est en ligne.
     </div>
   );
 }
-}
-
-export default App
+export default App;
