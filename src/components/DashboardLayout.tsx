@@ -14,6 +14,7 @@ import {
   MagnifyingGlassIcon,
   PlusCircleIcon,
   CreditCardIcon,
+  Cog6ToothIcon, // Ajout de l'icône Paramètres
 } from '@heroicons/react/24/outline'
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom' // Already v6 compatible
 import { useTranslation } from 'react-i18next'
@@ -43,6 +44,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'Réseau', href: '/network', icon: UsersIcon },
         { name: 'Analyse du marché', href: '/market-analysis', icon: ChartPieIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
+        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
       ])
     } else if (user?.user_type === 'recruiter') {
       setNavigation([
@@ -53,6 +55,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'Réseau', href: '/network', icon: UsersIcon },
         { name: 'Profil', href: '/profile', icon: UserIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
+        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
       ])
     } else {
       // Navigation par défaut pour les candidats
@@ -65,6 +68,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'navigation.marketAnalysis', href: '/market-analysis', icon: ChartPieIcon },
         { name: 'navigation.profile', href: '/profile', icon: UserIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
+        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
       ])
     }
   }, [user?.user_type, t])

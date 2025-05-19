@@ -7,9 +7,9 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { loadUser } = useAuth()
-  const [initialized, setInitialized] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const { loadUser, initialized: authStoreInitialized, loading: authStoreLoading } = useAuth();
+  // const [initialized, setInitialized] = useState(false); // État local moins pertinent
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     console.log('AuthProvider: Initializing...')
@@ -47,12 +47,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.warn('AuthProvider: Supabase auth not available, functioning in limited mode')
         }
         
-        setInitialized(true)
+        // setInitialized(true); // Géré par le store auth maintenant
       } catch (err) {
         console.error('AuthProvider: Critical initialization error', err)
-        setError(err instanceof Error ? err : new Error(String(err)))
+        setError(err instanceof Error ? err : new Error(String(err)));
         // Let the app continue even with auth error
-        setInitialized(true)
+        // setInitialized(true); // Géré par le store auth maintenant
       }
     }
 
@@ -93,8 +93,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Rendre simplement les enfants, même en cas d'erreur pour ne pas bloquer l'application
   if (error) {
-    console.warn('AuthProvider is continuing despite initialization error:', error)
+    console.warn('AuthProvider is continuing despite initialization error:', error);
+    // Envisagez d'afficher une page d'erreur dédiée ici
+  }
+
+  // Attendre que le store auth soit initialisé
+  if (!authStoreInitialized) {
+    // Afficher un loader pendant que le store s'initialise
+    // Vous pouvez utiliser un composant LoadingSpinner plus sophistiqué ici
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#1a202c', color: 'white' }}>Chargement de l'application...</div>;
   }
   
-  return <>{children}</>
+  return <>{children}</>;
 }
