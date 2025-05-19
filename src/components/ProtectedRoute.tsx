@@ -24,9 +24,13 @@ export function ProtectedRoute({ children, requiresSubscription = false }: Prote
 
     if (!user) {
       if (!navigationAttempted.current && location.pathname !== '/login') {
-        console.log('[ProtectedRoute] User not found. Attempting redirect to /login ONCE.');
+        console.log('[ProtectedRoute] User not found. Scheduling redirect to /login ONCE.');
         navigationAttempted.current = true;
-        navigate('/login', { state: { from: location }, replace: true });
+        // Le setTimeout est réintroduit ici
+        setTimeout(() => {
+          console.log('[ProtectedRoute] Executing scheduled redirect to /login.');
+          navigate('/login', { state: { from: location }, replace: true });
+        }, 0);
       }
       return; // L'utilisateur est null, pas besoin de vérifier l'abonnement
     } else {
@@ -40,9 +44,13 @@ export function ProtectedRoute({ children, requiresSubscription = false }: Prote
       const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
       if (!isTrialValid && !hasActiveSubscription) {
         if (!navigationAttempted.current && location.pathname !== '/pricing') {
-          console.log('[ProtectedRoute] Subscription invalid. Attempting redirect to /pricing ONCE.');
+          console.log('[ProtectedRoute] Subscription invalid. Scheduling redirect to /pricing ONCE.');
           navigationAttempted.current = true;
-          navigate('/pricing', { state: { from: location }, replace: true });
+          // Le setTimeout est réintroduit ici
+          setTimeout(() => {
+            console.log('[ProtectedRoute] Executing scheduled redirect to /pricing.');
+            navigate('/pricing', { state: { from: location }, replace: true });
+          }, 0);
         }
       } else {
         // L'abonnement est valide, on peut réinitialiser le drapeau (si on en utilisait un séparé pour /pricing)
