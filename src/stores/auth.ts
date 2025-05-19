@@ -30,10 +30,23 @@ export const useAuth = create<AuthState>((set, get) => ({
       });
       
       // Vérifier si l'utilisateur est connecté
-      const { user: authUser } = await AuthService.getCurrentUser()
+      console.log(`[AUTH][loadUser][${callId}] Before await AuthService.getCurrentUser()`);
+      const { user: authUser, error: currentUserError } = await AuthService.getCurrentUser();
+      console.log(`[AUTH][loadUser][${callId}] After await AuthService.getCurrentUser(). authUser:`, authUser, "Error:", currentUserError);
       console.log('[AUTH][loadUser] authUser =', authUser);
       
-      if (!authUser) {
+      if (currentUserError || !authUser) {
+        console.log(`[AUTH][loadUser][${callId}] currentUserError or no authUser. Error:`, currentUserError);
+        set(state => {
+          console.log(`[AUTH][loadUser][${callId}] No authUser. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
+          return { user: null, subscription: null, loading: false, initialized: true };
+        });
+        console.log('[AUTH][loadUser] Aucun utilisateur connecté ou erreur lors de la récupération.');
+        return
+      }
+
+      // Si pas d'erreur et authUser existe:
+      if (!authUser) { // Cette condition est maintenant redondante mais gardée pour la structure existante
         set(state => {
           console.log(`[AUTH][loadUser][${callId}] No authUser. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
           return { user: null, subscription: null, loading: false, initialized: true };
@@ -43,16 +56,19 @@ export const useAuth = create<AuthState>((set, get) => ({
       }
 
       // Récupérer le profil complet et l'abonnement
+      console.log(`[AUTH][loadUser][${callId}] Before await supabase.from('profiles')... for user ID: ${authUser.id}`);
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', authUser.id)
         .single()
 
-      if (profileError) throw profileError
-      console.log('[AUTH][loadUser] Fetched profile =', profile); // AJOUTER CETTE LIGNE
+      console.log(`[AUTH][loadUser][${callId}] After await supabase.from('profiles')... profileError:`, profileError);
+      if (profileError) throw profileError;
+      console.log(`[AUTH][loadUser][${callId}] Fetched profile =`, profile);
 
       // Récupérer l'abonnement
+      console.log(`[AUTH][loadUser][${callId}] Before await supabase.from('subscriptions')... for user ID: ${authUser.id}`);
       const { data: subscription, error: subscriptionError } = await supabase
         .from('subscriptions')
         .select('*')
@@ -61,8 +77,9 @@ export const useAuth = create<AuthState>((set, get) => ({
 
       if (subscriptionError && subscriptionError.code !== 'PGRST116') {
         // PGRST116 = not found, ce qui est normal si l'utilisateur n'a pas d'abonnement
-        throw subscriptionError
+        throw subscriptionError;
       }
+      console.log(`[AUTH][loadUser][${callId}] After await supabase.from('subscriptions')... subscriptionError:`, subscriptionError);
 
       set(state => {
         console.log(`[AUTH][loadUser][${callId}] Fetches successful. Setting final state. Current initialized: ${state.initialized}`);
@@ -75,11 +92,12 @@ export const useAuth = create<AuthState>((set, get) => ({
       });
       console.log('[AUTH][loadUser] User set in store =', get().user); // AJOUTER CETTE LIGNE
     } catch (error) {
-      console.error(`[AUTH][loadUser][${callId}] Error:`, error);
+      console.error(`[AUTH][loadUser][${callId}] Error caught in try block:`, error);
       set(state => {
         console.log(`[AUTH][loadUser][${callId}] Error caught. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
-        return { loading: false, initialized: true };
+        return { user: null, subscription: null, loading: false, initialized: true }; // Réinitialiser user/sub en cas d'erreur
       });
+      console.log(`[AUTH][loadUser][${callId}] Catch block finished.`);
     }
   },
 
