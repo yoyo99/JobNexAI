@@ -21,15 +21,23 @@ export const useAuth = create<AuthState>((set, get) => ({
   initialized: false,
 
   loadUser: async () => {
+    const callId = Date.now(); // Simple ID pour tracer l'appel
+    console.log(`[AUTH][loadUser][${callId}] Execution started.`);
     try {
-      set({ loading: true })
+      set(state => {
+        console.log(`[AUTH][loadUser][${callId}] Setting loading: true. Current initialized: ${state.initialized}`);
+        return { loading: true };
+      });
       
       // Vérifier si l'utilisateur est connecté
       const { user: authUser } = await AuthService.getCurrentUser()
       console.log('[AUTH][loadUser] authUser =', authUser);
       
       if (!authUser) {
-        set({ user: null, subscription: null, loading: false, initialized: true })
+        set(state => {
+          console.log(`[AUTH][loadUser][${callId}] No authUser. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
+          return { user: null, subscription: null, loading: false, initialized: true };
+        });
         console.log('[AUTH][loadUser] Aucun utilisateur connecté');
         return
       }
@@ -56,16 +64,22 @@ export const useAuth = create<AuthState>((set, get) => ({
         throw subscriptionError
       }
 
-      set({
-        user: profile,
-        subscription: subscription || null,
-        loading: false,
-        initialized: true
-      })
+      set(state => {
+        console.log(`[AUTH][loadUser][${callId}] Fetches successful. Setting final state. Current initialized: ${state.initialized}`);
+        return {
+          user: profile,
+          subscription: subscription || null,
+          loading: false,
+          initialized: true
+        };
+      });
       console.log('[AUTH][loadUser] User set in store =', get().user); // AJOUTER CETTE LIGNE
     } catch (error) {
-      console.error('Error loading user:', error)
-      set({ loading: false, initialized: true })
+      console.error(`[AUTH][loadUser][${callId}] Error:`, error);
+      set(state => {
+        console.log(`[AUTH][loadUser][${callId}] Error caught. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
+        return { loading: false, initialized: true };
+      });
     }
   },
 
