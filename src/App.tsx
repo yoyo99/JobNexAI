@@ -104,6 +104,7 @@ const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelectio
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 function App() {
+  console.log('--- JOBNEXAI APP VERSION CHECKER --- DEPLOYMENT ID 4678_V1 ---');
   console.log('[App] Démarrage de l\'application...');
   console.log('[i18n-debug] Langue courante:', i18n.language, '| Ressources:', Object.keys(i18n.services.resourceStore.data), '| Namespaces:', i18n.options.ns);
 
