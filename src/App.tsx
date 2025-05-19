@@ -90,7 +90,7 @@ const JobSearch = React.lazy(() => import('./components/JobSearch'));
 const JobApplications = React.lazy(() => import('./components/JobApplications'));
 const MarketAnalysis = React.lazy(() => import('./components/MarketAnalysis'));
 const CVBuilder = React.lazy(() => import('./components/cv/CVBuilder'));
-const Settings = React.lazy(() => import('./components/Settings')); // AJOUTÉ POUR LA PAGE SETTINGS
+const Settings = React.lazy(() => import('./components/Settings').then(module => ({ default: module.Settings }))); // AJOUTÉ POUR LA PAGE SETTINGS
 const NetworkPage = React.lazy(() => import('./components/NetworkPage'));
 const MarketTrendsPage = React.lazy(() => import('./components/pages/MarketTrendsPage'));
 const FreelanceProjects = React.lazy(() => import('./components/freelance/FreelanceProjects'));
