@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../stores/auth'
 
 interface ProtectedRouteProps {
@@ -9,6 +9,7 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, requiresSubscription = false }: ProtectedRouteProps) {
   const { user, subscription, loading, initialized } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
   // Afficher un loader pendant la vérification de l'authentification
   if (!initialized || loading) {
@@ -19,18 +20,39 @@ export function ProtectedRoute({ children, requiresSubscription = false }: Prote
     )
   }
 
-  // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
+  // Gérer la redirection si l'utilisateur n'est pas connecté
+  // ou si l'abonnement est requis mais manquant
+  React.useEffect(() => {
+    if (!loading && initialized) { // Agir seulement quand le chargement initial est terminé
+      if (!user) {
+        console.log('[ProtectedRoute] User not found, redirecting to /login');
+        navigate('/login', { state: { from: location }, replace: true });
+        return; // Important pour éviter la vérification d'abonnement si pas d'utilisateur
+      }
 
-  // Vérifier si l'utilisateur a un abonnement actif ou une période d'essai valide
-  if (requiresSubscription) {
-    const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date()
-    const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing'
+      if (requiresSubscription) {
+        const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date();
+        const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
+        if (!isTrialValid && !hasActiveSubscription) {
+          console.log('[ProtectedRoute] Subscription required and missing/invalid, redirecting to /pricing');
+          navigate('/pricing', { state: { from: location }, replace: true });
+        }
+      }
+    }
+  }, [user, loading, initialized, subscription, requiresSubscription, navigate, location]);
 
-    if (!isTrialValid && !hasActiveSubscription) {
-      return <Navigate to="/pricing" state={{ from: location }} replace />
+  // Si l'utilisateur est connecté et a l'abonnement requis (ou pas d'abo requis),
+  // OU si l'état de chargement/initialisation n'est pas encore prêt pour une redirection,
+  // on rend les enfants (ou le loader si c'est le cas).
+  // Le useEffect ci-dessus gérera les redirections.
+
+  // Ne pas rendre les enfants si une redirection est imminente à cause de !user ou !subscription
+  if (!loading && initialized) {
+    if (!user) return null; // Redirection gérée par useEffect
+    if (requiresSubscription) {
+      const isTrialValid = user.trial_ends_at && new Date(user.trial_ends_at) > new Date();
+      const hasActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trialing';
+      if (!isTrialValid && !hasActiveSubscription) return null; // Redirection gérée par useEffect
     }
   }
 
