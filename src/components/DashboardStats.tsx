@@ -136,7 +136,7 @@ export function DashboardStats() {
       // Récupérer les statistiques des candidatures (pour stats & top lists)
       const { data: applicationsData, error: applicationsError } = await supabase
         .from('job_applications')
-        .select('id, created_at, status, job_id, user_id, jobs!jobs_job_applications_job_id_fkey ( title, company, location )') // Ajout de job_title, id pour recentActivity
+        .select('id, created_at, status, job_id, user_id, jobs!fk_job ( title, company, location )') // Ajout de job_title, id pour recentActivity
         .eq('user_id', user.id)
         .order('created_at', { ascending: false }); // Commander par date de création pour faciliter la prise des plus récentes
 
