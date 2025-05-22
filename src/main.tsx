@@ -11,7 +11,7 @@ import { initPerformanceMonitoring } from './lib/performance-monitoring'
 initMonitoring()
 
 // Initialiser le monitoring des performances
-initPerformanceMonitoring()
+// initPerformanceMonitoring()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
