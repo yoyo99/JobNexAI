@@ -105,140 +105,37 @@ export function DashboardStats() {
 
   useEffect(() => {
     if (user) {
-      loadStats()
+      // loadStats(); // Temporairement désactivé
+      setLoading(false); // Pour ce test, on dit que le chargement est fini
+      // Optionnel : initialiser avec des données vides ou mockées si le JSX en a besoin pour ne pas planter
+      setStats({
+        applications: { total: 0, thisWeek: 0, lastWeek: 0, percentageChange: 0 },
+        interviews: { upcoming: 0, completed: 0 },
+        topCompanies: [],
+        topLocations: [],
+        averageSalary: 0,
+        responseRate: 0,
+        recentActivity: [],
+      });
     }
   }, [user, timeframe])
 
   const loadStats = async () => {
-    if (!user) return
+    console.log('[DashboardStats] loadStats called, but logic is currently disabled for debugging.');
+    // TOUTE LA LOGIQUE DE RÉCUPÉRATION DE DONNÉES EST DÉSACTIVÉE POUR L'INSTANT
+    return; // Ne rien faire
 
-    try {
-      setLoading(true)
-
-      // Calculer les dates pour le timeframe
-      const now = new Date()
-      const timeframeStart = new Date()
-      switch (timeframe) {
-        case 'week':
-          timeframeStart.setDate(now.getDate() - 7)
-          break
-        case 'month':
-          timeframeStart.setMonth(now.getMonth() - 1)
-          break
-        case 'year':
-          timeframeStart.setFullYear(now.getFullYear() - 1)
-          break
-      }
-
-      // Récupérer les statistiques des candidatures
-      const { data: applications } = await supabase
-        .from('job_applications')
-        .select('created_at, status')
-        .eq('user_id', user.id)
-        .gte('created_at', timeframeStart.toISOString())
-
-      // Calculer les statistiques des entretiens
-      const { data: interviews } = await supabase
-        .from('job_applications')
-        .select('next_step_date, status')
-        .eq('user_id', user.id)
-        .eq('status', 'interviewing')
-
-      // Récupérer les entreprises les plus fréquentes
-      const { data: companiesRaw } = await supabase
-        .from('job_applications')
-        .select('job:jobs (company)')
-        .eq('user_id', user.id)
-
-      // companiesRaw est typé comme any[] ou null
-      const companies = (companiesRaw || []) as Array<{ job: { company?: string | null } | null }>
-
-      // Récupérer l'activité récente
-      const { data: recentApplications } = await supabase
-        .from('job_applications')
-        .select(`
-          id,
-          status,
-          created_at,
-          job:jobs (
-            id,
-            title,
-            company
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(5) as { data: JobApplication[] | null }
-
-      const { data: recentFavorites } = await supabase
-        .from('job_favorites')
-        .select(`
-          id,
-          created_at,
-          job:jobs (
-            id,
-            title,
-            company
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(5) as { data: JobFavorite[] | null }
-
-      // Transformer les données en activités
-      const activities = [
-        ...(recentApplications?.map(app => ({
-          id: app.id,
-          type: 'application' as const,
-          title: app.job.title,
-          company: app.job.company,
-          date: app.created_at,
-          status: app.status,
-        })) || []),
-        ...(recentFavorites?.map(fav => ({
-          id: fav.id,
-          type: 'favorite' as const,
-          title: fav.job.title,
-          company: fav.job.company,
-          date: fav.created_at,
-        })) || []),
-      ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 10)
-        .map(activity => ({
-          ...activity,
-          ...activityConfig[activity.type],
-        }))
-
-      // Calculer les statistiques
-      const stats: DashboardStats = {
-        applications: {
-          total: applications?.length || 0,
-          thisWeek: applications?.filter(a => 
-            new Date(a.created_at) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          ).length || 0,
-          lastWeek: applications?.filter(a =>
-            new Date(a.created_at) >= new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) &&
-            new Date(a.created_at) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          ).length || 0,
-          percentageChange: 0
-        },
-        interviews: {
-          upcoming: interviews?.filter(i => 
-            i.next_step_date && new Date(i.next_step_date) > new Date()
-          ).length || 0,
-          completed: interviews?.filter(i =>
-            i.next_step_date && new Date(i.next_step_date) <= new Date()
-          ).length || 0
-        },
-        topCompanies: (companies || []).reduce((acc: Array<{name: string, count: number}>, curr) => {
-          const company = curr.job && typeof curr.job === 'object' ? curr.job.company : undefined
-          if (company) {
-            const existing = acc.find(c => c.name === company)
-            if (existing) {
-              existing.count++
-            } else {
-              acc.push({ name: company, count: 1 })
-            }
+    // if (!user) return;
+    // try {
+    //   setLoading(true);
+    //   // ... (ancienne logique de récupération des données) ...
+    // } catch (error) {
+    //   console.error('Error loading dashboard stats:', error);
+    //   setStats(null); // Ou gérer l'erreur autrement
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
           }
           return acc
         }, []).sort((a, b) => b.count - a.count).slice(0, 5),

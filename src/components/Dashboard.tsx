@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
-// import { DashboardStats } from './DashboardStats'; // Commentez temporairement
+import { DashboardStats } from './DashboardStats';
 import { UpgradePrompt } from './UpgradePrompt'
 
 function Dashboard() {
@@ -35,7 +35,7 @@ function Dashboard() {
 
       <UpgradePrompt />
 
-      {/* <DashboardStats /> */} {/* Commentez temporairement */}
+      <DashboardStats />
     </div>
   )
 }
