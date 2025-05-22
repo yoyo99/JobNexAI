@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
-import { DashboardStats } from './DashboardStats'
+// import { DashboardStats } from './DashboardStats'; // Commentez temporairement
 import { UpgradePrompt } from './UpgradePrompt'
 
 function Dashboard() {
@@ -11,7 +11,7 @@ function Dashboard() {
 
   useEffect(() => {
     document.title = t('dashboard.documentTitle', { ns: 'translation' })
-  }, [])
+  }, [t])
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -35,7 +35,7 @@ function Dashboard() {
 
       <UpgradePrompt />
 
-      <DashboardStats />
+      {/* <DashboardStats /> */} {/* Commentez temporairement */}
     </div>
   )
 }
