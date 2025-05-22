@@ -122,42 +122,9 @@ export function DashboardStats() {
 
   const loadStats = async () => {
     console.log('[DashboardStats] loadStats called, but logic is currently disabled for debugging.');
-    // TOUTE LA LOGIQUE DE RÉCUPÉRATION DE DONNÉES EST DÉSACTIVÉE POUR L'INSTANT
-    return; // Ne rien faire
-
-    // if (!user) return;
-    // try {
-    //   setLoading(true);
-    //   // ... (ancienne logique de récupération des données) ...
-    // } catch (error) {
-    //   console.error('Error loading dashboard stats:', error);
-    //   setStats(null); // Ou gérer l'erreur autrement
-    // } finally {
-    //   setLoading(false);
-    // }
+    // La logique de récupération de données est désactivée ici.
+    return; 
   };
-          }
-          return acc
-        }, []).sort((a, b) => b.count - a.count).slice(0, 5),
-        topLocations: [],
-        averageSalary: 0,
-        responseRate: (applications?.filter(a => a.status !== 'draft').length || 0) / (applications?.length || 1) * 100,
-        recentActivity: activities,
-      }
-
-      // Calculer le pourcentage de changement
-      if (stats.applications.lastWeek > 0) {
-        stats.applications.percentageChange = 
-          ((stats.applications.thisWeek - stats.applications.lastWeek) / stats.applications.lastWeek) * 100
-      }
-
-      setStats(stats)
-    } catch (error) {
-      console.error('Error loading stats:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (loading) {
     return (
