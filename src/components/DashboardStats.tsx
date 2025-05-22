@@ -105,20 +105,12 @@ export function DashboardStats() {
 
   useEffect(() => {
     if (user) {
-      // loadStats(); // Temporairement désactivé
-      setLoading(false); // Pour ce test, on dit que le chargement est fini
-      // Optionnel : initialiser avec des données vides ou mockées si le JSX en a besoin pour ne pas planter
-      setStats({
-        applications: { total: 0, thisWeek: 0, lastWeek: 0, percentageChange: 0 },
-        interviews: { upcoming: 0, completed: 0 },
-        topCompanies: [],
-        topLocations: [],
-        averageSalary: 0,
-        responseRate: 0,
-        recentActivity: [],
-      });
+      loadStats();
+    } else {
+      setStats(null); // Clear stats if no user
+      setLoading(false);
     }
-  }, [user, timeframe])
+  }, [user, timeframe]); // loadStats will be called when user or timeframe changes
 
   const loadStats = async () => {
     if (!user) return;
@@ -198,8 +190,37 @@ export function DashboardStats() {
         .map(([name, count]) => ({ name, count: count as number }));
       console.log('[DashboardStats] Calculated topLocations:', topLocations);
 
-      // Préparer l'activité récente (à partir des applicationsData déjà triées par date de création DESC)
-      const recentActivity = (applicationsData || []).slice(0, 5).map(app => ({
+      // Fetch recent favorites
+      let recentFavoritesActivityItems: Array<DashboardStats['recentActivity'][0]> = [];
+      try {
+        console.log('[DashboardStats] Attempting to fetch recent favorites via Supabase function...');
+        const { data: recentFavoritesResult, error: favoritesFuncError } = await supabase.functions.invoke('get-recent-favorites');
+
+        if (favoritesFuncError) {
+          console.error('[DashboardStats] Error invoking get-recent-favorites function:', favoritesFuncError);
+          // Ne pas bloquer le reste du chargement des statistiques pour cette erreur
+        } else if (recentFavoritesResult && Array.isArray(recentFavoritesResult.favorites)) {
+          console.log('[DashboardStats] Successfully fetched recent favorites data:', recentFavoritesResult.favorites);
+          recentFavoritesActivityItems = recentFavoritesResult.favorites.map((fav: JobFavorite) => ({
+            id: `fav-${fav.id}`,
+            type: 'favorite' as const,
+            title: fav.job.title || t('dashboard.activity.favorite'),
+            company: fav.job.company,
+            date: fav.created_at,
+            icon: activityConfig.favorite.icon,
+            color: activityConfig.favorite.color,
+          }));
+          console.log('[DashboardStats] Prepared recentFavoritesActivityItems:', recentFavoritesActivityItems);
+        } else {
+          console.log('[DashboardStats] get-recent-favorites returned no data or unexpected structure:', recentFavoritesResult);
+        }
+      } catch (e) {
+        console.error('[DashboardStats] Critical error during supabase.functions.invoke(\'get-recent-favorites\'):', e);
+        // Capturer les erreurs comme TypeError si supabase.functions n'est pas défini
+      }
+
+      // Prepare recentActivity from applicationsData
+      const recentApplicationsActivity = (applicationsData || []).slice(0, 5).map(app => ({
         id: app.id,
         type: 'application',
         title: app.job_title || 'N/A',
@@ -207,8 +228,17 @@ export function DashboardStats() {
         date: app.created_at,
         status: app.status,
       }));
-      console.log('[DashboardStats] Calculated recentActivity from applications:', recentActivity);
-      // Note: La partie "favoris récents" sera ajoutée si cette étape fonctionne sans erreur.
+      console.log('[DashboardStats] Calculated recentActivity from applications:', recentApplicationsActivity);
+
+      // Combiner les activités récentes des candidatures et des favoris
+      let combinedRecentActivity = [...recentApplicationsActivity, ...recentFavoritesActivityItems];
+      console.log('[DashboardStats] Combined recentActivity (before sort and slice):', combinedRecentActivity);
+
+      // Trier combinedRecentActivity par date (plus récent d'abord) et prendre les 5 premiers
+      const finalRecentActivity = combinedRecentActivity
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 5);
+      console.log('[DashboardStats] Final recentActivity (after sort and slice):', finalRecentActivity);
 
       // Mise à jour des stats
       setStats(prevStats => {
@@ -235,7 +265,7 @@ export function DashboardStats() {
           },
           topCompanies,
           topLocations,
-          recentActivity,
+          recentActivity: finalRecentActivity,
         };
       });
 
