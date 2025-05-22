@@ -122,7 +122,7 @@ export function DashboardStats() {
 
   const loadStats = async () => {
     if (!user) return;
-    console.log('[DashboardStats] loadStats: Adding topCompanies/topLocations fetch.');
+    console.log('[DashboardStats] loadStats: Adding recentActivity fetch.');
 
     try {
       setLoading(true);
@@ -141,25 +141,31 @@ export function DashboardStats() {
           break;
       }
 
-      // Récupérer les statistiques des candidatures (déjà présent et fonctionnel)
+      // Récupérer les statistiques des candidatures (pour stats & top lists)
       const { data: applicationsData, error: applicationsError } = await supabase
         .from('job_applications')
-        .select('created_at, status, company_name, location') // Ajout de company_name et location
+        .select('created_at, status, company_name, location, job_title, id') // Ajout de job_title, id pour recentActivity
         .eq('user_id', user.id)
-        .gte('created_at', timeframeStart.toISOString());
+        .order('created_at', { ascending: false }); // Commander par date de création pour faciliter la prise des plus récentes
+
 
       if (applicationsError) {
-        console.error('[DashboardStats] Error fetching applications (for stats & top lists):', applicationsError);
+        console.error('[DashboardStats] Error fetching applications (for stats, top lists, recent activity):', applicationsError);
         throw applicationsError;
       }
-      console.log('[DashboardStats] Fetched applicationsData (for stats & top lists):', applicationsData);
+      console.log('[DashboardStats] Fetched applicationsData (for all purposes):', applicationsData);
 
-      // Calculer les statistiques des entretiens (déjà présent et fonctionnel)
+      // Filtrer applicationsData pour le timeframe des stats générales
+      const applicationsInTimeframe = (applicationsData || []).filter(app => new Date(app.created_at) >= timeframeStart);
+
+
+      // Calculer les statistiques des entretiens
       const { data: interviewsData, error: interviewsError } = await supabase
         .from('job_applications')
         .select('next_step_date, status')
         .eq('user_id', user.id)
-        .eq('status', 'interviewing');
+        .eq('status', 'interviewing')
+        .gte('created_at', timeframeStart.toISOString()); // Assurer que les entretiens sont aussi dans le timeframe
 
       if (interviewsError) {
         console.error('[DashboardStats] Error fetching interviews:', interviewsError);
@@ -167,8 +173,8 @@ export function DashboardStats() {
       }
       console.log('[DashboardStats] Fetched interviews:', interviewsData);
 
-      // Calculer les meilleures entreprises et lieux à partir de applicationsData
-      const companyCounts = (applicationsData || []).reduce((acc, app) => {
+      // Calculer les meilleures entreprises et lieux à partir de applicationsInTimeframe
+      const companyCounts = (applicationsInTimeframe || []).reduce((acc, app) => {
         if (app.company_name) {
           acc[app.company_name] = (acc[app.company_name] || 0) + 1;
         }
@@ -180,7 +186,7 @@ export function DashboardStats() {
         .map(([name, count]) => ({ name, count: count as number }));
       console.log('[DashboardStats] Calculated topCompanies:', topCompanies);
 
-      const locationCounts = (applicationsData || []).reduce((acc, app) => {
+      const locationCounts = (applicationsInTimeframe || []).reduce((acc, app) => {
         if (app.location) {
           acc[app.location] = (acc[app.location] || 0) + 1;
         }
@@ -192,6 +198,17 @@ export function DashboardStats() {
         .map(([name, count]) => ({ name, count: count as number }));
       console.log('[DashboardStats] Calculated topLocations:', topLocations);
 
+      // Préparer l'activité récente (à partir des applicationsData déjà triées par date de création DESC)
+      const recentActivity = (applicationsData || []).slice(0, 5).map(app => ({
+        id: app.id,
+        type: 'application',
+        title: app.job_title || 'N/A',
+        subtitle: app.company_name || 'N/A',
+        date: app.created_at,
+        status: app.status,
+      }));
+      console.log('[DashboardStats] Calculated recentActivity from applications:', recentActivity);
+      // Note: La partie "favoris récents" sera ajoutée si cette étape fonctionne sans erreur.
 
       // Mise à jour des stats
       setStats(prevStats => {
@@ -207,8 +224,8 @@ export function DashboardStats() {
         return {
           ...baseStats,
           applications: {
-            total: applicationsData?.length || 0,
-            thisWeek: (applicationsData || []).filter(app => new Date(app.created_at) > timeframeStart).length || 0,
+            total: applicationsInTimeframe?.length || 0,
+            thisWeek: applicationsInTimeframe?.length || 0, // Corrected: thisWeek should be the count of applicationsInTimeframe
             lastWeek: 0, 
             percentageChange: 0,
           },
@@ -218,11 +235,12 @@ export function DashboardStats() {
           },
           topCompanies,
           topLocations,
+          recentActivity,
         };
       });
 
     } catch (error) {
-      console.error('[DashboardStats] Error in loadStats (topCompanies/Locations fetch):', error);
+      console.error('[DashboardStats] Error in loadStats (recentActivity or other):', error);
       setStats(prevStats => prevStats ? { ...prevStats } : null);
     } finally {
       setLoading(false);
