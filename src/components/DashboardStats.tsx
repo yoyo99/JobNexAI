@@ -122,13 +122,13 @@ export function DashboardStats() {
 
   const loadStats = async () => {
     if (!user) return;
-    console.log('[DashboardStats] loadStats: Re-introducing applications fetch.');
+    console.log('[DashboardStats] loadStats: Adding interviews fetch.');
 
     try {
       setLoading(true);
 
-      const now = new Date(); // Nécessaire pour certains calculs potentiels plus tard
-      const timeframeStart = new Date();
+      const now = new Date();
+      const timeframeStart = new Date(); // timeframeStart est toujours calculé
       switch (timeframe) {
         case 'week':
           timeframeStart.setDate(now.getDate() - 7);
@@ -141,7 +141,7 @@ export function DashboardStats() {
           break;
       }
 
-      // Récupérer les statistiques des candidatures
+      // Récupérer les statistiques des candidatures (déjà présent et fonctionnel)
       const { data: applicationsData, error: applicationsError } = await supabase
         .from('job_applications')
         .select('created_at, status')
@@ -154,9 +154,22 @@ export function DashboardStats() {
       }
       console.log('[DashboardStats] Fetched applications:', applicationsData);
 
-      // Mise à jour minimale des stats pour ce test
-      setStats(prevStats => ({
-        ...(prevStats || { // Assure que prevStats n'est pas null
+      // Calculer les statistiques des entretiens
+      const { data: interviewsData, error: interviewsError } = await supabase
+        .from('job_applications') // Note: les entretiens sont aussi dans job_applications
+        .select('next_step_date, status') // Assurez-vous que 'next_step_date' est pertinent
+        .eq('user_id', user.id)
+        .eq('status', 'interviewing'); // Ou le statut pertinent pour les entretiens
+
+      if (interviewsError) {
+        console.error('[DashboardStats] Error fetching interviews:', interviewsError);
+        throw interviewsError;
+      }
+      console.log('[DashboardStats] Fetched interviews:', interviewsData);
+
+      // Mise à jour des stats
+      setStats(prevStats => {
+        const baseStats = prevStats || {
           applications: { total: 0, thisWeek: 0, lastWeek: 0, percentageChange: 0 },
           interviews: { upcoming: 0, completed: 0 },
           topCompanies: [],
@@ -164,18 +177,25 @@ export function DashboardStats() {
           averageSalary: 0,
           responseRate: 0,
           recentActivity: [],
-        }),
-        applications: {
-          total: applicationsData?.length || 0,
-          thisWeek: applicationsData?.filter(app => new Date(app.created_at) > timeframeStart).length || 0,
-          lastWeek: 0, // Simplifié pour l'instant
-          percentageChange: 0, // Simplifié pour l'instant
-        },
-      }));
+        };
+        return {
+          ...baseStats,
+          applications: {
+            total: applicationsData?.length || 0,
+            thisWeek: applicationsData?.filter(app => new Date(app.created_at) > timeframeStart).length || 0,
+            lastWeek: 0, 
+            percentageChange: 0,
+          },
+          interviews: {
+            upcoming: interviewsData?.filter(i => i.next_step_date && new Date(i.next_step_date) >= now).length || 0,
+            completed: interviewsData?.filter(i => i.next_step_date && new Date(i.next_step_date) < now).length || 0,
+          },
+        };
+      });
 
     } catch (error) {
-      console.error('[DashboardStats] Error in loadStats (applications fetch):', error);
-      setStats(prevStats => prevStats ? { ...prevStats } : null); // Garder les stats précédentes ou null si erreur
+      console.error('[DashboardStats] Error in loadStats (interviews fetch):', error);
+      setStats(prevStats => prevStats ? { ...prevStats } : null);
     } finally {
       setLoading(false);
     }
