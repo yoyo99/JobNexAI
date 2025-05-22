@@ -72,7 +72,10 @@ export const useAuth = create<AuthState>((set, get) => ({
         .single()
 
       console.log(`[AUTH][loadUser][${callId}] After await supabase.from('profiles')... profileError:`, profileError);
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error(`[AUTH][loadUser][${callId}] Error fetching profile. Code: ${profileError.code}, Message: ${profileError.message}, Details: ${profileError.details}, Hint: ${profileError.hint}, FullError:`, JSON.stringify(profileError));
+        throw profileError; // Re-throw the original error object
+      }
       console.log(`[AUTH][loadUser][${callId}] Fetched profile =`, profile);
 
       // Récupérer l'abonnement
@@ -100,7 +103,8 @@ export const useAuth = create<AuthState>((set, get) => ({
       });
       console.log('[AUTH][loadUser] User set in store =', get().user); // AJOUTER CETTE LIGNE
     } catch (error) {
-      console.error(`[AUTH][loadUser][${callId}] Error caught in try block:`, error);
+      const typedError = error as { message?: string; code?: string; details?: string; hint?: string; [key: string]: any };
+      console.error(`[AUTH][loadUser][${callId}] Error caught in loadUser try block. Message: "${typedError?.message}", Code: "${typedError?.code}", Details: "${typedError?.details}", Hint: "${typedError?.hint}". Full error object:`, error);
       set(state => {
         console.log(`[AUTH][loadUser][${callId}] Error caught. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
         return { user: null, subscription: null, loading: false, initialized: true }; // Réinitialiser user/sub en cas d'erreur
