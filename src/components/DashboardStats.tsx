@@ -136,7 +136,7 @@ export function DashboardStats() {
       // Récupérer les statistiques des candidatures (pour stats & top lists)
       const { data: applicationsData, error: applicationsError } = await supabase
         .from('job_applications')
-        .select('created_at, status, location, job_title, id, job_applications_job_id_fkey ( company )') // Ajout de job_title, id pour recentActivity
+        .select('id, created_at, status, job_id, user_id, job_applications_job_id_fkey ( job_title, company, location )') // Ajout de job_title, id pour recentActivity
         .eq('user_id', user.id)
         .order('created_at', { ascending: false }); // Commander par date de création pour faciliter la prise des plus récentes
 
@@ -180,8 +180,9 @@ export function DashboardStats() {
       console.log('[DashboardStats] Calculated topCompanies:', topCompanies);
 
       const locationCounts = (applicationsInTimeframe || []).reduce((acc, app) => {
-        if (app.location) {
-          acc[app.location] = (acc[app.location] || 0) + 1;
+        const locationName = app.job_applications_job_id_fkey?.location;
+        if (locationName) {
+          acc[locationName] = (acc[locationName] || 0) + 1;
         }
         return acc;
       }, {});
@@ -195,7 +196,7 @@ export function DashboardStats() {
       const recentApplicationsActivity = (applicationsData || []).slice(0, 5).map(app => ({
         id: app.id,
         type: 'application',
-        title: app.job_title || 'N/A',
+        title: app.job_applications_job_id_fkey?.job_title || 'N/A',
         subtitle: app.job_applications_job_id_fkey?.company || 'N/A',
         date: app.created_at,
         status: app.status,
