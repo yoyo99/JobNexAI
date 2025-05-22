@@ -122,13 +122,13 @@ export function DashboardStats() {
 
   const loadStats = async () => {
     if (!user) return;
-    console.log('[DashboardStats] loadStats: Adding interviews fetch.');
+    console.log('[DashboardStats] loadStats: Adding topCompanies/topLocations fetch.');
 
     try {
       setLoading(true);
 
       const now = new Date();
-      const timeframeStart = new Date(); // timeframeStart est toujours calculé
+      const timeframeStart = new Date();
       switch (timeframe) {
         case 'week':
           timeframeStart.setDate(now.getDate() - 7);
@@ -144,28 +144,54 @@ export function DashboardStats() {
       // Récupérer les statistiques des candidatures (déjà présent et fonctionnel)
       const { data: applicationsData, error: applicationsError } = await supabase
         .from('job_applications')
-        .select('created_at, status')
+        .select('created_at, status, company_name, location') // Ajout de company_name et location
         .eq('user_id', user.id)
         .gte('created_at', timeframeStart.toISOString());
 
       if (applicationsError) {
-        console.error('[DashboardStats] Error fetching applications:', applicationsError);
+        console.error('[DashboardStats] Error fetching applications (for stats & top lists):', applicationsError);
         throw applicationsError;
       }
-      console.log('[DashboardStats] Fetched applications:', applicationsData);
+      console.log('[DashboardStats] Fetched applicationsData (for stats & top lists):', applicationsData);
 
-      // Calculer les statistiques des entretiens
+      // Calculer les statistiques des entretiens (déjà présent et fonctionnel)
       const { data: interviewsData, error: interviewsError } = await supabase
-        .from('job_applications') // Note: les entretiens sont aussi dans job_applications
-        .select('next_step_date, status') // Assurez-vous que 'next_step_date' est pertinent
+        .from('job_applications')
+        .select('next_step_date, status')
         .eq('user_id', user.id)
-        .eq('status', 'interviewing'); // Ou le statut pertinent pour les entretiens
+        .eq('status', 'interviewing');
 
       if (interviewsError) {
         console.error('[DashboardStats] Error fetching interviews:', interviewsError);
         throw interviewsError;
       }
       console.log('[DashboardStats] Fetched interviews:', interviewsData);
+
+      // Calculer les meilleures entreprises et lieux à partir de applicationsData
+      const companyCounts = (applicationsData || []).reduce((acc, app) => {
+        if (app.company_name) {
+          acc[app.company_name] = (acc[app.company_name] || 0) + 1;
+        }
+        return acc;
+      }, {});
+      const topCompanies = Object.entries(companyCounts)
+        .sort(([, aCount], [, bCount]) => (bCount as number) - (aCount as number))
+        .slice(0, 5)
+        .map(([name, count]) => ({ name, count: count as number }));
+      console.log('[DashboardStats] Calculated topCompanies:', topCompanies);
+
+      const locationCounts = (applicationsData || []).reduce((acc, app) => {
+        if (app.location) {
+          acc[app.location] = (acc[app.location] || 0) + 1;
+        }
+        return acc;
+      }, {});
+      const topLocations = Object.entries(locationCounts)
+        .sort(([, aCount], [, bCount]) => (bCount as number) - (aCount as number))
+        .slice(0, 3)
+        .map(([name, count]) => ({ name, count: count as number }));
+      console.log('[DashboardStats] Calculated topLocations:', topLocations);
+
 
       // Mise à jour des stats
       setStats(prevStats => {
@@ -182,19 +208,21 @@ export function DashboardStats() {
           ...baseStats,
           applications: {
             total: applicationsData?.length || 0,
-            thisWeek: applicationsData?.filter(app => new Date(app.created_at) > timeframeStart).length || 0,
+            thisWeek: (applicationsData || []).filter(app => new Date(app.created_at) > timeframeStart).length || 0,
             lastWeek: 0, 
             percentageChange: 0,
           },
           interviews: {
-            upcoming: interviewsData?.filter(i => i.next_step_date && new Date(i.next_step_date) >= now).length || 0,
-            completed: interviewsData?.filter(i => i.next_step_date && new Date(i.next_step_date) < now).length || 0,
+            upcoming: (interviewsData || []).filter(i => i.next_step_date && new Date(i.next_step_date) >= now).length || 0,
+            completed: (interviewsData || []).filter(i => i.next_step_date && new Date(i.next_step_date) < now).length || 0,
           },
+          topCompanies,
+          topLocations,
         };
       });
 
     } catch (error) {
-      console.error('[DashboardStats] Error in loadStats (interviews fetch):', error);
+      console.error('[DashboardStats] Error in loadStats (topCompanies/Locations fetch):', error);
       setStats(prevStats => prevStats ? { ...prevStats } : null);
     } finally {
       setLoading(false);
