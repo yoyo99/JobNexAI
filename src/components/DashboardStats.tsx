@@ -140,6 +140,8 @@ export function DashboardStats() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false }); // Commander par date de création pour faciliter la prise des plus récentes
 
+      console.log('[DashboardStats] Fetched applicationsData:', JSON.stringify(applicationsData, null, 2));
+
 
       if (applicationsError) {
         console.error('[DashboardStats] Error fetching applications (for stats, top lists, recent activity):', applicationsError);
