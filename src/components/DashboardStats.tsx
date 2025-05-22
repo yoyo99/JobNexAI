@@ -121,9 +121,64 @@ export function DashboardStats() {
   }, [user, timeframe])
 
   const loadStats = async () => {
-    console.log('[DashboardStats] loadStats called, but logic is currently disabled for debugging.');
-    // La logique de récupération de données est désactivée ici.
-    return; 
+    if (!user) return;
+    console.log('[DashboardStats] loadStats: Re-introducing applications fetch.');
+
+    try {
+      setLoading(true);
+
+      const now = new Date(); // Nécessaire pour certains calculs potentiels plus tard
+      const timeframeStart = new Date();
+      switch (timeframe) {
+        case 'week':
+          timeframeStart.setDate(now.getDate() - 7);
+          break;
+        case 'month':
+          timeframeStart.setMonth(now.getMonth() - 1);
+          break;
+        case 'year':
+          timeframeStart.setFullYear(now.getFullYear() - 1);
+          break;
+      }
+
+      // Récupérer les statistiques des candidatures
+      const { data: applicationsData, error: applicationsError } = await supabase
+        .from('job_applications')
+        .select('created_at, status')
+        .eq('user_id', user.id)
+        .gte('created_at', timeframeStart.toISOString());
+
+      if (applicationsError) {
+        console.error('[DashboardStats] Error fetching applications:', applicationsError);
+        throw applicationsError;
+      }
+      console.log('[DashboardStats] Fetched applications:', applicationsData);
+
+      // Mise à jour minimale des stats pour ce test
+      setStats(prevStats => ({
+        ...(prevStats || { // Assure que prevStats n'est pas null
+          applications: { total: 0, thisWeek: 0, lastWeek: 0, percentageChange: 0 },
+          interviews: { upcoming: 0, completed: 0 },
+          topCompanies: [],
+          topLocations: [],
+          averageSalary: 0,
+          responseRate: 0,
+          recentActivity: [],
+        }),
+        applications: {
+          total: applicationsData?.length || 0,
+          thisWeek: applicationsData?.filter(app => new Date(app.created_at) > timeframeStart).length || 0,
+          lastWeek: 0, // Simplifié pour l'instant
+          percentageChange: 0, // Simplifié pour l'instant
+        },
+      }));
+
+    } catch (error) {
+      console.error('[DashboardStats] Error in loadStats (applications fetch):', error);
+      setStats(prevStats => prevStats ? { ...prevStats } : null); // Garder les stats précédentes ou null si erreur
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
