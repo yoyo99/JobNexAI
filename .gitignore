@@ -1,1 +1,36 @@
 .DS_Store
+
+# Dependencies
+/node_modules
+
+# Vite build output
+/dist
+/dist-ssr
+
+# SSR build output
+/functions/ssr/dist
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Environment variables
+.env
+.env*.local
+
+# Optional local development settings
+.eslintcache
+*.sqlite
+*.sqlite3
+
+# Coverage directory
+/coverage
+
+# Browserlist cache file
+.browserslistrc.cache
