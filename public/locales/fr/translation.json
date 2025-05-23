@@ -126,5 +126,11 @@
       "subtitle": "Join thousands of professionals who have found their dream job with JobNexAI",
       "button": "Create Your Free Account"
     }
+  },
+  "forms": {
+    "selectDefault": "Choisir votre {{fieldName}}",
+    "changesSaved": "Modifications enregistrées avec succès.",
+    "errorSaving": "Erreur lors de la sauvegarde des modifications.",
+    "loading": "Chargement..."
   }
 }
