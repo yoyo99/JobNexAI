@@ -5,7 +5,13 @@
     "applications": "Applications",
     "cvBuilder": "CV Builder",
     "network": "Network",
-    "profile": "Profile",
+    "profile": {
+      "tabs": {
+        "myCVs": "My CVs",
+        "coverLetterGenerator": "AI Cover Letters"
+      },
+      "title": "Profile"
+    },
     "settings": "Settings",
     "marketAnalysis": "Market Analysis",
     "notifications": "Notifications",
@@ -89,6 +95,79 @@
     "cancel": "Cancel",
     "search": "Search",
     "view": "View"
+  },
+  "languages": {
+    "fr": "French",
+    "en": "English",
+    "es": "Spanish",
+    "de": "German",
+    "it": "Italian"
+  },
+  "coverLetterGenerator": {
+    "title": "AI Cover Letter Generator",
+    "errors": {
+      "notAuthenticated": "User not authenticated.",
+      "noCvSelected": "Please select a CV.",
+      "jobDescriptionRequired": "Job description is required.",
+      "generationFailed": "Cover letter generation failed.",
+      "cvContentFetchFailed": "Failed to fetch CV content.",
+      "saveFailed": "Failed to save cover letter."
+    },
+    "success": {
+      "generated": "Cover letter generated successfully!",
+      "saved": "Cover letter saved successfully! (Simulation)"
+    },
+    "labels": {
+      "jobTitle": "Job Title",
+      "companyName": "Company Name",
+      "jobDescription": "Job Description",
+      "selectCV": "Select your base CV",
+      "customInstructions": "Custom instructions for AI (optional)",
+      "language": "Cover Letter Language",
+      "generatedLetter": "Generated Cover Letter"
+    },
+    "placeholders": {
+      "jobDescription": "Paste the full job description here...",
+      "customInstructions": "E.g.: Emphasize my project management experience, formal tone...",
+      "letterOutput": "The generated letter will appear here..."
+    },
+    "buttons": {
+      "generate": "Generate with AI",
+      "save": "Save Letter"
+    },
+    "generating": "Generating...",
+    "notGeneratedYet": "Your cover letter will appear here once generated.",
+    "noCVsAvailable": "No CVs available. Please upload a CV first.",
+    "savedLettersTitle": "My Saved Cover Letters"
+  },
+  "userCVs": {
+    "title": "My CVs",
+    "uploadLabel": "Upload a new CV (PDF, max 5MB)",
+    "uploadButton": "Upload",
+    "selectedFile": "Selected file",
+    "uploadHint": "You can upload {{count}} more CV(s).",
+    "limitReachedMessage": "You have reached the limit of 2 CVs. Please delete one to add a new one.",
+    "uploadedOn": "Uploaded on {{date}}",
+    "primary": "Primary",
+    "setAsPrimary": "Set as primary CV",
+    "setAsPrimaryAction": "Make primary",
+    "delete": "Delete CV",
+    "confirmDelete": "Are you sure you want to delete this CV?",
+    "noCVs": "No CVs uploaded yet.",
+    "errors": {
+      "fetchFailed": "Error fetching CVs.",
+      "fileTooLarge": "File too large (max 5MB).",
+      "invalidFileType": "Invalid file type (PDF only accepted).",
+      "limitReached": "Limit of 2 CVs reached.",
+      "uploadFailed": "CV upload failed.",
+      "deleteFailed": "CV deletion failed.",
+      "primarySetFailed": "Setting primary CV failed."
+    },
+    "success": {
+      "upload": "CV uploaded successfully!",
+      "delete": "CV deleted successfully.",
+      "primarySet": "Primary CV set successfully."
+    }
   },
   "dashboard": {
     "welcome": "Welcome",

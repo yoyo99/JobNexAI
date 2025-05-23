@@ -238,7 +238,7 @@ export function UserPreferences() {
           onChange={(e) => setPreferences(prev => prev ? { ...prev, preferred_currency: e.target.value || null } : null)}
           className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
-          <option value="">{t('forms.selectDefault', { context: 'female', fieldName: 'devise' })}</option>
+          <option value="">{t('forms.selectPreferredCurrencyPlaceholder')}</option>
           {availableCurrencies.map(currency => (
             <option key={currency.value} value={currency.value}>
               {currency.label}

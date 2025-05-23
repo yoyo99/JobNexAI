@@ -81,6 +81,79 @@
     "search": "Suchen",
     "view": "Ansehen"
   },
+  "languages": {
+    "fr": "Französisch",
+    "en": "Englisch",
+    "es": "Spanisch",
+    "de": "Deutsch",
+    "it": "Italienisch"
+  },
+  "coverLetterGenerator": {
+    "title": "KI-Anschreiben-Generator",
+    "errors": {
+      "notAuthenticated": "Benutzer nicht authentifiziert.",
+      "noCvSelected": "Bitte wählen Sie einen Lebenslauf aus.",
+      "jobDescriptionRequired": "Stellenbeschreibung ist erforderlich.",
+      "generationFailed": "Erstellung des Anschreibens fehlgeschlagen.",
+      "cvContentFetchFailed": "Inhalt des Lebenslaufs konnte nicht abgerufen werden.",
+      "saveFailed": "Speichern des Anschreibens fehlgeschlagen."
+    },
+    "success": {
+      "generated": "Anschreiben erfolgreich erstellt!",
+      "saved": "Anschreiben erfolgreich gespeichert! (Simulation)"
+    },
+    "labels": {
+      "jobTitle": "Stellentitel",
+      "companyName": "Firmenname",
+      "jobDescription": "Stellenbeschreibung",
+      "selectCV": "Wählen Sie Ihren Basis-Lebenslauf",
+      "customInstructions": "Benutzerdefinierte Anweisungen für KI (optional)",
+      "language": "Sprache des Anschreibens",
+      "generatedLetter": "Erstelltes Anschreiben"
+    },
+    "placeholders": {
+      "jobDescription": "Fügen Sie hier die vollständige Stellenbeschreibung ein...",
+      "customInstructions": "Z.B.: Betonen Sie meine Projektmanagement-Erfahrung, formeller Ton...",
+      "letterOutput": "Das erstellte Anschreiben erscheint hier..."
+    },
+    "buttons": {
+      "generate": "Mit KI erstellen",
+      "save": "Anschreiben speichern"
+    },
+    "generating": "Wird erstellt...",
+    "notGeneratedYet": "Ihr Anschreiben erscheint hier, sobald es erstellt wurde.",
+    "noCVsAvailable": "Keine Lebensläufe verfügbar. Bitte laden Sie zuerst einen Lebenslauf hoch.",
+    "savedLettersTitle": "Meine gespeicherten Anschreiben"
+  },
+  "userCVs": {
+    "title": "Meine Lebensläufe",
+    "uploadLabel": "Neuen Lebenslauf hochladen (PDF, max. 5MB)",
+    "uploadButton": "Hochladen",
+    "selectedFile": "Ausgewählte Datei",
+    "uploadHint": "Sie können noch {{count}} Lebenslauf/Lebensläufe hochladen.",
+    "limitReachedMessage": "Sie haben das Limit von 2 Lebensläufen erreicht. Bitte löschen Sie einen, um einen neuen hinzuzufügen.",
+    "uploadedOn": "Hochgeladen am {{date}}",
+    "primary": "Primär",
+    "setAsPrimary": "Als primären Lebenslauf festlegen",
+    "setAsPrimaryAction": "Primär machen",
+    "delete": "Lebenslauf löschen",
+    "confirmDelete": "Sind Sie sicher, dass Sie diesen Lebenslauf löschen möchten?",
+    "noCVs": "Noch keine Lebensläufe hochgeladen.",
+    "errors": {
+      "fetchFailed": "Fehler beim Abrufen der Lebensläufe.",
+      "fileTooLarge": "Datei zu groß (max. 5MB).",
+      "invalidFileType": "Ungültiger Dateityp (nur PDF akzeptiert).",
+      "limitReached": "Limit von 2 Lebensläufen erreicht.",
+      "uploadFailed": "Hochladen des Lebenslaufs fehlgeschlagen.",
+      "deleteFailed": "Löschen des Lebenslaufs fehlgeschlagen.",
+      "primarySetFailed": "Festlegen des primären Lebenslaufs fehlgeschlagen."
+    },
+    "success": {
+      "upload": "Lebenslauf erfolgreich hochgeladen!",
+      "delete": "Lebenslauf erfolgreich gelöscht.",
+      "primarySet": "Primärer Lebenslauf erfolgreich festgelegt."
+    }
+  },
   "dashboard": {
     "welcome": "Willkommen zurück",
     "jobsApplied": "Beworbene Jobs",
@@ -246,6 +319,10 @@
     "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
   },
   "profile": {
+    "tabs": {
+      "myCVs": "Meine Lebensläufe",
+      "coverLetterGenerator": "KI-Anschreiben"
+    },
     "title": "Profil",
     "editProfile": "Profil bearbeiten",
     "personalInfo": "Persönliche Informationen",

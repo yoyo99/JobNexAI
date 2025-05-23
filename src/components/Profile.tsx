@@ -10,7 +10,9 @@ import { JobAlerts } from './JobAlerts'
 import { useTranslation } from 'react-i18next'
 import { SubscriptionManager } from './SubscriptionManager'
 import { StripeWebhookInfo } from './StripeWebhookInfo'
-import UserAISettings from './UserAISettings'
+import UserAISettings from './UserAISettings';
+import UserCVs from './UserCVs';
+import CoverLetterGenerator from './CoverLetterGenerator';
 
 function Profile() {
   const { user, subscription, loadUser } = useAuth()
@@ -18,7 +20,7 @@ function Profile() {
   const [fullName, setFullName] = useState(user?.full_name || '')
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const { t } = useTranslation()
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai' | 'skills' | 'alerts' | 'subscription' | 'webhook'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai' | 'skills' | 'alerts' | 'subscription' | 'webhook' | 'cvs' | 'coverLetterGenerator'>('profile')
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -122,6 +124,26 @@ function Profile() {
             }`}
           >
             Webhook
+          </button>
+          <button
+            onClick={() => setActiveTab('cvs')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'cvs'
+                ? 'border-primary-400 text-primary-400'
+                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+            }`}
+          >
+            {t('profile.tabs.myCVs')} 
+          </button>
+          <button
+            onClick={() => setActiveTab('coverLetterGenerator')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'coverLetterGenerator'
+                ? 'border-primary-400 text-primary-400'
+                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+            }`}
+          >
+            {t('profile.tabs.coverLetterGenerator')}
           </button>
         </nav>
       </div>
@@ -234,6 +256,26 @@ function Profile() {
           className="card"
         >
           <StripeWebhookInfo />
+        </motion.div>
+      )}
+
+      {activeTab === 'cvs' && user?.id && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card"
+        >
+          <UserCVs userId={user.id} />
+        </motion.div>
+      )}
+
+      {activeTab === 'coverLetterGenerator' && user?.id && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card"
+        >
+          <CoverLetterGenerator />
         </motion.div>
       )}
     </div>

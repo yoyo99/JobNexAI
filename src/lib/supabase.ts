@@ -132,6 +132,24 @@ export interface MarketTrend {
   percentage: number;
 }
 
+// Interface pour les métadonnées des CVs utilisateurs
+export interface CVMetadata {
+  id: string;
+  user_id: string;
+  file_name: string;
+  storage_path: string;
+  file_size?: number;
+  file_type?: string;
+  is_primary: boolean;
+  uploaded_at: string;
+}
+
+export interface UserAISettingsData {
+  feature_engines: Record<string, string>;
+  api_keys: Record<string, string>;
+  // user_id n'est pas nécessaire ici car il est passé en argument ou implicite
+}
+
 export interface JobApplication {
   id: string;
   job: {
@@ -398,3 +416,369 @@ export async function getJobSuggestions(userId: string): Promise<JobSuggestion[]
     matchingSkills: [] // à adapter si tu veux un vrai calcul de matchingSkills
   }));
 }
+
+// --- Fonctions pour User AI Settings ---
+
+export async function getUserAISettings(userId: string): Promise<UserAISettingsData | null> {
+  if (!userId) {
+    console.warn('getUserAISettings: userId is required.');
+    return null;
+  }
+  const { data, error } = await supabase
+    .from('user_ai_settings')
+    .select('feature_engines, api_keys')
+    .eq('user_id', userId)
+    .single(); // .single() car un utilisateur n'a qu'un seul ensemble de paramètres
+
+  if (error) {
+    if (error.code === 'PGRST116') { // PGRST116: 'No rows found'
+      console.log('No AI settings found for user:', userId);
+      return null; // Pas une erreur, juste pas de paramètres encore
+    }
+    console.error('Error fetching user AI settings:', error);
+    throw error;
+  }
+  return data as UserAISettingsData;
+}
+
+export async function saveUserAISettings(userId: string, settings: UserAISettingsData): Promise<void> {
+  if (!userId) {
+    console.warn('saveUserAISettings: userId is required.');
+    return;
+  }
+  const { data, error } = await supabase
+    .from('user_ai_settings')
+    .upsert(
+      {
+        user_id: userId,
+        feature_engines: settings.feature_engines,
+        api_keys: settings.api_keys,
+        updated_at: new Date().toISOString(), // Assurez-vous que updated_at est géré
+      },
+      {
+        onConflict: 'user_id', // En cas de conflit sur user_id, met à jour
+      }
+    )
+    .select(); // Pour obtenir les données insérées/mises à jour si nécessaire
+
+  if (error) {
+    console.error('Error saving user AI settings:', error);
+    throw error;
+  }
+  console.log('User AI settings saved successfully for user:', userId, data);
+}
+
+// --- Fonctions pour la gestion des CVs Utilisateurs ---
+
+const CV_STORAGE_BUCKET = 'cvs'; // Nom du bucket de stockage pour les CVs
+
+/**
+ * Récupère la liste des CVs d'un utilisateur.
+ */
+export const getUserCVs = async (userId: string): Promise<CVMetadata[]> => {
+  if (!userId) throw new Error('User ID is required to fetch CVs.');
+
+  const { data, error } = await supabase
+    .from('user_cvs')
+    .select('*')
+    .eq('user_id', userId)
+    .order('uploaded_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching user CVs:', error);
+    throw error;
+  }
+  return data || [];
+};
+
+/**
+ * Uploade un fichier CV vers Supabase Storage et enregistre ses métadonnées.
+ * @param userId L'ID de l'utilisateur.
+ * @param file Le fichier CV à uploader.
+ * @returns Les métadonnées du CV uploadé.
+ */
+export const uploadUserCV = async (userId: string, file: File): Promise<CVMetadata> => {
+  if (!userId) throw new Error('User ID is required to upload CV.');
+  if (!file) throw new Error('File is required to upload CV.');
+
+  // Vérifier la limite de CVs côté client (la BDD a aussi une RLS pour ça)
+  const existingCVs = await getUserCVs(userId);
+  if (existingCVs.length >= 2) {
+    throw new Error('Limite de 2 CVs atteinte. Veuillez en supprimer un pour en ajouter un nouveau.');
+  }
+
+  const fileExt = file.name.split('.').pop();
+  const uniqueFileName = `${userId}/${Date.now()}.${fileExt}`;
+  const storagePath = `${uniqueFileName}`; // storagePath est relatif au bucket
+
+  // 1. Upload vers Supabase Storage
+  const { data: uploadData, error: uploadError } = await supabase.storage
+    .from(CV_STORAGE_BUCKET)
+    .upload(storagePath, file, {
+      cacheControl: '3600',
+      upsert: false, // Ne pas remplacer si le fichier existe déjà (improbable avec nom unique)
+    });
+
+  if (uploadError) {
+    console.error('Error uploading CV to storage:', uploadError);
+    throw uploadError;
+  }
+
+  if (!uploadData) {
+    throw new Error('Upload to storage failed, no data returned.');
+  }
+
+  // 2. Enregistrer les métadonnées dans la table user_cvs
+  const cvMetadataToInsert = {
+    user_id: userId,
+    file_name: file.name,
+    storage_path: uploadData.path, // Utiliser le chemin retourné par storage, qui est relatif au bucket
+    file_size: file.size,
+    file_type: file.type,
+    is_primary: existingCVs.length === 0, // Le premier CV uploadé devient principal par défaut
+  };
+
+  const { data: dbData, error: dbError } = await supabase
+    .from('user_cvs')
+    .insert(cvMetadataToInsert)
+    .select()
+    .single();
+
+  if (dbError) {
+    console.error('Error saving CV metadata to database:', dbError);
+    // Tenter de supprimer le fichier du storage si l'insertion en BDD échoue
+    await supabase.storage.from(CV_STORAGE_BUCKET).remove([storagePath]);
+    throw dbError;
+  }
+
+  return dbData as CVMetadata;
+};
+
+/**
+ * Supprime un CV (métadonnées et fichier dans Storage).
+ * @param cvId L'ID du CV dans la table user_cvs.
+ * @param storagePath Le chemin du fichier dans Supabase Storage.
+ */
+export const deleteUserCV = async (cvId: string, storagePath: string): Promise<void> => {
+  if (!cvId) throw new Error('CV ID is required to delete CV metadata.');
+  if (!storagePath) throw new Error('Storage path is required to delete CV file.');
+
+  // 1. Supprimer de la base de données
+  const { error: dbError } = await supabase
+    .from('user_cvs')
+    .delete()
+    .eq('id', cvId);
+
+  if (dbError) {
+    console.error('Error deleting CV metadata from database:', dbError);
+    throw dbError;
+  }
+
+  // 2. Supprimer du Storage
+  const { error: storageError } = await supabase.storage
+    .from(CV_STORAGE_BUCKET)
+    .remove([storagePath]);
+
+  if (storageError) {
+    console.error('Error deleting CV from storage:', storageError);
+    // Note: La métadonnée est déjà supprimée. Gérer cette incohérence potentielle si nécessaire.
+    throw storageError;
+  }
+};
+
+/**
+ * Définit un CV comme principal pour un utilisateur.
+ * Tous les autres CVs de cet utilisateur seront marqués comme non principaux.
+ * @param userId L'ID de l'utilisateur.
+ * @param cvIdToMakePrimary L'ID du CV à marquer comme principal.
+ */
+export const setPrimaryCV = async (userId: string, cvIdToMakePrimary: string): Promise<void> => {
+  if (!userId) throw new Error('User ID is required.');
+  if (!cvIdToMakePrimary) throw new Error('CV ID to make primary is required.');
+
+  // Étape 1: Mettre tous les CVs de l'utilisateur à is_primary = false
+  const { error: updateError } = await supabase
+    .from('user_cvs')
+    .update({ is_primary: false })
+    .eq('user_id', userId);
+
+  if (updateError) {
+    console.error('Error resetting primary CVs:', updateError);
+    throw updateError;
+  }
+
+  // Étape 2: Mettre le CV spécifié à is_primary = true
+  const { error: setError } = await supabase
+    .from('user_cvs')
+    .update({ is_primary: true })
+    .eq('id', cvIdToMakePrimary)
+    .eq('user_id', userId); // Assurer qu'on met à jour le CV du bon utilisateur
+
+  if (setError) {
+    console.error('Error setting primary CV:', setError);
+    throw setError;
+  }
+};
+
+// --- Fonctions pour appeler les Edge Functions --- 
+
+/**
+ * Appelle la fonction Edge 'extract-cv-text' pour extraire le texte d'un CV.
+ * @param cvPath Le chemin de stockage du fichier CV dans Supabase Storage.
+ * @returns Le texte extrait du CV.
+ */
+export const invokeExtractCvText = async (cvPath: string): Promise<string> => {
+  if (!supabaseExport) throw new Error('Supabase client is not initialized');
+  if (!cvPath) throw new Error('CV path is required to extract text.');
+
+  const { data, error } = await supabaseExport.functions.invoke('extract-cv-text', {
+    body: { cvPath },
+  });
+
+  if (error) {
+    console.error('Error invoking extract-cv-text function:', error);
+    throw error;
+  }
+
+  // La fonction retourne { extractedText: string, metadata: any } ou { error: string }
+  if (data.error) {
+    console.error('Error from extract-cv-text function:', data.error);
+    throw new Error(data.error);
+  }
+
+  return data.extractedText;
+};
+
+/**
+ * Appelle la fonction Edge 'generate-cover-letter' pour générer une lettre de motivation.
+ * @param cvText Le texte du CV.
+ * @param jobTitle Le titre du poste.
+ * @param companyName Le nom de l'entreprise.
+ * @param jobDescription La description du poste.
+ * @param language La langue cible pour la lettre.
+ * @param customInstructions Instructions personnalisées optionnelles.
+ * @returns Le contenu de la lettre de motivation générée.
+ */
+export const invokeGenerateCoverLetter = async (
+  cvText: string,
+  jobTitle: string,
+  companyName: string,
+  jobDescription: string,
+  language: string,
+  customInstructions?: string
+): Promise<string> => {
+  if (!supabaseExport) throw new Error('Supabase client is not initialized');
+
+  const body = {
+    cvText,
+    jobTitle,
+    companyName,
+    jobDescription,
+    language,
+    customInstructions,
+  };
+
+  const { data, error } = await supabaseExport.functions.invoke('generate-cover-letter', {
+    body,
+  });
+
+  if (error) {
+    console.error('Error invoking generate-cover-letter function:', error);
+    throw error;
+  }
+
+  // La fonction retourne { coverLetter: string } ou { error: string }
+  if (data.error) {
+    console.error('Error from generate-cover-letter function:', data.error);
+    throw new Error(data.error);
+  }
+
+  return data.coverLetter;
+};
+
+// --- Fonctions pour la gestion des Lettres de Motivation Utilisateurs ---
+
+export interface CoverLetterMetadata {
+  id: string;
+  user_id: string;
+  cv_id_used?: string | null; // ID du CV de user_cvs utilisé
+  job_title?: string | null;
+  company_name?: string | null;
+  job_description_details?: string | null; // Description complète ou notes clés
+  cover_letter_content: string; // Contenu de la lettre
+  language: string; // Langue de la lettre (ex: 'fr', 'en')
+  custom_instructions?: string | null; // Instructions spécifiques de l'utilisateur pour l'IA
+  ai_model_used?: string | null; // Modèle d'IA utilisé
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
+
+/**
+ * Récupère toutes les lettres de motivation d'un utilisateur.
+ */
+export const getUserCoverLetters = async (userId: string): Promise<CoverLetterMetadata[]> => {
+  if (!userId) throw new Error('User ID is required to fetch cover letters.');
+
+  const { data, error } = await supabase
+    .from('user_cover_letters')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching user cover letters:', error);
+    throw error;
+  }
+  return data || [];
+};
+
+/**
+ * Crée une nouvelle lettre de motivation.
+ * @param coverLetterData Données de la lettre de motivation à créer. user_id sera extrait du token JWT par Supabase via RLS.
+ */
+export const createCoverLetter = async (coverLetterData: Omit<CoverLetterMetadata, 'id' | 'created_at' | 'updated_at' | 'user_id'> & { user_id: string }): Promise<CoverLetterMetadata> => {
+  const { data, error } = await supabase
+    .from('user_cover_letters')
+    .insert(coverLetterData) // user_id doit être inclus ici pour la politique RLS au cas où elle ne peut pas l'inférer
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating cover letter:', error);
+    throw error;
+  }
+  return data;
+};
+
+/**
+ * Met à jour une lettre de motivation existante.
+ */
+export const updateCoverLetter = async (id: string, updates: Partial<Omit<CoverLetterMetadata, 'id' | 'user_id' | 'created_at' | 'updated_at'>>): Promise<CoverLetterMetadata> => {
+  const { data, error } = await supabase
+    .from('user_cover_letters')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating cover letter:', error);
+    throw error;
+  }
+  return data;
+};
+
+/**
+ * Supprime une lettre de motivation.
+ */
+export const deleteCoverLetter = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('user_cover_letters')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting cover letter:', error);
+    throw error;
+  }
+};

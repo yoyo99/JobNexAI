@@ -131,6 +131,7 @@
     "selectDefault": "Choisir votre {{fieldName}}",
     "changesSaved": "Modifications enregistrées avec succès.",
     "errorSaving": "Erreur lors de la sauvegarde des modifications.",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "selectPreferredCurrencyPlaceholder": "Choisir votre devise"
   }
 }

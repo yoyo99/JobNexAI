@@ -81,6 +81,79 @@
     "search": "Cerca",
     "view": "Visualizza"
   },
+  "languages": {
+    "fr": "Francese",
+    "en": "Inglese",
+    "es": "Spagnolo",
+    "de": "Tedesco",
+    "it": "Italiano"
+  },
+  "coverLetterGenerator": {
+    "title": "Generatore di Lettere di Presentazione IA",
+    "errors": {
+      "notAuthenticated": "Utente non autenticato.",
+      "noCvSelected": "Seleziona un CV.",
+      "jobDescriptionRequired": "La descrizione del lavoro è obbligatoria.",
+      "generationFailed": "Generazione della lettera di presentazione fallita.",
+      "cvContentFetchFailed": "Impossibile recuperare il contenuto del CV.",
+      "saveFailed": "Salvataggio della lettera di presentazione fallito."
+    },
+    "success": {
+      "generated": "Lettera di presentazione generata con successo!",
+      "saved": "Lettera di presentazione salvata con successo! (Simulazione)"
+    },
+    "labels": {
+      "jobTitle": "Titolo della Posizione",
+      "companyName": "Nome dell'Azienda",
+      "jobDescription": "Descrizione della Posizione",
+      "selectCV": "Seleziona il tuo CV di base",
+      "customInstructions": "Istruzioni personalizzate per l'IA (opzionale)",
+      "language": "Lingua della Lettera di Presentazione",
+      "generatedLetter": "Lettera di Presentazione Generata"
+    },
+    "placeholders": {
+      "jobDescription": "Incolla qui la descrizione completa della posizione...",
+      "customInstructions": "Es: Enfatizzare la mia esperienza nella gestione di progetti, tono formale...",
+      "letterOutput": "La lettera generata apparirà qui..."
+    },
+    "buttons": {
+      "generate": "Genera con IA",
+      "save": "Salva Lettera"
+    },
+    "generating": "In generazione...",
+    "notGeneratedYet": "La tua lettera di presentazione apparirà qui una volta generata.",
+    "noCVsAvailable": "Nessun CV disponibile. Carica prima un CV.",
+    "savedLettersTitle": "Le mie Lettere di Presentazione Salvate"
+  },
+  "userCVs": {
+    "title": "I miei CV",
+    "uploadLabel": "Carica nuovo CV (PDF, max 5MB)",
+    "uploadButton": "Carica",
+    "selectedFile": "File selezionato",
+    "uploadHint": "Puoi caricare ancora {{count}} CV.",
+    "limitReachedMessage": "Hai raggiunto il limite di 2 CV. Elimina un CV per aggiungerne uno nuovo.",
+    "uploadedOn": "Caricato il {{date}}",
+    "primary": "Principale",
+    "setAsPrimary": "Imposta come CV principale",
+    "setAsPrimaryAction": "Rendi principale",
+    "delete": "Elimina CV",
+    "confirmDelete": "Sei sicuro di voler eliminare questo CV?",
+    "noCVs": "Nessun CV caricato per ora.",
+    "errors": {
+      "fetchFailed": "Errore nel recupero dei CV.",
+      "fileTooLarge": "File troppo grande (max 5MB).",
+      "invalidFileType": "Tipo di file non valido (solo PDF accettati).",
+      "limitReached": "Limite di 2 CV raggiunto.",
+      "uploadFailed": "Caricamento CV non riuscito.",
+      "deleteFailed": "Eliminazione CV non riuscita.",
+      "primarySetFailed": "Impostazione CV principale non riuscita."
+    },
+    "success": {
+      "upload": "CV caricato con successo!",
+      "delete": "CV eliminato con successo.",
+      "primarySet": "CV principale impostato con successo."
+    }
+  },
   "dashboard": {
     "welcome": "Bentornato/a",
     "jobsApplied": "Lavori candidati",
@@ -246,6 +319,10 @@
     "errorMessage": "Si è verificato un errore. Riprova."
   },
   "profile": {
+    "tabs": {
+      "myCVs": "I miei CV",
+      "coverLetterGenerator": "Lettere di Presentazione IA"
+    },
     "title": "Profilo",
     "editProfile": "Modifica profilo",
     "personalInfo": "Informazioni personali",

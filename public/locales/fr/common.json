@@ -90,6 +90,88 @@
     "search": "Rechercher",
     "view": "Voir"
   },
+  "languages": {
+    "fr": "Français",
+    "en": "Anglais",
+    "es": "Espagnol",
+    "de": "Allemand",
+    "it": "Italien"
+  },
+  "coverLetterGenerator": {
+    "title": "Générateur de Lettres de Motivation IA",
+    "errors": {
+      "notAuthenticated": "Utilisateur non authentifié.",
+      "noCvSelected": "Veuillez sélectionner un CV.",
+      "jobDescriptionRequired": "La description du poste est requise.",
+      "cvContentError": "Erreur lors de la récupération du contenu du CV.",
+      "cvPathMissing": "Chemin du CV manquant ou invalide.",
+      "cvExtractionFailed": "Échec de l'extraction du texte du CV.",
+      "generationFailed": "La génération de la lettre de motivation a échoué.",
+      "cvContentFetchFailed": "Impossible de récupérer le contenu du CV.",
+      "saveFailed": "La sauvegarde de la lettre de motivation a échoué."
+    },
+    "success": {
+      "generationSuccess": "Lettre de motivation générée avec succès !",
+      "saveSuccess": "Lettre de motivation sauvegardée avec succès !",
+      "deleteSuccess": "Lettre de motivation supprimée avec succès !",
+      "generalError": "Une erreur s'est produite."
+    },
+    "feedback": {
+      "extractingCv": "Extraction du texte du CV en cours...",
+      "generatingLetter": "Génération de la lettre de motivation en cours..."
+    },
+    "labels": {
+      "jobTitle": "Titre du Poste",
+      "companyName": "Nom de l'Entreprise",
+      "jobDescription": "Description du Poste",
+      "selectCV": "Sélectionnez votre CV de base",
+      "customInstructions": "Instructions personnalisées pour l'IA (optionnel)",
+      "language": "Langue de la lettre de motivation",
+      "generatedLetter": "Lettre de Motivation Générée"
+    },
+    "placeholders": {
+      "jobDescription": "Collez ici la description complète du poste...",
+      "customInstructions": "Ex: Mettre l'accent sur mon expérience en gestion de projet, ton formel...",
+      "letterOutput": "La lettre générée apparaîtra ici..."
+    },
+    "buttons": {
+      "generate": "Générer avec l'IA",
+      "save": "Sauvegarder la Lettre"
+    },
+    "generating": "Génération en cours...",
+    "notGeneratedYet": "Votre lettre de motivation apparaîtra ici une fois générée.",
+    "noCVsAvailable": "Aucun CV disponible. Veuillez d'abord uploader un CV.",
+    "savedLettersTitle": "Mes Lettres de Motivation Sauvegardées"
+  },
+  "userCVs": {
+    "title": "Mes CVs",
+    "uploadLabel": "Uploader un nouveau CV (PDF, max 5MB)",
+    "uploadButton": "Uploader",
+    "selectedFile": "Fichier sélectionné",
+    "uploadHint": "Vous pouvez uploader encore {{count}} CV.",
+    "limitReachedMessage": "Vous avez atteint la limite de 2 CVs. Veuillez en supprimer un pour en ajouter un nouveau.",
+    "uploadedOn": "Uploadé le {{date}}",
+    "primary": "Principal",
+    "setAsPrimary": "Définir comme CV principal",
+    "setAsPrimaryAction": "Rendre principal",
+    "delete": "Supprimer le CV",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce CV ?",
+    "noCVs": "Aucun CV uploadé pour le moment.",
+    "errors": {
+      "fetchFailed": "Erreur lors de la récupération des CVs.",
+      "fileTooLarge": "Fichier trop volumineux (max 5MB).",
+      "invalidFileType": "Type de fichier invalide (PDF uniquement acceptés).",
+      "limitReached": "Limite de 2 CVs atteinte.",
+      "uploadFailed": "Échec de l'upload du CV.",
+      "deleteFailed": "Échec de la suppression du CV.",
+      "primarySetFailed": "Échec de la définition du CV principal."
+    },
+    "success": {
+      "upload": "CV uploadé avec succès !",
+      "delete": "CV supprimé avec succès.",
+      "primarySet": "CV principal défini avec succès."
+    }
+  },
   "dashboard": {
     "welcome": "Bienvenue",
     "greeting": "Bienvenue !",
@@ -265,6 +347,10 @@
     "errorMessage": "Une erreur s'est produite. Veuillez réessayer."
   },
   "profile": {
+    "tabs": {
+      "myCVs": "Mes CVs",
+      "coverLetterGenerator": "Lettres de Motivation IA"
+    },
     "title": "Profil",
     "editProfile": "Modifier le profil",
     "personalInfo": "Informations personnelles",
