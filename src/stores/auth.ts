@@ -75,8 +75,7 @@ export const useAuth = create<AuthState>((set, get) => ({
         });
         console.log('[AUTH][loadUser] Aucun utilisateur connecté');
         return
-      }Correction du titre jobSearch.title
-
+      }
       // Récupérer le profil complet et l'abonnement
       console.log(`[AUTH][loadUser][${callId}] Before await supabase.from('profiles')... for user ID: ${authUser.id}`);
       const { data: profile, error: profileError } = await supabase
