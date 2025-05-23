@@ -36,7 +36,6 @@ export interface Profile {
   trial_ends_at: string | null;
   created_at: string;
   updated_at: string;
-  preferred_currency?: string | null; // Ajout de la préférence de devise
 }
 
 export interface Subscription {
@@ -339,6 +338,7 @@ export async function getJobs(filters: {
   remote?: 'remote' | 'hybrid' | 'onsite';
   experienceLevel?: 'junior' | 'mid' | 'senior';
   sortBy?: 'date' | 'salary';
+  currency?: string; // Ajout du filtre de devise
   requiredSkills?: string[];
   preferredSkills?: string[];
 } = {}): Promise<Job[]> {
@@ -366,6 +366,9 @@ export async function getJobs(filters: {
   }
   if (filters.experienceLevel) {
     query = query.eq('experience_level', filters.experienceLevel);
+  }
+  if (filters.currency) {
+    query = query.eq('currency', filters.currency);
   }
   if (filters.sortBy === 'salary') {
     query = query.order('salary_max', { ascending: false });

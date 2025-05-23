@@ -1,12 +1,25 @@
 import { create } from 'zustand'
 
 let isLoadUserRunning = false; // Drapeau pour prévenir les exécutions concurrentes
-import { supabase, type Profile, type Subscription } from '../lib/supabase'
+import { supabase, type Profile, type Subscription } from '../lib/supabase';
+
+// Interface pour les préférences utilisateur dans le store
+interface UserPreferencesAuth {
+  id?: string; 
+  user_id?: string;
+  job_types?: string[];
+  preferred_locations?: string[];
+  min_salary?: number | null;
+  max_salary?: number | null;
+  remote_preference?: 'remote' | 'hybrid' | 'onsite' | 'any' | null;
+  preferred_currency?: string | null;
+}
 import { AuthService } from '../lib/auth-service'
 
 interface AuthState {
   user: Profile | null
   subscription: Subscription | null
+  userPreferences: UserPreferencesAuth | null; // Ajout des préférences utilisateur
   loading: boolean
   initialized: boolean
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
@@ -19,6 +32,7 @@ interface AuthState {
 export const useAuth = create<AuthState>((set, get) => ({
   user: null,
   subscription: null,
+  userPreferences: null, // Initialisation
   loading: true,
   initialized: false,
 
@@ -47,7 +61,7 @@ export const useAuth = create<AuthState>((set, get) => ({
         console.log(`[AUTH][loadUser][${callId}] currentUserError or no authUser. Error:`, currentUserError);
         set(state => {
           console.log(`[AUTH][loadUser][${callId}] No authUser. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
-          return { user: null, subscription: null, loading: false, initialized: true };
+          return { user: null, subscription: null, userPreferences: null, loading: false, initialized: true };
         });
         console.log('[AUTH][loadUser] Aucun utilisateur connecté ou erreur lors de la récupération.');
         return
@@ -57,11 +71,11 @@ export const useAuth = create<AuthState>((set, get) => ({
       if (!authUser) { // Cette condition est maintenant redondante mais gardée pour la structure existante
         set(state => {
           console.log(`[AUTH][loadUser][${callId}] No authUser. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
-          return { user: null, subscription: null, loading: false, initialized: true };
+          return { user: null, subscription: null, userPreferences: null, loading: false, initialized: true };
         });
         console.log('[AUTH][loadUser] Aucun utilisateur connecté');
         return
-      }
+      }Correction du titre jobSearch.title
 
       // Récupérer le profil complet et l'abonnement
       console.log(`[AUTH][loadUser][${callId}] Before await supabase.from('profiles')... for user ID: ${authUser.id}`);
@@ -92,11 +106,27 @@ export const useAuth = create<AuthState>((set, get) => ({
       }
       console.log(`[AUTH][loadUser][${callId}] After await supabase.from('subscriptions')... subscriptionError:`, subscriptionError);
 
+      // Récupérer les préférences utilisateur
+      console.log(`[AUTH][loadUser][${callId}] Before await supabase.from('user_preferences')... for user ID: ${authUser.id}`);
+      const { data: userPreferences, error: preferencesError } = await supabase
+        .from('user_preferences')
+        .select('*')
+        .eq('user_id', authUser.id)
+        .single();
+
+      if (preferencesError && preferencesError.code !== 'PGRST116') {
+        // PGRST116 = not found, ce qui est normal si l'utilisateur n'a pas encore de préférences
+        console.error(`[AUTH][loadUser][${callId}] Error fetching user_preferences:`, preferencesError);
+        // On pourrait choisir de throw ici ou de continuer en mettant userPreferences à null
+      }
+      console.log(`[AUTH][loadUser][${callId}] Fetched userPreferences =`, userPreferences);
+
       set(state => {
         console.log(`[AUTH][loadUser][${callId}] Fetches successful. Setting final state. Current initialized: ${state.initialized}`);
         return {
           user: profile,
           subscription: subscription || null,
+          userPreferences: userPreferences || null,
           loading: false,
           initialized: true
         };
@@ -107,7 +137,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       console.error(`[AUTH][loadUser][${callId}] Error caught in loadUser try block. Message: "${typedError?.message}", Code: "${typedError?.code}", Details: "${typedError?.details}", Hint: "${typedError?.hint}". Full error object:`, error);
       set(state => {
         console.log(`[AUTH][loadUser][${callId}] Error caught. Setting loading: false, initialized: true. Current initialized: ${state.initialized}`);
-        return { user: null, subscription: null, loading: false, initialized: true }; // Réinitialiser user/sub en cas d'erreur
+        return { user: null, subscription: null, userPreferences: null, loading: false, initialized: true }; // Réinitialiser user/sub/prefs en cas d'erreur
       });
       console.log(`[AUTH][loadUser][${callId}] Catch block finished.`);
     } finally {
@@ -150,7 +180,7 @@ export const useAuth = create<AuthState>((set, get) => ({
     if (error) {
       console.error('Error signing out:', error)
     }
-    set({ user: null, subscription: null })
+    set({ user: null, subscription: null, userPreferences: null })
   },
 
   updateProfile: async (profile: { full_name?: string }) => {

@@ -15,7 +15,7 @@ import { LoadingSpinner } from './LoadingSpinner'
 
 function JobSearch() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, userPreferences } = useAuth()
   const [loading, setLoading] = useState(true)
   const [jobs, setJobs] = useState<Job[]>([])
   const [suggestions, setSuggestions] = useState<JobSuggestion[]>([])
@@ -32,6 +32,7 @@ function JobSearch() {
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [shareJob, setShareJob] = useState<Job | null>(null)
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
 
   const jobTypes = useMemo(() => [
     { value: 'FULL_TIME', label: t('jobSearch.types.fullTime') },
@@ -55,12 +56,27 @@ function JobSearch() {
     { value: 'senior', label: 'Senior (5+ ans)' }
   ], [])
 
+  const availableCurrencies = useMemo(() => [
+    { value: '', label: t('jobSearch.filters.allCurrencies') },
+    { value: 'EUR', label: 'EUR (€) - Euro' },
+    { value: 'USD', label: 'USD ($) - Dollar américain' },
+    { value: 'CAD', label: 'CAD (C$) - Dollar canadien' },
+    { value: 'GBP', label: 'GBP (£) - Livre sterling' },
+    { value: 'CHF', label: 'CHF (Fr) - Franc suisse' },
+  ], [t]);
+
+  useEffect(() => {
+    if (userPreferences?.preferred_currency) {
+      setSelectedCurrency(userPreferences.preferred_currency);
+    }
+  }, [userPreferences]);
+
   const loadJobs = useCallback(async () => {
     try {
       setLoading(true)
       
       // Générer une clé de cache basée sur les filtres
-      const cacheKey = `jobs:${search}:${jobType}:${location}:${salaryMin}:${salaryMax}:${remote}:${experienceLevel}:${sortBy}`
+      const cacheKey = `jobs:${search}:${jobType}:${location}:${salaryMin}:${salaryMax}:${remote}:${experienceLevel}:${sortBy}:${selectedCurrency}`
       
       // Essayer de récupérer depuis le cache
       const data = await cache.getOrSet<Job[]>(
@@ -74,7 +90,8 @@ function JobSearch() {
             salaryMax: salaryMax || undefined,
             remote: remote === 'all' ? undefined : remote,
             experienceLevel: experienceLevel === 'all' ? undefined : experienceLevel,
-            sortBy
+            sortBy,
+            currency: selectedCurrency || undefined // Ajout du filtre de devise
           })
         },
         { ttl: 5 * 60 * 1000 } // 5 minutes
@@ -158,6 +175,15 @@ function JobSearch() {
   }
 
   const resetFilters = () => {
+    setSearch('');
+    setJobType('');
+    setLocation('');
+    setSalaryMin('');
+    setSalaryMax('');
+    setRemote('all');
+    setExperienceLevel('all');
+    setSortBy('date');
+    setSelectedCurrency(userPreferences?.preferred_currency || ''); // Réinitialiser à la préférence utilisateur ou vide
     setJobType('')
     setLocation('')
     setSalaryMin('')
@@ -417,6 +443,25 @@ function JobSearch() {
                   >
                     Réinitialiser les filtres
                   </button>
+                </div>
+
+                {/* Currency Filter */}
+                <div>
+                  <label htmlFor="currency" className="block text-sm font-medium text-gray-400 mb-1">
+                    {t('jobSearch.filters.currency')}
+                  </label>
+                  <select
+                    id="currency"
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    {availableCurrencies.map((currency) => (
+                      <option key={currency.value} value={currency.value}>
+                        {currency.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </motion.div>
             )}
