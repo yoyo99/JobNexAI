@@ -36,6 +36,7 @@ export interface Profile {
   trial_ends_at: string | null;
   created_at: string;
   updated_at: string;
+  preferred_currency?: string | null; // Ajout de la préférence de devise
 }
 
 export interface Subscription {

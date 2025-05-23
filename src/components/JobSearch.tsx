@@ -273,7 +273,7 @@ function JobSearch() {
       <div className="max-w-7xl mx-auto">
         <div className="card mb-8">
           <div className="max-w-2xl">
-            <h1 className="text-2xl font-bold text-white mb-4">{t('jobSearch.title')}</h1>
+            <h1 className="text-2xl font-bold text-white mb-4">{t('common:jobSearchPage.title')}</h1>
             <p className="text-gray-400 mb-6">{t('jobSearch.subtitle')}</p>
           </div>
 

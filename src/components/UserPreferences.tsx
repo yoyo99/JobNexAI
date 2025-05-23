@@ -11,6 +11,7 @@ interface UserPreferences {
   min_salary: number | null
   max_salary: number | null
   remote_preference: 'remote' | 'hybrid' | 'onsite' | 'any' | null
+  preferred_currency?: string | null; // Ajout de la devise préférée
 }
 
 export function UserPreferences() {
@@ -28,6 +29,14 @@ export function UserPreferences() {
     { value: 'freelance', label: t('search.freelance') },
     { value: 'internship', label: t('search.internship') },
   ]
+
+  const availableCurrencies = [
+    { value: 'EUR', label: 'EUR (€) - Euro' },
+    { value: 'USD', label: 'USD ($) - Dollar américain' },
+    { value: 'CAD', label: 'CAD (C$) - Dollar canadien' },
+    { value: 'GBP', label: 'GBP (£) - Livre sterling' },
+    { value: 'CHF', label: 'CHF (Fr) - Franc suisse' },
+  ];
 
   const remotePreferences = [
     { value: 'remote', label: t('search.remote') },
@@ -56,6 +65,7 @@ export function UserPreferences() {
         min_salary: null,
         max_salary: null,
         remote_preference: null,
+        preferred_currency: null, // Initialisation de la devise préférée
       })
     } catch (error) {
       console.error('Error loading preferences:', error)
@@ -219,6 +229,22 @@ export function UserPreferences() {
             />
           </div>
         </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-medium text-white mb-4">Devise préférée</h3>
+        <select
+          value={preferences?.preferred_currency || ''}
+          onChange={(e) => setPreferences(prev => prev ? { ...prev, preferred_currency: e.target.value || null } : null)}
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          <option value="">{t('forms.selectDefault', { context: 'female', fieldName: 'devise' })}</option>
+          {availableCurrencies.map(currency => (
+            <option key={currency.value} value={currency.value}>
+              {currency.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {message && (
