@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../stores/auth';
 import { useTranslation } from 'react-i18next';
 import { CVMetadata, getUserCVs, invokeExtractCvText, invokeGenerateCoverLetter } from '../lib/supabase'; // Importer aussi les fonctions pour les lettres de motivation plus tard
-import { FaFileAlt, FaSpinner, FaTrash, FaMagic, FaSave } from 'react-icons/fa6';
+import { FaFileAlt, FaSpinner, FaTrash, FaMagic, FaSave } from 'react-icons/fa';
 
 // Importer CoverLetterMetadata et les fonctions associées quand elles seront utilisées activement
 import { CoverLetterMetadata /*, createCoverLetter, getUserCoverLetters, updateCoverLetter, deleteCoverLetter */ } from '../lib/supabase';
