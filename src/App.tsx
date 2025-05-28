@@ -97,6 +97,9 @@ const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
 const FeaturesPage = React.lazy(() => import('./components/pages/FeaturesPage'));
 const HowItWorksPage = React.lazy(() => import('./components/pages/HowItWorksPage'));
 const TestimonialsPage = React.lazy(() => import('./components/pages/TestimonialsPage'));
+const AboutPage = React.lazy(() => import('./components/pages/AboutPage'));
+const ContactPage = React.lazy(() => import('./components/pages/ContactPage'));
+const TermsPage = React.lazy(() => import('./components/pages/TermsPage'));
 const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
 const AuthCallback = React.lazy(() => import('./components/AuthCallback'));
 const StripeCheckoutStatus = React.lazy(() => import('./components/StripeCheckoutStatus'));
@@ -168,6 +171,9 @@ function App() {
             <Route path="/register" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
             <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
             <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
+            <Route path="/about" element={<LazyComponentWrapper><AboutPage /></LazyComponentWrapper>} />
+            <Route path="/contact" element={<LazyComponentWrapper><ContactPage /></LazyComponentWrapper>} />
+            <Route path="/terms" element={<LazyComponentWrapper><TermsPage /></LazyComponentWrapper>} />
             <Route path="/features" element={<LazyComponentWrapper><FeaturesPage /></LazyComponentWrapper>} />
             <Route path="/how-it-works" element={<LazyComponentWrapper><HowItWorksPage /></LazyComponentWrapper>} />
             <Route path="/testimonials" element={<LazyComponentWrapper><TestimonialsPage /></LazyComponentWrapper>} />
