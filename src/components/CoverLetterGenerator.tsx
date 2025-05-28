@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../stores/auth';
 import { useTranslation } from 'react-i18next';
 import { CVMetadata, getUserCVs, invokeExtractCvText, invokeGenerateCoverLetter } from '../lib/supabase'; // Importer aussi les fonctions pour les lettres de motivation plus tard
-import { FaSpinner, FaMagic, FaSave, FaTrash, FaFileAlt } from 'react-icons/fa';
+import { FaFileAlt, FaSpinner, FaTrash, FaMagic, FaSave } from 'react-icons/fa6';
 
 // Importer CoverLetterMetadata et les fonctions associées quand elles seront utilisées activement
-// import { CoverLetterMetadata, createCoverLetter, getUserCoverLetters, updateCoverLetter, deleteCoverLetter } from '../lib/supabase';
+import { CoverLetterMetadata /*, createCoverLetter, getUserCoverLetters, updateCoverLetter, deleteCoverLetter */ } from '../lib/supabase';
 
 interface CoverLetterGeneratorProps {
   initialJobTitle?: string;
@@ -38,6 +38,7 @@ const CoverLetterGenerator: React.FC<CoverLetterGeneratorProps> = ({
   const [generatedLetter, setGeneratedLetter] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [editingLetter, setEditingLetter] = useState<string>(''); // Pour la modification
+  const [isSaving, setIsSaving] = useState(false);
 
   // États généraux
   const [isLoading, setIsLoading] = useState(false);
@@ -47,20 +48,27 @@ const CoverLetterGenerator: React.FC<CoverLetterGeneratorProps> = ({
   // Charger les CVs de l'utilisateur pour la sélection
   const fetchUserCVs = useCallback(async () => {
     if (user?.id) {
+      setIsLoading(true);
+      setError(null);
+      setFeedbackMessage(null);
       try {
         const cvs = await getUserCVs(user.id);
         setUserCVs(cvs);
         if (cvs.find(cv => cv.is_primary)) {
           setSelectedCvId(cvs.find(cv => cv.is_primary)!.id);
         } else if (cvs.length > 0) {
-          setSelectedCvId(cvs[0].id); // Sélectionner le premier par défaut si aucun n'est primaire
+          setSelectedCvId(cvs[0].id);
         }
       } catch (err) {
         console.error('Failed to fetch user CVs:', err);
-        // Gérer l'erreur d'affichage pour l'utilisateur si nécessaire
+        const errorMessage = err instanceof Error ? err.message : t('coverLetterGenerator.errors.fetchCvError');
+        setError(errorMessage);
+        setFeedbackMessage({ type: 'error', text: errorMessage });
+      } finally {
+        setIsLoading(false);
       }
     }
-  }, [user?.id]);
+  }, [user?.id, t]);
 
   useEffect(() => {
     fetchUserCVs();
@@ -129,7 +137,7 @@ Je suis très intéressé(e) par cette opportunité. Mes compétences en [Compé
 ${customInstructions ? `\nInstruction spéciale: ${customInstructions}` : ''}
 
 Cordialement,
-${user.user_metadata?.full_name || 'Le Candidat'}
+${user.full_name || 'Le Candidat'}
 (Généré en ${targetLanguage})`;
       setGeneratedLetter(placeholderLetter);
       setEditingLetter(placeholderLetter);
@@ -208,71 +216,83 @@ ${user.user_metadata?.full_name || 'Le Candidat'}
         <div className="space-y-4 p-6 bg-gray-800 rounded-lg shadow-lg">
           <div>
             <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.jobTitle')}</label>
-            <input type="text" id="jobTitle" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+            <input type="text" id="jobTitle" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} disabled={isGenerating} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
           </div>
           <div>
             <label htmlFor="companyName" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.companyName')}</label>
-            <input type="text" id="companyName" value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+            <input type="text" id="companyName" value={companyName} onChange={(e) => setCompanyName(e.target.value)} disabled={isGenerating} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
           </div>
           <div>
-            <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.jobDescription')} <span className='text-red-400'>*</span></label>
-            <textarea id="jobDescription" value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} rows={6} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder={t('coverLetterGenerator.placeholders.jobDescription')}></textarea>
+            <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.jobDescription')}</label>
+            <textarea id="jobDescription" value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} rows={5} disabled={isGenerating} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder={t('coverLetterGenerator.placeholders.jobDescription')} />
           </div>
           <div>
-            <label htmlFor="selectedCv" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.selectCV')}</label>
+            <label htmlFor="selectedCvId" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.cv')}</label>
             <select 
-              id="selectedCv" 
+              id="selectedCvId" 
               value={selectedCvId || ''} 
-              onChange={(e) => setSelectedCvId(e.target.value)} 
+              onChange={(e) => setSelectedCvId(e.target.value)}
+              disabled={isLoading || isGenerating}
               className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-              disabled={userCVs.length === 0}
             >
-              {userCVs.length === 0 && <option value="" disabled>{t('coverLetterGenerator.noCVsAvailable')}</option>}
+              <option value="" disabled>{t('coverLetterGenerator.placeholders.selectCv')}</option>
               {userCVs.map(cv => (
-                <option key={cv.id} value={cv.id}>{cv.file_name}{cv.is_primary ? ` (${t('userCVs.primary')})` : ''}</option>
+                <option key={cv.id} value={cv.id}>{cv.file_name} ({new Date(cv.uploaded_at).toLocaleDateString()})</option>
               ))}
             </select>
+            {isLoading && <FaSpinner className="animate-spin text-primary-500 ml-2" />}{/* Ajout d'un margin-left pour le spinner */}
           </div>
-          <div>
-            <label htmlFor="customInstructions" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.customInstructions')}</label>
-            <textarea id="customInstructions" value={customInstructions} onChange={(e) => setCustomInstructions(e.target.value)} rows={3} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder={t('coverLetterGenerator.placeholders.customInstructions')}></textarea>
-          </div>
-          <div>
-            <label htmlFor="targetLanguage" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.language')}</label>
-            <select id="targetLanguage" value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-              <option value="fr">{t('languages.fr')}</option>
-              <option value="en">{t('languages.en')}</option>
-              <option value="es">{t('languages.es')}</option>
-              <option value="de">{t('languages.de')}</option>
-              <option value="it">{t('languages.it')}</option>
-              {/* Ajouter d'autres langues si nécessaire */}
-            </select>
-          </div>
-          <button 
-            onClick={handleGenerateLetter}
-            disabled={isGenerating || !selectedCvId || !jobDescription}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-          >
-            {isGenerating ? <FaSpinner className="animate-spin mr-2" /> : <FaMagic className="mr-2" />} 
-            {t('coverLetterGenerator.buttons.generate')}
-          </button>
         </div>
+        <div>
+          <label htmlFor="customInstructions" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.customInstructions')}</label>
+          <textarea id="customInstructions" value={customInstructions} onChange={(e) => setCustomInstructions(e.target.value)} rows={3} disabled={isGenerating} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder={t('coverLetterGenerator.placeholders.customInstructions')} />
+        </div>
+        <div>
+          <label htmlFor="targetLanguage" className="block text-sm font-medium text-gray-300">{t('coverLetterGenerator.labels.language')}</label>
+          <select id="targetLanguage" value={targetLanguage} onChange={(e) => setTargetLanguage(e.target.value)} disabled={isGenerating} className="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+            <option value="fr">{t('languages.fr')}</option>
+            <option value="en">{t('languages.en')}</option>
+            <option value="es">{t('languages.es')}</option>
+            <option value="de">{t('languages.de')}</option>
+            <option value="it">{t('languages.it')}</option>
+            {/* Ajouter d'autres langues si nécessaire */}
+          </select>
+        </div>
+        <button 
+          onClick={handleGenerateLetter}
+          disabled={isGenerating || !selectedCvId || !jobDescription}
+          className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+        >
+          {isGenerating ? <FaSpinner className="animate-spin mr-2" /> : <FaMagic className="mr-2" />} 
+          {t('coverLetterGenerator.buttons.generate')}
+        </button>
+      </div>
 
-        {/* Zone d'affichage et d'édition de la lettre */} 
-        <div className="space-y-4 p-6 bg-gray-800 rounded-lg shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-300">{t('coverLetterGenerator.labels.generatedLetter')}</h3>
-          {isGenerating && !generatedLetter && (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400">
-              <FaSpinner className="animate-spin text-4xl mb-3" />
-              <p>{t('coverLetterGenerator.generating')}</p>
-            </div>
-          )}
-          {(!isGenerating && !generatedLetter) && (
+      {/* Zone d'affichage et d'édition de la lettre */} 
+      <div className="space-y-4 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <h3 className="text-lg font-semibold text-gray-300">{t('coverLetterGenerator.labels.generatedLetter')}</h3>
+        {isGenerating && !generatedLetter && (
+          <div className="flex flex-col items-center justify-center h-full text-gray-400">
+            <FaSpinner className="animate-spin text-4xl mb-3" />
+            <p>{t('coverLetterGenerator.generating')}</p>
+          </div>
+        )}
+        {(!isGenerating && !generatedLetter) && (
+          <>
             <div className="flex flex-col items-center justify-center h-full text-gray-500 italic border-2 border-dashed border-gray-700 rounded-md p-4">
               <FaFileAlt className="text-4xl mb-3" />
               <p>{t('coverLetterGenerator.notGeneratedYet')}</p>
             </div>
-          )}
+            <button 
+              onClick={handleGenerateLetter}
+              disabled={isGenerating || !selectedCvId || !jobDescription}
+              className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+            >
+              {isGenerating ? <FaSpinner className="animate-spin mr-2" /> : <FaMagic className="mr-2" />} 
+              {t('coverLetterGenerator.buttons.generate')}
+            </button>
+          </>
+        )}
           {generatedLetter && (
             <textarea 
               value={editingLetter}
@@ -285,21 +305,16 @@ ${user.user_metadata?.full_name || 'Le Candidat'}
           {generatedLetter && (
             <button 
               onClick={handleSaveLetter}
-              disabled={isGenerating} /* Ajouter une logique pour savoir si des changements ont été faits */
-              className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+              disabled={isGenerating || isSaving || !editingLetter}
+              className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <FaSave className="mr-2" /> {t('coverLetterGenerator.buttons.save')}
+              {isSaving ? <FaSpinner className="animate-spin mr-2" /> : <FaSave className="mr-2" />}
+              {isSaving ? t('coverLetterGenerator.buttons.saving') : t('coverLetterGenerator.buttons.save')}
             </button>
           )}
         </div>
       </div>
       
-      {/* TODO: Section pour lister les lettres de motivation sauvegardées */}
-      {/* <div className="mt-8">
-        <h3 className="text-xl font-semibold text-primary-300">{t('coverLetterGenerator.savedLettersTitle')}</h3>
-        <p className='text-gray-400'>{t('common.comingSoon')}</p> 
-      </div> */}
-    </div>
   );
 };
 

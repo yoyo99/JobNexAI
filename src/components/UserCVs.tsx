@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../stores/auth';
 import { CVMetadata, getUserCVs, uploadUserCV, deleteUserCV, setPrimaryCV } from '../lib/supabase';
 import { useTranslation } from 'react-i18next';
-import { FaFilePdf, FaTrash, FaUpload, FaCheckCircle, FaTimesCircle, FaSpinner } from 'react-icons/fa'; // Exemple d'icônes
+import { FaUpload, FaTrash, FaCheckCircle, FaTimesCircle, FaSpinner, FaFilePdf } from 'react-icons/fa6'; // Exemple d'icônes
 
 interface UserCVsProps {
   userId: string;

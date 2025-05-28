@@ -36,6 +36,7 @@ export interface Profile {
   trial_ends_at: string | null;
   created_at: string;
   updated_at: string;
+  user_metadata?: Record<string, any>; // Ajout de user_metadata
 }
 
 export interface Subscription {

@@ -139,7 +139,7 @@ const UserAISettings: React.FC<UserAISettingsProps> = ({ userId, defaultEngine =
       ))}
 
       <div className="mt-6 pt-6 border-t border-gray-700">
-        <h3 class="text-lg font-semibold text-white mb-3">Gestion des Clés API</h3>
+        <h3 className="text-lg font-semibold text-white mb-3">Gestion des Clés API</h3>
         <p className="text-sm text-gray-400 mb-4">
           Entrez ici vos clés API pour les moteurs que vous avez sélectionnés ci-dessus. Une clé n'est nécessaire que si le moteur l'exige.
           La clé API n’est jamais partagée en dehors de votre navigateur (pour cette version démo) ou de nos serveurs sécurisés (en production).
