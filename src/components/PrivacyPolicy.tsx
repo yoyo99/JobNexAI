@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
   return (
     <>
       <SiteHeader />
-      <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left prose prose-invert">
+      <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left">
         {/* La classe prose-invert est pour les thèmes sombres, ajustez si besoin */}
         {/* La classe prose stylise automatiquement les balises HTML sémantiques */}
         <h1>Politique de Confidentialité</h1>
@@ -15,10 +15,10 @@ export default function PrivacyPolicy() {
         <p><strong>Éditeur :</strong> LMCA (micro-entreprise en constitution)</p>
         <p><strong>Siège social :</strong> 13 Allée des Tulipiers, 77120 Coulommiers (France)</p>
         <p><strong>Responsable du traitement :</strong> LMCA</p>
-        <p><strong>Contact :</strong> <a href="mailto:contact@JobNexAI.fr">contact@JobNexAI.fr</a> (ou par courrier à l’adresse du siège)</p>
+        <p><strong>Contact :</strong> <a href="mailto:contact@JobNexAI.fr" className="text-primary-400 underline">contact@JobNexAI.fr</a> (ou par courrier à l’adresse du siège)</p>
 
         <h2>1. Objet de la politique</h2>
-        <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexAI</strong> (<a href="https://jobnexai-windsurf.netlify.app/">https://jobnexai-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
+        <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexAI</strong> (<a href="https://jobnexai-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexai-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
 
         <h2>2. Données collectées</h2>
         <p>LMCA peut collecter les catégories de données suivantes :</p>
@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
         <address>
           LMCA – Données personnelles<br />
           13 Allée des Tulipiers, 77120 Coulommiers – France<br />
-          Email : <a href="mailto:contact@JobNexAI.fr">contact@JobNexAI.fr</a>
+          Email : <a href="mailto:contact@JobNexAI.fr" className="text-primary-400 underline">contact@JobNexAI.fr</a>
         </address>
         {/* La section dupliquée commençant par "<h1>Politique de confidentialité</h1>" et la div "prose prose-invert max-w-none" ont été supprimées. */}
       </div>
