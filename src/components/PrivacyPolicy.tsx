@@ -9,10 +9,10 @@ export default function PrivacyPolicy() {
       <p><strong>Éditeur :</strong> LMCA (micro-entreprise en constitution)</p>
       <p><strong>Siège social :</strong> 13 Allée des Tulipiers, 77120 Coulommiers (France)</p>
       <p><strong>Responsable du traitement :</strong> LMCA</p>
-      <p><strong>Contact :</strong> <a href="mailto:contact@jobnexus.fr" className="text-primary-400 underline">contact@jobnexus.fr</a> (ou par courrier à l’adresse du siège)</p>
+      <p><strong>Contact :</strong> <a href="mailto:contact@JobNexAI.fr" className="text-primary-400 underline">contact@JobNexAI.fr</a> (ou par courrier à l’adresse du siège)</p>
 
       <h2>1. Objet de la politique</h2>
-      <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexAI</strong> (<a href="https://jobnexus-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://jobnexus-saas-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
+      <p>Cette politique de confidentialité a pour objectif d’expliquer comment LMCA collecte, utilise, protège et partage les données personnelles des utilisateurs de la plateforme <strong>JobNexAI</strong> (<a href="https://JobNexAI-saas-windsurf.netlify.app/" className="text-primary-400 underline" target="_blank" rel="noopener noreferrer">https://JobNexAI-saas-windsurf.netlify.app/</a>), en conformité avec le Règlement Général sur la Protection des Données (RGPD).</p>
 
       <h2>2. Données collectées</h2>
       <p>LMCA peut collecter les catégories de données suivantes :</p>
@@ -82,7 +82,7 @@ export default function PrivacyPolicy() {
       <address>
         LMCA – Données personnelles<br />
         13 Allée des Tulipiers, 77120 Coulommiers – France<br />
-        Email : <a href="mailto:contact@jobnexus.fr" className="text-primary-400 underline">contact@jobnexus.fr</a>
+        Email : <a href="mailto:contact@JobNexAI.fr" className="text-primary-400 underline">contact@JobNexAI.fr</a>
       </address>
       <h1>Politique de confidentialité</h1>
       <p>
