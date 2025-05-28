@@ -1,8 +1,11 @@
 import React from 'react';
+import SiteHeader from '../SiteHeader';
 
 const TermsPage: React.FC = () => {
   return (
-    <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left">
+    <>
+      <SiteHeader />
+      <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left">
       <h1 className="text-3xl font-bold mb-6 text-primary-400">Conditions d'Utilisation</h1>
       <p className="mb-4">
         En accédant et en utilisant la plateforme JobNexAI (le "Service"), vous acceptez d'être lié par les présentes Conditions d'Utilisation (les "Conditions"). Si vous n'acceptez pas une partie des conditions, vous ne pouvez pas accéder au Service.
@@ -22,7 +25,8 @@ const TermsPage: React.FC = () => {
       <p className="mt-4">
         Dernière mise à jour : 28 mai 2025
       </p>
-    </div>
+      </div>
+    </>
   );
 };
 

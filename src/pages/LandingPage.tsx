@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; // Assumant que vous utilisez React Router
 import { FaRocket, FaSearch, FaFileSignature, FaTasks, FaShieldAlt, FaLanguage, FaLightbulb } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import SiteHeader from '../components/SiteHeader'; // Importer le nouveau header
 
 // Si vous avez copié le logo dans public/assets/
 const logoUrl = '/assets/Logo-JobNexAI.svg'; // Ajustez si le nom ou le chemin est différent dans le répertoire
@@ -21,29 +22,7 @@ const LandingPage: React.FC = () => {
   };
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      {/* Header */}
-      <header className="py-6 px-4 sm:px-6 lg:px-8 shadow-md bg-gray-800">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center">
-            <img src={logoUrl} alt="JobNexAI Logo" className="h-10 w-auto mr-3" />
-            <span className="text-2xl font-bold text-primary-400">JobNexAI</span>
-          </div>
-          <nav>
-            <Link
-              to="/login"
-              className="text-gray-300 hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Se connecter
-            </Link>
-            <Link
-              to="/register"
-              className="ml-4 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow-lg transition duration-150 ease-in-out"
-            >
-              S'inscrire gratuitement
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader showAuthLinks={true} />
 
       {/* Hero Section */}
       <main className="flex-grow overflow-y-auto">
