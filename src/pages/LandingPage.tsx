@@ -33,7 +33,7 @@ const LandingPage: React.FC = () => {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-grow">
+      <main className="flex-grow overflow-y-auto">
         <section className="bg-gray-800 py-20 px-4 text-center">
           <div className="container mx-auto">
             <img src={logoUrl} alt="JobNexAI Logo" className="h-24 w-auto mx-auto mb-8" />
