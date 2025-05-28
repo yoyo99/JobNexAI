@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import React, { Suspense, useState, useEffect } from 'react';
 import ToastContainer from './ToastContainer';
 
@@ -14,6 +14,7 @@ import { PrivacyConsent } from './components/PrivacyConsent'
 import { SecurityBadge } from './components/SecurityBadge'
 import { SubscriptionBanner } from './components/SubscriptionBanner'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { useAuth } from './stores/auth'; // Added for LandingPageRouteHandler
 
 // Composant de chargement amélioré avec timeout pour détecter les blocages
 const LoadingFallback = ({ message = 'Chargement de la page...' }) => {
@@ -68,12 +69,28 @@ const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Handler for the landing page route
+const LandingPageRouteHandler = () => {
+  const { user, loading, initialized } = useAuth();
+  const location = useLocation();
+
+  // Wait until auth state is fully initialized
+  if (loading || !initialized) {
+    return <LoadingFallback message="Vérification de la session..." />;
+  }
+
+  // If user is logged in, redirect to dashboard
+  if (user) {
+    return <Navigate to="/dashboard" state={{ from: location }} replace />;
+  }
+
+  // If user is not logged in, render the JobNexAILanding page
+  // JobNexAILanding is already lazy-loaded and wrapped in LazyComponentWrapper by its usage below
+  return <LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>; 
+};
+
 // Code splitting (React.lazy) pour les pages principales
-const JobNexAILanding = React.lazy(() => 
-  import('./components/JobNexAILanding').then(module => ({
-    default: module.LandingPage
-  }))
-)
+const JobNexAILanding = React.lazy(() => import('./pages/LandingPage'));
 const Auth = React.lazy(() => import('./components/Auth'));
 const Pricing = React.lazy(() => import('./pages/PricingPage')); 
 const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
@@ -146,7 +163,7 @@ function App() {
         <Router>
           <AuthProvider>
             <Routes>
-            <Route path="/" element={<LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>} />
+            <Route path="/" element={<LandingPageRouteHandler />} />
             <Route path="/login" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
             <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
             <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
