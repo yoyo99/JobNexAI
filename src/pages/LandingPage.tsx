@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Assumant que vous utilisez React Rou
 import { FaRocket, FaSearch, FaFileSignature, FaTasks, FaShieldAlt, FaLanguage, FaLightbulb } from 'react-icons/fa';
 
 // Si vous avez copié le logo dans public/assets/
-const logoUrl = '/assets/logo-jobnexai.svg'; // Ajustez si le nom ou le chemin est différent
+const logoUrl = '/assets/Logo-JobNexAI.svg'; // Ajustez si le nom ou le chemin est différent
 
 const LandingPage: React.FC = () => {
   return (
