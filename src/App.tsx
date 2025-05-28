@@ -165,6 +165,7 @@ function App() {
             <Routes>
             <Route path="/" element={<LandingPageRouteHandler />} />
             <Route path="/login" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
+            <Route path="/register" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
             <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
             <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
             <Route path="/features" element={<LazyComponentWrapper><FeaturesPage /></LazyComponentWrapper>} />
