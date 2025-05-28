@@ -50,12 +50,12 @@ const LandingPage: React.FC = () => {
               >
                 Commencer l'aventure
               </Link>
-              <Link
-                to="#features" // Lien vers la section des fonctionnalités
+              <a
+                href="#features" // Lien vers la section des fonctionnalités
                 className="ml-4 text-gray-300 hover:text-primary-400 font-semibold py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out"
               >
                 Découvrir les fonctionnalités
-              </Link>
+              </a>
             </div>
           </div>
         </section>
