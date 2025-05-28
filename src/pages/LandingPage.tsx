@@ -1,11 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Assumant que vous utilisez React Router
 import { FaRocket, FaSearch, FaFileSignature, FaTasks, FaShieldAlt, FaLanguage, FaLightbulb } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 // Si vous avez copié le logo dans public/assets/
 const logoUrl = '/assets/Logo-JobNexAI.svg'; // Ajustez si le nom ou le chemin est différent dans le répertoire
 
 const LandingPage: React.FC = () => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       {/* Header */}
@@ -88,12 +101,20 @@ const LandingPage: React.FC = () => {
                   title: 'Suggestions Personnalisées',
                   description: 'Recevez des recommandations d\'offres et de compétences basées sur votre profil unique.',
                 }
-              ].map((feature) => (
-                <div key={feature.title} className="bg-gray-800 p-8 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300">
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center text-center"
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                >
                   <div className="flex justify-center md:justify-start">{feature.icon}</div>
                   <h3 className="text-2xl font-semibold text-white mt-2 mb-3">{feature.title}</h3>
                   <p className="text-gray-400">{feature.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
