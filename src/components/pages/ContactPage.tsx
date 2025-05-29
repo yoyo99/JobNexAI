@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SiteHeader from '../SiteHeader';
-import { supabase } from '../../supabaseClient'; // Adjust path if supabaseClient is located elsewhere
+import { supabase } from '../../lib/supabaseClient'; // Corrected path
 
 const ContactPage: React.FC = () => {
   const [name, setName] = useState('');
