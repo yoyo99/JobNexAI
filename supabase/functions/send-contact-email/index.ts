@@ -1,12 +1,18 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { Resend } from 'npm:resend';
+import { Resend } from "https://esm.sh/resend@3.2.0"; // Use esm.sh for Deno compatibility
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 const ADMIN_EMAIL = 'admin@jobnexai.com';
 const FROM_EMAIL = 'contact@jobnexai.com';
 
+console.log(`[${new Date().toISOString()}] send-contact-email: RESEND_API_KEY: ${RESEND_API_KEY}`);
+console.log(`[${new Date().toISOString()}] send-contact-email: ADMIN_EMAIL: ${ADMIN_EMAIL}`);
+console.log(`[${new Date().toISOString()}] send-contact-email: FROM_EMAIL: ${FROM_EMAIL}`);
+
 serve(async (req) => {
+  console.log(`[${new Date().toISOString()}] send-contact-email: Function invoked. Method: ${req.method}, URL: ${req.url}`);
   // Ensure Resend API key is available
+  console.log(`[${new Date().toISOString()}] send-contact-email: Checking RESEND_API_KEY. Found: ${RESEND_API_KEY ? 'yes' : 'no'}`);
   if (!RESEND_API_KEY) {
     console.error('RESEND_API_KEY is not set in environment variables.');
     return new Response(JSON.stringify({ error: 'Internal server configuration error.' }), {
@@ -26,6 +32,7 @@ serve(async (req) => {
   };
 
   if (req.method === 'OPTIONS') {
+    console.log(`[${new Date().toISOString()}] send-contact-email: Handling OPTIONS preflight request.`);
     return new Response('ok', { headers: corsHeaders });
   }
 
