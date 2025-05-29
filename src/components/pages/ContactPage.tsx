@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import emailjs from 'emailjs-com';
 import SiteHeader from '../SiteHeader';
+import { supabase } from '../../supabaseClient'; // Adjust path if supabaseClient is located elsewhere
 
 const ContactPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -17,34 +17,22 @@ const ContactPage: React.FC = () => {
     setSubmitError(null);
     setIsSubmitted(false); // Reset submission status at the beginning of a new attempt
 
-    const serviceID = 'service_mua4t0l';
-    const adminTemplateID = 'template_48u1a7q';
-    const userTemplateID = 'template_ds0g38d';
-    const publicKey = 'O0LnolTBPNqbejzhl';
-
-    const adminTemplateParams = {
-      from_name: name,
-      from_email: email,
-      to_name: 'Admin JobNexAI', // Or your preferred admin recipient name
-      subject: subject,
-      message_html: message,
-    };
-
-    const userTemplateParams = {
-      user_name: name, // For user template, e.g., {{user_name}}
-      user_email: email, // For user template, e.g., {{user_email}}
-      original_subject: subject, // For user template, e.g., {{original_subject}}
-      original_message: message, // For user template, e.g., {{original_message}}
-    };
-
     try {
-      // Send email to admin
-      await emailjs.send(serviceID, adminTemplateID, adminTemplateParams, publicKey);
-      console.log('Admin email sent successfully!');
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: { name, email, subject, message },
+      });
 
-      // Send acknowledgment email to user
-      await emailjs.send(serviceID, userTemplateID, userTemplateParams, publicKey);
-      console.log('User acknowledgment email sent successfully!');
+      if (error) {
+        console.error('Error invoking Supabase function:', error);
+        throw new Error(error.message || 'Failed to invoke Supabase function.');
+      }
+
+      if (data && data.error) { // Check for error returned from the function itself
+        console.error('Error from Supabase function execution:', data.error);
+        throw new Error(data.error || 'An error occurred in the email sending process.');
+      }
+      
+      console.log('Supabase function invoked successfully, response:', data);
 
       setIsSubmitted(true);
       setName('');
