@@ -9,7 +9,7 @@ console.log(`[${new Date().toISOString()}] send-contact-email: RESEND_API_KEY: $
 console.log(`[${new Date().toISOString()}] send-contact-email: ADMIN_EMAIL: ${ADMIN_EMAIL}`);
 console.log(`[${new Date().toISOString()}] send-contact-email: FROM_EMAIL: ${FROM_EMAIL}`);
 
-serve(async (req) => {
+serve(async (req: Request) => {
   console.log(`[${new Date().toISOString()}] send-contact-email: Function invoked. Method: ${req.method}, URL: ${req.url}`);
   // Ensure Resend API key is available
   console.log(`[${new Date().toISOString()}] send-contact-email: Checking RESEND_API_KEY. Found: ${RESEND_API_KEY ? 'yes' : 'no'}`);
@@ -102,9 +102,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
-  } catch (error) {
-    console.error('Error processing request:', error);
-    return new Response(JSON.stringify({ error: error.message || 'Failed to send email.' }), {
+  } catch (e: unknown) {
+    const error = e as Error; // Type assertion
+    console.error('Failed to send email:', error.message, error.stack);
+    return new Response(JSON.stringify({ error: 'Failed to send email. ' + error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
