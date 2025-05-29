@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 import SiteHeader from '../SiteHeader';
 
 const ContactPage: React.FC = () => {
@@ -7,20 +8,61 @@ const ContactPage: React.FC = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Implement actual form submission logic (e.g., EmailJS)
-    console.log({ name, email, subject, message });
-    setIsSubmitted(true);
-    // Reset form fields after a delay or on successful submission
-    setTimeout(() => {
+    setIsLoading(true);
+    setSubmitError(null);
+    setIsSubmitted(false); // Reset submission status at the beginning of a new attempt
+
+    const serviceID = 'service_mua4t0l';
+    const adminTemplateID = 'template_48u1a7q';
+    const userTemplateID = 'template_ds0g38d';
+    const publicKey = 'O0LnolTBPNqbejzhl';
+
+    const adminTemplateParams = {
+      from_name: name,
+      from_email: email,
+      to_name: 'Admin JobNexAI', // Or your preferred admin recipient name
+      subject: subject,
+      message_html: message,
+    };
+
+    const userTemplateParams = {
+      user_name: name, // For user template, e.g., {{user_name}}
+      user_email: email, // For user template, e.g., {{user_email}}
+      original_subject: subject, // For user template, e.g., {{original_subject}}
+      original_message: message, // For user template, e.g., {{original_message}}
+    };
+
+    try {
+      // Send email to admin
+      await emailjs.send(serviceID, adminTemplateID, adminTemplateParams, publicKey);
+      console.log('Admin email sent successfully!');
+
+      // Send acknowledgment email to user
+      await emailjs.send(serviceID, userTemplateID, userTemplateParams, publicKey);
+      console.log('User acknowledgment email sent successfully!');
+
+      setIsSubmitted(true);
       setName('');
       setEmail('');
       setSubject('');
       setMessage('');
-      setIsSubmitted(false); // Optionally reset submission status
-    }, 3000);
+
+      // Reset isSubmitted after a delay so the success message is visible
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      setSubmitError('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,6 +78,11 @@ const ContactPage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {submitError && (
+              <div className="p-3 bg-red-200 text-red-800 border border-red-400 rounded-md">
+                <p>{submitError}</p>
+              </div>
+            )}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
                 Nom complet
@@ -99,9 +146,10 @@ const ContactPage: React.FC = () => {
             <div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary-500 transition duration-150 ease-in-out"
               >
-                Envoyer le message
+                {isLoading ? 'Envoi en cours...' : 'Envoyer le message'}
               </button>
             </div>
           </form>
