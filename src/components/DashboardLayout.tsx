@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { useAuth } from '../stores/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import ResendQuotaBanner from './ResendQuotaBanner.jsx';
+// import ResendQuotaBanner from './ResendQuotaBanner.jsx';
 import { NotificationCenter } from './notifications/NotificationCenter';
 import { Header } from './Header';
 
@@ -80,7 +80,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
 
   return (
     <div>
-      <ResendQuotaBanner />
+      {/* <ResendQuotaBanner /> */}
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
           <Transition.Child
