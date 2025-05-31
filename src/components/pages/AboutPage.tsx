@@ -5,7 +5,7 @@ const AboutPage: React.FC = () => {
   return (
     <>
       <SiteHeader />
-      <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left">
+      <div className="max-w-4xl mx-auto p-6 md:p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl my-8 text-left pt-20">
       <h1 className="text-3xl font-bold mb-6 text-primary-400">À Propos de JobNexAI</h1>
       <p className="mb-4">
         Bienvenue sur JobNexAI ! Notre mission est de révolutionner la recherche d'emploi grâce à la puissance de l'intelligence artificielle.
