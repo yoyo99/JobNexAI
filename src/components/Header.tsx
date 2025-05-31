@@ -73,7 +73,7 @@ export function Header() {
   } else {
     // Original return content (previously commented out)
     return (
-      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm border-b border-white/10">
+      <header className="backdrop-blur-sm border-b border-white/10">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           {((): boolean => true)() && // Re-enable Logo section's parent div
           <div className="flex lg:flex-1">
