@@ -142,7 +142,6 @@ const ContactPage: React.FC = () => {
             </div>
           </form>
         )}
-      </div>
     </>
   );
 };
