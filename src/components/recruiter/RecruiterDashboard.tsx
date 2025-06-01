@@ -17,6 +17,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js'
 import { Pie, Bar } from 'react-chartjs-2'
+import EmailQuotaCard from '../EmailQuotaCard';
 
 // Initialiser ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title)
@@ -566,6 +567,16 @@ function RecruiterDashboard() {
           </div>
         </motion.div>
       </div>
+
+      {/* Email Quota Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1 }} // Adjusted delay for smooth animation
+        className="card"
+      >
+        <EmailQuotaCard />
+      </motion.div>
     </div>
   )
 }

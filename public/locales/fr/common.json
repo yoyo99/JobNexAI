@@ -579,5 +579,26 @@
       "durationNotApplicable": "Durée: N/A",
       "proposalsCount": "Propositions: {{count}}"
     }
+  },
+  "admin": {
+    "emailQuota": {
+      "title": "Statistiques d'Utilisation des E-mails",
+      "notAuthenticated": "Utilisateur non authentifié. Veuillez vous connecter.",
+      "errorFetching": "Échec de la récupération des statistiques d'e-mails.",
+      "errorNotFound": "Fonction de statistiques d'e-mails introuvable. Veuillez vous assurer qu'elle est correctement déployée.",
+      "errorForbidden": "L'accès aux statistiques d'e-mails est interdit. Vous n'avez peut-être pas les autorisations requises.",
+      "errorInvalidData": "Format de données non valide reçu pour les statistiques d'e-mails.",
+      "errorUnexpected": "Une erreur inattendue s'est produite lors de la récupération des statistiques d'e-mails.",
+      "loading": "Chargement des statistiques...",
+      "errorLabel": "Erreur",
+      "noData": "Aucune statistique d'e-mail disponible pour le moment.",
+      "today": "Aujourd'hui",
+      "thisWeek": "Cette semaine",
+      "thisMonth": "Ce mois-ci",
+      "total": "Total Envoyé",
+      "monthlyUsageLabel": "Utilisation Mensuelle",
+      "monthlyUsageValue": "{{count}} / {{limit}} e-mails",
+      "percentageUsed": "{{percentage}}% utilisé"
+    }
   }
 }

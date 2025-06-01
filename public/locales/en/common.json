@@ -465,5 +465,26 @@
   "badges": {
     "title": "Badges and Achievements",
     "toUnlock": "To unlock"
+  },
+  "admin": {
+    "emailQuota": {
+      "title": "Email Usage Statistics",
+      "notAuthenticated": "User not authenticated. Please log in.",
+      "errorFetching": "Failed to fetch email statistics.",
+      "errorNotFound": "Email statistics function not found. Please ensure it is deployed correctly.",
+      "errorForbidden": "Access to email statistics is forbidden. You may not have the required permissions.",
+      "errorInvalidData": "Received invalid data format for email statistics.",
+      "errorUnexpected": "An unexpected error occurred while fetching email statistics.",
+      "loading": "Loading statistics...",
+      "errorLabel": "Error",
+      "noData": "No email statistics available at the moment.",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "total": "Total Sent",
+      "monthlyUsageLabel": "Monthly Usage",
+      "monthlyUsageValue": "{{count}} / {{limit}} emails",
+      "percentageUsed": "{{percentage}}% used"
+    }
   }
 }
