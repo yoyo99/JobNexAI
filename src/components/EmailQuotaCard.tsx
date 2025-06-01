@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../stores/auth'; // Ajustez le chemin si /stores est directement sous /src
-import { supabase } from '../supabaseClient'; // Ajustez le chemin si supabaseClient.ts est directement sous /src
+import { supabase } from '../lib/supabaseClient'; // Ajustez le chemin si supabaseClient.ts est directement sous /src
 import { useTranslation } from 'react-i18next';
 
 interface EmailStats {
@@ -11,7 +11,7 @@ interface EmailStats {
 }
 
 const EmailQuotaCard: React.FC = () => {
-  const { session } = useAuth();
+  const { user } = useAuth();
   const { t } = useTranslation('common'); // Assurez-vous que 'common' est votre namespace par défaut ou ajustez
   const [stats, setStats] = useState<EmailStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -19,7 +19,7 @@ const EmailQuotaCard: React.FC = () => {
 
   useEffect(() => {
     const fetchEmailStats = async () => {
-      if (!session) {
+      if (!user) {
         setError(t('admin.emailQuota.notAuthenticated', 'User not authenticated.'));
         setLoading(false);
         return;
@@ -57,7 +57,7 @@ const EmailQuotaCard: React.FC = () => {
     };
 
     fetchEmailStats();
-  }, [session, t]);
+  }, [user, t]);
 
   if (loading) {
     return (
