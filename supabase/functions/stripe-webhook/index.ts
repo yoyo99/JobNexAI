@@ -62,42 +62,73 @@ Deno.serve(async (req) => {
 
         const userType = session.metadata?.user_type
 
-        // Récupérer les détails de l'abonnement
-        const subscriptionDetails = await stripe.subscriptions.retrieve(subscriptionId as string)
-        console.log('Subscription Details Price Object:', JSON.stringify(subscriptionDetails.items.data[0].price, null, 2)); // Gardons ce log utile
-        const plan = subscriptionDetails.items.data[0].price.lookup_key
+        // Récupérer les détails de l'abonnement pour obtenir le plan (lookup_key)
+        const subscriptionDetails = await stripe.subscriptions.retrieve(subscriptionId as string, {
+          expand: ['items.data.price.product'],
+        });
 
-        // Mettre à jour l'abonnement dans Supabase
-        const { error: subscriptionError } = await supabase
-          .from('subscriptions')
-          .upsert({
-            user_id: userId,
-            stripe_customer_id: customerId,
-            stripe_subscription_id: subscriptionId,
-            status: subscriptionDetails.status,
-            plan,
-            current_period_end: typeof subscriptionDetails.current_period_end === 'number' 
-              ? new Date(subscriptionDetails.current_period_end * 1000).toISOString() 
-              : null, // Set to null if invalid
-            cancel_at: subscriptionDetails.cancel_at
-              ? new Date(subscriptionDetails.cancel_at * 1000).toISOString()
-              : null,
-          })
+        // @ts-ignore: Stripe SDK type expansion for product.metadata can be incomplete when expanding price.product
+        const planLookupKey = subscriptionDetails.items.data[0]?.price?.product?.metadata?.supabase_product_id || 
+                             // @ts-ignore: Stripe SDK type expansion for price.lookup_key can be incomplete
+                             subscriptionDetails.items.data[0]?.price?.lookup_key || 
+                             'default_plan_if_not_found'; // Fallback
 
-        if (subscriptionError) {
-          console.error("Error updating subscription in Supabase:", subscriptionError)
-          return new Response(`Supabase error: ${subscriptionError.message}`, { status: 400 })
+        console.log(`Subscription Details Price Object: ${JSON.stringify(subscriptionDetails.items.data[0].price, null, 2)}`);
+        console.log(`Determined planLookupKey: ${planLookupKey} for user ${userId}`);
+
+        const subscriptionData = {
+          user_id: userId,
+          stripe_customer_id: customerId,
+          stripe_subscription_id: subscriptionId,
+          status: subscriptionDetails.status, // ex: 'active', 'trialing'
+          plan: planLookupKey,
+          current_period_end: subscriptionDetails.current_period_end
+            ? new Date(subscriptionDetails.current_period_end * 1000).toISOString()
+            : null,
+          cancel_at: subscriptionDetails.cancel_at
+            ? new Date(subscriptionDetails.cancel_at * 1000).toISOString()
+            : null,
+        };
+
+        let attempts = 0;
+        let upsertSuccess = false;
+        let lastError;
+
+        while (attempts < 3 && !upsertSuccess) {
+          attempts++;
+          console.log(`Attempt ${attempts} to upsert subscription for user ${userId}`);
+          // Assurez-vous que 'supabase' est bien votre client Supabase initialisé avec la SERVICE_ROLE_KEY
+          const { error } = await supabase 
+            .from('subscriptions')
+            .upsert(subscriptionData, {
+              onConflict: 'user_id', // Cible la colonne user_id pour le conflit
+            });
+
+          if (error) {
+            lastError = error;
+            console.error(`Upsert attempt ${attempts} failed for user ${userId}:`, error);
+            if (attempts < 3) {
+              console.log(`Waiting 2 seconds before retry for user ${userId}...`);
+              await new Promise(resolve => setTimeout(resolve, 2000)); // Attendre 2s
+            }
+          } else {
+            upsertSuccess = true;
+            console.log(`Subscription upserted successfully for user ${userId} on attempt ${attempts} to plan ${planLookupKey}.`);
+          }
         }
 
-        console.log(`Subscription updated/inserted for user ${userId} to plan ${plan}`);
-
+        if (!upsertSuccess) {
+          console.error(`Failed to upsert subscription for user ${userId} after ${attempts} attempts. Last error:`, lastError);
+          return new Response(`Webhook Error: Failed to update Supabase. Last error: ${lastError?.message}`, { status: 500 });
+        }
+        // La re-lecture immédiate est maintenant moins critique avec la logique de réessai et la contrainte unique.
+        // Vous pouvez la décommenter si vous souhaitez conserver une vérification explicite.
+        /*
         console.log(`Attempting to re-read subscription for user ${userId} with service role key...`);
         const { data: reReadData, error: reReadError } = await supabase
           .from('subscriptions')
           .select('*')
-          .eq('user_id', userId) // Lire en utilisant le user_id
-          .eq('stripe_subscription_id', subscriptionId); // Et aussi le stripe_subscription_id pour être précis
-
+          .eq('user_id', userId); // Lire en utilisant le user_id suffit maintenant
         if (reReadError) {
           console.error('Error re-reading subscription immediately after upsert:', reReadError);
         } else {
@@ -106,14 +137,15 @@ Deno.serve(async (req) => {
             console.warn('WARN: Re-read attempt returned no data for the subscription just upserted.');
           }
         }
+        */
 
         // Envoyer un email de confirmation après la mise à jour réussie de la BDD
         const userEmail = session.customer_details?.email;
-        if (userEmail && plan && plan !== 'free') { 
+        if (userEmail && planLookupKey && planLookupKey !== 'free') { 
           try {
-            console.log(`Attempting to send confirmation email to ${userEmail} for plan ${plan}`);
-            const emailHtml = `<h1>Merci pour votre abonnement !</h1><p>Votre plan '${plan}' est maintenant actif.</p><p>Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.</p>`;
-            const emailText = `Merci pour votre abonnement ! Votre plan '${plan}' est maintenant actif. Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.`;
+            console.log(`Attempting to send confirmation email to ${userEmail} for plan ${planLookupKey}`);
+            const emailHtml = `<h1>Merci pour votre abonnement !</h1><p>Votre plan '${planLookupKey}' est maintenant actif.</p><p>Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.</p>`;
+            const emailText = `Merci pour votre abonnement ! Votre plan '${planLookupKey}' est maintenant actif. Connectez-vous à votre compte pour profiter de toutes les fonctionnalités.`;
             const { data: emailSendData, error: emailError } = await supabase.functions.invoke("send-notification-email", {
               body: {
                 to: userEmail,
@@ -143,7 +175,7 @@ Deno.serve(async (req) => {
           }
         } else if (!userEmail) {
           console.warn("Could not send confirmation email: User email not found in checkout session details.");
-        } else if (plan === 'free'){
+        } else if (planLookupKey === 'free'){
           console.log("Skipping email confirmation for free plan.");
         }
 
