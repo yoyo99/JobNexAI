@@ -89,7 +89,23 @@ Deno.serve(async (req) => {
           return new Response(`Supabase error: ${subscriptionError.message}`, { status: 400 })
         }
 
-        console.log(`Subscription updated/inserted for user ${userId} to plan ${plan}`)
+        console.log(`Subscription updated/inserted for user ${userId} to plan ${plan}`);
+
+        console.log(`Attempting to re-read subscription for user ${userId} with service role key...`);
+        const { data: reReadData, error: reReadError } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', userId) // Lire en utilisant le user_id
+          .eq('stripe_subscription_id', subscriptionId); // Et aussi le stripe_subscription_id pour être précis
+
+        if (reReadError) {
+          console.error('Error re-reading subscription immediately after upsert:', reReadError);
+        } else {
+          console.log('Re-read subscription data immediately after upsert:', JSON.stringify(reReadData, null, 2));
+          if (!reReadData || reReadData.length === 0) {
+            console.warn('WARN: Re-read attempt returned no data for the subscription just upserted.');
+          }
+        }
 
         // Envoyer un email de confirmation après la mise à jour réussie de la BDD
         const userEmail = session.customer_details?.email;
