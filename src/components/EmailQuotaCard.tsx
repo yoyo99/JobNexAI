@@ -106,7 +106,7 @@ const EmailQuotaCard: React.FC = () => {
           { labelKey: 'admin.emailQuota.total', value: stats.total },
         ].map(stat => (
           <div key={stat.labelKey} className="bg-gray-700/50 p-4 rounded-lg text-center transform hover:scale-105 transition-transform duration-200">
-            <p className="text-sm text-gray-400 font-medium">{t(stat.labelKey, stat.labelKey.split('.').pop())}</p>
+            <p className="text-sm text-gray-400 font-medium">{t(stat.labelKey, stat.labelKey.split('.').pop() || stat.labelKey)}</p>
             <p className="text-3xl font-extrabold text-white mt-1">{stat.value}</p>
           </div>
         ))}
