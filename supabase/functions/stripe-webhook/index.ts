@@ -133,6 +133,7 @@ Deno.serve(async (req) => {
           cancel_at: subscriptionDetails.cancel_at
             ? new Date(subscriptionDetails.cancel_at * 1000).toISOString()
             : null,
+          cancel_at_period_end: subscriptionDetails.cancel_at_period_end, // Added to satisfy NOT NULL constraint
         };
 
         let attempts = 0;
