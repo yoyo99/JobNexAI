@@ -18,38 +18,81 @@ const corsHeaders = {
 }
 
 Deno.serve(async (req) => {
+  // **** NEW DEBUG LOG ****
+  const headersObject: { [key: string]: string } = {};
+  req.headers.forEach((value, key) => {
+    headersObject[key] = value;
+  });
+  console.log(`[STRIPE WEBHOOK DEBUG] Function invoked. Method: ${req.method}. Headers: ${JSON.stringify(headersObject)}`);
   if (req.method === 'OPTIONS') {
+    // **** NEW DEBUG LOG ****
+    console.log('[STRIPE WEBHOOK DEBUG] OPTIONS request received, sending ok.');
     return new Response('ok', { headers: corsHeaders })
   }
 
+  // **** NEW: Read body once ****
+  let rawBodyForLoggingAndProcessing: string;
   try {
+    rawBodyForLoggingAndProcessing = await req.text();
+    console.log(`[STRIPE WEBHOOK DEBUG] Raw request body (first 500 chars): ${rawBodyForLoggingAndProcessing ? rawBodyForLoggingAndProcessing.substring(0, 500) : 'null or empty'}`);
+  } catch (bodyError: any) {
+    console.error(`[STRIPE WEBHOOK DEBUG] CRITICAL: Failed to read request body: ${bodyError.message}`);
+    return new Response('Failed to read request body', { status: 500, headers: corsHeaders });
+  }
+  // **** END NEW: Read body once ****
+
+  try {
+    // **** NEW DEBUG LOG ****
+    console.log('[STRIPE WEBHOOK DEBUG] Entering main try block.');
     const signature = req.headers.get('stripe-signature')
+    // **** NEW DEBUG LOG ****
+    console.log(`[STRIPE WEBHOOK DEBUG] Stripe Signature Header: ${signature}`);
     if (!signature) {
+      // **** NEW DEBUG LOG ****
+      console.error('[STRIPE WEBHOOK DEBUG] No signature provided. Throwing error.');
       throw new Error('No signature provided')
     }
 
-    const body = await req.text()
+    // const body = await req.text(); // Already read into rawBodyForLoggingAndProcessing
+    const body = rawBodyForLoggingAndProcessing!; // Use the already read body, assert not null as we'd return 500 if it was
     
     // Si le webhook secret n'est pas configuré, on traite quand même l'événement
     // mais sans vérifier la signature
     let event;
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
+    // **** NEW DEBUG LOG ****
+    console.log(`[STRIPE WEBHOOK DEBUG] Retrieved STRIPE_WEBHOOK_SECRET: ${webhookSecret ? 'Exists and has a value' : 'MISSING or Empty'}`);
     
     if (webhookSecret) {
-      event = await stripe.webhooks.constructEventAsync(
+      // **** NEW DEBUG LOG ****
+      console.log('[STRIPE WEBHOOK DEBUG] Attempting stripe.webhooks.constructEventAsync...');
+      try {
+        event = await stripe.webhooks.constructEventAsync(
         body,
         signature,
         webhookSecret
-      )
+        );
+        console.log('[STRIPE WEBHOOK DEBUG] constructEventAsync SUCCESSFUL.');
+      } catch (sigError: any) {
+        console.error(`[STRIPE WEBHOOK DEBUG] constructEventAsync FAILED: ${sigError.message}`);
+        throw sigError; // Re-throw to be caught by outer catch
+      }
     } else {
       // Traiter l'événement sans vérifier la signature
       // Ceci est moins sécurisé mais permet de fonctionner sans webhook secret
       event = JSON.parse(body);
-      console.warn('Processing webhook without signature verification - not recommended for production');
+      // **** NEW DEBUG LOG ****
+      console.warn('[STRIPE WEBHOOK DEBUG] Webhook secret is MISSING. Processing without signature verification.');
+      event = JSON.parse(body);
     }
+
+    // **** NEW DEBUG LOG ****
+    console.log(`[STRIPE WEBHOOK DEBUG] Event type: ${event.type}`);
 
     switch (event.type) {
       case 'checkout.session.completed': {
+        // **** NEW DEBUG LOG ****
+        console.log('[STRIPE WEBHOOK DEBUG] Processing checkout.session.completed.');
         const session = event.data.object
         console.log('Received checkout.session.completed:', JSON.stringify(session, null, 2));
         const customerId = session.customer
@@ -63,6 +106,8 @@ Deno.serve(async (req) => {
         const userType = session.metadata?.user_type
 
         // Récupérer les détails de l'abonnement pour obtenir le plan (lookup_key)
+        // **** NEW DEBUG LOG ****
+        console.log(`[STRIPE WEBHOOK DEBUG] Retrieving subscription: ${subscriptionId} for user ${userId}`);
         const subscriptionDetails = await stripe.subscriptions.retrieve(subscriptionId as string, {
           expand: ['items.data.price.product'],
         });
@@ -96,7 +141,7 @@ Deno.serve(async (req) => {
 
         while (attempts < 3 && !upsertSuccess) {
           attempts++;
-          console.log(`Attempt ${attempts} to upsert subscription for user ${userId}`);
+          console.log(`[STRIPE WEBHOOK DEBUG] Attempt ${attempts} to upsert subscription for user ${userId}. Data: ${JSON.stringify(subscriptionData, null, 2)}`);
           // Assurez-vous que 'supabase' est bien votre client Supabase initialisé avec la SERVICE_ROLE_KEY
           const { error } = await supabase 
             .from('subscriptions')
@@ -113,7 +158,7 @@ Deno.serve(async (req) => {
             }
           } else {
             upsertSuccess = true;
-            console.log(`Subscription upserted successfully for user ${userId} on attempt ${attempts} to plan ${planLookupKey}.`);
+            console.log(`[STRIPE WEBHOOK DEBUG] Subscription upserted successfully for user ${userId} on attempt ${attempts} to plan ${planLookupKey}.`);
           }
         }
 
@@ -121,7 +166,9 @@ Deno.serve(async (req) => {
           console.error(`Failed to upsert subscription for user ${userId} after ${attempts} attempts. Last error:`, lastError);
           return new Response(`Webhook Error: Failed to update Supabase. Last error: ${lastError?.message}`, { status: 500 });
         }
-        // La re-lecture immédiate est maintenant moins critique avec la logique de réessai et la contrainte unique.
+          // **** NEW DEBUG LOG ****
+        console.log(`[STRIPE WEBHOOK DEBUG] Successfully processed checkout.session.completed for user ${userId}.`);
+      // La re-lecture immédiate est maintenant moins critique avec la logique de réessai et la contrainte unique.
         // Vous pouvez la décommenter si vous souhaitez conserver une vérification explicite.
         /*
         console.log(`Attempting to re-read subscription for user ${userId} with service role key...`);
@@ -226,16 +273,19 @@ Deno.serve(async (req) => {
       }
     }
 
+    // **** NEW DEBUG LOG ****
+    console.log('[STRIPE WEBHOOK DEBUG] Successfully processed event (or no relevant event type found), sending 200 OK.');
     return new Response(JSON.stringify({ received: true }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
-    })
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      console.error('Webhook Error:', e.message);
-      return new Response(`Webhook error: ${e.message}`, { status: 400 });
-    }
-    console.error('Webhook Error: An unknown error occurred', e);
-    return new Response('Webhook error: An unknown error occurred', { status: 400 });
+    });
+} catch (e: unknown) {
+  // **** NEW DEBUG LOG ****
+  if (e instanceof Error) {
+    console.error('[STRIPE WEBHOOK DEBUG] CAUGHT ERROR in main try block:', e.message, e.stack);
+    return new Response(`Webhook error: ${e.message}`, { status: 400 });
   }
-})
+  console.error('[STRIPE WEBHOOK DEBUG] CAUGHT ERROR in main try block (unknown type):', e);
+  return new Response('Webhook error: An unknown error occurred', { status: 400 });
+}
+}) // Closing Deno.serve
