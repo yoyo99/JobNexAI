@@ -6,7 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -111,8 +111,12 @@ serve(async (req) => {
       }
     )
   } catch (e) {
-    console.error('Erreur critique dans get-email-usage-stats:', e.message)
-    return new Response(JSON.stringify({ error: e.message }), {
+    let errorMessage = 'Une erreur inconnue est survenue.';
+    if (e instanceof Error) {
+      errorMessage = e.message;
+    }
+    console.error('Erreur critique dans get-email-usage-stats:', errorMessage, e);
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
     })
