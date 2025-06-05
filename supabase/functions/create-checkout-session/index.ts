@@ -1,7 +1,6 @@
 console.log('[create-checkout-session] SCRIPT EXECUTION STARTED - TOP OF FILE');
 
 import Stripe from 'npm:stripe@14.0.0';
-import process from "node:process";
 console.log('[create-checkout-session] Stripe import successful.');
 
 import { createClient, SupabaseClient } from 'npm:@supabase/supabase-js@2.39.3';
@@ -12,13 +11,14 @@ console.log('[create-checkout-session] Supabase client import successful.');
 interface ProfileInfo {
   stripe_customer_id: string | null;
   email: string | null;
-  user_type: 'job_seeker' | 'recruiter' | 'admin' | null;
+  user_type: 'candidate' | 'freelancer' | 'recruiter' | 'admin' | null; // Updated enum
 }
 
 interface RequestPayload {
   priceId: string;
   userId: string;
-  userType: 'job_seeker' | 'recruiter' | 'admin' | null;
+  supabaseProductId: string; // Added
+  userType: 'candidate' | 'freelancer' | 'recruiter' | 'admin' | null; // Updated enum
 }
 
 const corsHeaders = {
@@ -37,7 +37,10 @@ try {
     console.error('[create-checkout-session] CRITICAL: STRIPE_SECRET_KEY is not set.');
     throw new Error('CRITICAL: STRIPE_SECRET_KEY is not set.');
   }
-  stripe = new Stripe(stripeSecretKey);
+  stripe = new Stripe(stripeSecretKey, {
+    apiVersion: '2023-10-16', // Spécifier la version de l'API Stripe
+    // typescript: true, // Si vous souhaitez utiliser les types Stripe plus strictement
+  });
   console.log('[create-checkout-session] Stripe client initialized successfully.');
 
   console.log('[create-checkout-session] Initializing Supabase client...');
@@ -77,7 +80,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     console.log('[create-checkout-session] REQUEST HANDLER: Attempting to parse request JSON...');
-    const { priceId, userId, userType } = await req.json() as RequestPayload;
+    const { priceId, userId, supabaseProductId, userType } = await req.json() as RequestPayload;
     console.log('[create-checkout-session] REQUEST HANDLER: Request JSON parsed:', { priceId, userId, userType });
 
     console.log(`[create-checkout-session] REQUEST HANDLER: Fetching profile for userId: ${userId}`);
@@ -131,7 +134,7 @@ Deno.serve(async (req: Request) => {
       console.log(`[create-checkout-session] REQUEST HANDLER: Updating profile user_type to '${userType}' for userId: ${userId}`);
       
       type ProfileUpdatePayload = {
-        user_type: 'job_seeker' | 'recruiter' | 'admin';
+        user_type: 'candidate' | 'freelancer' | 'recruiter' | 'admin'; // Updated enum
       };
       const updatePayload: ProfileUpdatePayload = { user_type: userType };
 
@@ -158,12 +161,13 @@ Deno.serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success-v2?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${Deno.env.get('NEXT_PUBLIC_BASE_URL')}/checkout/success-v2?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/pricing`,
       subscription_data: {
         metadata: {
           supabase_user_id: userId,
-          user_type: userType
+          user_type: userType,
+          supabase_product_id: supabaseProductId // Added
         },
       },
     });

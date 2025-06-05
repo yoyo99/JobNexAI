@@ -133,5 +133,10 @@
     "errorSaving": "Erreur lors de la sauvegarde des modifications.",
     "loading": "Chargement...",
     "selectPreferredCurrencyPlaceholder": "Choisir votre devise"
+  },
+  "privacy": {
+    "consent": "Ce site utilise des cookies pour assurer le bon fonctionnement et analyser le trafic. Veuillez accepter notre politique de confidentialité pour continuer.",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }
