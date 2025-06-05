@@ -1,5 +1,6 @@
 import React from 'react';
 import SubscriptionPlanCard from '../components/SubscriptionPlanCard'; // Vérifiez le chemin
+import { useTranslation } from 'react-i18next';
 
 // Remplacez par vos vrais Price IDs Stripe
 const PRICE_IDS = {
@@ -10,44 +11,45 @@ const PRICE_IDS = {
 };
 
 const PricingPage: React.FC = () => {
+  const { t } = useTranslation('translation');
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Nos Plans d'Abonnement</h1>
+      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">{t('pricing.title')}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
         <SubscriptionPlanCard 
-          planName="Pro Mensuel"
-          price="9.99€/mois"
-          features={['Accès aux fonctionnalités Pro', 'Support par email', 'Mises à jour mensuelles']}
+          planName={t('pricing.plans.proMonthly.name')}
+          price={t('pricing.plans.proMonthly.price')}
+          features={t('pricing.plans.proMonthly.features', { returnObjects: true }) as string[]}
           priceId={PRICE_IDS.PRO_MONTHLY}
         />
 
         <SubscriptionPlanCard 
-          planName="Pro Annuel"
-          price="95.04€/an"
-          features={['Accès aux fonctionnalités Pro', 'Support prioritaire', 'Économie de 2 mois', 'Mises à jour continues']}
+          planName={t('pricing.plans.proAnnual.name')}
+          price={t('pricing.plans.proAnnual.price')}
+          features={t('pricing.plans.proAnnual.features', { returnObjects: true }) as string[]}
           priceId={PRICE_IDS.PRO_ANNUAL}
         />
 
         <SubscriptionPlanCard 
-          planName="Entreprise Mensuel"
-          price="29.99€/mois"
-          features={['Toutes les fonctionnalités Pro', 'Support dédié 24/7', 'Accès API', 'Analyses avancées']}
+          planName={t('pricing.plans.entMonthly.name')}
+          price={t('pricing.plans.entMonthly.price')}
+          features={t('pricing.plans.entMonthly.features', { returnObjects: true }) as string[]}
           priceId={PRICE_IDS.ENT_MONTHLY}
           isEnterprise={true}
         />
 
         <SubscriptionPlanCard 
-          planName="Entreprise Annuel"
-          price="287.90€/an"
-          features={['Toutes les fonctionnalités Entreprise', 'Économie significative', 'Accompagnement personnalisé']}
+          planName={t('pricing.plans.entAnnual.name')}
+          price={t('pricing.plans.entAnnual.price')}
+          features={t('pricing.plans.entAnnual.features', { returnObjects: true }) as string[]}
           priceId={PRICE_IDS.ENT_ANNUAL}
           isEnterprise={true}
         />
 
       </div>
       <p className="text-center text-gray-600 mt-12">
-        Tous les prix sont en EUR. Choisissez le plan qui vous convient le mieux et commencez dès aujourd'hui !
+        {t('pricing.footerText')}
       </p>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { supabase } from '../lib/supabaseClient'; // Mise à jour du chemin
 import { useAuth } from '../stores/auth'; // Importer useAuth
+import { useTranslation } from 'react-i18next';
 
 interface SubscriptionPlanCardProps {
   planName: string;
@@ -12,12 +13,13 @@ interface SubscriptionPlanCardProps {
 
 const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, price, features, priceId, isEnterprise }) => {
   const { user } = useAuth(); // Obtenir l'utilisateur depuis le store/hook
+  const { t } = useTranslation('translation');
 
   const handleSubscription = async (priceId: string) => {
     // Vérifier si l'utilisateur existe (obtenu depuis useAuth)
     if (!user) {
       console.error('User not authenticated (checked via useAuth)');
-      alert('Veuillez vous connecter pour vous abonner.');
+      alert(t('pricing.alerts.notAuthenticated'));
       return;
     }
 
@@ -31,7 +33,7 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
 
       if (error) {
         console.error('Error invoking Stripe checkout function:', error);
-        alert(`Erreur lors de la création de la session de paiement: ${error.message}`);
+        alert(t('pricing.alerts.checkoutError', { message: error.message }));
         return;
       }
 
@@ -40,11 +42,11 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
         window.location.href = data.checkoutUrl;
       } else {
         console.error('No checkoutUrl received from function:', data);
-        alert('Erreur : URL de paiement non reçue.');
+        alert(t('pricing.alerts.checkoutUrlError'));
       }
     } catch (e) {
       console.error('Unexpected error during subscription process:', e);
-      alert(`Une erreur inattendue est survenue: ${(e as Error).message}`);
+      alert(t('pricing.alerts.unexpectedError', { message: (e as Error).message }));
     }
   };
 
@@ -74,7 +76,7 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
         onClick={() => handleSubscription(priceId)} 
         className={buttonStyle.replace(/\n\s*/g, ' ')}
       >
-        Choisir ce plan
+        {t('pricing.selectPlanButton')}
       </button>
     </div>
   );

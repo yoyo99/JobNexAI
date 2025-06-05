@@ -126,5 +126,56 @@
       "subtitle": "Join thousands of professionals who have found their dream job with JobNexAI",
       "button": "Create Your Free Account"
     }
+  },
+  "pricing": {
+    "title": "Our Subscription Plans",
+    "footerText": "All prices are in EUR. Choose the plan that suits you best and get started today!",
+    "selectPlanButton": "Choose this plan",
+    "alerts": {
+      "notAuthenticated": "Please log in to subscribe.",
+      "checkoutError": "Error creating payment session: {{message}}",
+      "checkoutUrlError": "Error: Payment URL not received.",
+      "unexpectedError": "An unexpected error occurred: {{message}}"
+    },
+    "plans": {
+      "proMonthly": {
+        "name": "Pro Monthly",
+        "price": "€9.99/month",
+        "features": [
+          "Access to Pro features",
+          "Email support",
+          "Monthly updates"
+        ]
+      },
+      "proAnnual": {
+        "name": "Pro Annual",
+        "price": "€95.04/year",
+        "features": [
+          "Access to Pro features",
+          "Priority support",
+          "Save 2 months",
+          "Continuous updates"
+        ]
+      },
+      "entMonthly": {
+        "name": "Enterprise Monthly",
+        "price": "€29.99/month",
+        "features": [
+          "All Pro features",
+          "Dedicated 24/7 support",
+          "API access",
+          "Advanced analytics"
+        ]
+      },
+      "entAnnual": {
+        "name": "Enterprise Annual",
+        "price": "€287.90/year",
+        "features": [
+          "All Enterprise features",
+          "Significant savings",
+          "Personalized support"
+        ]
+      }
+    }
   }
 }

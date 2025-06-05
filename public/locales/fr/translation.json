@@ -133,5 +133,56 @@
     "errorSaving": "Erreur lors de la sauvegarde des modifications.",
     "loading": "Chargement...",
     "selectPreferredCurrencyPlaceholder": "Choisir votre devise"
+  },
+  "pricing": {
+    "title": "Nos Plans d'Abonnement",
+    "footerText": "Tous les prix sont en EUR. Choisissez le plan qui vous convient le mieux et commencez dès aujourd'hui !",
+    "selectPlanButton": "Choisir ce plan",
+    "alerts": {
+      "notAuthenticated": "Veuillez vous connecter pour vous abonner.",
+      "checkoutError": "Erreur lors de la création de la session de paiement: {{message}}",
+      "checkoutUrlError": "Erreur : URL de paiement non reçue.",
+      "unexpectedError": "Une erreur inattendue est survenue: {{message}}"
+    },
+    "plans": {
+      "proMonthly": {
+        "name": "Pro Mensuel",
+        "price": "9.99€/mois",
+        "features": [
+          "Accès aux fonctionnalités Pro",
+          "Support par email",
+          "Mises à jour mensuelles"
+        ]
+      },
+      "proAnnual": {
+        "name": "Pro Annuel",
+        "price": "95.04€/an",
+        "features": [
+          "Accès aux fonctionnalités Pro",
+          "Support prioritaire",
+          "Économie de 2 mois",
+          "Mises à jour continues"
+        ]
+      },
+      "entMonthly": {
+        "name": "Entreprise Mensuel",
+        "price": "29.99€/mois",
+        "features": [
+          "Toutes les fonctionnalités Pro",
+          "Support dédié 24/7",
+          "Accès API",
+          "Analyses avancées"
+        ]
+      },
+      "entAnnual": {
+        "name": "Entreprise Annuel",
+        "price": "287.90€/an",
+        "features": [
+          "Toutes les fonctionnalités Entreprise",
+          "Économie significative",
+          "Accompagnement personnalisé"
+        ]
+      }
+    }
   }
 }
