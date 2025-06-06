@@ -13,6 +13,9 @@
     node_bundler = "esbuild"
     external_node_modules = ["langchain", "qwen"]
 
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
 # Configuration de base des fonctions
 [functions]
   directory = "functions"
