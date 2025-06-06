@@ -12,7 +12,7 @@
   [build.functions]
     node_bundler = "esbuild"
     external_node_modules = ["langchain"]
-  included_files = ["src/lib/ai_logic/**", "node_modules/qwen/**"]
+  included_files = ["src/lib/ai_logic/**"]
 
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
