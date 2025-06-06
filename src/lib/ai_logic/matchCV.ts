@@ -19,7 +19,7 @@ export async function matchCVWithJob(cvText: string, jobDescription: string): Pr
     // The exact way to pass the API key might vary based on the qwen SDK.
     // Common patterns are new QwenClient({ apiKey: qwenApiKey }) or new QwenClient(qwenApiKey)
     // Adjust if the Qwen SDK documentation specifies a different method.
-    const qwen = new QwenClient({ apiKey: qwenApiKey });
+    const qwen = new QwenClient({ apiKey: qwenApiKey! }); // Assert qwenApiKey is non-null
 
     const prompt = `Match this CV with the job description and provide a score and summary.
 
@@ -35,7 +35,19 @@ Output: JSON { score: number, summary: string }`;
     // Assuming the response from Qwen is a JSON string that needs parsing.
     // Add error handling for JSON parsing if the response might not be valid JSON.
     try {
-        return JSON.parse(response as string); // Cast to string if response type is broader
+        if (response && response.output && typeof response.output.text === 'string') {
+            const parsedResult = JSON.parse(response.output.text);
+
+            if (typeof parsedResult.score === 'number' && typeof parsedResult.summary === 'string') {
+                return { score: parsedResult.score, summary: parsedResult.summary };
+            } else {
+                console.error("Parsed Qwen response does not match expected structure:", parsedResult);
+                throw new Error("AI response structure mismatch.");
+            }
+        } else {
+            console.error("Invalid response structure from Qwen:", response);
+            throw new Error("AI response format unexpected.");
+        }
     } catch (error) {
         console.error("Failed to parse Qwen response:", error);
         console.error("Raw Qwen response:", response);
