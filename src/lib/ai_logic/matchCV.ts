@@ -1,0 +1,44 @@
+// matchCV.ts - Intégration Qwen + LangChain example
+import { LangChainClient } from 'langchain';
+import { QwenClient } from 'qwen'; // Assuming QwenClient can be imported like this
+
+// Retrieve Qwen API Key from environment variables
+const qwenApiKey = process.env.QWEN_API_KEY;
+
+if (!qwenApiKey) {
+  throw new Error('QWEN_API_KEY is not set in environment variables. Please configure it for the function to work.');
+}
+
+export async function matchCVWithJob(cvText: string, jobDescription: string): Promise<{ score: number; summary: string }> {
+    // Note: LangChainClient initialization might also require configuration or API keys
+    // depending on the specific LLM or service it's configured to use.
+    // For now, assuming it's set up elsewhere or uses its own environment variables.
+    const langchainClient = new LangChainClient(); // Placeholder, might need API keys
+
+    // Initialize QwenClient with the API key
+    // The exact way to pass the API key might vary based on the qwen SDK.
+    // Common patterns are new QwenClient({ apiKey: qwenApiKey }) or new QwenClient(qwenApiKey)
+    // Adjust if the Qwen SDK documentation specifies a different method.
+    const qwen = new QwenClient({ apiKey: qwenApiKey });
+
+    const prompt = `Match this CV with the job description and provide a score and summary.
+
+CV: ${cvText}
+Job: ${jobDescription}
+Output: JSON { score: number, summary: string }`;
+
+    // Assuming the qwen client has a method like 'generate' that accepts a prompt
+    // and returns a promise resolving to the LLM's response.
+    // The actual method and parameters might differ.
+    const response = await qwen.generate({ prompt }); // This is a guess, adjust to actual SDK
+
+    // Assuming the response from Qwen is a JSON string that needs parsing.
+    // Add error handling for JSON parsing if the response might not be valid JSON.
+    try {
+        return JSON.parse(response as string); // Cast to string if response type is broader
+    } catch (error) {
+        console.error("Failed to parse Qwen response:", error);
+        console.error("Raw Qwen response:", response);
+        throw new Error("AI response was not valid JSON.");
+    }
+}
