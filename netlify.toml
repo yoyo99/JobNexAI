@@ -13,6 +13,7 @@
 [functions]
   directory = "functions"
   node_bundler = "esbuild"
+  external_node_modules = ["langchain", "qwen"]
 
 # Configuration des redirections
 [[redirects]]

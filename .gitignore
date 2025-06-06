@@ -34,3 +34,6 @@ yarn-error.log*
 
 # Browserlist cache file
 .browserslistrc.cache
+
+# Local Netlify folder
+.netlify

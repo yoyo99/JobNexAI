@@ -15,15 +15,74 @@ const supabaseAdmin: SupabaseClient = createClient(supabaseUrl, supabaseServiceR
 // --- AI Matching Logic ---
 import { matchCVWithJob } from '../src/lib/ai_logic/matchCV';
 
-// --- Placeholder for CV Parsing Logic ---
-// TODO: Implement actual CV parsing (e.g., from PDF/DOCX on Supabase Storage)
+import pdf from 'pdf-parse';
+import mammoth from 'mammoth'; // Ajout de l'import pour mammoth
+
+// --- CV Parsing Logic ---
 async function parseCvFile(cvStoragePath: string): Promise<string> {
-  console.log('Placeholder: Parsing CV from storage path:', cvStoragePath);
-  // Simulate fetching and parsing
-  // In a real scenario, you'd download the file from cvStoragePath using supabaseAdmin.storage
-  // and then parse its content.
-  await new Promise(resolve => setTimeout(resolve, 300));
-  return `Extracted text from CV at ${cvStoragePath}. Content: Lorem ipsum dolor sit amet...`;
+  console.log('Attempting to parse CV from storage path:', cvStoragePath);
+  const BUCKET_NAME = 'cv-uploads';
+
+  const fileExtension = cvStoragePath.split('.').pop()?.toLowerCase();
+
+  if (!fileExtension) {
+    console.error(`Could not determine file extension for path: ${cvStoragePath}`);
+    throw new Error(`Could not determine file extension for path: ${cvStoragePath}`);
+  }
+
+  try {
+    // 1. Download the file from Supabase Storage
+    const { data: fileData, error: downloadError } = await supabaseAdmin
+      .storage
+      .from(BUCKET_NAME)
+      .download(cvStoragePath);
+
+    if (downloadError) {
+      console.error(`Error downloading file from Supabase Storage (${BUCKET_NAME}/${cvStoragePath}):`, downloadError);
+      throw new Error(`Failed to download file: ${downloadError.message}`);
+    }
+
+    if (!fileData) {
+      throw new Error(`Downloaded file data is null or undefined for path: ${cvStoragePath}.`);
+    }
+
+    const arrayBuffer = await fileData.arrayBuffer();
+
+    // 2. Parse based on file extension
+    if (fileExtension === 'pdf') {
+      const pdfBuffer = Buffer.from(arrayBuffer); // pdf-parse expects a Buffer
+      const parsedPdf = await pdf(pdfBuffer);
+      if (parsedPdf && parsedPdf.text) {
+        console.log(`Successfully parsed PDF. Extracted ${parsedPdf.text.length} characters from ${cvStoragePath}.`);
+        return parsedPdf.text;
+      } else {
+        console.warn(`Failed to parse text from PDF at ${cvStoragePath}. It might be corrupted or empty.`);
+        throw new Error(`Failed to parse text from PDF at ${cvStoragePath}.`);
+      }
+    } else if (fileExtension === 'docx') {
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      if (result && typeof result.value === 'string') {
+        console.log(`Successfully parsed DOCX. Extracted ${result.value.length} characters from ${cvStoragePath}.`);
+        return result.value;
+      } else {
+        if (result && result.messages && result.messages.length > 0) {
+            console.warn(`Mammoth parsing messages for ${cvStoragePath}:`, result.messages);
+        }
+        console.warn(`Failed to parse text from DOCX at ${cvStoragePath}. It might be corrupted or empty.`);
+        throw new Error(`Failed to parse text from DOCX at ${cvStoragePath}.`);
+      }
+    } else {
+      console.warn(`Unsupported file extension: .${fileExtension} for path: ${cvStoragePath}.`);
+      throw new Error(`Unsupported file extension: .${fileExtension}. Only .pdf and .docx are currently supported.`);
+    }
+
+  } catch (error) {
+    console.error(`Error during CV parsing process for ${cvStoragePath}:`, error);
+    if (error instanceof Error) {
+        throw new Error(`CV Parsing Error for ${cvStoragePath}: ${error.message}`);
+    }
+    throw new Error(`CV Parsing Error for ${cvStoragePath}: An unknown error occurred.`);
+  }
 }
 
 // --- Interfaces ---
