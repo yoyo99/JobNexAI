@@ -8,12 +8,15 @@
   NPM_VERSION = "9.8.0"
   NETLIFY_USE_YARN = "false"
   NETLIFY_USE_PNPM = "false"
+  # Configuration des fonctions pour le build
+  [build.functions]
+    node_bundler = "esbuild"
+    external_node_modules = ["langchain", "qwen"]
 
 # Configuration de base des fonctions
 [functions]
   directory = "functions"
-  node_bundler = "esbuild"
-  external_node_modules = ["langchain", "qwen"]
+  # node_bundler et external_node_modules sont maintenant sous [build.functions]
 
 # Configuration des redirections
 [[redirects]]
