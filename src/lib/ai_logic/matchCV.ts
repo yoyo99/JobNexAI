@@ -1,5 +1,5 @@
 // matchCV.ts - Intégration Qwen + LangChain example
-import { LangChainClient } from 'langchain';
+// import { LangChainClient } from 'langchain';
 import { QwenClient } from 'qwen'; // Assuming QwenClient can be imported like this
 
 // Retrieve Qwen API Key from environment variables
@@ -13,7 +13,7 @@ export async function matchCVWithJob(cvText: string, jobDescription: string): Pr
     // Note: LangChainClient initialization might also require configuration or API keys
     // depending on the specific LLM or service it's configured to use.
     // For now, assuming it's set up elsewhere or uses its own environment variables.
-    const langchainClient = new LangChainClient(); // Placeholder, might need API keys
+    // const langchainClient = new LangChainClient(); // Placeholder, might need API keys
 
     // Initialize QwenClient with the API key
     // The exact way to pass the API key might vary based on the qwen SDK.
