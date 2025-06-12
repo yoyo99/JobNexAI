@@ -1,43 +1,79 @@
-// matchCV.ts - Intégration Qwen + LangChain example
-// import { LangChainClient } from 'langchain';
-// import { QwenClient } from 'qwen'; // Qwen import temporarily disabled
+// matchCV.ts - Intégration Mistral AI pour le matching CV-Offre
+import { Mistral } from '@mistralai/mistralai';
 
-// Retrieve Qwen API Key from environment variables
-// const qwenApiKey = process.env.QWEN_API_KEY;
+// Récupération de la clé API Mistral depuis les variables d'environnement
+const mistralApiKey = process.env.MISTRAL_API_KEY;
 
-// if (!qwenApiKey) {
-//   throw new Error('QWEN_API_KEY is not set in environment variables. Please configure it for the function to work.');
-// }
+if (!mistralApiKey) {
+  throw new Error('MISTRAL_API_KEY is not set in environment variables. Please configure it for the function to work.');
+}
 
+// Initialisation du client Mistral
+const client = new Mistral({ apiKey: mistralApiKey });
+
+/**
+ * Compare un CV avec une description de poste et retourne un score de correspondance
+ * ainsi qu'un résumé des points clés.
+ * 
+ * @param cvText - Le texte brut du CV du candidat
+ * @param jobDescription - La description du poste à pourvoir
+ * @returns Un objet contenant un score (0-100) et un résumé de la correspondance
+ */
 export async function matchCVWithJob(cvText: string, jobDescription: string): Promise<{ score: number; summary: string }> {
-    // Qwen related code has been temporarily commented out to allow Netlify build.
-    console.warn("AI matching (Qwen) is temporarily disabled in matchCVWithJob.");
-    return Promise.resolve({ score: 0, summary: "AI matching functionality is temporarily disabled." });
+    try {
+        // Création du prompt pour l'IA
+        const systemPrompt = `Tu es un assistant expert en recrutement. Ton rôle est d'analyser la correspondance entre un CV et une offre d'emploi.
+        Tu dois évaluer sur 100 la pertinence du CV par rapport au poste et fournir un résumé concis (3-5 phrases) expliquant les points forts et les éventuelles lacunes.
+        Ta réponse DOIT être un objet JSON valide avec les clés 'score' (nombre entier) et 'summary' (chaîne de caractères).
+        Ne mets aucun texte avant ou après l'objet JSON.`;
+        
+        const userPrompt = `CV du candidat:\n${cvText}\n\nOffre d'emploi:\n${jobDescription}\n\nÉvalue la correspondance et renvoie uniquement un objet JSON.`;
 
-    // --- The following is the original Qwen logic, now commented out for reference ---
-    // // Note: LangChainClient initialization might also require configuration or API keys
-    // // depending on the specific LLM or service it's configured to use.
-    // // For now, assuming it's set up elsewhere or uses its own environment variables.
-    // // const langchainClient = new LangChainClient(); // Placeholder, might need API keys
+        // Appel à l'API Mistral
+        const chatResponse = await client.chat.complete({
+            model: 'mistral-small-latest',  // Modèle recommandé pour le free tier
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ],
+            temperature: 0.3,  // Pour des réponses plus déterministes
+            response_format: { type: 'json_object' }  // Pour forcer un format JSON en sortie
+        });
 
-    // // Initialize QwenClient with the API key
-    // // The exact way to pass the API key might vary based on the qwen SDK.
-    // // Common patterns are new QwenClient({ apiKey: qwenApiKey }) or new QwenClient(qwenApiKey)
-    // // Adjust if the Qwen SDK documentation specifies a different method.
-    // const qwen = new QwenClient({ apiKey: qwenApiKey! }); // Assert qwenApiKey is non-null
+        // Récupération et validation de la réponse
+        const responseContent = chatResponse.choices[0]?.message?.content;
+        if (!responseContent) {
+            throw new Error('No content in Mistral AI response');
+        }
 
-    // const prompt = `Match this CV with the job description and provide a score and summary.
+        // Tentative d'analyse de la réponse JSON
+        try {
+            const parsedResponse = JSON.parse(responseContent);
+            
+            // Validation de la structure de la réponse
+            if (typeof parsedResponse.score !== 'number' || typeof parsedResponse.summary !== 'string') {
+                throw new Error('Invalid response format from Mistral AI');
+            }
 
-    // CV: ${cvText}
-    // Job: ${jobDescription}
-    // Output: JSON { score: number, summary: string }`;
-
-    // // Assuming the qwen client has a method like 'generate' that accepts a prompt
-    // // and returns a promise resolving to the LLM's response.
-    // // The actual method and parameters might differ.
-    // const response = await qwen.generate({ prompt }); // This is a guess, adjust to actual SDK
-
-    // // Assuming the response from Qwen is a JSON string that needs parsing.
+            // Assure que le score est entre 0 et 100
+            const score = Math.max(0, Math.min(100, Math.round(parsedResponse.score)));
+            
+            return {
+                score,
+                summary: parsedResponse.summary.trim()
+            };
+        } catch (parseError) {
+            console.error('Error parsing Mistral AI response:', parseError);
+            throw new Error('Failed to parse AI response. The response was not valid JSON.');
+        }
+    } catch (error) {
+        console.error('Error in matchCVWithJob:', error);
+        // En cas d'erreur, retourner un score neutre avec un message d'erreur
+        return {
+            score: 0,
+            summary: `Désolé, une erreur est survenue lors de l'analyse du CV. Veuillez réessayer. (${error instanceof Error ? error.message : 'Unknown error'})`
+        };
+    }
     // // Add error handling for JSON parsing if the response might not be valid JSON.
     // try {
     //     if (response && response.output && typeof response.output.text === 'string') {

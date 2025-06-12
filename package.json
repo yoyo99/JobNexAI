@@ -27,6 +27,7 @@
     "@apollo/client": "^3.13.8",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@mistralai/mistralai": "^1.7.2",
     "@sentry/react": "^7.107.0",
     "@stripe/react-stripe-js": "^2.5.0",
     "@stripe/stripe-js": "^3.0.10",
