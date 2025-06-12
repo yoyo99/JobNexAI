@@ -37,13 +37,13 @@ export async function matchCVWithJob(cvText: string, jobDescription: string): Pr
                 { role: 'user', content: userPrompt }
             ],
             temperature: 0.3,  // Pour des réponses plus déterministes
-            response_format: { type: 'json_object' }  // Pour forcer un format JSON en sortie
+            responseFormat: { type: 'json_object' }  // Pour forcer un format JSON en sortie
         });
 
         // Récupération et validation de la réponse
         const responseContent = chatResponse.choices[0]?.message?.content;
-        if (!responseContent) {
-            throw new Error('No content in Mistral AI response');
+        if (!responseContent || Array.isArray(responseContent)) {
+            throw new Error('No valid content in Mistral AI response');
         }
 
         // Tentative d'analyse de la réponse JSON
