@@ -18,28 +18,15 @@ console.log('🔍 Vérification des importations dans le projet...');
 // Liste des extensions de fichiers à analyser
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
-// Liste des chemins de modules à ignorer (modules externes)
-const IGNORE_PATHS = [
-  'react', 
-  'react-dom', 
-  '@heroicons', 
-  'framer-motion',
-  'react-i18next',
-  'i18next',
-  '@sentry',
-  '@stripe',
-  '@supabase',
-  '@tanstack',
-  '@vimeo',
-  '@headlessui'
-];
-
 // Fonction pour vérifier si un module est externe
 function isExternalModule(importPath) {
-  return !importPath.startsWith('.') && 
-         !importPath.startsWith('@/') && 
-         !importPath.startsWith('src/') &&
-         IGNORE_PATHS.every(ignore => !importPath.startsWith(ignore));
+  // Si le chemin d'importation ne commence pas par '.', '@/', ou 'src/',
+  // il est considéré comme un module externe (provenant de node_modules).
+  // Ces modules ne doivent pas être vérifiés par checkFileExists.
+  if (!importPath.startsWith('.') && !importPath.startsWith('@/') && !importPath.startsWith('src/')) {
+    return true; // C'est un module externe
+  }
+  return false; // C'est un module local/projet
 }
 
 // Fonction pour vérifier si un fichier existe

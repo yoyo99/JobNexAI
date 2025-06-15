@@ -6,6 +6,8 @@
 # Vite build output
 /dist
 /dist-ssr
+/dist_test
+/tsc_project_output
 
 # SSR build output
 /functions/ssr/dist

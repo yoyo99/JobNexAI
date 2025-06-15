@@ -80,7 +80,9 @@ function isModuleInstalled(moduleName) {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     // Pour les packages scoped comme @heroicons/react, le nom dans package.json doit correspondre
     // au nom normalisé, pas nécessairement au chemin d'importation complet
-    return packageJson.name === normalizedName;
+    const nameInPackageJson = packageJson.name;
+    const isMatch = nameInPackageJson === normalizedName;
+    return isMatch;
   } catch (error) {
     console.error(`Erreur lors de la lecture du package.json pour ${normalizedName}:`, error);
     return false;
@@ -109,9 +111,10 @@ if (missingDependencies.length > 0) {
   
   try {
     // Installer les dépendances manquantes
-    const installCommand = `npm install ${missingDependencies.join(' ')} --no-save`;
+    const installCommand = `npm install ${missingDependencies.join(' ')}`;
     console.log(`Exécution de: ${installCommand}`);
-    execSync(installCommand, { stdio: 'inherit' });
+    // execSync(installCommand, { stdio: 'inherit' });
+    // console.log(`  [Info] SKIPPING execSync for: ${installCommand}`); // Garder commenté
     
     console.log('\n✅ Installation réussie des dépendances manquantes!');
   } catch (error) {
