@@ -172,6 +172,8 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 console.log('[SupabaseInit] Attempting to initialize Supabase client.');
 console.log('[SupabaseInit] VITE_SUPABASE_URL available:', !!supabaseUrl);
 console.log('[SupabaseInit] VITE_SUPABASE_ANON_KEY available:', !!supabaseAnonKey);
+console.log('[SupabaseInit] VITE_SUPABASE_URL value:', supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'EMPTY');
+console.log('[SupabaseInit] VITE_SUPABASE_ANON_KEY value:', supabaseAnonKey ? supabaseAnonKey.substring(0, 20) + '...' : 'EMPTY');
 
 if (typeof supabaseUrl !== 'string' || supabaseUrl.trim() === '') {
   console.error('[SupabaseInit] VITE_SUPABASE_URL is missing or empty.');
