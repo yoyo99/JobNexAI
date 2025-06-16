@@ -3,18 +3,8 @@ import { create } from 'zustand'
 let isLoadUserRunning = false; // Drapeau pour prévenir les exécutions concurrentes
 import { supabase, type Profile, type Subscription } from '../lib/supabase';
 
-// Interface pour les préférences utilisateur dans le store
-interface UserPreferencesAuth {
-  id?: string; 
-  user_id?: string;
-  job_types?: string[];
-  preferred_locations?: string[];
-  min_salary?: number | null;
-  max_salary?: number | null;
-  remote_preference?: 'remote' | 'hybrid' | 'onsite' | 'any' | null;
-  preferred_currency?: string | null;
-}
-import { AuthService } from '../lib/auth-service'
+import { AuthService } from '../lib/auth-service';
+import type { UserPreferencesAuth } from '../types/user';
 
 interface AuthState {
   user: Profile | null

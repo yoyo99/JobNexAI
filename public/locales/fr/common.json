@@ -5,7 +5,13 @@
     "applications": "Candidatures",
     "cvBuilder": "Créateur de CV",
     "network": "Réseau",
-    "profile": "Profil",
+    "profile": {
+      "tabs": {
+        "myCVs": "Mes CVs",
+        "coverLetterGenerator": "Générateur de Lettres IA"
+      },
+      "title": "Profil"
+    },
     "settings": "Paramètres",
     "marketAnalysis": "Analyse de marché",
     "notifications": "Notifications",
@@ -284,6 +290,15 @@
     "large": "Grande (201-1000 employés)",
     "enterprise": "Très grande (1000+ employés)"
   },
+  "privacy": {
+    "cookieConsent": {
+      "title": "Gestion des Cookies",
+      "description": "Nous utilisons des cookies pour améliorer votre expérience sur notre site. Certains cookies sont essentiels au fonctionnement du site, tandis que d'autres nous aident à personnaliser le contenu et à analyser le trafic. Vous pouvez accepter tous les cookies ou les gérer individuellement.",
+      "acceptButton": "Tout Accepter",
+      "declineButton": "Tout Refuser",
+      "learnMoreLink": "En savoir plus"
+    }
+  },
   "forms": {
     "required": "Obligatoire",
     "optional": "Facultatif",
@@ -293,14 +308,32 @@
     "success": "Succès",
     "loading": "Chargement",
     "firstName": "Prénom",
-    "lastName": "Nom",
+    "lastName": "Nom de famille",
     "email": "Adresse e-mail",
     "phone": "Numéro de téléphone",
+    "message": "Message",
+    "subject": "Sujet",
+    "name": "Nom",
+    "company": "Entreprise",
+    "jobTitle": "Titre du poste",
+    "website": "Site Web",
+    "country": "Pays",
     "address": "Adresse",
     "city": "Ville",
     "state": "État/Province",
     "zipCode": "Code postal",
-    "country": "Pays",
+    "newPassword": "Nouveau mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "uploadFile": "Télécharger un fichier",
+    "dragAndDrop": "Glisser-déposer ou cliquer pour télécharger",
+    "fileTooLarge": "Fichier trop volumineux",
+    "invalidFileType": "Type de fichier invalide",
+    "maxFileSize": "Taille maximale du fichier : {size}",
+    "changesSaved": "Modifications enregistrées avec succès !",
+    "errorSaving": "Erreur lors de l'enregistrement des modifications. Veuillez réessayer.",
+    "confirmAction": "Êtes-vous sûr de vouloir effectuer cette action ?",
+    "deleteAccount": "Supprimer le compte",
+    "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
     "dateOfBirth": "Date de naissance",
     "education": "Formation",
     "university": "Université",
@@ -308,7 +341,6 @@
     "major": "Spécialisation",
     "graduationDate": "Date d'obtention",
     "workExperience": "Expérience professionnelle",
-    "company": "Entreprise",
     "position": "Poste",
     "startDate": "Date de début",
     "endDate": "Date de fin",
@@ -317,16 +349,12 @@
     "skills": "Compétences",
     "languages": "Langues",
     "upload": "Télécharger",
-    "dragAndDrop": "Glisser-déposer ou cliquer pour télécharger",
     "fileTypes": "Types de fichiers pris en charge",
-    "maxFileSize": "Taille maximale de fichier",
     "fieldRequired": "Ce champ est obligatoire",
     "invalidEmail": "Veuillez saisir une adresse e-mail valide",
     "invalidPhone": "Veuillez saisir un numéro de téléphone valide",
     "invalidDate": "Veuillez saisir une date valide",
     "invalidUrl": "Veuillez saisir une URL valide",
-    "invalidFileType": "Type de fichier non valide",
-    "fileTooLarge": "Le fichier est trop volumineux",
     "pleaseSelect": "Veuillez sélectionner une option",
     "selectDate": "Sélectionner une date",
     "addMore": "Ajouter plus",
@@ -337,8 +365,6 @@
     "next": "Suivant",
     "fillAllFields": "Veuillez remplir tous les champs obligatoires",
     "reviewBeforeSubmit": "Veuillez vérifier avant de soumettre",
-    "changesSaved": "Modifications enregistrées avec succès",
-    "errorSaving": "Erreur lors de l'enregistrement des modifications",
     "formSubmitted": "Formulaire soumis avec succès",
     "errorSubmitting": "Erreur lors de la soumission du formulaire",
     "goBack": "Retour",
@@ -600,10 +626,5 @@
       "monthlyUsageValue": "{{count}} / {{limit}} e-mails",
       "percentageUsed": "{{percentage}}% utilisé"
     }
-  },
-  "privacy": {
-    "consent": "Ce site utilise des cookies pour assurer le bon fonctionnement et analyser le trafic. Veuillez accepter notre politique de confidentialité pour continuer.",
-    "accept": "Accepter",
-    "decline": "Refuser"
   }
 }

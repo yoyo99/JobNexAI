@@ -315,7 +315,8 @@
     "errorSaving": "Error saving changes. Please try again.",
     "confirmAction": "Are you sure you want to perform this action?",
     "deleteAccount": "Delete Account",
-    "deleteConfirmation": "Are you sure you want to delete your account? This action cannot be undone."
+    "deleteConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
+    "dateOfBirth": "Date of Birth"
   },
   "userProfile": {
     "editProfile": "Edit Profile",
@@ -486,5 +487,10 @@
       "monthlyUsageValue": "{{count}} / {{limit}} emails",
       "percentageUsed": "{{percentage}}% used"
     }
+  },
+  "privacy": {
+    "consent": "This site uses cookies to ensure proper functionality and analyze traffic. Please accept our privacy policy to continue.",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }

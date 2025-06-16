@@ -1,130 +1,130 @@
 {
   "pages": {
     "home": {
-      "title": "Trouvez l'emploi de vos rêves avec l'IA",
-      "subtitle": "La plateforme de recherche d'emploi la plus intelligente, alimentée par l'intelligence artificielle",
-      "getStarted": "Commencer",
-      "learnMore": "En savoir plus",
-      "featuredJobs": "Emplois en vedette",
-      "viewAllJobs": "Voir tous les emplois",
-      "howItWorks": "Comment ça marche",
-      "testimonials": "Ce que disent nos utilisateurs",
-      "partners": "Entreprises partenaires",
+      "title": "Finden Sie Ihren Traumjob mit KI",
+      "subtitle": "Die intelligenteste Jobsuche-Plattform, unterstützt durch künstliche Intelligenz",
+      "getStarted": "Loslegen",
+      "learnMore": "Mehr erfahren",
+      "featuredJobs": "Ausgewählte Jobs",
+      "viewAllJobs": "Alle Jobs ansehen",
+      "howItWorks": "Wie es funktioniert",
+      "testimonials": "Was unsere Nutzer sagen",
+      "partners": "Partnerunternehmen",
       "stats": {
-        "users": "Active Users",
-        "companies": "Partner Companies",
-        "jobs": "Available Jobs",
-        "placements": "Successful Placements"
+        "users": "Aktive Nutzer",
+        "companies": "Partnerunternehmen",
+        "jobs": "Verfügbare Stellen",
+        "placements": "Erfolgreiche Vermittlungen"
       },
       "features": {
-        "title": "Why Choose JobNexAI",
+        "title": "Warum JobNexAI wählen",
         "aiMatching": {
-          "title": "AI-Powered Job Matching",
-          "description": "Our advanced algorithms match your skills and preferences with the perfect job opportunities."
+          "title": "KI-gestützte Job-Übereinstimmung",
+          "description": "Unsere fortschrittlichen Algorithmen gleichen Ihre Fähigkeiten und Präferenzen mit den perfekten Stellenangeboten ab."
         },
         "careerGrowth": {
-          "title": "Career Growth Tools",
-          "description": "Access personalized resources to enhance your skills and advance your career."
+          "title": "Karriereentwicklungstools",
+          "description": "Greifen Sie auf personalisierte Ressourcen zu, um Ihre Fähigkeiten zu verbessern und Ihre Karriere voranzutreiben."
         },
         "smartApplications": {
-          "title": "Smart Application Tracking",
-          "description": "Keep track of all your applications in one place with real-time status updates."
+          "title": "Intelligente Bewerbungsverfolgung",
+          "description": "Verfolgen Sie alle Ihre Bewerbungen an einem Ort mit Echtzeit-Statusaktualisierungen."
         },
         "marketInsights": {
-          "title": "Market Insights",
-          "description": "Get valuable data on salary trends, in-demand skills, and industry growth."
+          "title": "Markteinblicke",
+          "description": "Erhalten Sie wertvolle Daten zu Gehaltstrends, gefragten Fähigkeiten und Branchenwachstum."
         }
       }
     },
     "dashboard": {
-      "welcomeMessage": "Welcome back, {{name}}!",
-      "quickStats": "Quick Stats",
-      "recentActivity": "Recent Activity",
-      "upcomingInterviews": "Upcoming Interviews",
-      "jobRecommendations": "Recommended for You",
-      "completeProfile": "Complete Your Profile",
-      "profileCompleteness": "Profile Completeness",
-      "newMessages": "New Messages",
-      "savedJobs": "Saved Jobs",
-      "appliedJobs": "Applied Jobs",
-      "viewAllMessages": "View All Messages",
-      "viewAllSaved": "View All Saved Jobs",
-      "viewAllApplications": "View All Applications",
-      "marketInsights": "Market Insights",
+      "welcomeMessage": "Willkommen zurück, {{name}}!",
+      "quickStats": "Schnellstatistiken",
+      "recentActivity": "Letzte Aktivitäten",
+      "upcomingInterviews": "Anstehende Vorstellungsgespräche",
+      "jobRecommendations": "Für Sie empfohlen",
+      "completeProfile": "Vervollständigen Sie Ihr Profil",
+      "profileCompleteness": "Profilvollständigkeit",
+      "newMessages": "Neue Nachrichten",
+      "savedJobs": "Gespeicherte Jobs",
+      "appliedJobs": "Beworbene Jobs",
+      "viewAllMessages": "Alle Nachrichten anzeigen",
+      "viewAllSaved": "Alle gespeicherten Jobs anzeigen",
+      "viewAllApplications": "Alle Bewerbungen anzeigen",
+      "marketInsights": "Markteinblicke",
       "skills": {
-        "trending": "Trending Skills",
-        "inDemand": "In-Demand Skills",
-        "suggested": "Suggested for You"
+        "trending": "Trendfähigkeiten",
+        "inDemand": "Gefragte Fähigkeiten",
+        "suggested": "Für Sie vorgeschlagen"
       },
       "activity": {
-        "appliedJob": "Applied to {{job}} at {{company}}",
-        "savedJob": "Saved {{job}} at {{company}}",
-        "profileView": "Your profile was viewed by {{company}}",
-        "messageReceived": "Received a message from {{sender}}"
+        "appliedJob": "Beworben auf {{job}} bei {{company}}",
+        "savedJob": "{{job}} bei {{company}} gespeichert",
+        "profileView": "Ihr Profil wurde von {{company}} angesehen",
+        "messageReceived": "Nachricht von {{sender}} erhalten"
       }
     }
   },
   "landingPage": {
     "hero": {
-      "title": "Trouvez l'emploi de vos rêves avec JobNexAI",
-      "subtitle": "Découvrez des opportunités qui correspondent à vos compétences et objectifs de carrière",
-      "searchPlaceholder": "Rechercher des emplois, des compétences ou des entreprises",
-      "ctaButton": "Commencer votre recherche"
+      "title": "Finden Sie Ihren Traumjob mit JobNexAI",
+      "subtitle": "Entdecken Sie Möglichkeiten, die Ihren Fähigkeiten und Karrierezielen entsprechen",
+      "searchPlaceholder": "Suchen Sie nach Jobs, Fähigkeiten oder Unternehmen",
+      "ctaButton": "Starten Sie Ihre Suche"
     },
     "features": {
-      "title": "Why Choose JobNexAI",
-      "subtitle": "A smarter way to find your next career opportunity",
+      "title": "Warum JobNexAI wählen",
+      "subtitle": "Ein intelligenterer Weg, Ihre nächste Karrieremöglichkeit zu finden",
       "aiMatching": {
-        "title": "AI-Powered Matching",
-        "description": "Get personalized job recommendations based on your skills and experience"
+        "title": "KI-gestützte Übereinstimmung",
+        "description": "Erhalten Sie personalisierte Jobempfehlungen basierend auf Ihren Fähigkeiten und Erfahrungen"
       },
       "careerTools": {
-        "title": "Career Development Tools",
-        "description": "Access resources to enhance your skills and advance your career"
+        "title": "Karriereentwicklungstools",
+        "description": "Greifen Sie auf Ressourcen zu, um Ihre Fähigkeiten zu verbessern und Ihre Karriere voranzutreiben"
       },
       "marketInsights": {
-        "title": "Market Insights",
-        "description": "Stay informed about industry trends and salary benchmarks"
+        "title": "Markteinblicke",
+        "description": "Bleiben Sie über Branchentrends und Gehaltsbenchmarks informiert"
       },
       "applicationTracking": {
-        "title": "Smart Application Tracking",
-        "description": "Manage all your applications in one place with real-time updates"
+        "title": "Intelligente Bewerbungsverfolgung",
+        "description": "Verwalten Sie alle Ihre Bewerbungen an einem Ort mit Echtzeit-Updates"
       }
     },
     "howItWorks": {
-      "title": "How It Works",
+      "title": "Wie es funktioniert",
       "step1": {
-        "title": "Create Your Profile",
-        "description": "Build your professional profile and showcase your skills and experience"
+        "title": "Erstellen Sie Ihr Profil",
+        "description": "Erstellen Sie Ihr berufliches Profil und präsentieren Sie Ihre Fähigkeiten und Erfahrungen"
       },
       "step2": {
-        "title": "Discover Opportunities",
-        "description": "Explore job listings tailored to your career goals and preferences"
+        "title": "Entdecken Sie Möglichkeiten",
+        "description": "Entdecken Sie Stellenangebote, die auf Ihre Karriereziele und Präferenzen zugeschnitten sind"
       },
       "step3": {
-        "title": "Apply with Ease",
-        "description": "Submit applications directly through our platform with just a few clicks"
+        "title": "Bewerben Sie sich mühelos",
+        "description": "Reichen Sie Bewerbungen mit nur wenigen Klicks direkt über unsere Plattform ein"
       },
       "step4": {
-        "title": "Track Your Progress",
-        "description": "Monitor your applications and receive updates on your job search journey"
+        "title": "Verfolgen Sie Ihren Fortschritt",
+        "description": "Überwachen Sie Ihre Bewerbungen und erhalten Sie Updates zu Ihrer Jobsuche"
       }
     },
     "testimonials": {
-      "title": "Success Stories",
-      "subtitle": "Hear from professionals who found their dream job with JobNexAI"
+      "title": "Erfolgsgeschichten",
+      "subtitle": "Hören Sie von Fachleuten, die ihren Traumjob mit JobNexAI gefunden haben"
     },
     "stats": {
-      "title": "JobNexAI by the Numbers",
-      "users": "Active Users",
-      "companies": "Partner Companies",
-      "jobs": "Jobs Available",
-      "placements": "Successful Placements"
+      "title": "JobNexAI in Zahlen",
+      "users": "Aktive Nutzer",
+      "companies": "Partnerunternehmen",
+      "jobs": "Verfügbare Stellen",
+      "placements": "Erfolgreiche Vermittlungen"
     },
     "cta": {
-      "title": "Ready to Take the Next Step in Your Career?",
-      "subtitle": "Join thousands of professionals who have found their dream job with JobNexAI",
-      "button": "Create Your Free Account"
+      "title": "Bereit für den nächsten Schritt in Ihrer Karriere?",
+      "subtitle": "Schließen Sie sich Tausenden von Fachleuten an, die ihren Traumjob mit JobNexAI gefunden haben",
+      "button": "Erstellen Sie Ihr kostenloses Konto"
     }
   }
 }

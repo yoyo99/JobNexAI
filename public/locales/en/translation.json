@@ -1,15 +1,15 @@
 {
   "pages": {
     "home": {
-      "title": "Trouvez l'emploi de vos rêves avec l'IA",
-      "subtitle": "La plateforme de recherche d'emploi la plus intelligente, alimentée par l'intelligence artificielle",
-      "getStarted": "Commencer",
-      "learnMore": "En savoir plus",
-      "featuredJobs": "Emplois en vedette",
-      "viewAllJobs": "Voir tous les emplois",
-      "howItWorks": "Comment ça marche",
-      "testimonials": "Ce que disent nos utilisateurs",
-      "partners": "Entreprises partenaires",
+      "title": "Find your dream job with AI",
+      "subtitle": "The smartest job search platform, powered by artificial intelligence",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More",
+      "featuredJobs": "Featured Jobs",
+      "viewAllJobs": "View All Jobs",
+      "howItWorks": "How It Works",
+      "testimonials": "What our users say",
+      "partners": "Partner Companies",
       "stats": {
         "users": "Active Users",
         "companies": "Partner Companies",
@@ -66,10 +66,10 @@
   },
   "landingPage": {
     "hero": {
-      "title": "Trouvez l'emploi de vos rêves avec JobNexAI",
-      "subtitle": "Découvrez des opportunités qui correspondent à vos compétences et objectifs de carrière",
-      "searchPlaceholder": "Rechercher des emplois, des compétences ou des entreprises",
-      "ctaButton": "Commencer votre recherche"
+      "title": "Find your dream job with JobNexAI",
+      "subtitle": "Discover opportunities that match your skills and career goals",
+      "searchPlaceholder": "Search for jobs, skills, or companies",
+      "ctaButton": "Start Your Search"
     },
     "features": {
       "title": "Why Choose JobNexAI",
@@ -126,6 +126,13 @@
       "subtitle": "Join thousands of professionals who have found their dream job with JobNexAI",
       "button": "Create Your Free Account"
     }
+  },
+  "forms": {
+    "selectDefault": "Select your {{fieldName}}",
+    "changesSaved": "Changes saved successfully.",
+    "errorSaving": "Error saving changes.",
+    "loading": "Loading...",
+    "selectPreferredCurrencyPlaceholder": "Select your preferred currency"
   },
   "pricing": {
     "title": "Our Subscription Plans",

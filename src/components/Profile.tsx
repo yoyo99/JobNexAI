@@ -13,12 +13,13 @@ import { StripeWebhookInfo } from './StripeWebhookInfo'
 import UserAISettings from './UserAISettings';
 import UserCVs from './UserCVs';
 import CoverLetterGenerator from './CoverLetterGenerator';
+import { StatusMessageType } from '../types/common';
 
 function Profile() {
   const { user, subscription, loadUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [fullName, setFullName] = useState(user?.full_name || '')
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [message, setMessage] = useState<StatusMessageType | null>(null)
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai' | 'skills' | 'alerts' | 'subscription' | 'webhook' | 'cvs' | 'coverLetterGenerator'>('profile')
 

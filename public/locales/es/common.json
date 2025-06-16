@@ -5,7 +5,13 @@
     "applications": "Solicitudes",
     "cvBuilder": "Constructor de CV",
     "network": "Red",
-    "profile": "Perfil",
+    "profile": {
+      "title": "Perfil",
+      "tabs": {
+        "myCVs": "Mis CVs",
+        "coverLetterGenerator": "Cartas de Presentación IA"
+      }
+    },
     "settings": "Configuración",
     "marketAnalysis": "Análisis de mercado",
     "notifications": "Notificaciones",
@@ -255,6 +261,15 @@
     "medium": "Mediana (51-200 empleados)",
     "large": "Grande (201-1000 empleados)",
     "enterprise": "Muy grande (1000+ empleados)"
+  },
+  "privacy": {
+    "cookieConsent": {
+      "title": "Usamos cookies",
+      "description": "Este sitio web utiliza cookies para garantizar que obtenga la mejor experiencia en nuestro sitio web. Obtenga más información en nuestra",
+      "policyLink": "Política de Privacidad",
+      "accept": "Aceptar",
+      "decline": "Rechazar"
+    }
   },
   "forms": {
     "required": "Obligatorio",

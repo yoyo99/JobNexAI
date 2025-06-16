@@ -5,7 +5,13 @@
     "applications": "Bewerbungen",
     "cvBuilder": "Lebenslauf-Builder",
     "network": "Netzwerk",
-    "profile": "Profil",
+    "profile": {
+        "title": "Profil",
+        "tabs": {
+          "myCVs": "Meine Lebensläufe",
+          "coverLetterGenerator": "KI-Anschreiben"
+        }
+      },
     "settings": "Einstellungen",
     "marketAnalysis": "Marktanalyse",
     "notifications": "Benachrichtigungen",
@@ -318,7 +324,14 @@
     "formNotComplete": "Formular ist nicht vollständig",
     "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
   },
-  "profile": {
+  "privacy": {
+    "consent": "Diese Website verwendet Cookies, um das reibungslose Funktionieren zu gewährleisten und Ihre Erfahrung zu verbessern. Indem Sie weiter surfen, stimmen Sie deren Verwendung zu.",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen",
+    "learnMore": "Mehr erfahren",
+    "policyLinkText": "Datenschutzrichtlinie"
+  },
+  "userProfile": {
     "tabs": {
       "myCVs": "Meine Lebensläufe",
       "coverLetterGenerator": "KI-Anschreiben"
