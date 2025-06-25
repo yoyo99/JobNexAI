@@ -281,6 +281,23 @@
     "large": "Large (201-1000 employees)",
     "enterprise": "Enterprise (1000+ employees)"
   },
+  "privacy": {
+    "cookieConsent": {
+      "title": "Cookie Management",
+      "description": "We use cookies to enhance your experience. By continuing, you agree to our use of cookies.",
+      "policy": "Our cookie policy",
+      "manage": "Manage cookies",
+      "essential": "Essential cookies",
+      "essentialDescription": "Necessary for the site to function, cannot be disabled.",
+      "analytics": "Analytics cookies",
+      "analyticsDescription": "Help us understand how you use the site to improve it.",
+      "marketing": "Marketing cookies",
+      "marketingDescription": "Used to present you with relevant advertising.",
+      "acceptButton": "Accept All",
+      "declineButton": "Decline All",
+      "learnMoreLink": "Learn more"
+    }
+  },
   "forms": {
     "required": "Required",
     "optional": "Optional",
@@ -487,10 +504,5 @@
       "monthlyUsageValue": "{{count}} / {{limit}} emails",
       "percentageUsed": "{{percentage}}% used"
     }
-  },
-  "privacy": {
-    "consent": "This site uses cookies to ensure proper functionality and analyze traffic. Please accept our privacy policy to continue.",
-    "accept": "Accept",
-    "decline": "Decline"
   }
 }

@@ -264,11 +264,19 @@
   },
   "privacy": {
     "cookieConsent": {
-      "title": "Usamos cookies",
-      "description": "Este sitio web utiliza cookies para garantizar que obtenga la mejor experiencia en nuestro sitio web. Obtenga más información en nuestra",
-      "policyLink": "Política de Privacidad",
-      "accept": "Aceptar",
-      "decline": "Rechazar"
+      "title": "Gestión de Cookies",
+      "description": "Utilizamos cookies para mejorar su experiencia. Al continuar, acepta nuestro uso de cookies.",
+      "policy": "Nuestra política de cookies",
+      "manage": "Gestionar cookies",
+      "essential": "Cookies esenciales",
+      "essentialDescription": "Necesarias para que el sitio funcione, no se pueden desactivar.",
+      "analytics": "Cookies de análisis",
+      "analyticsDescription": "Nos ayudan a entender cómo utiliza el sitio para mejorarlo.",
+      "marketing": "Cookies de marketing",
+      "marketingDescription": "Utilizadas para presentarle publicidad relevante.",
+      "acceptButton": "Aceptar Todo",
+      "declineButton": "Rechazar Todo",
+      "learnMoreLink": "Saber más"
     }
   },
   "forms": {

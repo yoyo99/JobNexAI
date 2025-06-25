@@ -262,6 +262,23 @@
     "large": "Groß (201-1000 Mitarbeiter)",
     "enterprise": "Sehr groß (1000+ Mitarbeiter)"
   },
+  "privacy": {
+    "cookieConsent": {
+      "title": "Cookie-Verwaltung",
+      "description": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Indem Sie fortfahren, stimmen Sie unserer Verwendung von Cookies zu.",
+      "policy": "Unsere Cookie-Richtlinie",
+      "manage": "Cookies verwalten",
+      "essential": "Wesentliche Cookies",
+      "essentialDescription": "Notwendig für die Funktion der Website, können nicht deaktiviert werden.",
+      "analytics": "Analyse-Cookies",
+      "analyticsDescription": "Helfen uns zu verstehen, wie Sie die Website nutzen, um sie zu verbessern.",
+      "marketing": "Marketing-Cookies",
+      "marketingDescription": "Werden verwendet, um Ihnen relevante Werbung zu präsentieren.",
+      "acceptButton": "Alle Akzeptieren",
+      "declineButton": "Alle Ablehnen",
+      "learnMoreLink": "Mehr erfahren"
+    }
+  },
   "forms": {
     "required": "Erforderlich",
     "optional": "Optional",
@@ -323,13 +340,6 @@
     "tryAgain": "Erneut versuchen",
     "formNotComplete": "Formular ist nicht vollständig",
     "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
-  },
-  "privacy": {
-    "consent": "Diese Website verwendet Cookies, um das reibungslose Funktionieren zu gewährleisten und Ihre Erfahrung zu verbessern. Indem Sie weiter surfen, stimmen Sie deren Verwendung zu.",
-    "accept": "Akzeptieren",
-    "decline": "Ablehnen",
-    "learnMore": "Mehr erfahren",
-    "policyLinkText": "Datenschutzrichtlinie"
   },
   "userProfile": {
     "tabs": {
