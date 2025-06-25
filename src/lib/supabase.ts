@@ -6,6 +6,10 @@ import { createClient as supabaseCreateClient, SupabaseClient } from '@supabase/
 // Types nécessaires pour TypeScript
 type SupabaseClientType = SupabaseClient; // Utiliser le vrai type SupabaseClient
 
+// URL et clé codées en dur du nouveau projet Supabase qui fonctionne
+const HARDCODED_SUPABASE_URL = 'https://pqubbqqzkgeosakziwnh.supabase.co';
+const HARDCODED_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxdWJicXF6a2dlb3Nha3ppd25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTg1ODMsImV4cCI6MjA2NjQzNDU4M30.FdOQOwVJEHdR6pnHlKmculiRV7JMWSfw_Qm4Kpt56Cg';
+
 // Fonction de création de client fallback pour les environnements où supabase-js n'est pas disponible
 function createFallbackClient(): SupabaseClientType { // S'assurer que le fallback retourne le bon type si on le garde
   console.warn("Utilisation du client Supabase de fallback - fonctionnalités limitées. VÉRIFIEZ VOS VARIABLES D'ENVIRONNEMENT SUPABASE.");
@@ -165,25 +169,15 @@ export interface JobApplication {
 }
 
 // IMPORTANT : Ne jamais exposer la SERVICE_ROLE_KEY côté client ! Utiliser uniquement la clé publique (anon) pour le front-end.
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
 // Log pour le débogage sur Netlify
 console.log('[SupabaseInit] Attempting to initialize Supabase client.');
-console.log('[SupabaseInit] VITE_SUPABASE_URL available:', !!supabaseUrl);
-console.log('[SupabaseInit] VITE_SUPABASE_ANON_KEY available:', !!supabaseAnonKey);
-console.log('[SupabaseInit] VITE_SUPABASE_URL value:', supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'EMPTY');
-console.log('[SupabaseInit] VITE_SUPABASE_ANON_KEY value:', supabaseAnonKey ? supabaseAnonKey.substring(0, 20) + '...' : 'EMPTY');
+console.log('[SupabaseInit] Using hardcoded Supabase URL:', HARDCODED_SUPABASE_URL);
+console.log('[SupabaseInit] Using hardcoded Supabase Anon Key:', HARDCODED_SUPABASE_KEY.substring(0, 5) + '...');
 
-if (typeof supabaseUrl !== 'string' || supabaseUrl.trim() === '') {
-  console.error('[SupabaseInit] VITE_SUPABASE_URL is missing or empty.');
-}
-
-if (typeof supabaseAnonKey !== 'string' || supabaseAnonKey.trim() === '') {
-  console.error('[SupabaseInit] VITE_SUPABASE_ANON_KEY is missing or empty.');
-}
-
-let supabaseExport;
+// En cas d'erreur, utiliser un client mocké pour éviter les plantages complets
+// Note: à terme, il faudra peut-être retirer ce mock et laisser l'application échouer
+// proprement si les variables d'environnement sont manquantes
+let supabaseExport: SupabaseClient;
 
 // Simuler un client Supabase pour le développement local ou les tests si les clés ne sont pas définies
 const mockSupabaseClient = {
@@ -275,20 +269,15 @@ const mockSupabaseClient = {
   realtime: null, // ou simuler un client realtime basique si besoin
 };
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('[SupabaseInit] Supabase URL or Anon Key is missing. Falling back to mock client.');
+// Priorité aux valeurs codées en dur qui fonctionnent - AUCUN fallback sur les variables d'env
+try {
+  console.log('[SupabaseInit] Initializing Supabase client with hardcoded values.');
+  supabaseExport = createClient(HARDCODED_SUPABASE_URL, HARDCODED_SUPABASE_KEY);
+  console.log('[SupabaseInit] Supabase client initialized successfully with hardcoded values.');
+} catch (error) {
+  console.error('[SupabaseInit] Error initializing Supabase client with hardcoded values:', error);
+  console.warn('[SupabaseInit] Falling back to mock client as last resort.');
   supabaseExport = mockSupabaseClient as unknown as SupabaseClient;
-  console.log('[SupabaseInit] Mock Supabase client assigned due to missing env vars.');
-} else {
-  try {
-    console.log('[SupabaseInit] Initializing Supabase client with provided URL and Key.');
-    supabaseExport = createClient(supabaseUrl, supabaseAnonKey);
-    console.log('[SupabaseInit] Supabase client initialized successfully.');
-  } catch (error) {
-    console.error('[SupabaseInit] Error initializing Supabase client:', error);
-    console.warn('[SupabaseInit] Falling back to mock client due to initialization error.');
-    supabaseExport = mockSupabaseClient as unknown as SupabaseClient;
-  }
 }
 
 export const supabase = supabaseExport;

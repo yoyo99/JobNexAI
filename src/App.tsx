@@ -9,7 +9,7 @@ import './App.css';
 // Import immédiat des composants critiques pour la navigation
 import { DashboardLayout } from './components/DashboardLayout'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { AuthProvider } from './components/AuthProvider'
+
 import { PrivacyConsent } from './components/PrivacyConsent'
 import { SecurityBadge } from './components/SecurityBadge'
 import { SubscriptionBanner } from './components/SubscriptionBanner'
@@ -71,32 +71,36 @@ const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
 
 // Handler for the landing page route
 const LandingPageRouteHandler = () => {
-  const { user, loading, initialized } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
 
-  // Wait until auth state is fully initialized
-  if (loading || !initialized) {
+  if (loading) {
     return <LoadingFallback message="Vérification de la session..." />;
   }
 
-  // If user is logged in, redirect to dashboard
   if (user) {
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
 
-  // If user is not logged in, render the JobNexAILanding page
-  // JobNexAILanding is already lazy-loaded and wrapped in LazyComponentWrapper by its usage below
   return <LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>; 
 };
 
 // Code splitting (React.lazy) pour les pages principales
 const JobNexAILanding = React.lazy(() => import('./pages/LandingPage'));
 const Auth = React.lazy(() => import('./components/Auth'));
+const SupabaseAuth = React.lazy(() => import('./components/SupabaseAuth')); // Nouveau composant d'auth avec Supabase
 const Pricing = React.lazy(() => import('./pages/PricingPage')); 
 const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
 const FeaturesPage = React.lazy(() => import('./components/pages/FeaturesPage'));
 const HowItWorksPage = React.lazy(() => import('./components/pages/HowItWorksPage'));
 const TestimonialsPage = React.lazy(() => import('./components/pages/TestimonialsPage'));
+const TestAuth = React.lazy(() => import('./pages/TestAuth')); // Notre nouvelle page de test pour Supabase Auth
+const DebugEnv = React.lazy(() => import('./pages/DebugEnv')); // Page de débogage pour l'environnement
+const DiagnosticSupabase = React.lazy(() => import('./pages/DiagnosticSupabase')); // Outil de diagnostic pour Supabase
+const TestDirectSupabase = React.lazy(() => import('./pages/TestDirectSupabase')); // Test direct de Supabase avec fetch et ping
+const NewSupabaseTest = React.lazy(() => import('./pages/NewSupabaseTest')); // Nouvelle page de test avec valeurs codées en dur
+const AuthTest = React.lazy(() => import('./pages/AuthTest')); // Test spécifique pour l'authentification Supabase
+const CheckEnv = React.lazy(() => import('./pages/CheckEnv')); // Vérification des variables d'environnement
 const AboutPage = React.lazy(() => import('./components/pages/AboutPage'));
 const ContactPage = React.lazy(() => import('./components/pages/ContactPage'));
 const TermsPage = React.lazy(() => import('./components/pages/TermsPage'));
@@ -124,20 +128,16 @@ const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelectio
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 function App() {
-  console.log('--- JOBNEXAI APP VERSION CHECKER --- DEPLOYMENT ID 4678_V1 ---');
-  console.log('[App] Démarrage de l\'application...');
-  console.log('[i18n-debug] Langue courante:', i18n.language, '| Ressources:', Object.keys(i18n.services.resourceStore.data), '| Namespaces:', i18n.options.ns);
+  const { loading } = useAuth();
 
-  // Ajouter des gestionnaires d'événements globaux pour détecter les erreurs non capturées
+  // Gestionnaires d'erreurs globaux
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
-      console.error('[App] Erreur globale non capturée:', event.error || event.message);
-      // Afficher une notification erreur si possible
+      console.error('Global error caught:', event.error);
     };
 
     const handleRejection = (event: PromiseRejectionEvent) => {
-      console.error('[App] Promesse rejetée non gérée:', event.reason);
-      // Afficher une notification erreur si possible
+      console.warn('Global promise rejection caught:', event.reason);
     };
 
     window.addEventListener('error', handleError);
@@ -148,6 +148,10 @@ function App() {
       window.removeEventListener('unhandledrejection', handleRejection);
     };
   }, []);
+
+  if (loading) {
+    return <LoadingFallback message="Chargement de l'application..." />;
+  }
 
   return (
     <ErrorBoundary fallback={<div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
@@ -164,8 +168,7 @@ function App() {
     </div>}>
       <I18nextProvider i18n={i18n}>
         <Router>
-          <AuthProvider>
-            <Routes>
+          <Routes>
             <Route path="/" element={<LandingPageRouteHandler />} />
             <Route path="/login" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
             <Route path="/register" element={<LazyComponentWrapper><Auth /></LazyComponentWrapper>} />
@@ -174,6 +177,15 @@ function App() {
             <Route path="/about" element={<LazyComponentWrapper><AboutPage /></LazyComponentWrapper>} />
             <Route path="/contact" element={<LazyComponentWrapper><ContactPage /></LazyComponentWrapper>} />
             <Route path="/terms" element={<LazyComponentWrapper><TermsPage /></LazyComponentWrapper>} />
+            <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
+            <Route path="/test-auth" element={<LazyComponentWrapper><TestAuth /></LazyComponentWrapper>} />
+            <Route path="/auth-supabase" element={<LazyComponentWrapper><SupabaseAuth /></LazyComponentWrapper>} />
+            <Route path="/debug-env" element={<LazyComponentWrapper><DebugEnv /></LazyComponentWrapper>} />
+            <Route path="/diagnostic" element={<LazyComponentWrapper><DiagnosticSupabase /></LazyComponentWrapper>} />
+            <Route path="/test-direct" element={<LazyComponentWrapper><TestDirectSupabase /></LazyComponentWrapper>} />
+            <Route path="/new-test" element={<LazyComponentWrapper><NewSupabaseTest /></LazyComponentWrapper>} />
+            <Route path="/auth-test" element={<LazyComponentWrapper><AuthTest /></LazyComponentWrapper>} />
+            <Route path="/check-env" element={<LazyComponentWrapper><CheckEnv /></LazyComponentWrapper>} />
             <Route path="/features" element={<LazyComponentWrapper><FeaturesPage /></LazyComponentWrapper>} />
             <Route path="/how-it-works" element={<LazyComponentWrapper><HowItWorksPage /></LazyComponentWrapper>} />
             <Route path="/testimonials" element={<LazyComponentWrapper><TestimonialsPage /></LazyComponentWrapper>} />
@@ -262,7 +274,6 @@ function App() {
           <SecurityBadge />
           <SubscriptionBanner />
           <ToastContainer />
-        </AuthProvider>
       </Router>
       </I18nextProvider>
     </ErrorBoundary>
