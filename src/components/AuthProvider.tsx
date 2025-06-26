@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../stores/auth'
-import { supabase } from '../lib/supabase'
+import { getSupabase } from '../hooks/useSupabaseConfig'
 
 interface AuthProviderProps {
   children: React.ReactNode
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { loadUser, initialized: authStoreInitialized, loading: authStoreLoading } = useAuth();
+  const { loadUser, initialized, loading: authStoreLoading } = useAuth();
   const [error, setError] = useState<Error | null>(null);
   const [hasBeenInitializedOnce, setHasBeenInitializedOnce] = useState(false); // NOUVEL ÉTAT
 
@@ -20,10 +20,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Charger l'utilisateur au démarrage
         await loadUser()
         
-        // Configurer les écouteurs d'événements d'authentification seulement si supabase est disponible
-        if (supabase && supabase.auth) {
+        // Configurer les écouteurs d'événements d'authentification en utilisant getSupabase()
+        const supabaseClient = getSupabase();
+        if (supabaseClient && supabaseClient.auth) {
           try {
-            const authChangeResult = supabase.auth.onAuthStateChange(
+            const authChangeResult = supabaseClient.auth.onAuthStateChange(
               async (event, _session) => {
                 try {
                   if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
@@ -93,10 +94,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // NOUVEAU useEffect pour suivre la première initialisation
   useEffect(() => {
-    if (authStoreInitialized) {
+    if (initialized) {
       setHasBeenInitializedOnce(true);
     }
-  }, [authStoreInitialized]);
+  }, [initialized]);
 
   // Rendre simplement les enfants, même en cas d'erreur pour ne pas bloquer l'application
   if (error) {
@@ -105,7 +106,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   // Attendre que le store auth soit initialisé
-  console.log(`[AuthProvider] Rendering. authStoreInitialized: ${authStoreInitialized}, authStoreLoading: ${authStoreLoading}, hasBeenInitializedOnce: ${hasBeenInitializedOnce}`);
+  console.log(`[AuthProvider] Rendering. initialized: ${initialized}, authStoreLoading: ${authStoreLoading}, hasBeenInitializedOnce: ${hasBeenInitializedOnce}`);
   
   // MODIFICATION DE LA CONDITION
   if (!hasBeenInitializedOnce) { 

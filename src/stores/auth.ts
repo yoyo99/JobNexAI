@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { supabase } from '../lib/supabaseClient';
+import { getSupabase } from '../hooks/useSupabaseConfig';
 
 // --- Type Definitions ---
 export interface Profile {
@@ -30,6 +30,7 @@ interface AuthState {
   subscription: Subscription | null;
   loading: boolean;
   error: string | null;
+  initialized: boolean; // Ajout pour AuthProvider
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
@@ -44,11 +45,12 @@ export const useAuth = create<AuthState>((set, get) => ({
   subscription: null,
   loading: true,
   error: null,
+  initialized: false, // Initialisation pour AuthProvider
 
   signIn: async (email: string, password: string) => {
     try {
       set({ loading: true, error: null });
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await getSupabase().auth.signInWithPassword({
         email,
         password,
       });
@@ -73,7 +75,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       set({ loading: true, error: null });
       
       // Create auth user
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await getSupabase().auth.signUp({
         email,
         password,
         options: {
@@ -87,7 +89,7 @@ export const useAuth = create<AuthState>((set, get) => ({
 
       // Create profile in public.profiles table
       if (data.user) {
-        const { error: profileError } = await supabase
+        const { error: profileError } = await getSupabase()
           .from('profiles')
           .upsert({
             id: data.user.id,
@@ -116,7 +118,7 @@ export const useAuth = create<AuthState>((set, get) => ({
   signOut: async () => {
     try {
       set({ loading: true, error: null });
-      const { error } = await supabase.auth.signOut();
+      const { error } = await getSupabase().auth.signOut();
       if (error) throw error;
       set({ user: null, subscription: null });
       return { error: null };
@@ -134,7 +136,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       set({ loading: true, error: null });
       
       // Get current session
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await getSupabase().auth.getSession();
       
       if (!session?.user) {
         set({ user: null, subscription: null });
@@ -142,7 +144,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       }
       
       // Get user profile
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile, error: profileError } = await getSupabase()
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
@@ -153,7 +155,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       // Get subscription if exists
       let subscription = null;
       if (profile) {
-        const { data: subData, error: subError } = await supabase
+        const { data: subData, error: subError } = await getSupabase()
           .from('subscriptions')
           .select('*')
           .eq('user_id', profile.id)
@@ -172,6 +174,7 @@ export const useAuth = create<AuthState>((set, get) => ({
           updated_at: new Date().toISOString()
         },
         subscription,
+        initialized: true, // Définir initialized à true après le chargement
       });
       
     } catch (error: any) {
@@ -185,7 +188,7 @@ export const useAuth = create<AuthState>((set, get) => ({
   resetPassword: async (email: string) => {
     try {
       set({ loading: true, error: null });
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/update-password`,
       });
       
@@ -203,13 +206,13 @@ export const useAuth = create<AuthState>((set, get) => ({
   updateProfile: async (updates: Partial<Profile>) => {
     try {
       set({ loading: true, error: null });
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await getSupabase().auth.getUser();
       
       if (!user) throw new Error('User not authenticated');
       
       // Update auth user if email is being updated
       if (updates.email) {
-        const { error: updateError } = await supabase.auth.updateUser({
+        const { error: updateError } = await getSupabase().auth.updateUser({
           email: updates.email,
         });
         
@@ -217,7 +220,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       }
       
       // Update profile in public.profiles
-      const { error: profileError } = await supabase
+      const { error: profileError } = await getSupabase()
         .from('profiles')
         .update({
           ...updates,
@@ -246,7 +249,7 @@ const initializeAuth = async () => {
   const { loadUser } = useAuth.getState();
   
   // Set up auth state change listener
-  const { data: { subscription } } = supabase.auth.onAuthStateChange(
+  const { data: { subscription } } = getSupabase().auth.onAuthStateChange(
     async (event, session) => {
       console.log('Auth state changed:', event);
       await loadUser();
