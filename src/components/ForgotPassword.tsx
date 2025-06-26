@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { AuthService } from '../lib/auth-service'
+import { useJobnexai } from '../hooks/useJobnexai'
 
 export function ForgotPassword() {
   const [loading, setLoading] = useState(false)
@@ -10,6 +10,7 @@ export function ForgotPassword() {
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null)
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { auth } = useJobnexai()
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,7 +23,7 @@ export function ForgotPassword() {
 
     try {
       setLoading(true)
-      const { error } = await AuthService.resetPassword(email)
+            const { error } = await auth.resetPassword(email)
 
       if (error) {
         setMessage({ type: 'error', text: error.message })

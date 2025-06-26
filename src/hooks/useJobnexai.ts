@@ -105,7 +105,7 @@ export function useJobnexai() {
     
     // Groupes d'actions
     auth: authActions,
-    jobs: jobActions,
+    jobs: jobs,
     api: apiActions,
     
     // État de chargement global

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { PasswordStrengthMeter } from './PasswordStrengthMeter';
-import { AuthService } from '../lib/auth-service';
+import { useJobnexai } from '../hooks/useJobnexai';
 
 const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,19 +22,17 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { auth, isLoggedIn, user } = useJobnexai();
+
   // Récupérer l'URL de redirection si elle existe
   const from = location.state?.from?.pathname || '/dashboard';
 
-  // Vérifier si l'utilisateur est déjà connecté
+  // Rediriger si l'utilisateur est déjà connecté
   useEffect(() => {
-    const checkSession = async () => {
-      const { session } = await AuthService.getSession();
-      if (session) {
-        navigate('/dashboard');
-      }
-    };
-    checkSession();
-  }, [navigate]);
+    if (isLoggedIn && user) {
+      navigate(from, { replace: true });
+    }
+  }, [isLoggedIn, user, navigate, from]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     setTermsError(null);
@@ -54,7 +52,10 @@ const Auth: React.FC = () => {
     }
     try {
       setLoading(true);
-      const { user, error } = await AuthService.signUp(email, password, fullName);
+            const { data: user, error } = await auth.register(email, password, { 
+        firstName: fullName.split(' ')[0] || '', 
+        lastName: fullName.split(' ').slice(1).join(' ') || '' 
+      });
       if (error) {
         setMessage({ type: 'error', text: error.message });
         return;
@@ -92,7 +93,7 @@ const Auth: React.FC = () => {
     }
     try {
       setLoading(true);
-      const { user, error } = await AuthService.signIn(email, password);
+            const { data: user, error } = await auth.login(email, password);
       if (error) {
         // Mapping des messages d’erreur Supabase vers des clés i18n si possible
         let errorKey = '';
@@ -134,7 +135,7 @@ const Auth: React.FC = () => {
     }
     try {
       setLoading(true);
-      const { error } = await AuthService.resetPassword(email);
+            const { error } = await auth.resetPassword(email);
       if (error) {
         setMessage({ type: 'error', text: error.message });
         return;

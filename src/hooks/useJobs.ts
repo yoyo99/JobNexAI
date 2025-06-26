@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
 import { api, ApiResponse } from '../utils/api';
-import { mapApiError, logError, AppError } from '../utils/error-handling';
+import { mapApiError, logError, AppError, mapSupabaseError } from '../utils/error-handling';
 import { useAuth } from './useAuth';
+import { createSupabaseClient } from './useSupabaseConfig';
 
 // Types
 export interface Job {
@@ -51,6 +52,12 @@ export interface JobResult<T = any> {
   loading: boolean;
   refetch?: () => Promise<void>;
 }
+
+export type MarketTrend = {
+  jobTypes: { name: string; count: number }[];
+  locations: { name: string; count: number }[];
+  salary: { min: number; max: number; avg: number };
+};
 
 export function useJobs() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -253,7 +260,22 @@ export function useJobs() {
       return { data: null, error: mappedError, loading: false };
     }
   }, [getAuthHeaders, processApiResponse]);
-  
+
+  /**
+   * Récupérer les tendances du marché de l'emploi
+   */
+  const getMarketTrends = useCallback(async (): Promise<MarketTrend> => {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.rpc('get_market_trends');
+
+    if (error) {
+      logError(mapSupabaseError(error), 'useJobs.getMarketTrends');
+      throw new Error('Failed to fetch market trends');
+    }
+
+    return data;
+  }, []);
+
   return {
     loading,
     getJobs,
@@ -264,6 +286,7 @@ export function useJobs() {
     getJobApplications,
     applyToJob,
     getMyApplications,
-    updateApplicationStatus
+    updateApplicationStatus,
+    getMarketTrends,
   };
 }
