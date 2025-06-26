@@ -120,7 +120,20 @@ export const useAuth = create<AuthState>((set, get) => ({
       set({ loading: true, error: null });
       const { error } = await getSupabase().auth.signOut();
       if (error) throw error;
-      set({ user: null, subscription: null });
+      
+      // Réinitialiser complètement l'état
+      set({ 
+        user: null, 
+        subscription: null, 
+        initialized: false, // Réinitialiser l'état initialized
+        loading: false,
+        error: null
+      });
+      
+      // Recharger la page pour forcer un nouveau cycle d'initialisation
+      // Commentez cette ligne si vous préférez ne pas recharger automatiquement
+      window.location.reload();
+      
       return { error: null };
     } catch (error: any) {
       console.error('Sign out error:', error);
