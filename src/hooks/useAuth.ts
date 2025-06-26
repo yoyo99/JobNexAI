@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User, AuthResponse } from '@supabase/supabase-js';
 import { mapSupabaseError, logError, AppError } from '../utils/error-handling';
-import { createSupabaseClient } from './useSupabaseConfig';
+import { getSupabase } from './useSupabaseConfig';
 
 // Types pour les retours de fonctions d'authentification
 export interface AuthResult<T = any> {
@@ -20,8 +20,7 @@ export interface UserProfile {
   role?: string;
 }
 
-// Client Supabase singleton utilisant notre configuration fiable
-const getSupabase = createSupabaseClient;
+
 
 /**
  * Hook d'authentification pour gérer la session utilisateur et les opérations d'authentification

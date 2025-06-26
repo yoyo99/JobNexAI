@@ -1,31 +1,53 @@
-// Fichier spécifique pour gérer la configuration Supabase avec un contournement pour les problèmes de variables d'environnement
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// URL et clé codées en dur uniquement pour le développement et pour débloquer la situation
-const HARDCODED_URL = 'https://pqubbqqzkgeosakziwnh.supabase.co';
-const HARDCODED_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxdWJicXF6a2dlb3Nha3ppd25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTg1ODMsImV4cCI6MjA2NjQzNDU4M30.FdOQOwVJEHdR6pnHlKmculiRV7JMWSfw_Qm4Kpt56Cg';
+// Déclare une variable globale pour stocker le client et survivre au HMR
+declare global {
+  var __supabase_client: SupabaseClient | undefined;
+}
 
-// Essayer d'utiliser les variables d'environnement, sinon utiliser les valeurs codées en dur
-export const getSupabaseConfig = () => {
-  // Tenter de lire les variables d'environnement
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || HARDCODED_URL;
-  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || HARDCODED_ANON_KEY;
-  
-  console.log('Configuration Supabase utilisée:', { 
-    url: supabaseUrl,
-    key: `${supabaseAnonKey.substring(0, 5)}...${supabaseAnonKey.substring(supabaseAnonKey.length - 5)}`
-  });
-  
-  return {
-    supabaseUrl,
-    supabaseAnonKey
-  };
-};
+let supabase: SupabaseClient;
 
-// Client Supabase singleton
-export const createSupabaseClient = () => {
-  const { supabaseUrl, supabaseAnonKey } = getSupabaseConfig();
-  return createClient(supabaseUrl, supabaseAnonKey);
-};
+/**
+ * Récupère l'instance unique du client Supabase.
+ * Crée l'instance si elle n'existe pas.
+ * @returns {SupabaseClient}
+ */
+export function getSupabase(): SupabaseClient {
+  // --- DÉBUT LOGS DE DÉBOGAGE ---
+  console.log("--- JOBNEXAI DEBUG ---");
+  console.log("Tentative d'initialisation de Supabase avec la configuration suivante :");
+  console.log("URL (VITE_SUPABASE_URL):", import.meta.env.VITE_SUPABASE_URL);
+  console.log("Clé Anon (VITE_SUPABASE_ANON_KEY):", import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Présente' : 'Manquante !');
+  console.log("--- FIN LOGS DE DÉBOGAGE ---");
 
-export default createSupabaseClient;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase URL or Anon Key is missing. Make sure to set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file.');
+    throw new Error('Supabase configuration is missing.');
+  }
+
+  // Utilise l'instance existante si elle est déjà créée
+  if (supabase) {
+    return supabase;
+  }
+
+  // En développement, réutilise l'instance globale pour éviter les avertissements HMR
+  if (import.meta.env.DEV && globalThis.__supabase_client) {
+    supabase = globalThis.__supabase_client;
+    return supabase;
+  }
+
+  // Crée une nouvelle instance
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // Stocke l'instance dans la variable globale en développement
+  if (import.meta.env.DEV) {
+    globalThis.__supabase_client = supabase;
+  }
+
+  console.log('Supabase client initialized.');
+
+  return supabase;
+}

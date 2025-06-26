@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { api, ApiResponse } from '../utils/api';
 import { mapApiError, logError, AppError, mapSupabaseError } from '../utils/error-handling';
 import { useAuth } from './useAuth';
-import { createSupabaseClient } from './useSupabaseConfig';
+import { getSupabase } from './useSupabaseConfig';
 
 // Types
 export interface Job {
@@ -265,7 +265,7 @@ export function useJobs() {
    * Récupérer les tendances du marché de l'emploi
    */
   const getMarketTrends = useCallback(async (): Promise<MarketTrend> => {
-    const supabase = createSupabaseClient();
+    const supabase = getSupabase();
     const { data, error } = await supabase.rpc('get_market_trends');
 
     if (error) {
