@@ -2,29 +2,20 @@
 // Définir la fonction createClient manuellement sans dépendre d'importations externes
 
 import { createClient as supabaseCreateClient, SupabaseClient } from '@supabase/supabase-js';
+import { getSupabase } from '../hooks/useSupabaseConfig';
 
 // Types nécessaires pour TypeScript
 type SupabaseClientType = SupabaseClient; // Utiliser le vrai type SupabaseClient
 
-// Utiliser les variables d'environnement pour les configurations Supabase
-const ENV_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const ENV_SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// IMPORTANT: Nous utilisons maintenant uniquement getSupabase() de useSupabaseConfig.ts
+// pour assurer la cohérence du client dans toute l'application
 
-// Fonction de création de client fallback pour les environnements où supabase-js n'est pas disponible
-function createFallbackClient(): SupabaseClientType { // S'assurer que le fallback retourne le bon type si on le garde
-  console.warn("Utilisation du client Supabase de fallback - fonctionnalités limitées. VÉRIFIEZ VOS VARIABLES D'ENVIRONNEMENT SUPABASE.");
-  // Retourner une version minimale fonctionnelle ou une version qui throw des erreurs claires
-  // Pour l'instant, on va simplifier et ne pas utiliser le fallback dans la création principale.
-  // Cela peut être réintroduit si nécessaire avec une logique plus robuste.
-  throw new Error("Supabase client could not be initialized, falling back. Check setup.");
-}
-
-// Fonction pour créer un client Supabase selon l'environnement
+// Fonction pour créer un client Supabase selon l'environnement - gardée pour la compatibilité
+// Mais nous encourageons l'utilisation de getSupabase() à la place
 export function createClient(supabaseUrl: string, supabaseKey: string): SupabaseClientType {
+  console.warn('[DEPRECATED] Utilisation directe de createClient() dans src/lib/supabase.ts. Utilisez getSupabase() à la place.');
   if (!supabaseUrl || !supabaseKey) {
     console.error('Supabase URL ou Anon Key manquante. Le client Supabase ne peut pas être initialisé.');
-    // Il est préférable de lever une erreur ici ou de retourner un client qui échoue clairement
-    // plutôt que de retourner un client fallback silencieux pour les opérations critiques comme l'auth.
     throw new Error('Supabase URL or Anon Key is missing.');
   }
   return supabaseCreateClient(supabaseUrl, supabaseKey);
@@ -171,8 +162,7 @@ export interface JobApplication {
 // IMPORTANT : Ne jamais exposer la SERVICE_ROLE_KEY côté client ! Utiliser uniquement la clé publique (anon) pour le front-end.
 // Log pour le débogage sur Netlify
 console.log('[SupabaseInit] Attempting to initialize Supabase client.');
-console.log('[SupabaseInit] Using environment variables for Supabase URL:', ENV_SUPABASE_URL);
-console.log('[SupabaseInit] Using environment variables for Supabase Anon Key:', ENV_SUPABASE_KEY ? ENV_SUPABASE_KEY.substring(0, 5) + '...' : 'Missing!');
+console.log('[SupabaseInit] Using unified Supabase client from useSupabaseConfig.ts');
 
 // En cas d'erreur, utiliser un client mocké pour éviter les plantages complets
 // Note: à terme, il faudra peut-être retirer ce mock et laisser l'application échouer
@@ -269,14 +259,11 @@ const mockSupabaseClient = {
   realtime: null, // ou simuler un client realtime basique si besoin
 };
 
-// Utiliser les variables d'environnement pour initialiser le client Supabase
+// Utiliser le client Supabase singleton de useSupabaseConfig.ts
 try {
-  if (!ENV_SUPABASE_URL || !ENV_SUPABASE_KEY) {
-    throw new Error('Supabase environment variables are missing');
-  }
-  console.log('[SupabaseInit] Initializing Supabase client with environment variables.');
-  supabaseExport = createClient(ENV_SUPABASE_URL, ENV_SUPABASE_KEY);
-  console.log('[SupabaseInit] Supabase client initialized successfully with environment variables.');
+  console.log('[SupabaseInit] Initializing Supabase client with getSupabase().');
+  supabaseExport = getSupabase(); // Utilise l'instance singleton
+  console.log('[SupabaseInit] Supabase client initialized successfully.');
 } catch (error) {
   console.error('[SupabaseInit] Error initializing Supabase client:', error);
   console.warn('[SupabaseInit] Falling back to mock client as last resort.');
