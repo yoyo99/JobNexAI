@@ -6,9 +6,9 @@ import { createClient as supabaseCreateClient, SupabaseClient } from '@supabase/
 // Types nécessaires pour TypeScript
 type SupabaseClientType = SupabaseClient; // Utiliser le vrai type SupabaseClient
 
-// URL et clé codées en dur du nouveau projet Supabase qui fonctionne
-const HARDCODED_SUPABASE_URL = 'https://pqubbqqzkgeosakziwnh.supabase.co';
-const HARDCODED_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxdWJicXF6a2dlb3Nha3ppd25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTg1ODMsImV4cCI6MjA2NjQzNDU4M30.FdOQOwVJEHdR6pnHlKmculiRV7JMWSfw_Qm4Kpt56Cg';
+// Utiliser les variables d'environnement pour les configurations Supabase
+const ENV_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const ENV_SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Fonction de création de client fallback pour les environnements où supabase-js n'est pas disponible
 function createFallbackClient(): SupabaseClientType { // S'assurer que le fallback retourne le bon type si on le garde
@@ -171,8 +171,8 @@ export interface JobApplication {
 // IMPORTANT : Ne jamais exposer la SERVICE_ROLE_KEY côté client ! Utiliser uniquement la clé publique (anon) pour le front-end.
 // Log pour le débogage sur Netlify
 console.log('[SupabaseInit] Attempting to initialize Supabase client.');
-console.log('[SupabaseInit] Using hardcoded Supabase URL:', HARDCODED_SUPABASE_URL);
-console.log('[SupabaseInit] Using hardcoded Supabase Anon Key:', HARDCODED_SUPABASE_KEY.substring(0, 5) + '...');
+console.log('[SupabaseInit] Using environment variables for Supabase URL:', ENV_SUPABASE_URL);
+console.log('[SupabaseInit] Using environment variables for Supabase Anon Key:', ENV_SUPABASE_KEY ? ENV_SUPABASE_KEY.substring(0, 5) + '...' : 'Missing!');
 
 // En cas d'erreur, utiliser un client mocké pour éviter les plantages complets
 // Note: à terme, il faudra peut-être retirer ce mock et laisser l'application échouer
@@ -269,13 +269,16 @@ const mockSupabaseClient = {
   realtime: null, // ou simuler un client realtime basique si besoin
 };
 
-// Priorité aux valeurs codées en dur qui fonctionnent - AUCUN fallback sur les variables d'env
+// Utiliser les variables d'environnement pour initialiser le client Supabase
 try {
-  console.log('[SupabaseInit] Initializing Supabase client with hardcoded values.');
-  supabaseExport = createClient(HARDCODED_SUPABASE_URL, HARDCODED_SUPABASE_KEY);
-  console.log('[SupabaseInit] Supabase client initialized successfully with hardcoded values.');
+  if (!ENV_SUPABASE_URL || !ENV_SUPABASE_KEY) {
+    throw new Error('Supabase environment variables are missing');
+  }
+  console.log('[SupabaseInit] Initializing Supabase client with environment variables.');
+  supabaseExport = createClient(ENV_SUPABASE_URL, ENV_SUPABASE_KEY);
+  console.log('[SupabaseInit] Supabase client initialized successfully with environment variables.');
 } catch (error) {
-  console.error('[SupabaseInit] Error initializing Supabase client with hardcoded values:', error);
+  console.error('[SupabaseInit] Error initializing Supabase client:', error);
   console.warn('[SupabaseInit] Falling back to mock client as last resort.');
   supabaseExport = mockSupabaseClient as unknown as SupabaseClient;
 }
