@@ -117,30 +117,36 @@ export const useAuth = create<AuthState>((set, get) => ({
 
   signOut: async () => {
     try {
+      console.log('[Auth] Début de la déconnexion');
       set({ loading: true, error: null });
+      
+      // Déconnecter l'utilisateur via Supabase
       const { error } = await getSupabase().auth.signOut();
       if (error) throw error;
       
-      // Réinitialiser complètement l'état
+      // Réinitialiser l'état tout en gardant initialized à true
+      // Cela évite de rester coincé sur la page de chargement
       set({ 
         user: null, 
         subscription: null, 
-        initialized: false, // Réinitialiser l'état initialized
         loading: false,
         error: null
+        // On maintient la valeur de initialized pour éviter le rechargement infini
       });
       
-      // Recharger la page pour forcer un nouveau cycle d'initialisation
-      // Commentez cette ligne si vous préférez ne pas recharger automatiquement
-      window.location.reload();
+      console.log('[Auth] Déconnexion réussie, état réinitialisé');
+      
+      // Rediriger vers la page d'accueil plutôt que de recharger la page
+      // Ceci est plus doux qu'un reload complet
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
       
       return { error: null };
     } catch (error: any) {
-      console.error('Sign out error:', error);
+      console.error('[Auth] Erreur de déconnexion:', error);
       set({ error: error.message });
       return { error };
-    } finally {
-      set({ loading: false });
     }
   },
 
