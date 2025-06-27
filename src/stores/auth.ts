@@ -40,7 +40,7 @@ interface AuthState {
 }
 
 // --- Zustand Store ---
-export const useAuth = create<AuthState>((set, get) => ({
+export const useAuth = create<AuthState>((set) => ({
   user: null,
   subscription: null,
   loading: true,
@@ -48,12 +48,13 @@ export const useAuth = create<AuthState>((set, get) => ({
   initialized: false,
 
   loadUser: async () => {
-    // Ne pas remettre loading à true ici, c'est géré par les appelants
+    // Ne pas remettre `loading` à true ici pour éviter les clignotements.
+    // L'état de chargement initial est géré par l'état par défaut du store.
     try {
       const { data: { session } } = await getSupabase().auth.getSession();
+
       if (!session?.user) {
-        // Pas de session, l'initialisation est terminée, pas d'utilisateur.
-        set({ user: null, subscription: null, loading: false, initialized: true });
+        set({ user: null, subscription: null });
         return;
       }
 
@@ -62,11 +63,8 @@ export const useAuth = create<AuthState>((set, get) => ({
         .select('*')
         .eq('id', session.user.id)
         .single();
-      
-      // Ignorer l'erreur si aucun profil n'est trouvé (PGRST116: 0 rows)
-      if (profileError && profileError.code !== 'PGRST116') {
-        throw profileError;
-      }
+
+      if (profileError && profileError.code !== 'PGRST116') throw profileError;
 
       let subscription: Subscription | null = null;
       if (profile) {
@@ -75,19 +73,16 @@ export const useAuth = create<AuthState>((set, get) => ({
           .select('*')
           .eq('user_id', profile.id)
           .single();
-        // Ignorer l'erreur si aucun abonnement n'est trouvé
-        if (subError && subError.code !== 'PGRST116') {
-          throw subError;
-        }
+        if (subError && subError.code !== 'PGRST116') throw subError;
         subscription = subData;
       }
-      
-      // Succès: mettre à jour l'état et marquer comme initialisé
-      set({ user: profile, subscription, loading: false, initialized: true });
+      set({ user: profile, subscription });
     } catch (error: any) {
       console.error('Erreur lors du chargement des données utilisateur:', error);
-      // En cas d'erreur, l'initialisation est terminée mais avec une erreur.
-      set({ error: error.message, user: null, subscription: null, loading: false, initialized: true });
+      set({ error: error.message, user: null, subscription: null });
+    } finally {
+      // Quoi qu'il arrive, on marque l'initialisation comme terminée.
+      set({ loading: false, initialized: true });
     }
   },
 
@@ -96,7 +91,6 @@ export const useAuth = create<AuthState>((set, get) => ({
     try {
       const { error } = await getSupabase().auth.signInWithPassword({ email, password });
       if (error) throw error;
-      // onAuthStateChange s'occupera de lancer loadUser.
       return { error: null };
     } catch (error: any) {
       set({ error: error.message, loading: false });
@@ -125,7 +119,6 @@ export const useAuth = create<AuthState>((set, get) => ({
           updated_at: new Date().toISOString(),
         });
       if (profileError) throw profileError;
-      // onAuthStateChange s'occupera de lancer loadUser.
       return { error: null };
     } catch (error: any) {
       set({ error: error.message, loading: false });
@@ -134,18 +127,14 @@ export const useAuth = create<AuthState>((set, get) => ({
   },
 
   signOut: async () => {
-    set({ loading: true, error: null });
-    try {
-      const { error } = await getSupabase().auth.signOut();
-      if (error) throw error;
-      // Nettoyage simple de l'état. onAuthStateChange fera le reste.
-      set({ user: null, subscription: null, loading: false });
-      return { error: null };
-    } catch (error: any) {
+    // Le rechargement de la page et la redirection sont gérés par AuthProvider
+    // qui écoute onAuthStateChange.
+    const { error } = await getSupabase().auth.signOut();
+    if (error) {
       console.error('Erreur de déconnexion:', error);
-      set({ error: error.message, loading: false });
-      return { error };
+      set({ error: error.message });
     }
+    return { error };
   },
 
   resetPassword: async (email) => {
@@ -175,7 +164,6 @@ export const useAuth = create<AuthState>((set, get) => ({
         .eq('id', user.id);
       if (error) throw error;
       
-      // Mettre à jour l'état local pour un retour visuel immédiat
       set(state => ({ user: state.user ? { ...state.user, ...updates } : null, loading: false }));
       return { error: null };
     } catch (error: any) {
@@ -184,31 +172,3 @@ export const useAuth = create<AuthState>((set, get) => ({
     }
   },
 }));
-
-// --- Initialiseur d'authentification ---
-let authListener: any = null;
-
-export const subscribeToAuthChanges = () => {
-  if (authListener) {
-    // Déjà abonné, retourner une fonction de nettoyage vide
-    return () => {}; 
-  }
-
-  const { data: { subscription } } = getSupabase().auth.onAuthStateChange(
-    (event, session) => {
-      console.log(`Événement d'authentification: ${event}`);
-      // Déclencher le chargement de l'utilisateur à chaque changement d'état d'authentification
-      useAuth.getState().loadUser();
-    }
-  );
-  authListener = subscription;
-
-  // Chargement initial des données utilisateur
-  useAuth.getState().loadUser();
-
-  // Retourner la fonction de désabonnement
-  return () => {
-    authListener?.unsubscribe();
-    authListener = null;
-  };
-};

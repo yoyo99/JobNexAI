@@ -1,45 +1,51 @@
 import { useEffect } from 'react';
-import { useAuth, subscribeToAuthChanges } from '../stores/auth';
+import { useAuth } from '../stores/auth';
+import { getSupabase } from '../hooks/useSupabaseConfig';
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { initialized, loading } = useAuth();
+  const initialized = useAuth(state => state.initialized);
+  const loadUser = useAuth(state => state.loadUser);
 
   useEffect(() => {
-    // S'abonne aux changements d'état d'authentification au montage du composant.
-    // La fonction retournée par `subscribeToAuthChanges` est la fonction de nettoyage
-    // qui sera automatiquement appelée par React lors du démontage du composant.
-    const unsubscribe = subscribeToAuthChanges();
+    // 1. Charger l'utilisateur au montage initial du composant.
+    loadUser();
 
-    // Écouteur pour la synchronisation entre onglets
-    const handleStorage = () => {
-      console.log('Événement de stockage détecté, rechargement des données utilisateur.');
-      useAuth.getState().loadUser();
+    // 2. S'abonner aux changements d'état d'authentification de Supabase.
+    const { data: { subscription } } = getSupabase().auth.onAuthStateChange((event, session) => {
+      console.log(`AuthProvider: Événement d'authentification Supabase - ${event}`);
+      // Recharger les données utilisateur à chaque événement pour garder l'état synchronisé.
+      loadUser();
+    });
+
+    // 3. Écouter les changements de stockage pour la synchronisation entre onglets.
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key?.includes('supabase.auth.token')) {
+        console.log('AuthProvider: Événement de stockage détecté, rechargement des données utilisateur.');
+        loadUser();
+      }
     };
-    window.addEventListener('storage', handleStorage);
+    window.addEventListener('storage', handleStorageChange);
 
+    // 4. Fonction de nettoyage pour se désabonner lors du démontage du composant.
     return () => {
-      // Nettoyage de l'abonnement et de l'écouteur d'événement
-      unsubscribe();
-      window.removeEventListener('storage', handleStorage);
+      subscription?.unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
     };
-  }, []); // Le tableau de dépendances vide garantit que cela ne s'exécute qu'une seule fois.
+  }, [loadUser]); // `loadUser` est stable, donc cet effet ne s'exécute qu'une seule fois.
 
-  // Pendant que l'état d'authentification est en cours d'initialisation, afficher un écran de chargement.
-  // `initialized` devient `true` dès que la première vérification de session est terminée (avec ou sans utilisateur).
+  // Afficher un écran de chargement tant que l'initialisation n'est pas terminée.
   if (!initialized) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#111827', color: 'white' }}>
         <p>Chargement de l'application...</p>
-        {/* Optionnel: Ajouter un spinner SVG ou une animation ici */}
       </div>
     );
   }
 
-  // Une fois l'initialisation terminée, rendre les composants enfants.
-  // La logique de redirection (par exemple, vers /login) sera gérée par les `ProtectedRoute`.
+  // Une fois l'initialisation terminée, rendre l'application.
   return <>{children}</>;
 }
