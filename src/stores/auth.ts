@@ -30,7 +30,7 @@ interface AuthState {
   subscription: Subscription | null;
   loading: boolean;
   error: string | null;
-  initialized: boolean; // Ajout pour AuthProvider
+  initialized: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
@@ -45,254 +45,170 @@ export const useAuth = create<AuthState>((set, get) => ({
   subscription: null,
   loading: true,
   error: null,
-  initialized: false, // Initialisation pour AuthProvider
-
-  signIn: async (email: string, password: string) => {
-    try {
-      set({ loading: true, error: null });
-      const { data, error } = await getSupabase().auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // Load user profile after successful sign in
-      await get().loadUser();
-      
-      return { error: null };
-    } catch (error: any) {
-      console.error('Sign in error:', error);
-      set({ error: error.message });
-      return { error };
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  signUp: async (email: string, password: string, fullName: string) => {
-    try {
-      set({ loading: true, error: null });
-      
-      // Create auth user
-      const { data, error: signUpError } = await getSupabase().auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-          },
-        },
-      });
-
-      if (signUpError) throw signUpError;
-
-      // Create profile in public.profiles table
-      if (data.user) {
-        const { error: profileError } = await getSupabase()
-          .from('profiles')
-          .upsert({
-            id: data.user.id,
-            email: email,
-            full_name: fullName,
-            user_type: 'candidate', // Default user type
-            updated_at: new Date().toISOString(),
-          });
-
-        if (profileError) throw profileError;
-      }
-
-      // Load user profile after successful sign up
-      await get().loadUser();
-      
-      return { error: null };
-    } catch (error: any) {
-      console.error('Sign up error:', error);
-      set({ error: error.message });
-      return { error };
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  signOut: async () => {
-    try {
-      console.log('[Auth] Début de la déconnexion');
-      set({ loading: true, error: null });
-      
-      // Créons une promesse que l'on résoudra manuellement après avoir établi un timeout
-      const promise = new Promise<{ error: any }>((resolve) => {
-        // Déconnectons d'abord l'utilisateur via Supabase
-        getSupabase().auth.signOut().then(({ error }) => {
-          if (error) {
-            console.error('[Auth] Erreur Supabase lors de la déconnexion:', error);
-            set({ error: error.message, loading: false });
-            resolve({ error });
-            return;
-          }
-
-          console.log('[Auth] Déconnexion Supabase réussie, nettoyage de létat...');
-          
-          // Nettoyer l'état complètement
-          set({ 
-            user: null,
-            subscription: null, 
-            loading: false,
-            error: null,
-            initialized: true // Garder initialized à true est crucial
-          });
-          
-          // Force le rechargement complet de la page après un court délai
-          console.log('[Auth] Configuration du rechargement après délai...');
-          setTimeout(() => {
-            console.log('[Auth] Rechargement de la page.');
-            window.location.href = '/login';
-            resolve({ error: null });
-          }, 100); // Délai court avant le rechargement
-        });
-      });
-      
-      return promise;
-    } catch (error: any) {
-      console.error('[Auth] Erreur inattendue lors de la déconnexion:', error);
-      set({ error: error.message, loading: false });
-      return { error };
-    }
-  },
+  initialized: false,
 
   loadUser: async () => {
+    // Ne pas remettre loading à true ici, c'est géré par les appelants
     try {
-      set({ loading: true, error: null });
-      
-      // Get current session
       const { data: { session } } = await getSupabase().auth.getSession();
-      
       if (!session?.user) {
-        set({ user: null, subscription: null });
+        // Pas de session, l'initialisation est terminée, pas d'utilisateur.
+        set({ user: null, subscription: null, loading: false, initialized: true });
         return;
       }
-      
-      // Get user profile
+
       const { data: profile, error: profileError } = await getSupabase()
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
-
-      if (profileError) throw profileError;
       
-      // Get subscription if exists
-      let subscription = null;
+      // Ignorer l'erreur si aucun profil n'est trouvé (PGRST116: 0 rows)
+      if (profileError && profileError.code !== 'PGRST116') {
+        throw profileError;
+      }
+
+      let subscription: Subscription | null = null;
       if (profile) {
         const { data: subData, error: subError } = await getSupabase()
           .from('subscriptions')
           .select('*')
           .eq('user_id', profile.id)
           .single();
-          
-        if (!subError && subData) {
-          subscription = subData;
+        // Ignorer l'erreur si aucun abonnement n'est trouvé
+        if (subError && subError.code !== 'PGRST116') {
+          throw subError;
         }
+        subscription = subData;
       }
       
-      set({ 
-        user: profile || { 
-          id: session.user.id, 
-          email: session.user.email,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        subscription,
-        initialized: true, // Définir initialized à true après le chargement
-      });
-      
+      // Succès: mettre à jour l'état et marquer comme initialisé
+      set({ user: profile, subscription, loading: false, initialized: true });
     } catch (error: any) {
-      console.error('Error loading user:', error);
-      set({ error: error.message, user: null, subscription: null });
-    } finally {
-      set({ loading: false });
+      console.error('Erreur lors du chargement des données utilisateur:', error);
+      // En cas d'erreur, l'initialisation est terminée mais avec une erreur.
+      set({ error: error.message, user: null, subscription: null, loading: false, initialized: true });
     }
   },
 
-  resetPassword: async (email: string) => {
+  signIn: async (email, password) => {
+    set({ loading: true, error: null });
     try {
-      set({ loading: true, error: null });
+      const { error } = await getSupabase().auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      // onAuthStateChange s'occupera de lancer loadUser.
+      return { error: null };
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+      return { error };
+    }
+  },
+
+  signUp: async (email, password, fullName) => {
+    set({ loading: true, error: null });
+    try {
+      const { data, error: signUpError } = await getSupabase().auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName } },
+      });
+      if (signUpError) throw signUpError;
+      if (!data.user) throw new Error("L'inscription a réussi mais aucun utilisateur n'a été retourné.");
+
+      const { error: profileError } = await getSupabase()
+        .from('profiles')
+        .upsert({
+          id: data.user.id,
+          email: email,
+          full_name: fullName,
+          user_type: 'candidate',
+          updated_at: new Date().toISOString(),
+        });
+      if (profileError) throw profileError;
+      // onAuthStateChange s'occupera de lancer loadUser.
+      return { error: null };
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+      return { error };
+    }
+  },
+
+  signOut: async () => {
+    set({ loading: true, error: null });
+    try {
+      const { error } = await getSupabase().auth.signOut();
+      if (error) throw error;
+      // Nettoyage simple de l'état. onAuthStateChange fera le reste.
+      set({ user: null, subscription: null, loading: false });
+      return { error: null };
+    } catch (error: any) {
+      console.error('Erreur de déconnexion:', error);
+      set({ error: error.message, loading: false });
+      return { error };
+    }
+  },
+
+  resetPassword: async (email) => {
+    set({ loading: true, error: null });
+    try {
       const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/update-password`,
       });
-      
       if (error) throw error;
+      set({ loading: false });
       return { error: null };
     } catch (error: any) {
-      console.error('Password reset error:', error);
-      set({ error: error.message });
+      set({ error: error.message, loading: false });
       return { error };
-    } finally {
-      set({ loading: false });
     }
   },
 
-  updateProfile: async (updates: Partial<Profile>) => {
+  updateProfile: async (updates) => {
+    set({ loading: true, error: null });
     try {
-      set({ loading: true, error: null });
       const { data: { user } } = await getSupabase().auth.getUser();
-      
-      if (!user) throw new Error('User not authenticated');
-      
-      // Update auth user if email is being updated
-      if (updates.email) {
-        const { error: updateError } = await getSupabase().auth.updateUser({
-          email: updates.email,
-        });
-        
-        if (updateError) throw updateError;
-      }
-      
-      // Update profile in public.profiles
-      const { error: profileError } = await getSupabase()
+      if (!user) throw new Error('Utilisateur non authentifié');
+
+      const { error } = await getSupabase()
         .from('profiles')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
+        .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', user.id);
-        
-      if (profileError) throw profileError;
+      if (error) throw error;
       
-      // Reload user data
-      await get().loadUser();
-      
+      // Mettre à jour l'état local pour un retour visuel immédiat
+      set(state => ({ user: state.user ? { ...state.user, ...updates } : null, loading: false }));
       return { error: null };
     } catch (error: any) {
-      console.error('Update profile error:', error);
-      set({ error: error.message });
+      set({ error: error.message, loading: false });
       return { error };
-    } finally {
-      set({ loading: false });
     }
   },
 }));
 
-// Initialize auth state when the app loads
-const initializeAuth = async () => {
-  const { loadUser } = useAuth.getState();
-  
-  // Set up auth state change listener
+// --- Initialiseur d'authentification ---
+let authListener: any = null;
+
+export const subscribeToAuthChanges = () => {
+  if (authListener) {
+    // Déjà abonné, retourner une fonction de nettoyage vide
+    return () => {}; 
+  }
+
   const { data: { subscription } } = getSupabase().auth.onAuthStateChange(
-    async (event, session) => {
-      console.log('Auth state changed:', event);
-      await loadUser();
+    (event, session) => {
+      console.log(`Événement d'authentification: ${event}`);
+      // Déclencher le chargement de l'utilisateur à chaque changement d'état d'authentification
+      useAuth.getState().loadUser();
     }
   );
-  
-  // Initial load
-  await loadUser();
-  
-  // Return cleanup function
+  authListener = subscription;
+
+  // Chargement initial des données utilisateur
+  useAuth.getState().loadUser();
+
+  // Retourner la fonction de désabonnement
   return () => {
-    subscription?.unsubscribe();
+    authListener?.unsubscribe();
+    authListener = null;
   };
 };
-
-// Start auth initialization
-initializeAuth().catch(console.error);
