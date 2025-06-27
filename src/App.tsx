@@ -192,82 +192,45 @@ function App() {
             <Route path="/auth/reset-password" element={<LazyComponentWrapper><ResetPassword /></LazyComponentWrapper>} />
             <Route path="/auth/callback" element={<LazyComponentWrapper><AuthCallback /></LazyComponentWrapper>} />
             <Route path="/checkout/success" element={<LazyComponentWrapper><StripeCheckoutStatus /></LazyComponentWrapper>} />
-            <Route path="/user-type" element={
-              <ProtectedRoute>
-                <Navigate to="/dashboard" replace />
-              </ProtectedRoute>
-            } />
-            <Route element={
-              <ProtectedRoute>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }>
-              <Route path="/dashboard" element={<LazyComponentWrapper><Dashboard /></LazyComponentWrapper>} />
-              <Route path="/profile" element={<LazyComponentWrapper><Profile /></LazyComponentWrapper>} />
-              <Route path="/billing" element={<LazyComponentWrapper><Billing /></LazyComponentWrapper>} />
-              <Route path="/settings" element={<LazyComponentWrapper><Settings /></LazyComponentWrapper>} /> {/* AJOUTÉ POUR LA PAGE SETTINGS */}
-              <Route path="/jobs" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><JobSearch /></LazyComponentWrapper>
+            {/* --- Routes Protégées --- */}
+            {/* Toutes les routes ici nécessitent que l'utilisateur soit connecté */}
+            <Route 
+              path="/" 
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
                 </ProtectedRoute>
-              } />
-              <Route path="/applications" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><JobApplications /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/market-analysis" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><MarketAnalysis /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/cv-builder" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><CVBuilder /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/network" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><NetworkPage /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/market-trends" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><MarketTrendsPage /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              {/* Routes pour les freelances */}
-              <Route path="/freelance/projects" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><FreelanceProjects /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/freelance/profile" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><FreelanceProfile /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              {/* Routes pour les recruteurs */}
-              <Route path="/recruiter/dashboard" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><RecruiterDashboard /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/recruiter/candidates" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><CandidateSearch /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/recruiter/job-postings" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><JobPostings /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="/recruiter/create-job" element={
-                <ProtectedRoute requiresSubscription>
-                  <LazyComponentWrapper><CreateJobPosting /></LazyComponentWrapper>
-                </ProtectedRoute>
-              } />
+              }
+            >
+              {/* Redirection de la racine protégée vers le dashboard */}
+              <Route index element={<Navigate to="/dashboard" replace />} /> 
+
+              {/* Routes générales du dashboard */}
+              <Route path="dashboard" element={<LazyComponentWrapper><Dashboard /></LazyComponentWrapper>} />
+              <Route path="profile" element={<LazyComponentWrapper><Profile /></LazyComponentWrapper>} />
+              <Route path="billing" element={<LazyComponentWrapper><Billing /></LazyComponentWrapper>} />
+              <Route path="settings" element={<LazyComponentWrapper><Settings /></LazyComponentWrapper>} />
+              
+              {/* Routes nécessitant un abonnement */}
+              <Route path="jobs" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="applications" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobApplications /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="market-analysis" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><MarketAnalysis /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="cv-builder" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><CVBuilder /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="network" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><NetworkPage /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="market-trends" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><MarketTrendsPage /></LazyComponentWrapper></ProtectedRoute>} />
+
+              {/* Routes Freelance (avec abonnement) */}
+              <Route path="freelance/projects" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><FreelanceProjects /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="freelance/profile" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><FreelanceProfile /></LazyComponentWrapper></ProtectedRoute>} />
+
+              {/* Routes Recruteur (avec abonnement) */}
+              <Route path="recruiter/dashboard" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><RecruiterDashboard /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="recruiter/candidates" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><CandidateSearch /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="recruiter/job-postings" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobPostings /></LazyComponentWrapper></ProtectedRoute>} />
+              <Route path="recruiter/create-job" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><CreateJobPosting /></LazyComponentWrapper></ProtectedRoute>} />
+
+              {/* L'ancienne route /user-type est maintenant gérée par la logique de redirection interne */}
+              <Route path="user-type" element={<Navigate to="/dashboard" replace />} />
             </Route>
           </Routes>
           <PrivacyConsent />

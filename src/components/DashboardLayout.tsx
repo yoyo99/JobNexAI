@@ -74,34 +74,10 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
   }, [user?.user_type, t])
 
   const handleSignOut = async () => {
-    try {
-      console.log('[DashboardLayout] Début de déconnexion détournée');
-      
-      // Solution radicale : contourner le store auth et accéder directement à Supabase
-      const supabase = (window as any).supabase || await import('../hooks/useSupabaseConfig').then(mod => mod.getSupabase());
-      
-      // 1. Déconnecter l'utilisateur directement via Supabase
-      await supabase.auth.signOut();
-      console.log('[DashboardLayout] Déconnecté de Supabase');
-      
-      // 2. Nettoyer le localStorage pour s'assurer que tout état résiduel est supprimé
-      localStorage.removeItem('supabase.auth.token');
-      
-      // 3. Afficher un message à l'utilisateur
-      alert('Vous avez été déconnecté. Vous allez être redirigé vers la page de connexion.');
-      
-      // 4. Court délai puis redirection brutale vers la page de login
-      setTimeout(() => {
-        console.log('[DashboardLayout] Redirection vers /login');
-        window.location.href = '/login';
-      }, 500);
-    } catch (error) {
-      console.error('[DashboardLayout] Erreur lors de la déconnexion:', error);
-      alert('Un problème est survenu lors de la déconnexion. Veuillez recharger la page.');
-      // En cas d'erreur, on force quand même le rechargement
-      window.location.href = '/login';
-    }
-  }
+    console.log('[DashboardLayout] Déconnexion via le store...');
+    await signOut();
+    // La redirection est maintenant gérée par le changement d'état et ProtectedRoute.
+  };
 
   return (
     <div>
