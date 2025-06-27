@@ -120,29 +120,41 @@ export const useAuth = create<AuthState>((set, get) => ({
       console.log('[Auth] Début de la déconnexion');
       set({ loading: true, error: null });
       
-      // Déconnecter l'utilisateur via Supabase
-      const { error } = await getSupabase().auth.signOut();
-      if (error) throw error;
-      
-      // Approche complètement différente: on conserve initialized à true
-      // pour éviter le rechargement infini, mais on nettoie tout le reste
-      set({ 
-        user: null,  // user est de type Profile | null dans l'interface
-        subscription: null, 
-        loading: false,
-        error: null,
-        initialized: true  // Explicitement garder initialized à true
+      // Créons une promesse que l'on résoudra manuellement après avoir établi un timeout
+      const promise = new Promise<{ error: any }>((resolve) => {
+        // Déconnectons d'abord l'utilisateur via Supabase
+        getSupabase().auth.signOut().then(({ error }) => {
+          if (error) {
+            console.error('[Auth] Erreur Supabase lors de la déconnexion:', error);
+            set({ error: error.message, loading: false });
+            resolve({ error });
+            return;
+          }
+
+          console.log('[Auth] Déconnexion Supabase réussie, nettoyage de létat...');
+          
+          // Nettoyer l'état complètement
+          set({ 
+            user: null,
+            subscription: null, 
+            loading: false,
+            error: null,
+            initialized: true // Garder initialized à true est crucial
+          });
+          
+          // Force le rechargement complet de la page après un court délai
+          console.log('[Auth] Configuration du rechargement après délai...');
+          setTimeout(() => {
+            console.log('[Auth] Rechargement de la page.');
+            window.location.href = '/login';
+            resolve({ error: null });
+          }, 100); // Délai court avant le rechargement
+        });
       });
       
-      console.log('[Auth] Déconnexion réussie, état nettoyé mais initialized reste true');
-      
-      // Au lieu de rediriger via window.location qui cause un rechargement complet,
-      // laissons le routeur React s'en occuper
-      // Le composant AuthProvider devrait automatiquement rediriger vers la page de login
-      
-      return { error: null };
+      return promise;
     } catch (error: any) {
-      console.error('[Auth] Erreur de déconnexion:', error);
+      console.error('[Auth] Erreur inattendue lors de la déconnexion:', error);
       set({ error: error.message, loading: false });
       return { error };
     }
