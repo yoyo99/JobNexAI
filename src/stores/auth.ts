@@ -48,40 +48,55 @@ export const useAuth = create<AuthState>((set) => ({
   initialized: false,
 
   loadUser: async () => {
-    // Ne pas remettre `loading` à true ici pour éviter les clignotements.
-    // L'état de chargement initial est géré par l'état par défaut du store.
+    console.log('[AuthStore] -> Début de loadUser.');
     try {
+      console.log('[AuthStore] -> Tentative de getSession...');
       const { data: { session } } = await getSupabase().auth.getSession();
+      console.log('[AuthStore] -> getSession terminé. Session:', session ? 'trouvée' : 'nulle');
 
       if (!session?.user) {
+        console.log('[AuthStore] -> Pas de session utilisateur. Nettoyage de l\`état.');
         set({ user: null, subscription: null });
-        return;
+        return; // Le finally s'occupera de `initialized`.
       }
 
+      console.log(`[AuthStore] -> Session trouvée pour l'utilisateur ID: ${session.user.id}. Tentative de fetch le profil...`);
       const { data: profile, error: profileError } = await getSupabase()
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
-
-      if (profileError && profileError.code !== 'PGRST116') throw profileError;
+      
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('[AuthStore] -> Erreur lors du fetch du profil:', profileError);
+        throw profileError;
+      }
+      console.log('[AuthStore] -> Profil trouvé:', profile);
 
       let subscription: Subscription | null = null;
       if (profile) {
+        console.log(`[AuthStore] -> Profil trouvé pour l'utilisateur ID: ${profile.id}. Tentative de fetch la souscription...`);
         const { data: subData, error: subError } = await getSupabase()
           .from('subscriptions')
           .select('*')
           .eq('user_id', profile.id)
           .single();
-        if (subError && subError.code !== 'PGRST116') throw subError;
+        if (subError && subError.code !== 'PGRST116') {
+            console.error('[AuthStore] -> Erreur lors du fetch de la souscription:', subError);
+            throw subError;
+        }
         subscription = subData;
+        console.log('[AuthStore] -> Souscription trouvée:', subscription);
       }
+      
+      console.log('[AuthStore] -> Mise à jour de l\`état avec l\`utilisateur et la souscription.');
       set({ user: profile, subscription });
+
     } catch (error: any) {
-      console.error('Erreur lors du chargement des données utilisateur:', error);
+      console.error('[AuthStore] -> ERREUR CATCH dans loadUser:', error);
       set({ error: error.message, user: null, subscription: null });
     } finally {
-      // Quoi qu'il arrive, on marque l'initialisation comme terminée.
+      console.log('[AuthStore] -> FINALLY: Fin du chargement, initialized=true.');
       set({ loading: false, initialized: true });
     }
   },
