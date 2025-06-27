@@ -124,28 +124,26 @@ export const useAuth = create<AuthState>((set, get) => ({
       const { error } = await getSupabase().auth.signOut();
       if (error) throw error;
       
-      // Réinitialiser l'état tout en gardant initialized à true
-      // Cela évite de rester coincé sur la page de chargement
+      // Approche complètement différente: on conserve initialized à true
+      // pour éviter le rechargement infini, mais on nettoie tout le reste
       set({ 
-        user: null, 
+        user: null,  // user est de type Profile | null dans l'interface
         subscription: null, 
         loading: false,
-        error: null
-        // On maintient la valeur de initialized pour éviter le rechargement infini
+        error: null,
+        initialized: true  // Explicitement garder initialized à true
       });
       
-      console.log('[Auth] Déconnexion réussie, état réinitialisé');
+      console.log('[Auth] Déconnexion réussie, état nettoyé mais initialized reste true');
       
-      // Rediriger vers la page d'accueil plutôt que de recharger la page
-      // Ceci est plus doux qu'un reload complet
-      if (typeof window !== 'undefined') {
-        window.location.href = '/';
-      }
+      // Au lieu de rediriger via window.location qui cause un rechargement complet,
+      // laissons le routeur React s'en occuper
+      // Le composant AuthProvider devrait automatiquement rediriger vers la page de login
       
       return { error: null };
     } catch (error: any) {
       console.error('[Auth] Erreur de déconnexion:', error);
-      set({ error: error.message });
+      set({ error: error.message, loading: false });
       return { error };
     }
   },

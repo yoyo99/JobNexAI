@@ -108,8 +108,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Attendre que le store auth soit initialisé
   console.log(`[AuthProvider] Rendering. initialized: ${initialized}, authStoreLoading: ${authStoreLoading}, hasBeenInitializedOnce: ${hasBeenInitializedOnce}`);
   
-  // MODIFICATION DE LA CONDITION
-  if (!hasBeenInitializedOnce) { 
+  // Vérifions si nous sommes en train de nous déconnecter pour ne pas afficher le chargement indéfiniment
+  // Si nous avons été initialisés ET authStoreLoading est false, cela veut dire qu'il n'y a pas d'opération en cours
+  // Dans ce cas, on affiche toujours les enfants même si initialized est devenu false suite à une déconnexion
+  if (hasBeenInitializedOnce && !authStoreLoading) {
+    return <>{children}</>;
+  }
+  
+  // Si nous n'avons jamais été initialisés ou si nous sommes en cours de chargement
+  if (!hasBeenInitializedOnce || authStoreLoading) { 
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#1a202c', color: 'white' }}>Chargement de l'application...</div>;
   }
   
