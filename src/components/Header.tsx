@@ -55,11 +55,29 @@ export function Header() {
   const debugSimplifiedHeader = false; // Mettez à false pour afficher le header original
 
   const handleSignOutClick = async () => {
-    if (signOut) {
-      await signOut();
+    try {
+      console.log('[Header] Exécution de la déconnexion détournée');
+      setMobileMenuOpen(false); // Fermer le menu mobile
+      
+      // Solution radicale pour la déconnexion
+      // 1. Déconnecter l'utilisateur directement via Supabase
+      const supabase = (window as any).supabase || await import('../hooks/useSupabaseConfig').then(mod => mod.getSupabase());
+      await supabase.auth.signOut();
+      
+      // 2. Nettoyer le localStorage
+      localStorage.removeItem('supabase.auth.token');
+      localStorage.removeItem('sb-pqubbqqzkgeosakziwnh-auth-token'); // Ancien token (nettoyage par sécurité)
+      
+      // 3. Message utilisateur
+      alert('Vous avez été déconnecté avec succès. La page va être rechargée.');
+      
+      // 4. Rechargement complet de la page (pas de redirection React)
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('[Header] Erreur de déconnexion:', error);
+      // En cas d'échec, forcer quand même le rechargement
+      window.location.href = '/login';
     }
-    setMobileMenuOpen(false); // Fermer le menu mobile
-    navigate('/login'); // Rediriger vers login
   };
 
   if (debugSimplifiedHeader) {
