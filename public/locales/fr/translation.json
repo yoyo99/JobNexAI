@@ -145,42 +145,67 @@
       "unexpectedError": "Une erreur inattendue est survenue: {{message}}"
     },
     "plans": {
-      "proMonthly": {
-        "name": "Pro Mensuel",
-        "price": "9.99€/mois",
+      "essaiGratuit": {
+        "name": "Essai Gratuit 48h",
+        "price": "0€",
         "features": [
-          "Accès aux fonctionnalités Pro",
-          "Support par email",
-          "Mises à jour mensuelles"
+          "Accès découverte",
+          "Test des fonctionnalités clés",
+          "Support par email"
         ]
       },
-      "proAnnual": {
-        "name": "Pro Annuel",
-        "price": "95.04€/an",
+      "objectifEmploiMensuel": {
+        "name": "Objectif Emploi (Mensuel)",
+        "price": "14.99€/mois",
         "features": [
-          "Accès aux fonctionnalités Pro",
-          "Support prioritaire",
+          "Accès complet aux offres",
+          "Création de CV assistée par IA",
+          "Suivi des candidatures"
+        ]
+      },
+      "objectifEmploiAnnuel": {
+        "name": "Objectif Emploi (Annuel)",
+        "price": "149.99€/an",
+        "features": [
+          "Accès complet aux offres",
           "Économie de 2 mois",
-          "Mises à jour continues"
+          "Support prioritaire"
         ]
       },
-      "entMonthly": {
-        "name": "Entreprise Mensuel",
-        "price": "29.99€/mois",
+      "freelanceStarterMensuel": {
+        "name": "Freelance Starter (Mensuel)",
+        "price": "19.99€/mois",
         "features": [
-          "Toutes les fonctionnalités Pro",
-          "Support dédié 24/7",
-          "Accès API",
-          "Analyses avancées"
+          "Visibilité auprès des recruteurs",
+          "Gestion de profil freelance",
+          "Alertes de mission"
         ]
       },
-      "entAnnual": {
-        "name": "Entreprise Annuel",
-        "price": "287.90€/an",
+      "freelanceStarterAnnuel": {
+        "name": "Freelance Starter (Annuel)",
+        "price": "199.99€/an",
         "features": [
-          "Toutes les fonctionnalités Entreprise",
+          "Visibilité auprès des recruteurs",
+          "Économie de 2 mois",
+          "Outils de facturation"
+        ]
+      },
+      "recruteurBusinessMensuel": {
+        "name": "Abonnement Recruteur Business (Mensuel)",
+        "price": "49.99€/mois",
+        "features": [
+          "Publication d'offres illimitée",
+          "Recherche dans la CVthèque",
+          "Messagerie directe"
+        ]
+      },
+      "recruteurBusinessAnnuel": {
+        "name": "Abonnement Recruteur Business (Annuel)",
+        "price": "499.99€/an",
+        "features": [
+          "Publication d'offres illimitée",
           "Économie significative",
-          "Accompagnement personnalisé"
+          "Support dédié"
         ]
       }
     }
