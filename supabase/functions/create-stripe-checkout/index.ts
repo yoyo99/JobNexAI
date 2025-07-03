@@ -184,8 +184,8 @@ serve(async (req: Request) => {
       customer: stripeCustomerId, // Utiliser le stripeCustomerId trouvé ou créé
       // Si vous n'utilisez pas `customer` ID, vous pouvez pré-remplir l'email du client comme ceci :
       // customer_email: userEmail, 
-      success_url: `${origin}/payment/success`,
-      cancel_url: `${origin}/payment/cancel`,
+      success_url: `${origin}/checkout/success`,
+      cancel_url: `${origin}/pricing`,
       metadata: { // Très important pour les webhooks !
         supabase_user_id: supabaseUserId,
       },
