@@ -66,7 +66,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'navigation.cvBuilder', href: '/cv-builder', icon: DocumentTextIcon },
         { name: 'navigation.network', href: '/network', icon: UsersIcon },
         { name: 'navigation.marketAnalysis', href: '/market-analysis', icon: ChartPieIcon },
-        { name: 'navigation.profile', href: '/profile', icon: UserIcon },
+        { name: 'navigation.profile.title', href: '/profile', icon: UserIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
         { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
       ])
