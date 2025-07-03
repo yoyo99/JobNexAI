@@ -161,7 +161,7 @@ Deno.serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      success_url: `${Deno.env.get('NEXT_PUBLIC_BASE_URL')}/checkout/success-v2?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.headers.get('origin')}/checkout/success-v2?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/pricing`,
       subscription_data: {
         metadata: {
