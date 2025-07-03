@@ -27,12 +27,7 @@ const Auth: React.FC = () => {
   // Récupérer l'URL de redirection si elle existe
   const from = location.state?.from?.pathname || '/dashboard';
 
-  // Rediriger si l'utilisateur est déjà connecté
-  useEffect(() => {
-    if (isLoggedIn && user) {
-      navigate(from, { replace: true });
-    }
-  }, [isLoggedIn, user, navigate, from]);
+
 
   const handleSignUp = async (e: React.FormEvent) => {
     setTermsError(null);

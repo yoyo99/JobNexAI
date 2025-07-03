@@ -119,7 +119,10 @@ export const useAuth = create<AuthState>((set) => ({
       const { data, error: signUpError } = await getSupabase().auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName } },
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo: `${window.location.origin}`,
+        },
       });
       if (signUpError) throw signUpError;
       if (!data.user) throw new Error("L'inscription a réussi mais aucun utilisateur n'a été retourné.");

@@ -7,10 +7,12 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  console.log('[AuthProvider] -> Le composant est en cours de rendu.');
   const initialized = useAuth(state => state.initialized);
   const loadUser = useAuth(state => state.loadUser);
 
   useEffect(() => {
+    console.log('[AuthProvider] -> useEffect a été déclenché. Appel de loadUser...');
     // 1. Charger l'utilisateur au montage initial du composant.
     loadUser();
 
