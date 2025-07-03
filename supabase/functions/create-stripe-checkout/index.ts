@@ -20,14 +20,7 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
   httpClient: Stripe.createFetchHttpClient(), // Nécessaire pour Deno
 });
 
-// Remplacer par vos URL Netlify si Deno.env.get('YOUR_NETLIFY_BASE_URL') n'est pas défini
-const YOUR_NETLIFY_BASE_URL = Deno.env.get('YOUR_NETLIFY_BASE_URL') || 'http://localhost:5173'; // Fallback si non défini
-const SUCCESS_URL = `${YOUR_NETLIFY_BASE_URL}/payment/success`;
-const CANCEL_URL = `${YOUR_NETLIFY_BASE_URL}/payment/cancel`;
-
 console.log(`Stripe secret key loaded: ${STRIPE_SECRET_KEY ? 'Yes' : 'No'}`);
-console.log(`Using SUCCESS_URL: ${SUCCESS_URL}`);
-console.log(`Using CANCEL_URL: ${CANCEL_URL}`);
 
 // Supabase client initialization
 const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -172,6 +165,13 @@ serve(async (req: Request) => {
     }
 
     // 3. Créer la session de paiement Stripe
+    const origin = req.headers.get('origin');
+    // L'en-tête 'origin' est crucial pour construire les URL de redirection.
+    if (!origin) {
+      throw new Error("L'en-tête 'origin' est manquant, impossible de construire les URLs de redirection.");
+    }
+    console.log(`Origine de la requête pour les URLs de redirection : ${origin}`);
+
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       mode: 'subscription', // ou 'payment' pour un achat unique
@@ -184,8 +184,8 @@ serve(async (req: Request) => {
       customer: stripeCustomerId, // Utiliser le stripeCustomerId trouvé ou créé
       // Si vous n'utilisez pas `customer` ID, vous pouvez pré-remplir l'email du client comme ceci :
       // customer_email: userEmail, 
-      success_url: SUCCESS_URL,
-      cancel_url: CANCEL_URL,
+      success_url: `${origin}/payment/success`,
+      cancel_url: `${origin}/payment/cancel`,
       metadata: { // Très important pour les webhooks !
         supabase_user_id: supabaseUserId,
       },
