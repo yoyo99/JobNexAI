@@ -18,24 +18,36 @@ export const StripeService = {
    */
   async createCheckoutSession(userId: string, priceId: string, userType: 'candidate' | 'freelancer' | 'recruiter') {
     try {
+      // Récupérer la session pour obtenir le token JWT
+      const sessionData = await supabase.auth.getSession();
+      const accessToken = sessionData?.data?.session?.access_token;
+
+      if (!accessToken) {
+        throw new Error('Utilisateur non authentifié ou session expirée.');
+      }
+
       // Appeler la fonction Edge pour créer une session Checkout
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { 
           priceId, 
           userId,
           userType
+        },
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
         }
       })
 
       if (error) throw error
 
-      const { sessionId } = data
-      
-      // Rediriger vers Stripe Checkout
-      const stripe = await getStripe()
-      const { error: stripeError } = await stripe.redirectToCheckout({ sessionId })
-      
-      if (stripeError) throw stripeError
+      const { checkoutUrl } = data
+
+      if (!checkoutUrl) {
+        throw new Error('URL de paiement non reçue.')
+      }
+
+      // Rediriger directement vers l'URL de paiement de Stripe
+      window.location.href = checkoutUrl
 
       trackEvent('subscription.checkout.started', {
         userId,
