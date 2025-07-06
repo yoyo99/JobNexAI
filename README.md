@@ -57,8 +57,8 @@ JobNexAI est une plateforme moderne de recherche d'emploi qui utilise l'intellig
 
 1. Cloner le repository
 ```bash
-git clone https://github.com/votre-username/jobnexus.git
-cd jobnexus
+git clone https://github.com/yoyo99/JobNexAI-WindSurf.git
+cd jobnexai
 ```
 
 2. Installer les dépendances
@@ -87,7 +87,7 @@ L'application sera disponible sur `http://localhost:5173`
 ## Structure du projet
 
 ```
-jobnexus/
+jobnexai/
 ├── public/               # Assets statiques
 │   └── locales/         # Fichiers de traduction
 ├── src/
@@ -202,7 +202,7 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 Pour toute question ou problème :
 - Ouvrir une issue sur GitHub
-- Contacter l'équipe support à support@jobnexus.com
+- Contacter l'équipe support à support@jobnexai.com
 
 ## Roadmap
 
