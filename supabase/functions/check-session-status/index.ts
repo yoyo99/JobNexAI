@@ -200,64 +200,42 @@ async function handler(req: Request): Promise<Response> {
 
     // Vérifier si la session est complétée et mettre à jour l'abonnement dans Supabase
     if (session.status === 'complete') {
-      // Récupérer les informations de l'abonnement
-      const subscription = await stripe.subscriptions.retrieve(session.subscription as string).catch((stripeError: unknown) => {
-        console.error('Stripe Error retrieving subscription:', stripeError)
-        let isResourceMissing = false;
-        if (typeof stripeError === 'object' && stripeError !== null && 'code' in stripeError) {
-            const potentialStripeError = stripeError as { code?: unknown };
-            if (typeof potentialStripeError.code === 'string' && potentialStripeError.code === 'resource_missing'){
-                isResourceMissing = true;
-            }
-        }
-        if (isResourceMissing){
-            console.error('Subscription not found in Stripe');
-            throw new Error("Subscription not found in Stripe") // This will be caught by the main handler
-        }
+      // L'abonnement et le client sont déjà récupérés grâce à l'option `expand`
+      const subscription = session.subscription as Stripe.Subscription;
+      const customer = session.customer as Stripe.Customer;
 
-        // If not resource_missing, construct a generic error from stripeError
-        let subErrorMessage = 'Failed to retrieve subscription details from Stripe';
-        let subErrorCode: string | undefined = undefined;
+      if (!subscription) {
+        console.error('Subscription details not found in the checkout session.');
+        throw new Error('Subscription details not found in the checkout session.');
+      }
 
-        if (stripeError instanceof Error) {
-            subErrorMessage = stripeError.message;
-        }
-        if (typeof stripeError === 'object' && stripeError !== null && 'code' in stripeError) {
-            const potentialStripeError = stripeError as { code?: unknown };
-            if (typeof potentialStripeError.code === 'string') {
-                subErrorCode = potentialStripeError.code;
-            }
-        }
-        
-        const subscriptionResponseError: ResponseError = {
-          error: subErrorMessage,
-          code: subErrorCode
-        };
-        throw subscriptionResponseError; // This will be caught by the main handler
-      })
+      if (!customer) {
+        console.error('Customer details not found in the checkout session.');
+        throw new Error('Customer details not found in the checkout session.');
+      }
 
       // Mettre à jour l'abonnement dans Supabase
       const { error: supabaseError } = await supabase
         .from('subscriptions')
         .upsert({
           user_id: session.client_reference_id,
-          stripe_customer_id: session.customer as string,
-          stripe_subscription_id: session.subscription as string,
+          stripe_customer_id: customer.id, // Utiliser l'ID de l'objet client
+          stripe_subscription_id: subscription.id, // Utiliser l'ID de l'objet abonnement
           status: subscription.status,
           plan: subscription.metadata.plan || 'pro',
           current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
           cancel_at: subscription.cancel_at
             ? new Date(subscription.cancel_at * 1000).toISOString()
             : null,
-        })
+        });
 
       if (supabaseError) {
-        console.error('Supabase Error:', supabaseError)
+        console.error('Supabase Error:', supabaseError);
         const responseError: ResponseError = {
           error: supabaseError.message,
           code: supabaseError.code
-        }
-        throw responseError
+        };
+        throw responseError;
       }
     }
 

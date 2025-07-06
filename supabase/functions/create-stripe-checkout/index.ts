@@ -175,6 +175,7 @@ serve(async (req: Request) => {
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       mode: 'subscription', // ou 'payment' pour un achat unique
+      client_reference_id: supabaseUserId, // Lier la session à l'utilisateur Supabase
       line_items: [
         {
           price: finalPriceId,
