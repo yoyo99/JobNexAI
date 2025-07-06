@@ -40,6 +40,8 @@ export const StripeService = {
 
       if (error) throw error
 
+      console.log('Réponse de la fonction Supabase:', data);
+
       const { checkoutUrl } = data
 
       if (!checkoutUrl) {
