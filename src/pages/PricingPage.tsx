@@ -25,6 +25,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.essaiGratuit.price', 'Gratuit')}
           features={t('pricing.plans.essaiGratuit.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.ESSAI_GRATUIT_48H}
+          userType='candidate'
         />
 
         <SubscriptionPlanCard 
@@ -32,6 +33,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.objectifEmploiMensuel.price')}
           features={t('pricing.plans.objectifEmploiMensuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.OBJECTIF_EMPLOI_MENSUEL}
+          userType='candidate'
         />
 
         <SubscriptionPlanCard 
@@ -39,6 +41,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.objectifEmploiAnnuel.price')}
           features={t('pricing.plans.objectifEmploiAnnuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.OBJECTIF_EMPLOI_ANNUEL}
+          userType='candidate'
         />
 
         <SubscriptionPlanCard 
@@ -46,6 +49,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.freelanceStarterMensuel.price')}
           features={t('pricing.plans.freelanceStarterMensuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.FREELANCE_STARTER_MENSUEL}
+          userType='freelancer'
         />
 
         <SubscriptionPlanCard 
@@ -53,6 +57,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.freelanceStarterAnnuel.price')}
           features={t('pricing.plans.freelanceStarterAnnuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.FREELANCE_STARTER_ANNUEL}
+          userType='freelancer'
         />
 
         <SubscriptionPlanCard 
@@ -60,6 +65,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.recruteurBusinessMensuel.price')}
           features={t('pricing.plans.recruteurBusinessMensuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.RECRUTEUR_BUSINESS_MENSUEL}
+          userType='recruiter'
           isEnterprise={true}
         />
 
@@ -68,6 +74,7 @@ const PricingPage: React.FC = () => {
           price={t('pricing.plans.recruteurBusinessAnnuel.price')}
           features={t('pricing.plans.recruteurBusinessAnnuel.features', { returnObjects: true, defaultValue: [] }) as string[]}
           priceId={PRICE_IDS.RECRUTEUR_BUSINESS_ANNUEL}
+          userType='recruiter'
           isEnterprise={true}
         />
 

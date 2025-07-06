@@ -8,10 +8,11 @@ interface SubscriptionPlanCardProps {
   price: string;
   features: string[];
   priceId: string;
+  userType: 'candidate' | 'freelancer' | 'recruiter';
   isEnterprise?: boolean; // Pour un style potentiellement différent
 }
 
-const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, price, features, priceId, isEnterprise }) => {
+const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, price, features, priceId, userType, isEnterprise }) => {
   const { user } = useAuth(); // Obtenir l'utilisateur depuis le store/hook
   const { t } = useTranslation('translation');
 
@@ -30,7 +31,8 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { 
           priceId: priceId,
-          userId: user.id // Ajout de l'ID utilisateur
+          userId: user.id, // Ajout de l'ID utilisateur
+          userType: userType
         }, 
       });
 
