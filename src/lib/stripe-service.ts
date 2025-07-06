@@ -87,8 +87,19 @@ export const StripeService = {
    */
   async checkSessionStatus(sessionId: string) {
     try {
+      // Récupérer la session pour obtenir le token JWT
+      const sessionData = await supabase.auth.getSession();
+      const accessToken = sessionData?.data?.session?.access_token;
+
+      if (!accessToken) {
+        throw new Error('Utilisateur non authentifié ou session expirée.');
+      }
+
       const { data, error } = await supabase.functions.invoke('check-session-status', {
-        body: { sessionId }
+        body: { sessionId },
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
       })
 
       if (error) throw error
