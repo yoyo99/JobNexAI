@@ -138,11 +138,10 @@ async function handler(req: Request): Promise<Response> {
 
   try {
     // Authentification de l'utilisateur
-    const _userId = await authenticate(req).catch((error: Error) => {
-        console.error('Error during authentication:', error.message);
-        throw new Error(error.message)
-    });
+    const userId = await authenticate(req);
 
+    // Logs pour le débogage de l'authentification
+    console.log(`[Auth Check] User ID from JWT: ${userId}`);
 
     // Récupérer les données de la requête
     const data = await req.json()
@@ -161,7 +160,9 @@ async function handler(req: Request): Promise<Response> {
     // Récupérer les informations de la session
     let session;
     try {
-        session = await stripe.checkout.sessions.retrieve(sessionId);
+        session = await stripe.checkout.sessions.retrieve(sessionId, {
+          expand: ['customer', 'subscription'],
+        });
     } catch (stripeError: unknown) {
         console.error('Stripe Error retrieving session:', stripeError);
         let errorMessage = 'Failed to retrieve session from Stripe';
@@ -183,6 +184,12 @@ async function handler(req: Request): Promise<Response> {
         };
         throw responseErrorToThrow; // L'erreur sera attrapée par le bloc catch principal de la fonction handler
     }
+
+    // Log pour le débogage
+    console.log(`[Stripe Session] Retrieved session ${sessionId} with status: ${session.status} and payment_status: ${session.payment_status}`);
+
+    // Logs pour le débogage de l'authentification
+    console.log(`[Auth Check] User ID from Stripe Session: ${session.client_reference_id}`);
 
     // Si on arrive ici, la session a été récupérée avec succès
     const response: SessionStatusResponse = {
