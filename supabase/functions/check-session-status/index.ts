@@ -223,8 +223,10 @@ async function handler(req: Request): Promise<Response> {
           stripe_subscription_id: subscription.id, // Utiliser l'ID de l'objet abonnement
           status: subscription.status,
           plan: subscription.metadata.plan || 'pro',
-          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-          cancel_at: subscription.cancel_at
+          current_period_end: typeof subscription.current_period_end === 'number' 
+            ? new Date(subscription.current_period_end * 1000).toISOString() 
+            : new Date().toISOString(), // Fournir une date par défaut si invalide
+          cancel_at: typeof subscription.cancel_at === 'number'
             ? new Date(subscription.cancel_at * 1000).toISOString()
             : null,
         });

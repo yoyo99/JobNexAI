@@ -27,8 +27,11 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
     console.log(`User ${user.id} attempting to subscribe to price ID: ${priceId}`);
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-stripe-checkout', {
-        body: { priceId: priceId }, // Passer l'ID utilisateur si nécessaire par la fonction
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: { 
+          priceId: priceId,
+          userId: user.id // Ajout de l'ID utilisateur
+        }, 
       });
 
       if (error) {
