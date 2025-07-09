@@ -48,16 +48,18 @@ function Billing() {
           >
             Historique
           </button>
-          <button
-            onClick={() => setActiveTab('webhook')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'webhook'
-                ? 'border-primary-400 text-primary-400'
-                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
-            }`}
-          >
-            Webhook
-          </button>
+          {user.is_admin && (
+            <button
+              onClick={() => setActiveTab('webhook')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'webhook'
+                  ? 'border-primary-400 text-primary-400'
+                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+              }`}
+            >
+              Webhook
+            </button>
+          )}
         </nav>
       </div>
 

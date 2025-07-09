@@ -31,8 +31,6 @@ const WEB_SCRAPING_HEADERS = {
 
 // Define header for WTTJ api
 const WTTJ_HEADER = { 'Accept': 'application/json' };
-// Define a constant for default location
-const DEFAULT_LOCATION = 'France';
 
 interface ErrorResponse {
   error: string
@@ -150,7 +148,7 @@ function mapIndeedJobData(element: any, sourceId: string): any {
 async function scrapeJobs(url: string, sourceId: string, mapJobData: (job: any, sourceId: string) => any, selector?: string): Promise<any[]> {
  try {
     // Define specific headers for the request
-    const specificHeaders = url.includes('welcometothejungle') ? { 'Accept': 'application/json' } : scrapingHeaders;
+    const specificHeaders = url.includes('welcometothejungle') ? WTTJ_HEADER : WEB_SCRAPING_HEADERS;
 
     // Fetch data from the URL
     const response = await fetch(url, {
@@ -171,7 +169,7 @@ async function scrapeJobs(url: string, sourceId: string, mapJobData: (job: any, 
     if (typeof data === 'string') {
       const $ = load(data);
       const jobs: any[] = [];
-      $(selector).each((_, element) => {
+      $(selector).each((_: any, element: any) => {
         jobs.push(mapJobData(element, sourceId));
       });
       return jobs;

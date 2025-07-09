@@ -1,7 +1,9 @@
 import Stripe from 'npm:stripe@14.0.0'
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+  apiVersion: '2023-10-16',
+})
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -23,7 +25,7 @@ Deno.serve(async (req) => {
     // Récupérer l'ID client Stripe de l'utilisateur
     const { data: subscription, error: subscriptionError } = await supabase
       .from('subscriptions')
-      .select('stripe_customer_id')
+      .select('stripe_customer_id, stripe_subscription_id')
       .eq('user_id', userId)
       .single()
 
@@ -55,6 +57,7 @@ Deno.serve(async (req) => {
     // Récupérer les factures du client
     const invoices = await stripe.invoices.list({
       customer: subscription.stripe_customer_id,
+      subscription: subscription.stripe_subscription_id, // Filtrer par abonnement
       limit: 100,
     })
 
@@ -80,7 +83,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error as Error).message }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,

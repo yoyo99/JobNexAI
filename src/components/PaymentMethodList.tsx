@@ -115,17 +115,19 @@ export function PaymentMethodList() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium text-white">Méthodes de paiement</h3>
-        <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="btn-secondary flex items-center gap-2"
-        >
-          {showAddForm ? 'Annuler' : (
-            <>
-              <PlusIcon className="h-5 w-5" />
-              Ajouter une carte
-            </>
-          )}
-        </button>
+        {paymentMethods.length === 0 && (
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="btn-secondary flex items-center gap-2"
+          >
+            {showAddForm ? 'Annuler' : (
+              <>
+                <PlusIcon className="h-5 w-5" />
+                Ajouter une carte
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {error && (
