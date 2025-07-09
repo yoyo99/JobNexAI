@@ -14,7 +14,7 @@ import { cache } from '../lib/cache'
 import { LoadingSpinner } from './LoadingSpinner'
 
 function JobSearch() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('translation')
   const { user, userPreferences } = useAuth()
   const [loading, setLoading] = useState(true)
   const [jobs, setJobs] = useState<Job[]>([])
