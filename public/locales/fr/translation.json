@@ -36,6 +36,42 @@
         }
       }
     },
+    "jobSearch": {
+      "title": "Recherche d'Emploi Intelligente",
+      "subtitle": "Affinez votre recherche pour trouver l'opportunité parfaite.",
+      "types": {
+        "fullTime": "Temps plein",
+        "partTime": "Temps partiel",
+        "contract": "Contrat / Mission",
+        "freelance": "Freelance",
+        "internship": "Stage"
+      },
+      "filters": {
+        "keyword": "Poste, compétence, entreprise...",
+        "location": "Ville, région, pays...",
+        "jobType": "Type de contrat",
+        "salaryRange": "Fourchette de salaire",
+        "experienceLevel": "Niveau d'expérience",
+        "remote": "Mode de travail",
+        "advancedFilters": "Filtres avancés",
+        "search": "Rechercher",
+        "reset": "Réinitialiser les filtres",
+        "allCurrencies": "Toutes les devises"
+      },
+      "results": {
+        "title": "Résultats de la recherche",
+        "noResults": "Aucune offre ne correspond à vos critères de recherche.",
+        "sortBy": "Trier par",
+        "date": "Date de publication",
+        "salary": "Salaire (décroissant)"
+      },
+      "favorites": {
+        "show": "Voir mes favoris",
+        "hide": "Masquer les favoris",
+        "added": "Offre ajoutée aux favoris.",
+        "removed": "Offre retirée des favoris."
+      }
+    },
     "dashboard": {
       "welcomeMessage": "Bon retour, {{name}} !",
       "quickStats": "Statistiques rapides",
