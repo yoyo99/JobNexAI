@@ -1,7 +1,7 @@
 // Import necessary modules and functions
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3';
 import { load } from 'npm:cheerio@1.0.0-rc.12';
-import { verify } from 'npm:djwt@2.4.0';
+import { verify } from 'https://deno.land/x/djwt@v3.0.2/mod.ts';
 import { Status } from 'https://deno.land/std@0.208.0/http/http_status.ts';
 
 // Define a constant for default location
