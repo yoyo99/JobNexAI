@@ -2,7 +2,6 @@ import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, HeartIcon, SparklesIcon
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { getJobs, getJobSuggestions, type Job, type JobSuggestion, supabase } from '../lib/supabase'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -14,8 +13,7 @@ import { cache } from '../lib/cache'
 import { LoadingSpinner } from './LoadingSpinner'
 
 function JobSearch() {
-  const { t } = useTranslation('translation')
-  const { user, userPreferences } = useAuth()
+  const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [jobs, setJobs] = useState<Job[]>([])
   const [suggestions, setSuggestions] = useState<JobSuggestion[]>([])
@@ -23,63 +21,54 @@ function JobSearch() {
   const [search, setSearch] = useState('')
   const [jobType, setJobType] = useState('')
   const [location, setLocation] = useState('')
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
   const [salaryMin, setSalaryMin] = useState<number | ''>('')
   const [salaryMax, setSalaryMax] = useState<number | ''>('')
   const [remote, setRemote] = useState<'all' | 'remote' | 'hybrid' | 'onsite'>('all')
-  const [sortBy, setSortBy] = useState<'date' | 'salary'>('date')
   const [experienceLevel, setExperienceLevel] = useState<'all' | 'junior' | 'mid' | 'senior'>('all')
+  const [sortBy, setSortBy] = useState<'date' | 'salary'>('date')
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('')
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [shareJob, setShareJob] = useState<Job | null>(null)
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
 
   const jobTypes = useMemo(() => [
-    { value: '', label: t('jobSearch.types.all') },
-    { value: 'FULL_TIME', label: t('jobSearch.types.fullTime') },
-    { value: 'PART_TIME', label: t('jobSearch.types.partTime') },
-    { value: 'CONTRACT', label: t('jobSearch.types.contract') },
-    { value: 'FREELANCE', label: t('jobSearch.types.freelance') },
-    { value: 'INTERNSHIP', label: t('jobSearch.types.internship') }
-  ], [t])
+    { value: '', label: 'Tous les types' },
+    { value: 'FULL_TIME', label: 'Temps plein' },
+    { value: 'PART_TIME', label: 'Temps partiel' },
+    { value: 'CONTRACT', label: 'Contrat / Mission' },
+    { value: 'FREELANCE', label: 'Freelance' },
+    { value: 'INTERNSHIP', label: 'Stage' }
+  ], [])
 
   const remoteOptions = useMemo(() => [
-    { value: 'all', label: t('jobSearch.remoteOptions.all') },
-    { value: 'remote', label: t('jobSearch.remoteOptions.remote') },
-    { value: 'hybrid', label: t('jobSearch.remoteOptions.hybrid') },
-    { value: 'onsite', label: t('jobSearch.remoteOptions.onsite') }
-  ], [t])
+    { value: 'all', label: 'Tous modes' },
+    { value: 'remote', label: 'Télétravail complet' },
+    { value: 'hybrid', label: 'Hybride' },
+    { value: 'onsite', label: 'Sur site' }
+  ], [])
 
   const experienceLevels = useMemo(() => [
-    { value: 'all', label: t('jobSearch.experienceLevels.all') },
-    { value: 'junior', label: t('jobSearch.experienceLevels.junior') },
-    { value: 'mid', label: t('jobSearch.experienceLevels.mid') },
-    { value: 'senior', label: t('jobSearch.experienceLevels.senior') }
-  ], [t])
+    { value: 'all', label: 'Tous niveaux' },
+    { value: 'junior', label: 'Junior (0-2 ans)' },
+    { value: 'mid', label: 'Confirmé (3-5 ans)' },
+    { value: 'senior', label: 'Senior (5+ ans)' }
+  ], [])
 
   const availableCurrencies = useMemo(() => [
-    { value: '', label: t('jobSearch.filters.allCurrencies') },
+    { value: '', label: 'Toutes les devises' },
     { value: 'EUR', label: 'EUR (€) - Euro' },
     { value: 'USD', label: 'USD ($) - Dollar américain' },
     { value: 'CAD', label: 'CAD (C$) - Dollar canadien' },
     { value: 'GBP', label: 'GBP (£) - Livre sterling' },
     { value: 'CHF', label: 'CHF (Fr) - Franc suisse' },
-  ], [t]);
-
-  useEffect(() => {
-    if (userPreferences?.preferred_currency) {
-      setSelectedCurrency(userPreferences.preferred_currency);
-    }
-  }, [userPreferences]);
+  ], []);
 
   const loadJobs = useCallback(async () => {
     try {
       setLoading(true)
-      
-      // Générer une clé de cache basée sur les filtres
       const cacheKey = `jobs:${search}:${jobType}:${location}:${salaryMin}:${salaryMax}:${remote}:${experienceLevel}:${sortBy}:${selectedCurrency}`
       
-      // Essayer de récupérer depuis le cache
       const data = await cache.getOrSet<Job[]>(
         cacheKey,
         async () => {
@@ -91,46 +80,34 @@ function JobSearch() {
             salaryMax: salaryMax || undefined,
             remote: remote === 'all' ? undefined : remote,
             experienceLevel: experienceLevel === 'all' ? undefined : experienceLevel,
-            sortBy,
-            currency: selectedCurrency || undefined // Ajout du filtre de devise
+            sortBy: sortBy,
+            currency: selectedCurrency || undefined,
           })
         },
         { ttl: 5 * 60 * 1000 } // 5 minutes
       )
 
-      if (user) {
-        const { data: favoritesData } = await supabase
-          .from('job_favorites')
-          .select('job_id')
-          .eq('user_id', user.id)
+      setJobs(data || [])
 
-        const favoritesMap: Record<string, boolean> = {}
-        favoritesData?.forEach(fav => {
-          favoritesMap[fav.job_id] = true
-        })
-        setFavorites(favoritesMap)
+      if (user && data) {
+        const { data: userFavorites } = await supabase.from('favorites').select('job_id').eq('user_id', user.id)
+        const favoriteMap = (userFavorites || []).reduce((acc, fav) => ({ ...acc, [fav.job_id]: true }), {})
+        setFavorites(favoriteMap)
       }
-
-      setJobs(showFavoritesOnly ? data.filter(job => favorites[job.id]) : data)
     } catch (error) {
-      console.error('Error loading jobs:', error)
+      console.error('Erreur lors du chargement des emplois:', error)
     } finally {
       setLoading(false)
     }
-  }, [search, jobType, location, salaryMin, salaryMax, remote, experienceLevel, sortBy, user, showFavoritesOnly, favorites])
+  }, [search, jobType, location, salaryMin, salaryMax, remote, experienceLevel, sortBy, user, selectedCurrency])
 
   const loadSuggestions = useCallback(async () => {
     if (!user) return
     try {
-      // Utiliser le cache pour les suggestions
-      const suggestions = await cache.getOrSet<JobSuggestion[]>(
-        `suggestions:${user.id}`,
-        async () => await getJobSuggestions(user.id),
-        { ttl: 15 * 60 * 1000 } // 15 minutes
-      )
-      setSuggestions(suggestions)
+      const suggestionsData = await getJobSuggestions(user.id)
+      setSuggestions(suggestionsData)
     } catch (error) {
-      console.error('Error loading suggestions:', error)
+      console.error('Erreur lors du chargement des suggestions:', error)
     }
   }, [user])
 
@@ -141,328 +118,254 @@ function JobSearch() {
     }
   }, [loadJobs, loadSuggestions, user])
 
+
+
   const toggleFavorite = async (jobId: string) => {
     if (!user) return
 
+    const isFavorite = favorites[jobId]
+    const newFavorites = { ...favorites, [jobId]: !isFavorite }
+    setFavorites(newFavorites)
+
     try {
-      if (favorites[jobId]) {
-        await supabase
-          .from('job_favorites')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('job_id', jobId)
-
-        setFavorites(prev => {
-          const next = { ...prev }
-          delete next[jobId]
-          return next
-        })
+      if (isFavorite) {
+        await supabase.from('favorites').delete().match({ user_id: user.id, job_id: jobId })
       } else {
-        await supabase
-          .from('job_favorites')
-          .insert({
-            user_id: user.id,
-            job_id: jobId
-          })
-
-        setFavorites(prev => ({
-          ...prev,
-          [jobId]: true
-        }))
+        await supabase.from('favorites').insert({ user_id: user.id, job_id: jobId })
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error)
+      console.error('Erreur lors de la mise à jour des favoris:', error)
+      setFavorites(favorites)
     }
   }
 
   const resetFilters = () => {
-    setSearch('');
-    setJobType('');
-    setLocation('');
-    setSalaryMin('');
-    setSalaryMax('');
-    setRemote('all');
-    setExperienceLevel('all');
-    setSortBy('date');
-    setSelectedCurrency(userPreferences?.preferred_currency || ''); // Réinitialiser à la préférence utilisateur ou vide
+    setSearch('')
     setJobType('')
     setLocation('')
     setSalaryMin('')
     setSalaryMax('')
-    setRemote('all')
-    setExperienceLevel('all')
-    setSortBy('date')
+    setRemote('all');
+    setExperienceLevel('all');
+    setSortBy('date');
+    setSelectedCurrency(''); 
+    setShowAdvancedSearch(false)
   }
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    loadJobs()
+  }
+
+  const filteredJobs = useMemo(() => {
+    if (showFavoritesOnly) {
+      return jobs.filter(job => favorites[job.id])
+    }
+    return jobs
+  }, [jobs, favorites, showFavoritesOnly])
+
   const renderJob = useCallback((job: Job, matchScore?: number, matchingSkills?: string[]) => (
-    <div className="card hover:bg-white/10 transition-colors">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-4">
-            {job.company_logo && (
-              <LazyImage
-                src={job.company_logo}
-                alt={job.company}
-                width={48}
-                height={48}
-                className="rounded-lg"
-              />
-            )}
-            <div>
-              <h3 className="text-lg font-semibold text-white">{job.title}</h3>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => toggleFavorite(job.id)}
-                  className="text-primary-400 hover:text-primary-300 transition-colors"
-                >
-                  {favorites[job.id] ? (
-                    <HeartIconSolid className="h-6 w-6" />
-                  ) : (
-                
-                    <HeartIcon className="h-6 w-6" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setShareJob(job)}
-                  className="text-primary-400 hover:text-primary-300 transition-colors"
-                >
-                  <ShareIcon className="h-5 w-5" />
-                </button>
-              </div>
-              {matchScore !== undefined && (
-                <span className="bg-primary-600/20 text-primary-400 text-sm px-2 py-1 rounded-full">
-                  {matchScore.toFixed(0)}% de correspondance
-                </span>
-              )}
-            </div>
+    <div key={job.id} className="bg-gray-800/50 backdrop-blur-sm border border-white/10 rounded-lg p-4 flex flex-col md:flex-row gap-4 hover:bg-gray-800 transition-colors duration-200">
+      <LazyImage src={job.company_logo || '/placeholder-logo.svg'} alt={`${job.company} logo`} className="w-12 h-12 object-contain mr-4" />
+      <div className="flex-grow">
+        <div className="flex justify-between items-start">
+          <div>
+            <a href={job.url} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-white hover:text-primary-400 transition-colors duration-200">{job.title}</a>
+            <p className="text-sm text-gray-600">{job.company} - {job.location}</p>
           </div>
-          <div className="mt-1 flex flex-wrap gap-2">
-            <span className="text-gray-400">{job.company}</span>
-            <span className="text-gray-400">•</span>
-            <span className="text-gray-400">{job.location}</span>
-            <span className="text-gray-400">•</span>
-            <span className="text-gray-400">{job.job_type}</span>
-            {job.remote_type && (
-              <>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-400">{job.remote_type}</span>
-              </>
-            )}
-            {job.experience_level && (
-              <>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-400">{job.experience_level}</span>
-              </>
-            )}
+          <div className="flex items-center gap-2">
+            <button onClick={() => setShareJob(job)} className="text-gray-400 hover:text-white transition-colors duration-200">
+              <ShareIcon className="h-5 w-5" />
+            </button>
+            <button onClick={() => toggleFavorite(job.id)} className="text-gray-400 hover:text-white transition-colors duration-200">
+              {favorites[job.id] ? <HeartIconSolid className="h-6 w-6 text-red-500" /> : <HeartIcon className="h-6 w-6" />}
+            </button>
           </div>
-          {matchingSkills && matchingSkills.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {matchingSkills.map(skill => (
-                <span
-                  key={skill}
-                  className="bg-primary-600/20 text-primary-400 text-xs px-2 py-1 rounded-full"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
-        <div className="text-right">
-          {job.salary_min && job.salary_max && (
-            <span className="text-primary-400 font-semibold">
-              {job.salary_min.toLocaleString()} - {job.salary_max.toLocaleString()} {job.currency}
-            </span>
-          )}
-          <span className="block text-sm text-gray-400">
-            {format(new Date(job.posted_at), 'dd MMMM yyyy', { locale: fr })}
-          </span>
+        <p className="text-gray-300 mt-2 text-sm line-clamp-2">{job.description}</p>
+        <div className="flex flex-wrap gap-2 mt-3 text-xs">
+          <span className="bg-primary-500/20 text-primary-300 px-2 py-1 rounded-full">{job.job_type}</span>
+          <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">{job.experience_level}</span>
+          {job.remote_type && <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded-full">{job.remote_type}</span>}
+          {job.salary_min && <span className="bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">{`${job.salary_min}${job.salary_max ? ` - ${job.salary_max}` : ''} ${job.currency || ''}`}</span>}
         </div>
+        {matchScore !== undefined && (
+          <div className="mt-2 text-sm text-green-400">
+            Score de correspondance : {Math.round(matchScore * 100)}%
+            {matchingSkills && <p className="text-xs text-gray-400">Compétences correspondantes : {matchingSkills.join(', ')}</p>}
+          </div>
+        )}
       </div>
-      {job.description && (
-        <p className="mt-4 text-gray-400 line-clamp-3">{job.description}</p>
-      )}
-      <div className="mt-4">
-        <a
-          href={job.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary-400 hover:text-primary-300 text-sm font-medium"
-        >
-          {t('common.view')} →
+      <div className="flex flex-col justify-between items-end flex-shrink-0 mt-4 md:mt-0">
+        <p className="text-xs text-gray-500">{format(new Date(job.created_at), 'd MMMM yyyy', { locale: fr })}</p>
+        <a href={job.url} target="_blank" rel="noopener noreferrer" className="btn-secondary mt-2 w-full md:w-auto text-center">
+          Voir l'offre
         </a>
       </div>
     </div>
-  ), [favorites, t, toggleFavorite])
+  ), [favorites, toggleFavorite])
 
   return (
     <>
-      <div className="max-w-7xl mx-auto">
-        <div className="card mb-8">
-          <div className="max-w-2xl">
-            <h1 className="text-2xl font-bold text-white mb-4">{t('common:jobSearchPage.title')}</h1>
-            <p className="text-gray-400 mb-6">{t('jobSearch.subtitle')}</p>
+      <div className="container mx-auto p-4">
+        <div className="bg-gray-900/30 backdrop-blur-lg border border-white/10 rounded-lg p-6 mb-8">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold text-white">Recherche d'emploi</h1>
+            <p className="text-lg text-gray-300">Trouvez l'opportunité qui vous correspond</p>
           </div>
-
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); loadJobs() }}>
-            <div className="flex gap-4">
-              <div className="flex-1 relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <div className="relative flex-grow w-full">
+                <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder={t('jobSearch.filters.keyword')}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  placeholder="Poste, compétence, entreprise..."
+                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div className="relative flex-grow w-full">
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Ville, région, pays..."
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                className="btn-secondary flex items-center gap-2"
+                className="btn-secondary flex-shrink-0"
               >
                 <AdjustmentsHorizontalIcon className="h-5 w-5" />
-                Filtres avancés
+              </button>
+              <button type="submit" className="btn-primary flex-shrink-0">
+                Rechercher
+              </button>
+              <button type="button" onClick={resetFilters} className="btn-secondary flex-shrink-0">
+                Réinitialiser
               </button>
             </div>
 
             {showAdvancedSearch && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="space-y-4"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
+                    <label htmlFor="jobType" className="block text-sm font-medium text-gray-300 mb-1">
                       Type de contrat
                     </label>
                     <select
+                      id="jobType"
                       value={jobType}
                       onChange={(e) => setJobType(e.target.value)}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
-                      <option value="">Tous les types</option>
                       {jobTypes.map((type) => (
-                        <option key={type.value} value={type.value}>{type.label}</option>
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
-                      Mode de travail
+                    <label htmlFor="remote" className="block text-sm font-medium text-gray-300 mb-1">
+                      Télétravail
                     </label>
                     <select
+                      id="remote"
                       value={remote}
                       onChange={(e) => setRemote(e.target.value as any)}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                       {remoteOptions.map((option) => (
-                        <option key={option.value} value={option.value}>{option.label}</option>
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
+                    <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-300 mb-1">
                       Niveau d'expérience
                     </label>
                     <select
+                      id="experienceLevel"
                       value={experienceLevel}
                       onChange={(e) => setExperienceLevel(e.target.value as any)}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                       {experienceLevels.map((level) => (
-                        <option key={level.value} value={level.value}>{level.label}</option>
+                        <option key={level.value} value={level.value}>
+                          {level.label}
+                        </option>
                       ))}
                     </select>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
-                      Localisation
-                    </label>
-                    <input
-                      type="text"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="Ville ou région"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                  </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
-                      Salaire minimum
-                    </label>
-                    <input
-                      type="number"
-                      value={salaryMin}
-                      onChange={(e) => setSalaryMin(e.target.value ? Number(e.target.value) : '')}
-                      placeholder="Ex: 35000"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
-                      Salaire maximum
-                    </label>
-                    <input
-                      type="number"
-                      value={salaryMax}
-                      onChange={(e) => setSalaryMax(e.target.value ? Number(e.target.value) : '')}
-                      placeholder="Ex: 75000"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">
+                    <label htmlFor="sortBy" className="block text-sm font-medium text-gray-300 mb-1">
                       Trier par
                     </label>
                     <select
+                      id="sortBy"
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as 'date' | 'salary')}
-                      className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                       <option value="date">Date de publication</option>
                       <option value="salary">Salaire</option>
                     </select>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={resetFilters}
-                    className="btn-secondary"
-                  >
-                    Réinitialiser les filtres
-                  </button>
-                </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Fourchette de salaire
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        value={salaryMin}
+                        onChange={(e) => setSalaryMin(e.target.value ? Number(e.target.value) : '')}
+                        placeholder="Min"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      />
+                      <span>-</span>
+                      <input
+                        type="number"
+                        value={salaryMax}
+                        onChange={(e) => setSalaryMax(e.target.value ? Number(e.target.value) : '')}
+                        placeholder="Max"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      />
+                    </div>
+                  </div>
 
-                {/* Currency Filter */}
-                <div>
-                  <label htmlFor="currency" className="block text-sm font-medium text-gray-400 mb-1">
-                    {t('jobSearch.filters.currency')}
-                  </label>
-                  <select
-                    id="currency"
-                    value={selectedCurrency}
-                    onChange={(e) => setSelectedCurrency(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  >
-                    {availableCurrencies.map((currency) => (
-                      <option key={currency.value} value={currency.value}>
-                        {currency.label}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="md:col-span-2">
+                    <label htmlFor="currency" className="block text-sm font-medium text-gray-300 mb-1">
+                      Devise
+                    </label>
+                    <select
+                      id="currency"
+                      value={selectedCurrency}
+                      onChange={(e) => setSelectedCurrency(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      {availableCurrencies.map((currency) => (
+                        <option key={currency.value} value={currency.value}>
+                          {currency.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -473,7 +376,6 @@ function JobSearch() {
                   type="button"
                   onClick={() => {
                     setShowFavoritesOnly(!showFavoritesOnly)
-                    loadJobs()
                   }}
                   className={`btn-secondary flex items-center gap-2 ${
                     showFavoritesOnly ? 'bg-primary-600 hover:bg-primary-500' : ''
@@ -496,10 +398,6 @@ function JobSearch() {
                   </button>
                 )}
               </div>
-
-              <button type="submit" className="btn-primary">
-                {t('common.search')}
-              </button>
             </div>
           </form>
         </div>
@@ -530,9 +428,9 @@ function JobSearch() {
                   Aucune suggestion disponible. Complétez votre profil pour recevoir des suggestions personnalisées.
                 </div>
               )
-            ) : jobs.length > 0 ? (
+            ) : filteredJobs.length > 0 ? (
               <VirtualizedList
-                items={jobs}
+                items={filteredJobs}
                 height={600}
                 itemHeight={200}
                 renderItem={(job) => (
