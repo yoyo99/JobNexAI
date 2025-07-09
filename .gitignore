@@ -41,3 +41,4 @@ yarn-error.log*
 .netlify
 public/locales/.DS_Store
 /tmp
+public/locales/.DS_Store

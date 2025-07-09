@@ -40,11 +40,24 @@
       "title": "Recherche d'Emploi Intelligente",
       "subtitle": "Affinez votre recherche pour trouver l'opportunité parfaite.",
       "types": {
+        "all": "Tous les types",
         "fullTime": "Temps plein",
         "partTime": "Temps partiel",
         "contract": "Contrat / Mission",
         "freelance": "Freelance",
         "internship": "Stage"
+      },
+      "remoteOptions": {
+        "all": "Tous modes",
+        "remote": "Télétravail complet",
+        "hybrid": "Hybride",
+        "onsite": "Sur site"
+      },
+      "experienceLevels": {
+        "all": "Tous niveaux",
+        "junior": "Junior (0-2 ans)",
+        "mid": "Confirmé (3-5 ans)",
+        "senior": "Senior (5+ ans)"
       },
       "filters": {
         "keyword": "Poste, compétence, entreprise...",

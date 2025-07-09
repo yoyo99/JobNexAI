@@ -35,6 +35,7 @@ function JobSearch() {
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
 
   const jobTypes = useMemo(() => [
+    { value: '', label: t('jobSearch.types.all') },
     { value: 'FULL_TIME', label: t('jobSearch.types.fullTime') },
     { value: 'PART_TIME', label: t('jobSearch.types.partTime') },
     { value: 'CONTRACT', label: t('jobSearch.types.contract') },
@@ -43,18 +44,18 @@ function JobSearch() {
   ], [t])
 
   const remoteOptions = useMemo(() => [
-    { value: 'all', label: 'Tous' },
-    { value: 'remote', label: 'Full Remote' },
-    { value: 'hybrid', label: 'Hybride' },
-    { value: 'onsite', label: 'Sur site' }
-  ], [])
+    { value: 'all', label: t('jobSearch.remoteOptions.all') },
+    { value: 'remote', label: t('jobSearch.remoteOptions.remote') },
+    { value: 'hybrid', label: t('jobSearch.remoteOptions.hybrid') },
+    { value: 'onsite', label: t('jobSearch.remoteOptions.onsite') }
+  ], [t])
 
   const experienceLevels = useMemo(() => [
-    { value: 'all', label: 'Tous niveaux' },
-    { value: 'junior', label: 'Junior (0-2 ans)' },
-    { value: 'mid', label: 'Confirmé (3-5 ans)' },
-    { value: 'senior', label: 'Senior (5+ ans)' }
-  ], [])
+    { value: 'all', label: t('jobSearch.experienceLevels.all') },
+    { value: 'junior', label: t('jobSearch.experienceLevels.junior') },
+    { value: 'mid', label: t('jobSearch.experienceLevels.mid') },
+    { value: 'senior', label: t('jobSearch.experienceLevels.senior') }
+  ], [t])
 
   const availableCurrencies = useMemo(() => [
     { value: '', label: t('jobSearch.filters.allCurrencies') },
