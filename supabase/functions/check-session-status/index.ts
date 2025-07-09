@@ -8,7 +8,7 @@ import { type Payload } from 'https://deno.land/x/djwt@v2.9.1/mod.ts';
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
   // Permet une chaîne de version API personnalisée du dashboard Stripe
   // deno-lint-ignore-next-line no-explicit-any
-  apiVersion: '2025-04-30.basil' as any,
+  apiVersion: '2023-10-16',
   // typescript: true, // Optionnel: pour une meilleure inférence de type si supporté
 });
 // Initialisation de Supabase avec l'URL et la clé de service
