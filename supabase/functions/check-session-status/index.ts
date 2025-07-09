@@ -222,7 +222,7 @@ async function handler(req: Request): Promise<Response> {
           stripe_customer_id: customer.id, // Utiliser l'ID de l'objet client
           stripe_subscription_id: subscription.id, // Utiliser l'ID de l'objet abonnement
           status: subscription.status,
-          plan: subscription.metadata.plan || 'pro',
+          plan: subscription.metadata.plan || 'freelance_pro',
           current_period_end: typeof subscription.current_period_end === 'number' 
             ? new Date(subscription.current_period_end * 1000).toISOString() 
             : new Date().toISOString(), // Fournir une date par défaut si invalide
