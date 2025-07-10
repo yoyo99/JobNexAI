@@ -148,14 +148,16 @@ export interface UserAISettingsData {
 
 export interface JobApplication {
   id: string;
-  job: {
-    title: string;
-    company: string;
-    location: string;
-  };
-  status: string;
+  user_id: string;
+  job_id: string;
+  status: 'draft' | 'applied' | 'interviewing' | 'offer' | 'rejected' | 'accepted' | 'withdrawn';
+  notes: string | null;
+  applied_at: string | null;
+  next_step_date: string | null;
+  next_step_type: 'phone' | 'technical' | 'hr' | 'final' | 'other' | null;
   created_at: string;
-  notes?: string | null;
+  updated_at: string;
+  job: Job | null; // Utilise le type Job complet et peut être null
   timeline?: { date: string; description: string }[];
 }
 
