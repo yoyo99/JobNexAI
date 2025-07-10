@@ -251,6 +251,117 @@ export async function generateCoverLetter(
   }
 }
 
+export async function optimizeText(
+  text: string,
+  language: string = 'fr'
+): Promise<string> {
+  try {
+    const mistralClient = getMistralClient();
+    const chatResponse = await mistralClient.chat.complete({
+      model: 'mistral-large-latest',
+      messages: [
+        {
+            role: 'system',
+            content: `Tu es un coach de carrière expert et un rédacteur de CV professionnel. Ta tâche est de réécrire et d'optimiser le texte fourni pour le rendre plus percutant et professionnel. Instructions : 1. Utilise des verbes d'action forts. 2. Quantifie les réalisations lorsque c'est possible (même si tu dois suggérer des exemples comme '[X%]' ou '[Y projets]'). 3. Assure-toi que le ton est professionnel et adapté à un CV. 4. La réponse doit être uniquement le texte amélioré, sans aucune introduction ou phrase supplémentaire. La langue du texte est '${language}'.`,
+        },
+        {
+            role: 'user',
+            content: text,
+        },
+      ],
+      temperature: 0.6,
+      maxTokens: 1000,
+    });
+    const messageContent = chatResponse.choices[0].message.content;
+    return typeof messageContent === 'string' ? messageContent.trim() : '';
+  } catch (error) {
+    console.error('Erreur lors de l\`optimisation du texte:', error);
+    throw error;
+  }
+}
+
+export async function translateText(
+  text: string,
+  targetLanguage: string
+): Promise<string> {
+  try {
+    const mistralClient = getMistralClient();
+    const chatResponse = await mistralClient.chat.complete({
+      model: 'mistral-large-latest',
+      messages: [
+        {
+            role: 'system',
+            content: `Tu es un traducteur expert spécialisé dans les documents professionnels et les CV. Ta tâche est de traduire le texte fourni vers la langue suivante : ${targetLanguage}. Instructions : 1. Conserve le formatage et la structure d'origine. 2. Assure une traduction précise et naturelle, en adaptant les termes au contexte professionnel de la langue cible. 3. La réponse doit être uniquement le texte traduit, sans aucune introduction ou phrase supplémentaire.`,
+        },
+        {
+            role: 'user',
+            content: text,
+        },
+      ],
+      temperature: 0.2,
+      maxTokens: 1500,
+    });
+    const messageContent = chatResponse.choices[0].message.content;
+    return typeof messageContent === 'string' ? messageContent.trim() : '';
+  } catch (error) {
+    console.error('Erreur lors de la traduction du texte:', error);
+    throw error;
+  }
+}
+
+/**
+ * Traduit un lot de textes dans une langue cible en utilisant l'IA de Mistral.
+ * @param texts - Un tableau de chaînes de caractères à traduire.
+ * @param targetLanguage - La langue cible pour la traduction (ex: 'anglais').
+ * @returns Une promesse qui se résout avec un tableau de textes traduits.
+ */
+export async function translateTextsBatch(texts: string[], targetLanguage: string): Promise<string[]> {
+  if (!texts || texts.length === 0) {
+    return [];
+  }
+
+  const mistral = getMistralClient();
+
+  const systemPrompt = `Tu es un expert en traduction multilingue spécialisé dans les CV professionnels. Traduis le tableau de textes JSON suivant en ${targetLanguage}. Réponds uniquement avec un tableau JSON contenant les traductions, en conservant exactement le même ordre et le même nombre d'éléments. La structure de ta réponse doit être : ["traduction 1", "traduction 2", ...].`;
+
+  const userMessage = JSON.stringify(texts);
+
+  try {
+    const chatResponse = await mistral.chat.complete({
+      model: 'mistral-large-latest',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userMessage },
+      ],
+      responseFormat: { type: 'json_object' },
+    });
+
+    const content = chatResponse.choices[0].message.content;
+    if (typeof content !== 'string') {
+      throw new Error("La réponse de l'IA est vide ou dans un format inattendu.");
+    }
+
+    // Le contenu peut être une chaîne JSON contenant un tableau, ou directement le tableau.
+    // Nous devons le parser pour obtenir le tableau de chaînes.
+    const parsedContent = JSON.parse(content);
+    
+    // Le modèle peut parfois retourner un objet avec une clé (ex: { translations: [...] }).
+    // Nous cherchons le premier tableau de chaînes de caractères trouvé dans la réponse.
+    const translations = Array.isArray(parsedContent) 
+      ? parsedContent 
+      : Object.values(parsedContent).find(Array.isArray);
+
+    if (!translations || !Array.isArray(translations) || translations.length !== texts.length) {
+      throw new Error("La réponse de l'IA ne correspond pas au format attendu ou le nombre de traductions est incorrect.");
+    }
+
+    return translations;
+  } catch (error) {
+    console.error('Erreur lors de la traduction par lot avec Mistral:', error);
+    throw new Error('Impossible de traduire le lot de textes.');
+  }
+}
+
 export async function generateBulkApplicationMessages(
   cv: any,
   jobDescriptions: { id: string; description: string }[]

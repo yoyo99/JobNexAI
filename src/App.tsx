@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import React, { Suspense, useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import ToastContainer from './ToastContainer';
 
 // Importer les styles CSS ici, avant tout autre import
@@ -134,6 +135,28 @@ function App() {
       <I18nextProvider i18n={i18n}>
         <AuthProvider>
           <Router>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: '',
+            style: {
+              margin: '10px',
+              background: '#333',
+              color: '#fff',
+              zIndex: 1000,
+            },
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: '#10B981', // green-500
+                secondary: '#FFFFFF',
+              },
+            },
+            error: {
+              duration: 5000,
+            },
+          }}
+        />
             <Routes>
               <Route path="/" element={<LandingPageRouteHandler />} />
               <Route path="/login" element={<PublicRoute><LazyComponentWrapper><Auth /></LazyComponentWrapper></PublicRoute>} />

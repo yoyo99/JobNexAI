@@ -1,6 +1,9 @@
 // import { useState } from 'react' // supprimé: non utilisé
-import { motion } from 'framer-motion'
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { TrashIcon, Sparkles } from 'lucide-react';
+import { optimizeText } from '../../../lib/ai';
+import toast from 'react-hot-toast';
 
 interface Experience {
   id: string
@@ -20,6 +23,7 @@ interface ExperienceProps {
 }
 
 export function ExperienceSection({ items, onChange }: ExperienceProps) {
+  const [optimizingExperienceId, setOptimizingExperienceId] = useState<string | null>(null);
   const addExperience = () => {
     const newExperience: Experience = {
       id: crypto.randomUUID(),
@@ -76,6 +80,26 @@ export function ExperienceSection({ items, onChange }: ExperienceProps) {
         : item
     ));
   }
+
+  const handleOptimizeDescription = async (experienceId: string, currentDescription: string) => {
+    if (!currentDescription) return;
+    setOptimizingExperienceId(experienceId);
+
+    const promise = optimizeText(currentDescription, 'fr');
+
+    toast.promise(promise, {
+      loading: 'Optimisation en cours...',
+      success: (optimizedDescription) => {
+        updateExperience(experienceId, { description: optimizedDescription });
+        setOptimizingExperienceId(null);
+        return 'Description optimisée avec succès !';
+      },
+      error: (err) => {
+        setOptimizingExperienceId(null);
+        return `Erreur: ${err.message || 'Impossible d\'optimiser le texte.'}`;
+      },
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -180,9 +204,29 @@ export function ExperienceSection({ items, onChange }: ExperienceProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                Description
-              </label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="block text-sm font-medium text-gray-400">
+                  Description
+                </label>
+                <button 
+                  type="button"
+                  onClick={() => handleOptimizeDescription(experience.id, experience.description)}
+                  disabled={!experience.description || optimizingExperienceId === experience.id}
+                  className="text-xs text-primary-400 hover:text-primary-300 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {optimizingExperienceId === experience.id ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                      Optimisation...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={14} />
+                      Optimiser avec l'IA
+                    </>
+                  )}
+                </button>
+              </div>
               <textarea
                 value={experience.description}
                 onChange={(e) => updateExperience(experience.id, { description: e.target.value })}

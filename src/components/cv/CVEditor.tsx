@@ -7,7 +7,9 @@ import { HeaderSection } from './sections/HeaderSection'
 import { ExperienceSection } from './sections/ExperienceSection'
 import { EducationSection } from './sections/EducationSection'
 import { SkillsSection } from './sections/SkillsSection'
-import { ProjectsSection } from './sections/ProjectsSection'
+import { ProjectsSection } from './sections/ProjectsSection';
+import { ServicesSection } from './sections/ServicesSection';
+import { TestimonialsSection } from './sections/TestimonialsSection';
 
 interface EditorProps {
   templateId: string;
@@ -84,6 +86,20 @@ export function CVEditor({ templateId, onBack, sections, onSectionsChange }: Edi
       case 'projects':
         return (
           <ProjectsSection
+            items={section.content.items || []}
+            onChange={(items) => updateSection(index, { ...section.content, items })}
+          />
+        )
+      case 'services':
+        return (
+          <ServicesSection
+            items={section.content.items || []}
+            onChange={(items) => updateSection(index, { ...section.content, items })}
+          />
+        )
+      case 'testimonials':
+        return (
+          <TestimonialsSection
             items={section.content.items || []}
             onChange={(items) => updateSection(index, { ...section.content, items })}
           />
