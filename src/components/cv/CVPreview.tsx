@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline'
+import { HeaderPreview } from './previews/HeaderPreview'
+import { ExperiencePreview } from './previews/ExperiencePreview'
+import { EducationPreview } from './previews/EducationPreview'
+import { SkillsPreview } from './previews/SkillsPreview'
+import { ProjectsPreview } from './previews/ProjectsPreview'
 
 interface PreviewProps {
   templateId: string
@@ -65,6 +70,23 @@ export function CVPreview({ templateId }: PreviewProps) {
     }
   }
 
+  const renderSectionPreview = (section: any) => {
+    switch (section.type) {
+      case 'header':
+        return <HeaderPreview content={section.content} />
+      case 'experience':
+        return <ExperiencePreview items={section.content.items || []} />
+      case 'education':
+        return <EducationPreview items={section.content.items || []} />
+      case 'skills':
+        return <SkillsPreview categories={section.content.categories || []} />
+      case 'projects':
+        return <ProjectsPreview items={section.content.items || []} />
+      default:
+        return <div className="text-gray-400 text-sm">Aperçu non disponible pour la section "{section.title}".</div>
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
@@ -87,8 +109,16 @@ export function CVPreview({ templateId }: PreviewProps) {
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-xl p-8">
-        {/* CV preview would go here */}
+      <div className="bg-white rounded-lg shadow-xl p-8 text-black">
+        {cv && cv.sections ? (
+          cv.sections.map((section: any, index: number) => (
+            <div key={index}>
+              {renderSectionPreview(section)}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Aucun contenu de CV à afficher.</p>
+        )}
       </div>
     </div>
   )
