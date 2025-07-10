@@ -63,7 +63,7 @@ function CVBuilder() {
 
 
             const { data: cv, error: cvError } = await supabase
-        .from('user_cvs')
+        .from('cv_data')
         .select('content') // Correction finale : la colonne est 'content'
         .eq('user_id', user?.id)
         .eq('template_id', templateId)

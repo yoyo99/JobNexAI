@@ -27,7 +27,7 @@ export function CVEditor({ templateId, onBack, sections, onSectionsChange }: Edi
       setMessage(null)
 
       const { error } = await supabase
-        .from('user_cvs')
+        .from('cv_data')
         .upsert({
           user_id: user?.id,
           template_id: templateId,
