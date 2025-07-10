@@ -67,29 +67,11 @@ function CVBuilder() {
         .eq('template_id', templateId)
         .single()
 
-      if (!cvError) {
-        setCvSections(cv.sections)
+      if (cv && cv.sections) {
+        setCvSections(cv.sections);
       } else {
-        const newSections = template.structure.sections.map((section: any) => {
-          const currentContent = section.content || {};
-          if (section.type === 'header') {
-            return {
-              ...section,
-              content: {
-                ...currentContent,
-                name: user?.full_name || currentContent.name || '',
-                email: user?.email || currentContent.email || '',
-                title: user?.title || currentContent.title || '',
-                phone: user?.phone || currentContent.phone || '',
-                location: user?.location || currentContent.location || '',
-                linkedin: user?.linkedin || currentContent.linkedin || '',
-                website: user?.website || currentContent.website || '',
-              },
-            }
-          }
-          return section
-        })
-        setCvSections(newSections)
+        // Si aucun CV n'existe, on utilise simplement la structure du template
+        setCvSections(template.structure.sections);
       }
     } catch (error: any) {
       console.error('Detailed Error loading CV:', error);
