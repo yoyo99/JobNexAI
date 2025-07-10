@@ -71,18 +71,19 @@ function CVBuilder() {
         setCvSections(cv.sections)
       } else {
         const newSections = template.structure.sections.map((section: any) => {
+          const currentContent = section.content || {};
           if (section.type === 'header') {
             return {
               ...section,
               content: {
-                ...section.content,
-                name: user?.full_name || section.content.name || '',
-                email: user?.email || section.content.email || '',
-                title: user?.title || section.content.title || '',
-                phone: user?.phone || section.content.phone || '',
-                location: user?.location || section.content.location || '',
-                linkedin: user?.linkedin || section.content.linkedin || '',
-                website: user?.website || section.content.website || '',
+                ...currentContent,
+                name: user?.full_name || currentContent.name || '',
+                email: user?.email || currentContent.email || '',
+                title: user?.title || currentContent.title || '',
+                phone: user?.phone || currentContent.phone || '',
+                location: user?.location || currentContent.location || '',
+                linkedin: user?.linkedin || currentContent.linkedin || '',
+                website: user?.website || currentContent.website || '',
               },
             }
           }
@@ -102,7 +103,7 @@ function CVBuilder() {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center">
         <p className="text-red-400">{error}</p>
-        <button onClick={() => setSelectedTemplate(null)} className="btn-secondary mt-4">Retour</button>
+        <button onClick={() => { setSelectedTemplate(null); setError(null); }} className="btn-secondary mt-4">Retour</button>
       </div>
     )
   }
