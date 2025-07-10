@@ -13,13 +13,11 @@ interface Education {
 }
 
 interface EducationProps {
-  content: {
-    items: Education[]
-  }
-  onChange: (content: any) => void
+  items: Education[];
+  onChange: (items: Education[]) => void;
 }
 
-export function EducationSection({ content, onChange }: EducationProps) {
+export function EducationSection({ items, onChange }: EducationProps) {
   const addEducation = () => {
     const newEducation: Education = {
       id: crypto.randomUUID(),
@@ -30,28 +28,22 @@ export function EducationSection({ content, onChange }: EducationProps) {
       current: false,
     }
 
-    onChange({
-      items: [...content.items, newEducation],
-    })
+    onChange([...items, newEducation]);
   }
 
   const updateEducation = (id: string, updates: Partial<Education>) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === id ? { ...item, ...updates } : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === id ? { ...item, ...updates } : item
+    ));
   }
 
   const removeEducation = (id: string) => {
-    onChange({
-      items: content.items.filter(item => item.id !== id),
-    })
+    onChange(items.filter(item => item.id !== id));
   }
 
   return (
     <div className="space-y-6">
-      {content.items.map((education, index) => (
+      {items.map((education, index) => (
         <motion.div
           key={education.id}
           initial={{ opacity: 0, y: 20 }}

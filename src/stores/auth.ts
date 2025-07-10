@@ -6,6 +6,11 @@ export interface Profile {
   id: string;
   email?: string;
   full_name?: string;
+  title?: string;
+  phone?: string;
+  location?: string;
+  linkedin?: string;
+  website?: string;
   user_type?: string;
   is_admin?: boolean;
   trial_ends_at?: string | null;

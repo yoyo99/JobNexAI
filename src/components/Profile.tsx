@@ -18,7 +18,12 @@ import { StatusMessageType } from '../types/common';
 function Profile() {
   const { user, subscription, loadUser } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [fullName, setFullName] = useState(user?.full_name || '')
+  const [fullName, setFullName] = useState(user?.full_name || '');
+  const [title, setTitle] = useState(user?.title || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [location, setLocation] = useState(user?.location || '');
+  const [linkedin, setLinkedin] = useState(user?.linkedin || '');
+  const [website, setWebsite] = useState(user?.website || '');
   const [message, setMessage] = useState<StatusMessageType | null>(null)
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai' | 'skills' | 'alerts' | 'subscription' | 'webhook' | 'cvs' | 'coverLetterGenerator'>('profile')
@@ -29,7 +34,14 @@ function Profile() {
       setLoading(true)
       const { error } = await supabase
         .from('profiles')
-        .update({ full_name: fullName })
+        .update({ 
+          full_name: fullName,
+          title,
+          phone,
+          location,
+          linkedin,
+          website,
+        })
         .eq('id', user?.id)
 
       if (error) throw error
@@ -180,6 +192,70 @@ function Profile() {
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
+            </div>
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-400 mb-1">
+                Titre professionnel
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-1">
+                  Téléphone
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-400 mb-1">
+                  Localisation
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="linkedin" className="block text-sm font-medium text-gray-400 mb-1">
+                  LinkedIn
+                </label>
+                <input
+                  type="url"
+                  id="linkedin"
+                  value={linkedin}
+                  onChange={(e) => setLinkedin(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="website" className="block text-sm font-medium text-gray-400 mb-1">
+                  Site web
+                </label>
+                <input
+                  type="url"
+                  id="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
             </div>
             {message && (
               <div className={`rounded-md p-4 ${

@@ -12,13 +12,11 @@ interface Project {
 }
 
 interface ProjectsProps {
-  content: {
-    items: Project[]
-  }
-  onChange: (content: any) => void
+  items: Project[];
+  onChange: (items: Project[]) => void;
 }
 
-export function ProjectsSection({ content, onChange }: ProjectsProps) {
+export function ProjectsSection({ items, onChange }: ProjectsProps) {
   const addProject = () => {
     const newProject: Project = {
       id: crypto.randomUUID(),
@@ -29,66 +27,54 @@ export function ProjectsSection({ content, onChange }: ProjectsProps) {
       current: false,
     }
 
-    onChange({
-      items: [...content.items, newProject],
-    })
+    onChange([...items, newProject]);
   }
 
   const updateProject = (id: string, updates: Partial<Project>) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === id ? { ...item, ...updates } : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === id ? { ...item, ...updates } : item
+    ));
   }
 
   const removeProject = (id: string) => {
-    onChange({
-      items: content.items.filter(item => item.id !== id),
-    })
+    onChange(items.filter(item => item.id !== id));
   }
 
   const addTechnology = (projectId: string) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === projectId
-          ? { ...item, technologies: [...item.technologies, ''] }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === projectId
+        ? { ...item, technologies: [...item.technologies, ''] }
+        : item
+    ));
   }
 
   const updateTechnology = (projectId: string, index: number, value: string) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === projectId
-          ? {
-              ...item,
-              technologies: item.technologies.map((tech, i) =>
-                i === index ? value : tech
-              ),
-            }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === projectId
+        ? {
+            ...item,
+            technologies: item.technologies.map((tech, i) =>
+              i === index ? value : tech
+            ),
+          }
+        : item
+    ));
   }
 
   const removeTechnology = (projectId: string, index: number) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === projectId
-          ? {
-              ...item,
-              technologies: item.technologies.filter((_, i) => i !== index),
-            }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === projectId
+        ? {
+            ...item,
+            technologies: item.technologies.filter((_, i) => i !== index),
+          }
+        : item
+    ));
   }
 
   return (
     <div className="space-y-6">
-      {content.items.map((project, index) => (
+      {items.map((project, index) => (
         <div
           key={project.id}
           className="bg-white/5 rounded-lg p-4"

@@ -46,7 +46,26 @@ export function CVEditor({ templateId, onBack }: EditorProps) {
       if (!cvError) {
         setSections(cv.sections)
       } else {
-        setSections(template.structure.sections)
+                // Pré-remplir avec les données du profil si c'est un nouveau CV
+        const newSections = template.structure.sections.map((section: any) => {
+          if (section.type === 'header') {
+            return {
+              ...section,
+              content: {
+                ...section.content,
+                name: user?.full_name || section.content.name || '',
+                email: user?.email || section.content.email || '',
+                title: user?.title || section.content.title || '',
+                phone: user?.phone || section.content.phone || '',
+                location: user?.location || section.content.location || '',
+                linkedin: user?.linkedin || section.content.linkedin || '',
+                website: user?.website || section.content.website || '',
+              },
+            };
+          }
+          return section;
+        });
+        setSections(newSections);
       }
     } catch (error) {
       console.error('Error loading CV:', error)
@@ -98,29 +117,29 @@ export function CVEditor({ templateId, onBack }: EditorProps) {
       case 'experience':
         return (
           <ExperienceSection
-            content={section.content}
-            onChange={(content) => updateSection(index, content)}
+            items={section.content.items || []}
+            onChange={(items) => updateSection(index, { ...section.content, items })}
           />
         )
       case 'education':
         return (
           <EducationSection
-            content={section.content}
-            onChange={(content) => updateSection(index, content)}
+            items={section.content.items || []}
+            onChange={(items) => updateSection(index, { ...section.content, items })}
           />
         )
       case 'skills':
         return (
           <SkillsSection
-            content={section.content}
-            onChange={(content) => updateSection(index, content)}
+            categories={section.content.categories || []}
+            onChange={(categories) => updateSection(index, { ...section.content, categories })}
           />
         )
       case 'projects':
         return (
           <ProjectsSection
-            content={section.content}
-            onChange={(content) => updateSection(index, content)}
+            items={section.content.items || []}
+            onChange={(items) => updateSection(index, { ...section.content, items })}
           />
         )
       default:

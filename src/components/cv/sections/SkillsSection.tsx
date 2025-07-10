@@ -8,13 +8,11 @@ interface SkillCategory {
 }
 
 interface SkillsProps {
-  content: {
-    categories: SkillCategory[]
-  }
-  onChange: (content: any) => void
+  categories: SkillCategory[];
+  onChange: (categories: SkillCategory[]) => void;
 }
 
-export function SkillsSection({ content, onChange }: SkillsProps) {
+export function SkillsSection({ categories, onChange }: SkillsProps) {
   const addCategory = () => {
     const newCategory: SkillCategory = {
       id: crypto.randomUUID(),
@@ -22,66 +20,54 @@ export function SkillsSection({ content, onChange }: SkillsProps) {
       skills: [],
     }
 
-    onChange({
-      categories: [...content.categories, newCategory],
-    })
+    onChange([...categories, newCategory]);
   }
 
   const updateCategory = (id: string, updates: Partial<SkillCategory>) => {
-    onChange({
-      categories: content.categories.map(category =>
-        category.id === id ? { ...category, ...updates } : category
-      ),
-    })
+    onChange(categories.map(category =>
+      category.id === id ? { ...category, ...updates } : category
+    ));
   }
 
   const removeCategory = (id: string) => {
-    onChange({
-      categories: content.categories.filter(category => category.id !== id),
-    })
+    onChange(categories.filter(category => category.id !== id));
   }
 
   const addSkill = (categoryId: string) => {
-    onChange({
-      categories: content.categories.map(category =>
-        category.id === categoryId
-          ? { ...category, skills: [...category.skills, ''] }
-          : category
-      ),
-    })
+    onChange(categories.map(category =>
+      category.id === categoryId
+        ? { ...category, skills: [...category.skills, ''] }
+        : category
+    ));
   }
 
   const updateSkill = (categoryId: string, index: number, value: string) => {
-    onChange({
-      categories: content.categories.map(category =>
-        category.id === categoryId
-          ? {
-              ...category,
-              skills: category.skills.map((skill, i) =>
-                i === index ? value : skill
-              ),
-            }
-          : category
-      ),
-    })
+    onChange(categories.map(category =>
+      category.id === categoryId
+        ? {
+            ...category,
+            skills: category.skills.map((skill, i) =>
+              i === index ? value : skill
+            ),
+          }
+        : category
+    ));
   }
 
   const removeSkill = (categoryId: string, index: number) => {
-    onChange({
-      categories: content.categories.map(category =>
-        category.id === categoryId
-          ? {
-              ...category,
-              skills: category.skills.filter((_, i) => i !== index),
-            }
-          : category
-      ),
-    })
+    onChange(categories.map(category =>
+      category.id === categoryId
+        ? {
+            ...category,
+            skills: category.skills.filter((_, i) => i !== index),
+          }
+        : category
+    ));
   }
 
   return (
     <div className="space-y-6">
-      {content.categories.map((category) => (
+      {categories.map((category) => (
         <div
           key={category.id}
           className="bg-white/5 rounded-lg p-4"

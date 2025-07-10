@@ -21,7 +21,7 @@ const publicNavigation = [
 const userCoreNavigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Job Search', href: '/jobs' },
-  { name: 'Applications', href: '/applications' },
+  { name: 'Suivi', href: '/suivi' },
   { name: 'CV Builder', href: '/cv-builder' },
   { name: 'Network', href: '/network' },
   { name: 'Market Analysis', href: '/market-analysis' },

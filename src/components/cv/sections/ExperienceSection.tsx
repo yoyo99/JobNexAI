@@ -15,13 +15,11 @@ interface Experience {
 }
 
 interface ExperienceProps {
-  content: {
-    items: Experience[]
-  }
-  onChange: (content: any) => void
+  items: Experience[];
+  onChange: (items: Experience[]) => void;
 }
 
-export function ExperienceSection({ content, onChange }: ExperienceProps) {
+export function ExperienceSection({ items, onChange }: ExperienceProps) {
   const addExperience = () => {
     const newExperience: Experience = {
       id: crypto.randomUUID(),
@@ -34,66 +32,54 @@ export function ExperienceSection({ content, onChange }: ExperienceProps) {
       achievements: [],
     }
 
-    onChange({
-      items: [...content.items, newExperience],
-    })
+    onChange([...items, newExperience]);
   }
 
   const updateExperience = (id: string, updates: Partial<Experience>) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === id ? { ...item, ...updates } : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === id ? { ...item, ...updates } : item
+    ));
   }
 
   const removeExperience = (id: string) => {
-    onChange({
-      items: content.items.filter(item => item.id !== id),
-    })
+    onChange(items.filter(item => item.id !== id));
   }
 
   const addAchievement = (experienceId: string) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === experienceId
-          ? { ...item, achievements: [...item.achievements, ''] }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === experienceId
+        ? { ...item, achievements: [...item.achievements, ''] }
+        : item
+    ));
   }
 
   const updateAchievement = (experienceId: string, index: number, value: string) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === experienceId
-          ? {
-              ...item,
-              achievements: item.achievements.map((a, i) =>
-                i === index ? value : a
-              ),
-            }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === experienceId
+        ? {
+            ...item,
+            achievements: item.achievements.map((a, i) =>
+              i === index ? value : a
+            ),
+          }
+        : item
+    ));
   }
 
   const removeAchievement = (experienceId: string, index: number) => {
-    onChange({
-      items: content.items.map(item =>
-        item.id === experienceId
-          ? {
-              ...item,
-              achievements: item.achievements.filter((_, i) => i !== index),
-            }
-          : item
-      ),
-    })
+    onChange(items.map(item =>
+      item.id === experienceId
+        ? {
+            ...item,
+            achievements: item.achievements.filter((_, i) => i !== index),
+          }
+        : item
+    ));
   }
 
   return (
     <div className="space-y-6">
-      {content.items.map((experience, index) => (
+      {items.map((experience, index) => (
         <motion.div
           key={experience.id}
           initial={{ opacity: 0, y: 20 }}
