@@ -58,7 +58,11 @@ function CVBuilder() {
         .eq('id', templateId)
         .single()
 
-      if (templateError) throw templateError
+      if (templateError) throw templateError;
+
+      console.log('--- DEBUG: Template Structure ---');
+      console.log(JSON.stringify(template.structure, null, 2));
+      console.log('---------------------------------');
 
       const { data: cv, error: cvError } = await supabase
         .from('user_cvs')
@@ -67,11 +71,35 @@ function CVBuilder() {
         .eq('template_id', templateId)
         .single()
 
+      // Si une erreur se produit mais qu'elle n'est pas 'aucune ligne trouvée', on la lance.
+      if (cvError && cvError.code !== 'PGRST116') {
+        throw cvError;
+      }
+
       if (cv && cv.sections) {
         setCvSections(cv.sections);
       } else {
-        // Si aucun CV n'existe, on utilise simplement la structure du template
-        setCvSections(template.structure.sections);
+        // Pré-remplissage si aucun CV n'existe
+        const newSections = template.structure.sections.map((section: any) => {
+          const currentContent = section.content || {};
+          if (section.type === 'header') {
+            return {
+              ...section,
+              content: {
+                ...currentContent,
+                name: user?.full_name || currentContent.name || '',
+                email: user?.email || currentContent.email || '',
+                title: user?.title || currentContent.title || '',
+                phone: user?.phone || currentContent.phone || '',
+                location: user?.location || currentContent.location || '',
+                linkedin: user?.linkedin || currentContent.linkedin || '',
+                website: user?.website || currentContent.website || '',
+              },
+            };
+          }
+          return section;
+        });
+        setCvSections(newSections);
       }
     } catch (error: any) {
       console.error('Detailed Error loading CV:', error);
