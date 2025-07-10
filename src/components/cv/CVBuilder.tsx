@@ -62,9 +62,9 @@ function CVBuilder() {
 
 
 
-      const { data: cv, error: cvError } = await supabase
+            const { data: cv, error: cvError } = await supabase
         .from('user_cvs')
-        .select('structure')
+        .select('content') // Correction finale : la colonne est 'content'
         .eq('user_id', user?.id)
         .eq('template_id', templateId)
         .single()
@@ -74,10 +74,11 @@ function CVBuilder() {
         throw cvError;
       }
 
-      if (cv && cv.structure) {
-        setCvSections(cv.structure);
+      if (cv && cv.content && (cv.content as any).sections) {
+        // Si un CV existe, on charge ses sections depuis la colonne 'content'
+        setCvSections((cv.content as any).sections);
       } else {
-        // Pré-remplissage si aucun CV n'existe
+        // Sinon, on pré-remplit à partir du modèle
         const newSections = template.structure.sections.map((section: any) => {
           const currentContent = section.content || {};
           if (section.type === 'header') {
