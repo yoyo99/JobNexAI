@@ -147,9 +147,9 @@ function JobApplications() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">Suivi des Candidatures</h1>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-white">Suivi de mes candidatures</h1>
         <button
           onClick={() => {
             setSelectedJobId(undefined)
@@ -162,186 +162,188 @@ function JobApplications() {
         </button>
       </div>
 
-      <div className="mb-6">
-        <div className="border-b border-gray-700">
-          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-            <button
-              onClick={() => setActiveTab('kanban')}
-              className={`${activeTab === 'kanban' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-            >
-              Kanban
-            </button>
-            <button
-              onClick={() => setActiveTab('automated')}
-              className={`${activeTab === 'automated' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-            >
-              Candidatures Automatisées
-            </button>
-            <button
-              onClick={() => setActiveTab('cover-letter')}
-              className={`${activeTab === 'cover-letter' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-            >
-              Générateur de Lettres
-            </button>
-            <button
-              onClick={() => setActiveTab('interviews')}
-              className={`${activeTab === 'interviews' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-            >
-              Gestion des Entretiens
-            </button>
-          </nav>
-        </div>
-      </div>
-
-      {loading && <p>Chargement des candidatures...</p>}
-
-      {activeTab === 'kanban' && (
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {statusColumns.map(column => (
-              <div key={column.id} className="bg-gray-900/50 rounded-lg">
-                <h2 className={`text-lg font-semibold p-4 border-b border-gray-700 ${column.color} text-white rounded-t-lg`}>
-                  {column.name}
-                </h2>
-                <Droppable droppableId={column.id}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="p-4 space-y-4 h-full"
-                    >
-                      {applications
-                        .filter(app => app.status === column.id && app.job)
-                        .map((application, index) => (
-                          <Draggable key={application.id} draggableId={application.id} index={index}>
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={`bg-background p-3 rounded-lg mb-3 shadow-lg border-l-4 ${
-                                  snapshot.isDragging ? 'shadow-primary-500/50' : ''
-                                }`}
-                                style={{
-                                  ...provided.draggableProps.style,
-                                  borderColor: column.color.replace('bg-', ''),
-                                }}
-                              >
-                                <motion.div layout>
-                                  <div className="flex justify-between items-start">
-                                    <div>
-                                      <div className="font-bold text-white mb-1">{application.job!.title}</div>
-                                      <p className="text-sm text-gray-400">{application.job!.company}</p>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <button
-                                        onClick={() => handleExportPDF(application)}
-                                        className="text-gray-400 hover:text-white"
-                                        title="Exporter en PDF"
-                                      >
-                                        <DocumentArrowDownIcon className="h-5 w-5" />
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          setSelectedApplication(application)
-                                          setNotes(application.notes || '')
-                                          setShowNotes(true)
-                                        }}
-                                        className="text-gray-400 hover:text-white"
-                                      >
-                                        <PencilIcon className="h-4 w-4" />
-                                      </button>
-                                      <button
-                                        onClick={() => deleteApplication(application.id)}
-                                        className="text-gray-400 hover:text-red-400"
-                                      >
-                                        <TrashIcon className="h-4 w-4" />
-                                      </button>
-                                    </div>
-                                  </div>
-
-                                  {application.next_step_date && (
-                                    <div className="flex items-center gap-2 text-sm text-primary-400">
-                                      <CalendarIcon className="h-4 w-4" />
-                                      <span>
-                                        {format(new Date(application.next_step_date), 'dd MMMM yyyy', { locale: fr })}
-                                        {application.next_step_type && ` - ${application.next_step_type}`}
-                                      </span>
-                                    </div>
-                                  )}
-
-                                  {application.notes && (
-                                    <p className="text-sm text-gray-400 line-clamp-2">
-                                      {application.notes}
-                                    </p>
-                                  )}
-
-                                  <div className="text-xs text-gray-500">
-                                    Mise à jour {format(new Date(application.updated_at), 'dd/MM/yyyy', { locale: fr })}
-                                  </div>
-                                </motion.div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            ))}
+      <div className="bg-background-secondary p-4 rounded-lg">
+        <div className="mb-6">
+          <div className="border-b border-gray-700">
+            <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+              <button
+                onClick={() => setActiveTab('kanban')}
+                className={`${activeTab === 'kanban' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Kanban
+              </button>
+              <button
+                onClick={() => setActiveTab('automated')}
+                className={`${activeTab === 'automated' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Candidatures Automatisées
+              </button>
+              <button
+                onClick={() => setActiveTab('cover-letter')}
+                className={`${activeTab === 'cover-letter' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Générateur de Lettres
+              </button>
+              <button
+                onClick={() => setActiveTab('interviews')}
+                className={`${activeTab === 'interviews' ? 'border-primary-500 text-primary-400' : 'border-transparent text-gray-400 hover:text-white hover:border-gray-500'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Gestion des Entretiens
+              </button>
+            </nav>
           </div>
-        </DragDropContext>
-      )}
+        </div>
 
-      {activeTab === 'automated' && (
-        <AutomatedApplications />
-      )}
+        {loading && <p>Chargement des candidatures...</p>}
 
-      {activeTab === 'cover-letter' && (
-        <CoverLetterGenerator />
-      )}
+        {activeTab === 'kanban' && (
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {statusColumns.map(column => (
+                <div key={column.id} className="bg-gray-900/50 rounded-lg">
+                  <h2 className={`text-lg font-semibold p-4 border-b border-gray-700 ${column.color} text-white rounded-t-lg`}>
+                    {column.name}
+                  </h2>
+                  <Droppable droppableId={column.id}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="p-4 space-y-4 h-full"
+                      >
+                        {applications
+                          .filter(app => app.status === column.id && app.job)
+                          .map((application, index) => (
+                            <Draggable key={application.id} draggableId={application.id} index={index}>
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className={`bg-background p-3 rounded-lg mb-3 shadow-lg border-l-4 ${
+                                    snapshot.isDragging ? 'shadow-primary-500/50' : ''
+                                  }`}
+                                  style={{
+                                    ...provided.draggableProps.style,
+                                    borderColor: column.color.replace('bg-', ''),
+                                  }}
+                                >
+                                  <motion.div layout>
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <div className="font-bold text-white mb-1">{application.job!.title}</div>
+                                        <p className="text-sm text-gray-400">{application.job!.company}</p>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <button
+                                          onClick={() => handleExportPDF(application)}
+                                          className="text-gray-400 hover:text-white"
+                                          title="Exporter en PDF"
+                                        >
+                                          <DocumentArrowDownIcon className="h-5 w-5" />
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            setSelectedApplication(application)
+                                            setNotes(application.notes || '')
+                                            setShowNotes(true)
+                                          }}
+                                          className="text-gray-400 hover:text-white"
+                                        >
+                                          <PencilIcon className="h-4 w-4" />
+                                        </button>
+                                        <button
+                                          onClick={() => deleteApplication(application.id)}
+                                          className="text-gray-400 hover:text-red-400"
+                                        >
+                                          <TrashIcon className="h-4 w-4" />
+                                        </button>
+                                      </div>
+                                    </div>
 
-      {activeTab === 'interviews' && (
-        <InterviewManager />
-      )}
+                                    {application.next_step_date && (
+                                      <div className="flex items-center gap-2 text-sm text-primary-400">
+                                        <CalendarIcon className="h-4 w-4" />
+                                        <span>
+                                          {format(new Date(application.next_step_date), 'dd MMMM yyyy', { locale: fr })}
+                                          {application.next_step_type && ` - ${application.next_step_type}`}
+                                        </span>
+                                      </div>
+                                    )}
 
-      {showNotes && selectedApplication && selectedApplication.job && (
-        <div className="fixed inset-0 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-background rounded-lg p-6 w-full max-w-lg">
-            <h3 className="text-lg font-medium text-white mb-4">
-              Notes - {selectedApplication.job.title}
-            </h3>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="w-full h-40 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-              placeholder="Ajoutez vos notes ici..."
-            />
-            <div className="flex justify-end gap-4 mt-4">
-              <button
-                onClick={() => setShowNotes(false)}
-                className="btn-secondary"
-              >
-                Annuler
-              </button>
-              <button
-                onClick={updateNotes}
-                className="btn-primary"
-              >
-                Enregistrer
-              </button>
+                                    {application.notes && (
+                                      <p className="text-sm text-gray-400 line-clamp-2">
+                                        {application.notes}
+                                      </p>
+                                    )}
+
+                                    <div className="text-xs text-gray-500">
+                                      Mise à jour {format(new Date(application.updated_at), 'dd/MM/yyyy', { locale: fr })}
+                                    </div>
+                                  </motion.div>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </div>
+              ))}
+            </div>
+          </DragDropContext>
+        )}
+
+        {activeTab === 'automated' && (
+          <AutomatedApplications />
+        )}
+
+        {activeTab === 'cover-letter' && (
+          <CoverLetterGenerator />
+        )}
+
+        {activeTab === 'interviews' && (
+          <InterviewManager />
+        )}
+
+        {showNotes && selectedApplication && selectedApplication.job && (
+          <div className="fixed inset-0 bg-black/75 flex items-center justify-center p-4">
+            <div className="bg-background rounded-lg p-6 w-full max-w-lg">
+              <h3 className="text-lg font-medium text-white mb-4">
+                Notes - {selectedApplication.job.title}
+              </h3>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="w-full h-40 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Ajoutez vos notes ici..."
+              />
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  onClick={() => setShowNotes(false)}
+                  className="btn-secondary"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={updateNotes}
+                  className="btn-primary"
+                >
+                  Enregistrer
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <JobApplicationForm
-        isOpen={showForm}
-        onClose={() => setShowForm(false)}
-        onSubmit={loadApplications}
-        jobId={selectedJobId}
-      />
+        <JobApplicationForm
+          isOpen={showForm}
+          onClose={() => setShowForm(false)}
+          onSubmit={loadApplications}
+          jobId={selectedJobId}
+        />
+      </div>
     </div>
   )
 }
