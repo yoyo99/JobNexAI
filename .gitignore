@@ -42,3 +42,4 @@ yarn-error.log*
 public/locales/.DS_Store
 /tmp
 public/locales/.DS_Store
+src/components/.DS_Store

@@ -16,6 +16,7 @@ function CVBuilder() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [cvSections, setCvSections] = useState<any[] | null>(null)
 
   useEffect(() => {
     loadTemplates()
@@ -72,10 +73,12 @@ function CVBuilder() {
   return (
     <div className="flex h-screen">
       <CVEditor
-        templateId={selectedTemplate}
+        templateId={selectedTemplate!}
         onBack={() => setSelectedTemplate(null)}
+        initialSections={cvSections}
+        onSectionsChange={setCvSections}
       />
-      <CVPreview templateId={selectedTemplate} />
+      <CVPreview sections={cvSections} />
     </div>
   )
 }

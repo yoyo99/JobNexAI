@@ -10,11 +10,12 @@ import { SkillsSection } from './sections/SkillsSection'
 import { ProjectsSection } from './sections/ProjectsSection'
 
 interface EditorProps {
-  templateId: string
-  onBack: () => void
+  templateId: string;
+  onBack: () => void;
+  onSectionsChange: (sections: any[]) => void;
 }
 
-export function CVEditor({ templateId, onBack }: EditorProps) {
+export function CVEditor({ templateId, onBack, onSectionsChange }: EditorProps) {
   const { user } = useAuth()
   const [sections, setSections] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -44,7 +45,8 @@ export function CVEditor({ templateId, onBack }: EditorProps) {
         .single()
 
       if (!cvError) {
-        setSections(cv.sections)
+        setSections(cv.sections);
+        onSectionsChange(cv.sections);
       } else {
                 // Pré-remplir avec les données du profil si c'est un nouveau CV
         const newSections = template.structure.sections.map((section: any) => {
@@ -66,6 +68,7 @@ export function CVEditor({ templateId, onBack }: EditorProps) {
           return section;
         });
         setSections(newSections);
+        onSectionsChange(newSections);
       }
     } catch (error) {
       console.error('Error loading CV:', error)
@@ -98,11 +101,11 @@ export function CVEditor({ templateId, onBack }: EditorProps) {
   }
 
   const updateSection = (index: number, content: any) => {
-    setSections(prev =>
-      prev.map((section, i) =>
-        i === index ? { ...section, content } : section
-      )
-    )
+    const newSections = sections.map((section, i) =>
+      i === index ? { ...section, content } : section
+    );
+    setSections(newSections);
+    onSectionsChange(newSections);
   }
 
   const renderSectionEditor = (section: any, index: number) => {

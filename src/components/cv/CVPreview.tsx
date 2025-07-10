@@ -9,40 +9,11 @@ import { SkillsPreview } from './previews/SkillsPreview'
 import { ProjectsPreview } from './previews/ProjectsPreview'
 
 interface PreviewProps {
-  templateId: string
+  sections: any[] | null;
 }
 
-export function CVPreview({ templateId }: PreviewProps) {
-  const { user } = useAuth()
-  const [cv, setCV] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [downloading, setDownloading] = useState(false)
-
-  useEffect(() => {
-    loadCV()
-  }, [templateId])
-
-  const loadCV = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('user_cvs')
-        .select(`
-          *,
-          template:cv_templates(*)
-        `)
-        .eq('user_id', user?.id)
-        .eq('template_id', templateId)
-        .single()
-
-      if (error) throw error
-      setCV(data)
-    } catch (error) {
-      console.error('Error loading CV:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+export function CVPreview({ sections }: PreviewProps) {
+  const [downloading, setDownloading] = useState(false);
 
   const downloadPDF = async () => {
     try {
@@ -52,7 +23,7 @@ export function CVPreview({ templateId }: PreviewProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ cv_id: cv.id }),
+        body: JSON.stringify({ sections }), // TODO: This needs a proper CV ID
       })
 
       const blob = await response.blob()
@@ -87,13 +58,7 @@ export function CVPreview({ templateId }: PreviewProps) {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-400"></div>
-      </div>
-    )
-  }
+
 
   return (
     <div className="w-1/2 bg-background p-6">
@@ -110,8 +75,8 @@ export function CVPreview({ templateId }: PreviewProps) {
       </div>
 
       <div className="bg-white rounded-lg shadow-xl p-8 text-black">
-        {cv && cv.sections ? (
-          cv.sections.map((section: any, index: number) => (
+        {sections ? (
+          sections.map((section: any, index: number) => (
             <div key={index}>
               {renderSectionPreview(section)}
             </div>
