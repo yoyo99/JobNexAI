@@ -80,23 +80,23 @@ function CVBuilder() {
       } else {
         // Sinon, on pré-remplit à partir du modèle
         const newSections = template.structure.sections.map((section: any) => {
-          const currentContent = section.content || {};
-          if (section.type === 'header') {
-            return {
-              ...section,
-              content: {
-                ...currentContent,
-                name: user?.full_name || currentContent.name || '',
-                email: user?.email || currentContent.email || '',
-                title: user?.title || currentContent.title || '',
-                phone: user?.phone || currentContent.phone || '',
-                location: user?.location || currentContent.location || '',
-                linkedin: user?.linkedin || currentContent.linkedin || '',
-                website: user?.website || currentContent.website || '',
-              },
+          // Garantit que chaque section a un objet 'content', même vide.
+          const newSection = { ...section, content: section.content || {} };
+
+          if (newSection.type === 'header') {
+            // Pré-remplissage de l'en-tête
+            newSection.content = {
+              ...newSection.content,
+              name: user?.full_name || newSection.content.name || '',
+              email: user?.email || newSection.content.email || '',
+              title: user?.title || newSection.content.title || '',
+              phone: user?.phone || newSection.content.phone || '',
+              location: user?.location || newSection.content.location || '',
+              linkedin: user?.linkedin || newSection.content.linkedin || '',
+              website: user?.website || newSection.content.website || '',
             };
           }
-          return section;
+          return newSection;
         });
         setCvSections(newSections);
       }
