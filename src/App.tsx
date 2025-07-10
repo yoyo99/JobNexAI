@@ -70,7 +70,7 @@ const DiagnosticSupabase = React.lazy(() => import('./pages/DiagnosticSupabase')
 const TestDirectSupabase = React.lazy(() => import('./pages/TestDirectSupabase')); // Test direct de Supabase avec fetch et ping
 const NewSupabaseTest = React.lazy(() => import('./pages/NewSupabaseTest')); // Nouvelle page de test avec valeurs codées en dur
 const AuthTest = React.lazy(() => import('./pages/AuthTest')); // Test spécifique pour l'authentification Supabase
-const CheckEnv = React.lazy(() => import('./pages/CheckEnv')); // Vérification des variables d'environnement
+
 const AboutPage = React.lazy(() => import('./components/pages/AboutPage'));
 const ContactPage = React.lazy(() => import('./components/pages/ContactPage'));
 const TermsPage = React.lazy(() => import('./components/pages/TermsPage'));
@@ -151,7 +151,7 @@ function App() {
               <Route path="/test-direct" element={<LazyComponentWrapper><TestDirectSupabase /></LazyComponentWrapper>} />
               <Route path="/new-test" element={<LazyComponentWrapper><NewSupabaseTest /></LazyComponentWrapper>} />
               <Route path="/auth-test" element={<LazyComponentWrapper><AuthTest /></LazyComponentWrapper>} />
-              <Route path="/check-env" element={<LazyComponentWrapper><CheckEnv /></LazyComponentWrapper>} />
+
               <Route path="/features" element={<LazyComponentWrapper><FeaturesPage /></LazyComponentWrapper>} />
               <Route path="/how-it-works" element={<LazyComponentWrapper><HowItWorksPage /></LazyComponentWrapper>} />
               <Route path="/testimonials" element={<LazyComponentWrapper><TestimonialsPage /></LazyComponentWrapper>} />
