@@ -21,22 +21,36 @@ interface ExperiencePreviewProps {
 }
 
 export const ExperiencePreview: React.FC<ExperiencePreviewProps> = ({ items }) => {
+  if (!items || items.length === 0) {
+    return null; // Ne rien afficher si pas d'expérience
+  }
+
   return (
-    <div className="my-4">
-      <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-700">Expérience Professionnelle</h3>
+    <div className="space-y-6">
       {items.map(item => (
-        <div key={item.id} className="mb-3">
-          <div className="flex justify-between items-baseline">
-            <h4 className="text-lg font-semibold text-gray-800">{item.title}</h4>
-            <span className="text-sm text-gray-500">{item.startDate} - {item.endDate || 'Présent'}</span>
+        <div key={item.id} className="grid grid-cols-1 md:grid-cols-4 gap-x-6">
+          {/* Colonne de gauche pour la date */}
+          <div className="md:col-span-1 text-sm text-gray-500 font-medium mb-2 md:mb-0 md:text-right">
+            {item.startDate} - {item.endDate || 'Présent'}
           </div>
-          <p className="text-md text-gray-600">{item.company} | {item.location}</p>
-          <p className="text-sm text-gray-600 mt-1">{item.description}</p>
-          <ul className="list-disc list-inside mt-1 text-sm text-gray-600">
-            {item.achievements.map(ach => (
-              <li key={ach.id}>{ach.text}</li>
-            ))}
-          </ul>
+
+          {/* Colonne de droite pour les détails */}
+          <div className="md:col-span-3">
+            <h4 className="text-lg font-semibold text-gray-800">{item.title}</h4>
+            <div className="flex items-center text-md text-gray-600 mb-2">
+              <span>{item.company}</span>
+              {item.location && <span className="mx-2">•</span>}
+              <span>{item.location}</span>
+            </div>
+            {item.description && <p className="text-sm text-gray-600 mb-2">{item.description}</p>}
+            {item.achievements && item.achievements.length > 0 && (
+              <ul className="list-disc list-outside pl-5 space-y-1 text-sm text-gray-700">
+                {item.achievements.map(ach => (
+                  <li key={ach.id}>{ach.text}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       ))}
     </div>

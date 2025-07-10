@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -15,24 +16,41 @@ interface ProjectsPreviewProps {
 }
 
 export const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ items }) => {
+  if (!items || items.length === 0) {
+    return null; // Ne rien afficher si pas de projets
+  }
+
   return (
-    <div className="my-4">
-      <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-700">Projets</h3>
+    <div className="space-y-6">
       {items.map(item => (
-        <div key={item.id} className="mb-3">
-          <div className="flex justify-between items-baseline">
+        <div key={item.id} className="grid grid-cols-1 md:grid-cols-4 gap-x-6">
+          {/* Colonne de gauche pour la date */}
+          <div className="md:col-span-1 text-sm text-gray-500 font-medium mb-2 md:mb-0 md:text-right">
+            {item.startDate} - {item.endDate || 'En cours'}
+          </div>
+
+          {/* Colonne de droite pour les détails */}
+          <div className="md:col-span-3">
             <h4 className="text-lg font-semibold text-gray-800">{item.name}</h4>
-            <span className="text-sm text-gray-500">{item.startDate} - {item.endDate || 'En cours'}</span>
+            {item.description && <p className="text-sm text-gray-600 my-2">{item.description}</p>}
+            
+            {item.technologies && item.technologies.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {item.technologies.map((tech, index) => (
+                  <span key={index} className="bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-1 rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-indigo-600 hover:underline">
+                <Link size={14} />
+                Voir le projet
+              </a>
+            )}
           </div>
-          <p className="text-sm text-gray-600 mt-1">{item.description}</p>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {item.technologies.map((tech, index) => (
-              <span key={index} className="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-0.5 rounded">
-                {tech}
-              </span>
-            ))}
-          </div>
-          {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 mt-1">Voir le projet</a>}
         </div>
       ))}
     </div>

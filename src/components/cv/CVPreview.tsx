@@ -6,7 +6,8 @@ import { HeaderPreview } from './previews/HeaderPreview'
 import { ExperiencePreview } from './previews/ExperiencePreview'
 import { EducationPreview } from './previews/EducationPreview'
 import { SkillsPreview } from './previews/SkillsPreview'
-import { ProjectsPreview } from './previews/ProjectsPreview'
+import { ProjectsPreview } from './previews/ProjectsPreview';
+import { SectionTitle } from './previews/SectionTitle';
 
 interface PreviewProps {
   sections: any[] | null;
@@ -77,7 +78,8 @@ export function CVPreview({ sections }: PreviewProps) {
       <div className="bg-white rounded-lg shadow-xl p-8 text-black">
         {sections ? (
           sections.map((section: any, index: number) => (
-            <div key={index}>
+            <div key={index} className={section.type !== 'header' ? 'mb-6' : ''}>
+              {section.type !== 'header' && section.title && <SectionTitle>{section.title}</SectionTitle>}
               {renderSectionPreview(section)}
             </div>
           ))

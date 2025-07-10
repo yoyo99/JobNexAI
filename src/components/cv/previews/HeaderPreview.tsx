@@ -1,4 +1,5 @@
 import React from 'react';
+import { Mail, Phone, MapPin, Linkedin, Globe } from 'lucide-react';
 
 interface HeaderContent {
   name: string;
@@ -15,18 +16,41 @@ interface HeaderPreviewProps {
 }
 
 export const HeaderPreview: React.FC<HeaderPreviewProps> = ({ content }) => {
+  const contactInfo = [
+    { icon: <Mail size={14} />, text: content.email, href: `mailto:${content.email}` },
+    { icon: <Phone size={14} />, text: content.phone, href: `tel:${content.phone}` },
+    { icon: <MapPin size={14} />, text: content.location },
+  ];
+
+  const socialLinks = [
+    { icon: <Linkedin size={14} />, text: 'LinkedIn', href: content.linkedin },
+    { icon: <Globe size={14} />, text: 'Website', href: content.website },
+  ];
+
   return (
-    <div className="text-center border-b pb-4 mb-4">
-      <h1 className="text-3xl font-bold text-gray-800">{content.name}</h1>
-      <h2 className="text-xl text-gray-600">{content.title}</h2>
-      <div className="flex justify-center gap-4 mt-2 text-sm text-gray-500">
-        <span>{content.email}</span>
-        <span>{content.phone}</span>
-        <span>{content.location}</span>
+    <div className="p-6 bg-white rounded-t-lg mb-6 text-gray-800">
+      <div className="text-center mb-4">
+        <h1 className="text-4xl font-bold text-gray-900">{content.name || 'Votre Nom'}</h1>
+        <h2 className="text-xl text-indigo-600 font-medium">{content.title || 'Votre Titre'}</h2>
       </div>
-      <div className="flex justify-center gap-4 mt-1 text-sm text-blue-500">
-        <a href={content.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href={content.website} target="_blank" rel="noopener noreferrer">Website</a>
+      
+      <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm text-gray-600 border-t border-gray-200 py-3">
+        {contactInfo.map((item, index) => (
+          item.text && (
+            <a key={index} href={item.href} className="flex items-center gap-2 hover:text-indigo-600 transition-colors">
+              {item.icon}
+              <span>{item.text}</span>
+            </a>
+          )
+        ))}
+        {socialLinks.map((item, index) => (
+          item.href && (
+            <a key={index} href={item.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-indigo-600 transition-colors">
+              {item.icon}
+              <span>{item.text}</span>
+            </a>
+          )
+        ))}
       </div>
     </div>
   );

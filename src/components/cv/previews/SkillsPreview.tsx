@@ -16,15 +16,21 @@ interface SkillsPreviewProps {
 }
 
 export const SkillsPreview: React.FC<SkillsPreviewProps> = ({ categories }) => {
+  if (!categories || categories.length === 0) {
+    return null; // Ne rien afficher si pas de compétences
+  }
+
   return (
-    <div className="my-4">
-      <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-700">Compétences</h3>
+    <div className="space-y-4">
       {categories.map(category => (
-        <div key={category.id} className="mb-2">
-          <h4 className="text-lg font-semibold text-gray-800">{category.name}</h4>
-          <div className="flex flex-wrap gap-2 mt-1">
+        <div key={category.id}>
+          <h4 className="text-md font-semibold text-gray-700 mb-2">{category.name}</h4>
+          <div className="flex flex-wrap gap-2">
             {category.skills.map(skill => (
-              <span key={skill.id} className="bg-gray-200 text-gray-700 text-sm font-medium px-2 py-1 rounded">
+              <span 
+                key={skill.id} 
+                className="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full"
+              >
                 {skill.name}
               </span>
             ))}
