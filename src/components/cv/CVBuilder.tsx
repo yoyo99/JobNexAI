@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
 import { CVTemplate } from './CVTemplate'
 import { CVEditor } from './CVEditor'
@@ -15,12 +16,21 @@ interface Template {
 function CVBuilder() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+  const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [cvSections, setCvSections] = useState<any[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     loadTemplates()
   }, [])
+
+  useEffect(() => {
+    if (selectedTemplate) {
+      setError(null);
+      loadCV(selectedTemplate);
+    }
+  }, [selectedTemplate]);
 
   const loadTemplates = async () => {
     try {
@@ -39,7 +49,65 @@ function CVBuilder() {
     }
   }
 
-  if (loading) {
+  const loadCV = async (templateId: string) => {
+    try {
+      setLoading(true)
+      const { data: template, error: templateError } = await supabase
+        .from('cv_templates')
+        .select('structure')
+        .eq('id', templateId)
+        .single()
+
+      if (templateError) throw templateError
+
+      const { data: cv, error: cvError } = await supabase
+        .from('user_cvs')
+        .select('sections')
+        .eq('user_id', user?.id)
+        .eq('template_id', templateId)
+        .single()
+
+      if (!cvError) {
+        setCvSections(cv.sections)
+      } else {
+        const newSections = template.structure.sections.map((section: any) => {
+          if (section.type === 'header') {
+            return {
+              ...section,
+              content: {
+                ...section.content,
+                name: user?.full_name || section.content.name || '',
+                email: user?.email || section.content.email || '',
+                title: user?.title || section.content.title || '',
+                phone: user?.phone || section.content.phone || '',
+                location: user?.location || section.content.location || '',
+                linkedin: user?.linkedin || section.content.linkedin || '',
+                website: user?.website || section.content.website || '',
+              },
+            }
+          }
+          return section
+        })
+        setCvSections(newSections)
+      }
+    } catch (error) {
+      console.error('Error loading CV:', error);
+      setError('Une erreur est survenue lors du chargement de votre CV.');
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-center">
+        <p className="text-red-400">{error}</p>
+        <button onClick={() => setSelectedTemplate(null)} className="btn-secondary mt-4">Retour</button>
+      </div>
+    )
+  }
+
+  if (loading && !selectedTemplate) {
     return (
       <div className="flex justify-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-400"></div>
@@ -74,8 +142,11 @@ function CVBuilder() {
     <div className="flex h-screen">
       <CVEditor
         templateId={selectedTemplate!}
-        onBack={() => setSelectedTemplate(null)}
-        initialSections={cvSections}
+        onBack={() => {
+          setSelectedTemplate(null);
+          setCvSections(null);
+        }}
+        sections={cvSections || []}
         onSectionsChange={setCvSections}
       />
       <CVPreview sections={cvSections} />

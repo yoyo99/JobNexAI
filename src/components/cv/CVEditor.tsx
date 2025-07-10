@@ -12,70 +12,14 @@ import { ProjectsSection } from './sections/ProjectsSection'
 interface EditorProps {
   templateId: string;
   onBack: () => void;
+  sections: any[];
   onSectionsChange: (sections: any[]) => void;
 }
 
-export function CVEditor({ templateId, onBack, onSectionsChange }: EditorProps) {
+export function CVEditor({ templateId, onBack, sections, onSectionsChange }: EditorProps) {
   const { user } = useAuth()
-  const [sections, setSections] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-
-  useEffect(() => {
-    loadCV()
-  }, [templateId])
-
-  const loadCV = async () => {
-    try {
-      setLoading(true)
-      const { data: template, error: templateError } = await supabase
-        .from('cv_templates')
-        .select('structure')
-        .eq('id', templateId)
-        .single()
-
-      if (templateError) throw templateError
-
-      const { data: cv, error: cvError } = await supabase
-        .from('user_cvs')
-        .select('sections')
-        .eq('user_id', user?.id)
-        .eq('template_id', templateId)
-        .single()
-
-      if (!cvError) {
-        setSections(cv.sections);
-        onSectionsChange(cv.sections);
-      } else {
-                // Pré-remplir avec les données du profil si c'est un nouveau CV
-        const newSections = template.structure.sections.map((section: any) => {
-          if (section.type === 'header') {
-            return {
-              ...section,
-              content: {
-                ...section.content,
-                name: user?.full_name || section.content.name || '',
-                email: user?.email || section.content.email || '',
-                title: user?.title || section.content.title || '',
-                phone: user?.phone || section.content.phone || '',
-                location: user?.location || section.content.location || '',
-                linkedin: user?.linkedin || section.content.linkedin || '',
-                website: user?.website || section.content.website || '',
-              },
-            };
-          }
-          return section;
-        });
-        setSections(newSections);
-        onSectionsChange(newSections);
-      }
-    } catch (error) {
-      console.error('Error loading CV:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const saveCV = async () => {
     try {
@@ -104,7 +48,6 @@ export function CVEditor({ templateId, onBack, onSectionsChange }: EditorProps) 
     const newSections = sections.map((section, i) =>
       i === index ? { ...section, content } : section
     );
-    setSections(newSections);
     onSectionsChange(newSections);
   }
 
@@ -154,13 +97,7 @@ export function CVEditor({ templateId, onBack, onSectionsChange }: EditorProps) 
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-400"></div>
-      </div>
-    )
-  }
+
 
   return (
     <div className="w-1/2 bg-background border-r border-white/10 p-6 overflow-y-auto">
