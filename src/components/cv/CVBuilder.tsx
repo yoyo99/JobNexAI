@@ -60,13 +60,11 @@ function CVBuilder() {
 
       if (templateError) throw templateError;
 
-      console.log('--- DEBUG: Template Structure ---');
-      console.log(JSON.stringify(template.structure, null, 2));
-      console.log('---------------------------------');
+
 
       const { data: cv, error: cvError } = await supabase
         .from('user_cvs')
-        .select('sections')
+        .select('data')
         .eq('user_id', user?.id)
         .eq('template_id', templateId)
         .single()
@@ -76,8 +74,8 @@ function CVBuilder() {
         throw cvError;
       }
 
-      if (cv && cv.sections) {
-        setCvSections(cv.sections);
+      if (cv && cv.data) {
+        setCvSections(cv.data);
       } else {
         // Pré-remplissage si aucun CV n'existe
         const newSections = template.structure.sections.map((section: any) => {

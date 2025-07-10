@@ -31,7 +31,7 @@ export function CVEditor({ templateId, onBack, sections, onSectionsChange }: Edi
         .upsert({
           user_id: user?.id,
           template_id: templateId,
-          sections,
+          data: sections, // Utiliser la colonne 'data'
         })
 
       if (error) throw error
