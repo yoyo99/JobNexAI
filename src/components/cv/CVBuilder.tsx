@@ -90,9 +90,9 @@ function CVBuilder() {
         })
         setCvSections(newSections)
       }
-    } catch (error) {
-      console.error('Error loading CV:', error);
-      setError('Une erreur est survenue lors du chargement de votre CV.');
+    } catch (error: any) {
+      console.error('Detailed Error loading CV:', error);
+      setError(`Erreur de chargement : ${error.message || 'Erreur inconnue'}. Veuillez réessayer.`);
     } finally {
       setLoading(false)
     }
