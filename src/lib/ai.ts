@@ -1,4 +1,6 @@
 import OpenAI from 'openai';
+import { Mistral } from '@mistralai/mistralai';
+import { useAuth } from '../stores/auth';
 
 /**
  * Effectue une analyse sémantique d'un texte donné.
@@ -173,47 +175,79 @@ export function getAverageNote(conversationId: string): number {
  * @param {string} tone - Le ton de la lettre (par défaut : 'professional').
  * @returns {string} - La lettre de motivation générée.
  */
+async function generateCoverLetterWithOpenAI(
+  cv: any,
+  jobDescription: string,
+  language: string,
+  tone: 'professional' | 'conversational' | 'enthusiastic'
+): Promise<string> {
+  const openai = getOpenAIClient();
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4",
+    messages: [
+        {
+            role: "system",
+            content: `Tu es un expert en rédaction de lettres de motivation professionnelles. TÂCHE: Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous. INSTRUCTIONS: 1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}. 2. Structure la lettre avec une introduction, un développement et une conclusion. 3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi. 4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste. 5. Évite les formules génériques et les clichés. 6. Limite la lettre à environ 300-400 mots. 7. Inclus les formules de politesse appropriées en ${language}. FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
+        },
+        {
+            role: "user",
+            content: `CV: ${JSON.stringify(cv)}\nDescription du poste: ${jobDescription}`,
+        },
+    ],
+    temperature: 0.7,
+    max_tokens: 1000,
+  });
+  return completion.choices[0].message.content as string;
+}
+
+async function generateCoverLetterWithMistral(
+  cv: any,
+  jobDescription: string,
+  language: string,
+  tone: 'professional' | 'conversational' | 'enthusiastic'
+): Promise<string> {
+  const mistralClient = getMistralClient();
+  const chatResponse = await mistralClient.chat.complete({
+    model: 'mistral-large-latest',
+    messages: [
+        {
+            role: 'system',
+            content: `Tu es un expert en rédaction de lettres de motivation professionnelles. TÂCHE: Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous. INSTRUCTIONS: 1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}. 2. Structure la lettre avec une introduction, un développement et une conclusion. 3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi. 4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste. 5. Évite les formules génériques et les clichés. 6. Limite la lettre à environ 300-400 mots. 7. Inclus les formules de politesse appropriées en ${language}. FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
+        },
+        {
+            role: 'user',
+            content: `CV: ${JSON.stringify(cv)}\nDescription du poste: ${jobDescription}`,
+        },
+    ],
+    temperature: 0.7,
+    maxTokens: 1000,
+  });
+  const messageContent = chatResponse.choices[0].message.content;
+  if (typeof messageContent === 'string') {
+    return messageContent;
+  }
+  // Si le contenu n'est pas une chaîne (ex: ContentChunk[]), retourner une chaîne vide.
+  return '';
+}
+
 export async function generateCoverLetter(
   cv: any,
   jobDescription: string,
   language: string = 'fr',
   tone: 'professional' | 'conversational' | 'enthusiastic' = 'professional'
-) {
+): Promise<string> {
   try {
-    // Use OpenAI API directly from the browser
-    // Note: In production, use an Edge Function to protect your API key
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: `Tu es un expert en rédaction de lettres de motivation professionnelles.
-TÂCHE:
-Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous.
-INSTRUCTIONS:
-1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}
-2. Structure la lettre avec une introduction, un développement et une conclusion
-3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi
-4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste
-5. Évite les formules génériques et les clichés
-6. Limite la lettre à environ 300-400 mots
-7. Inclus les formules de politesse appropriées en ${language}
-FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
-        },
-        {
-          role: "user",
-          content: `CV: ${JSON.stringify(cv)}
-Description du poste: ${jobDescription}`,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
+    const { user } = useAuth.getState();
+    const provider = user?.ai_provider || 'mistral'; // Mistral par défaut
 
-    return completion.choices[0].message.content as string;
-
+    if (provider === 'openai') {
+      return await generateCoverLetterWithOpenAI(cv, jobDescription, language, tone);
+    } else {
+      return await generateCoverLetterWithMistral(cv, jobDescription, language, tone);
+    }
   } catch (error) {
-    throw error
+    console.error(`Erreur lors de la génération de la lettre de motivation avec ${useAuth.getState().user?.ai_provider || 'mistral'}:`, error);
+    throw error;
   }
 }
 
@@ -225,13 +259,30 @@ export async function generateBulkApplicationMessages(
   return jobDescriptions.map(job => ({ jobId: job.id, message: null }));
 }
 
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-if (!apiKey) {
-  throw new Error('VITE_OPENAI_API_KEY environment variable is not set');
+let openai: OpenAI | null = null;
+let mistral: Mistral | null = null;
+
+function getMistralClient(): Mistral {
+  if (!mistral) {
+    const apiKey = import.meta.env.VITE_MISTRAL_API_KEY;
+    if (!apiKey) {
+      throw new Error('La clé API Mistral (VITE_MISTRAL_API_KEY) n\'est pas configurée dans les variables d\'environnement.');
+    }
+    mistral = new Mistral({ apiKey });
+  }
+  return mistral;
 }
 
-// Initialise le client OpenAI avec la variable d'environnement correctement préfixée
-const openai = new OpenAI({
-  apiKey: apiKey,
-  dangerouslyAllowBrowser: true // Note: In production, always use an Edge Function 
-});
+function getOpenAIClient(): OpenAI {
+  if (!openai) {
+    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error('La clé API OpenAI (VITE_OPENAI_API_KEY) n\'est pas configurée dans les variables d\'environnement.');
+    }
+    openai = new OpenAI({
+      apiKey: apiKey,
+      dangerouslyAllowBrowser: true // AVERTISSEMENT: Pour la production, utilisez une fonction Edge sécurisée.
+    });
+  }
+  return openai;
+}
