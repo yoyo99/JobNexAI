@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --host",
+    "start": "netlify dev",
     "check-imports": "node check-imports.js",
     "verify-deps": "node verify-deps.js",
     "update-deps": "node update-deps.js",
