@@ -12,8 +12,18 @@ import { ProjectsPreview } from './previews/ProjectsPreview';
 import { ServicesPreview } from './previews/ServicesPreview';
 import { TestimonialsPreview } from './previews/TestimonialsPreview';
 import { SectionTitle } from './previews/SectionTitle';
+import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
+import { FreelanceTemplate } from './templates/FreelanceTemplate';
+import { CreativeTemplate } from './templates/CreativeTemplate';
+
+const TEMPLATES = {
+  professional: 'Professionnel',
+  freelance: 'Freelance',
+  creative: 'Créatif',
+};
 
 const LANGUAGES = {
+  fr: 'Français',
   en: 'Anglais',
   es: 'Espagnol',
   de: 'Allemand',
@@ -34,6 +44,7 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
   const [translatedCv, setTranslatedCv] = useState<any | null>(null);
   const [originalCv, setOriginalCv] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof TEMPLATES>('professional');
 
   const translateCvData = async (data: any, lang: string): Promise<any> => {
     const textsToTranslate: string[] = [];
@@ -202,7 +213,24 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
 
   return (
     <div className="w-1/2 bg-background p-6">
-      <div className="flex items-center justify-between mb-6">
+      {/* Template Selector */}
+      <div className="bg-gray-800 p-3 flex items-center justify-center gap-2">
+        {Object.entries(TEMPLATES).map(([key, name]) => (
+          <button
+            key={key}
+            onClick={() => setSelectedTemplate(key as keyof typeof TEMPLATES)}
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              selectedTemplate === key
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            }`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      <div className="bg-gray-800 p-4 rounded-t-lg flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-white">
           {cvName}{translatedCv ? ` (Traduit en ${LANGUAGES[targetLanguage]})` : ''}
         </h2>
@@ -265,17 +293,11 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
 
       <div ref={cvPreviewRef} className="p-12 bg-white rounded-lg shadow-2xl w-full max-w-4xl mx-auto my-8 font-sans">
         {(translatedCv || sections) ? (
-          (translatedCv || sections).map((section: any, index: number) => {
-            if (section.type === 'header') {
-              return <HeaderPreview key={index} content={section.content} />;
-            }
-            return (
-              <section key={index}>
-                {section.title && <SectionTitle>{section.title}</SectionTitle>}
-                {renderSectionPreview(section)}
-              </section>
-            );
-          })
+          <div className="min-h-[1123px] mx-auto max-w-4xl">
+            {selectedTemplate === 'professional' && <ProfessionalTemplate cv={translatedCv || sections} />}
+            {selectedTemplate === 'freelance' && <FreelanceTemplate cv={translatedCv || sections} />}
+            {selectedTemplate === 'creative' && <CreativeTemplate cv={translatedCv || sections} />}
+          </div>
         ) : (
           <p className="text-center text-gray-500 py-20">Aucun contenu de CV à afficher.</p>
         )}

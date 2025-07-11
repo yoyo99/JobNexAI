@@ -6,7 +6,7 @@ interface Education {
   institution: string;
   location: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   description: string;
 }
 

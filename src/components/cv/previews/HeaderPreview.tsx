@@ -1,48 +1,51 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Linkedin, Globe } from 'lucide-react';
-
-interface HeaderContent {
-  name: string;
-  title: string;
-  email: string;
-  phone: string;
-  location: string;
-  linkedin: string;
-  website: string;
-}
+import { Header } from '@/types/cv';
+import { Mail, Phone, MapPin, Globe } from 'lucide-react';
 
 interface HeaderPreviewProps {
-  content: HeaderContent;
+  content: Header;
+  layout?: 'creative' | 'freelance';
 }
 
-export const HeaderPreview: React.FC<HeaderPreviewProps> = ({ content }) => {
+export const HeaderPreview: React.FC<HeaderPreviewProps> = ({ content, layout }) => {
+  if (layout === 'creative') {
+    return (
+      <div className="text-center">
+        <h1 className="text-4xl font-extrabold text-white tracking-tight">{content.name}</h1>
+        <p className="text-xl text-teal-300 mt-2">{content.title}</p>
+        <div className="mt-4 flex justify-center items-center flex-wrap gap-x-4 gap-y-2 text-sm text-gray-300">
+          {content.email && <span>{content.email}</span>}
+          {content.phone && <span>{content.phone}</span>}
+          {content.website && <span>{content.website}</span>}
+        </div>
+      </div>
+    );
+  }
+
   const contactItems = [
     content.email && { icon: <Mail size={14} />, text: content.email, href: `mailto:${content.email}` },
     content.phone && { icon: <Phone size={14} />, text: content.phone, href: `tel:${content.phone}` },
-    content.location && { icon: <MapPin size={14} />, text: content.location, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(content.location)}` },
-    content.linkedin && { icon: <Linkedin size={14} />, text: 'LinkedIn', href: content.linkedin },
+    content.address && { icon: <MapPin size={14} />, text: content.address },
     content.website && { icon: <Globe size={14} />, text: 'Website', href: content.website },
   ].filter(Boolean) as { icon: JSX.Element; text: string; href?: string }[];
 
   return (
     <header className="text-center mb-10 border-b pb-6 border-gray-200">
       <h1 className="text-5xl font-bold text-gray-800 tracking-tight">{content.name || 'Votre Nom'}</h1>
-      <h2 className="text-2xl text-gray-500 font-medium mt-2">{content.title || 'Votre Titre'}</h2>
-      
-      <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-sm text-gray-600 mt-6">
+      <h2 className="text-2xl text-gray-500 mt-2">{content.title || 'Titre du Poste'}</h2>
+
+      <div className="mt-6 flex justify-center items-center flex-wrap gap-x-6 gap-y-2 text-gray-600">
         {contactItems.map((item, index) => (
-          <React.Fragment key={index}>
-            <a 
-              href={item.href}
-              target={item.href && !item.href.startsWith('mailto:') && !item.href.startsWith('tel:') ? '_blank' : undefined}
-              rel={item.href && !item.href.startsWith('mailto:') && !item.href.startsWith('tel:') ? 'noopener noreferrer' : undefined}
-              className="flex items-center gap-1.5 text-gray-500 hover:text-blue-600 transition-colors"
-            >
-              {item.icon}
-              <span className="font-medium">{item.text}</span>
-            </a>
-            {index < contactItems.length - 1 && <span className="text-gray-300">•</span>}
-          </React.Fragment>
+          <div key={index} className="flex items-center">
+            {item.icon}
+            {item.href ? (
+              <a href={item.href} className="ml-2 hover:text-primary-600 transition-colors" target="_blank" rel="noopener noreferrer">
+                {item.text}
+              </a>
+            ) : (
+              <span className="ml-2">{item.text}</span>
+            )}
+          </div>
         ))}
       </div>
     </header>

@@ -2,14 +2,14 @@ import React from 'react';
 
 interface SectionTitleProps {
   children: React.ReactNode;
+  icon?: React.ReactElement;
 }
 
-export const SectionTitle: React.FC<SectionTitleProps> = ({ children }) => {
+export const SectionTitle: React.FC<SectionTitleProps> = ({ children, icon }) => {
   return (
-    <div className="mb-6 mt-10 first:mt-0">
-      <h3 className="text-lg font-bold text-gray-800 uppercase tracking-widest pb-2 border-b-2 border-gray-800">
-        {children}
-      </h3>
-    </div>
+    <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4 flex items-center">
+      {icon}
+      {children}
+    </h2>
   );
 };

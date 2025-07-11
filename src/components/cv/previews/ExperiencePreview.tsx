@@ -11,7 +11,7 @@ interface Experience {
   company: string;
   location: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   description: string;
   achievements: Achievement[];
 }
