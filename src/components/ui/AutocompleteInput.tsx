@@ -32,7 +32,12 @@ export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ value, onC
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${endpoint}?q=${encodeURIComponent(query)}`);
+            let fullUrl = `${endpoint}?q=${encodeURIComponent(query)}`;
+      if (import.meta.env.DEV) {
+        // En développement, force l'URL absolue pour éviter les problèmes de résolution
+        fullUrl = `http://localhost:8888${endpoint}?q=${encodeURIComponent(query)}`;
+      }
+      const response = await fetch(fullUrl);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
