@@ -1,6 +1,7 @@
 export interface Header {
   name: string;
   title: string;
+  rome_code?: string; // Ajout du code ROME
   phone: string;
   email: string;
   address: string;

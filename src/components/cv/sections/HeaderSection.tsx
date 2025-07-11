@@ -1,14 +1,9 @@
+import { Header } from '../../../types/cv';
+import { AutocompleteInput } from '../../ui/AutocompleteInput';
+
 interface HeaderProps {
-  content: {
-    name: string
-    title: string
-    email: string
-    phone: string
-    location: string
-    linkedin?: string
-    website?: string
-  }
-  onChange: (content: any) => void
+  content: Header;
+  onChange: (content: Header) => void;
 }
 
 export function HeaderSection({ content, onChange }: HeaderProps) {
@@ -30,11 +25,13 @@ export function HeaderSection({ content, onChange }: HeaderProps) {
           <label className="block text-sm font-medium text-gray-400 mb-1">
             Titre professionnel
           </label>
-          <input
-            type="text"
+          <AutocompleteInput
             value={content.title}
-            onChange={(e) => onChange({ ...content, title: e.target.value })}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            onChange={(selected) =>
+              onChange({ ...content, title: selected.label, rome_code: selected.code })
+            }
+            endpoint="/api/rome-search"
+            placeholder="Rechercher un métier..."
           />
         </div>
       </div>
@@ -70,8 +67,10 @@ export function HeaderSection({ content, onChange }: HeaderProps) {
         </label>
         <input
           type="text"
-          value={content.location}
-          onChange={(e) => onChange({ ...content, location: e.target.value })}
+          // @ts-ignore - La localisation n'est pas dans le type Header pour l'instant
+          value={content.address}
+          // @ts-ignore
+          onChange={(e) => onChange({ ...content, address: e.target.value })}
           className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
       </div>
