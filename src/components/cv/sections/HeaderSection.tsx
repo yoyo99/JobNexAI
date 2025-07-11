@@ -30,7 +30,7 @@ export function HeaderSection({ content, onChange }: HeaderProps) {
             onChange={(selected) =>
               onChange({ ...content, title: selected.label, rome_code: selected.code })
             }
-            endpoint="/api/rome-search"
+            endpoint="/.netlify/functions/rome-search"
             placeholder="Rechercher un métier..."
           />
         </div>
