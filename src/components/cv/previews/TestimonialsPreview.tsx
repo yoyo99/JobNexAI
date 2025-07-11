@@ -2,8 +2,10 @@ import React from 'react';
 
 interface Testimonial {
   id: string;
-  authorName: string;
-  authorRole: string;
+  author: {
+    name: string;
+    role: string;
+  };
   text: string;
 }
 
@@ -24,9 +26,9 @@ export const TestimonialsPreview: React.FC<TestimonialsPreviewProps> = ({ items 
             <p className="text-xl italic text-gray-700 leading-relaxed">“{item.text}”</p>
           </blockquote>
           <figcaption className="mt-4 text-right">
-            <p className="font-semibold text-gray-800">— {item.authorName}</p>
-            {item.authorRole && (
-              <p className="text-sm text-gray-500">{item.authorRole}</p>
+            <p className="font-semibold text-gray-800">— {item.author.name}</p>
+            {item.author.role && (
+              <p className="text-sm text-gray-500">{item.author.role}</p>
             )}
           </figcaption>
         </figure>

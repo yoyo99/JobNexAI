@@ -43,6 +43,7 @@ export interface SkillCategory {
   id: string;
   name: string;
   skills: Skill[];
+  layout?: string; // Added optional 'layout' property
 }
 
 export interface Project {

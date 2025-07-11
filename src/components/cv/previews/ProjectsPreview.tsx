@@ -6,9 +6,9 @@ interface Project {
   name: string;
   description: string;
   technologies: string[];
-  url: string;
-  startDate: string;
-  endDate: string;
+  url?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 interface ProjectsPreviewProps {

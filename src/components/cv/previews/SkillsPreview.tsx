@@ -13,9 +13,10 @@ interface Category {
 
 interface SkillsPreviewProps {
   categories: Category[];
+  layout?: 'creative' | 'freelance';
 }
 
-export const SkillsPreview: React.FC<SkillsPreviewProps> = ({ categories }) => {
+export const SkillsPreview: React.FC<SkillsPreviewProps> = ({ categories, layout }) => {
   if (!categories || categories.length === 0) {
     return null;
   }

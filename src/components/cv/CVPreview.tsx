@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { useAuth } from '../../stores/auth'
 import { supabase } from '../../lib/supabase'
 import { Download, Languages, ArrowLeft } from 'lucide-react';
@@ -15,6 +15,7 @@ import { SectionTitle } from './previews/SectionTitle';
 import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
 import { FreelanceTemplate } from './templates/FreelanceTemplate';
 import { CreativeTemplate } from './templates/CreativeTemplate';
+import { CVData } from '@/types/cv';
 
 const TEMPLATES = {
   professional: 'Professionnel',
@@ -45,6 +46,18 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
   const [originalCv, setOriginalCv] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof TEMPLATES>('professional');
+
+  const cvData = useMemo(() => {
+    if (!sections) return null;
+
+    const data: { [key: string]: any } = {};
+    for (const section of sections) {
+      if (section.type && section.content) {
+        data[section.type] = section.content;
+      }
+    }
+    return data as CVData;
+  }, [sections]);
 
   const translateCvData = async (data: any, lang: string): Promise<any> => {
     const textsToTranslate: string[] = [];
@@ -292,13 +305,13 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
       </div>
 
       <div ref={cvPreviewRef} className="p-12 bg-white rounded-lg shadow-2xl w-full max-w-4xl mx-auto my-8 font-sans">
-        {(translatedCv || sections) ? (
-          <div className="min-h-[1123px] mx-auto max-w-4xl">
-            {selectedTemplate === 'professional' && <ProfessionalTemplate cv={translatedCv || sections} />}
-            {selectedTemplate === 'freelance' && <FreelanceTemplate cv={translatedCv || sections} />}
-            {selectedTemplate === 'creative' && <CreativeTemplate cv={translatedCv || sections} />}
-          </div>
-        ) : (
+              {(cvData || translatedCv) ? (
+        <div className="min-h-[1123px] mx-auto max-w-4xl">
+          {selectedTemplate === 'professional' && <ProfessionalTemplate cv={translatedCv || cvData} />}
+          {selectedTemplate === 'freelance' && <FreelanceTemplate cv={translatedCv || cvData} />}
+          {selectedTemplate === 'creative' && <CreativeTemplate cv={translatedCv || cvData} />}
+        </div>
+      ) : (
           <p className="text-center text-gray-500 py-20">Aucun contenu de CV à afficher.</p>
         )}
       </div>

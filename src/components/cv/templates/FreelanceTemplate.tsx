@@ -14,37 +14,39 @@ interface FreelanceTemplateProps {
 }
 
 export const FreelanceTemplate: React.FC<FreelanceTemplateProps> = ({ cv }) => {
+  if (!cv) return null;
+
   return (
     <div className="bg-white text-gray-800 p-8 font-serif shadow-lg">
-      <HeaderPreview content={cv.header} layout="freelance" />
+      {cv.header && <HeaderPreview content={cv.header} layout="freelance" />}
       
       <div className="flex gap-8 mt-8">
         {/* Main column */}
         <div className="flex-grow w-2/3">
-          {cv.services.items.length > 0 && (
+          {cv.services && cv.services.items && cv.services.items.length > 0 && (
             <div>
-              <SectionTitle>Mes Services</SectionTitle>
+              <SectionTitle>Services Proposés</SectionTitle>
               <ServicesPreview items={cv.services.items} />
             </div>
           )}
 
-          {cv.projects.items.length > 0 && (
+          {cv.projects && cv.projects.items && cv.projects.items.length > 0 && (
             <div className="mt-6">
-              <SectionTitle>Portfolio Sélectif</SectionTitle>
+              <SectionTitle>Projets Réalisés</SectionTitle>
               <ProjectsPreview items={cv.projects.items} />
             </div>
           )}
 
-          {cv.testimonials.items.length > 0 && (
+          {cv.testimonials && cv.testimonials.items && cv.testimonials.items.length > 0 && (
             <div className="mt-6">
-              <SectionTitle>Ce que disent mes clients</SectionTitle>
+              <SectionTitle>Témoignages Clients</SectionTitle>
               <TestimonialsPreview items={cv.testimonials.items} />
             </div>
           )}
 
-          {cv.experience.items.length > 0 && (
+          {cv.experience && cv.experience.items && cv.experience.items.length > 0 && (
             <div className="mt-6">
-              <SectionTitle>Parcours Professionnel</SectionTitle>
+              <SectionTitle>Expérience</SectionTitle>
               <ExperiencePreview items={cv.experience.items} />
             </div>
           )}
@@ -52,16 +54,16 @@ export const FreelanceTemplate: React.FC<FreelanceTemplateProps> = ({ cv }) => {
 
         {/* Sidebar */}
         <div className="flex-shrink-0 w-1/3">
-          {cv.skills.categories.length > 0 && (
+          {cv.skills && cv.skills.categories && cv.skills.categories.length > 0 && (
             <div>
-              <SectionTitle>Compétences & Outils</SectionTitle>
+              <SectionTitle>Compétences</SectionTitle>
               <SkillsPreview categories={cv.skills.categories} layout="freelance" />
             </div>
           )}
 
-          {cv.education.items.length > 0 && (
+          {cv.education && cv.education.items && cv.education.items.length > 0 && (
             <div className="mt-6">
-              <SectionTitle>Formation & Certifications</SectionTitle>
+              <SectionTitle>Formation</SectionTitle>
               <EducationPreview items={cv.education.items} />
             </div>
           )}

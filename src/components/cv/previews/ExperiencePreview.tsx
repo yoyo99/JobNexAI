@@ -18,9 +18,10 @@ interface Experience {
 
 interface ExperiencePreviewProps {
   items: Experience[];
+  layout?: 'creative' | 'freelance';
 }
 
-export const ExperiencePreview: React.FC<ExperiencePreviewProps> = ({ items }) => {
+export const ExperiencePreview: React.FC<ExperiencePreviewProps> = ({ items, layout }) => {
   if (!items || items.length === 0) {
     return null;
   }
