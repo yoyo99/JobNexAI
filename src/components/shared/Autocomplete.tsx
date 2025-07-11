@@ -11,9 +11,10 @@ interface AutocompleteProps {
   value: string;
   onChange: (value: string) => void;
   onSelect: (suggestion: Suggestion) => void;
+  apiEndpoint?: string; // Rendre l'endpoint configurable
 }
 
-export const Autocomplete: React.FC<AutocompleteProps> = ({ value, onChange, onSelect }) => {
+export function Autocomplete({ value, onChange, onSelect, apiEndpoint = '/api/rome-search' }: AutocompleteProps) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ value, onChange, onS
     const fetchSuggestions = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/rome-search?q=${debouncedSearchTerm}`);
+        const response = await fetch(`${apiEndpoint}?q=${encodeURIComponent(debouncedSearchTerm)}`);
         if (response.ok) {
           const data = await response.json();
           setSuggestions(data);
