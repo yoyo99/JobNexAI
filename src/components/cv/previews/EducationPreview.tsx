@@ -16,27 +16,28 @@ interface EducationPreviewProps {
 
 export const EducationPreview: React.FC<EducationPreviewProps> = ({ items }) => {
   if (!items || items.length === 0) {
-    return null; // Ne rien afficher si pas de formation
+    return null;
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {items.map(item => (
-        <div key={item.id} className="grid grid-cols-1 md:grid-cols-4 gap-x-6">
-          {/* Colonne de gauche pour la date */}
-          <div className="md:col-span-1 text-sm text-gray-500 font-medium mb-2 md:mb-0 md:text-right">
-            {item.startDate} - {item.endDate || 'Présent'}
+        <div key={item.id} className="flex gap-x-8">
+          <div className="w-1/4 text-right flex-shrink-0">
+            <p className="text-sm font-medium text-gray-500 whitespace-nowrap">
+              {item.startDate} &mdash; {item.endDate || 'Présent'}
+            </p>
           </div>
 
-          {/* Colonne de droite pour les détails */}
-          <div className="md:col-span-3">
-            <h4 className="text-lg font-semibold text-gray-800">{item.degree}</h4>
-            <div className="flex items-center text-md text-gray-600 mb-2">
-              <span>{item.institution}</span>
-              {item.location && <span className="mx-2">•</span>}
-              <span>{item.location}</span>
-            </div>
-            {item.description && <p className="text-sm text-gray-600">{item.description}</p>}
+          <div className="w-3/4">
+            <h3 className="text-xl font-bold text-gray-800">{item.degree}</h3>
+            <p className="text-lg font-medium text-gray-600 mt-1">
+              {item.institution}
+              {item.location && <span className="text-gray-400 font-normal before:content-['•'] before:mx-2">{item.location}</span>}
+            </p>
+            {item.description && (
+              <p className="mt-3 text-base text-gray-700 leading-relaxed">{item.description}</p>
+            )}
           </div>
         </div>
       ))}

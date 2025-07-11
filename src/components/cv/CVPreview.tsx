@@ -179,25 +179,26 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
   }
 
   const renderSectionPreview = (section: any) => {
-    switch (section.type) {
+    const { type, content } = section;
+    switch (type) {
       case 'header':
-        return <HeaderPreview content={section.content} />
+        return <HeaderPreview content={content} />;
       case 'experience':
-        return <ExperiencePreview items={section.content.items || []} />
+        return <ExperiencePreview items={content.items} />;
       case 'education':
-        return <EducationPreview items={section.content.items || []} />
+        return <EducationPreview items={content.items} />;
       case 'skills':
-        return <SkillsPreview categories={section.content.categories || []} />
+        return <SkillsPreview categories={content.categories} />;
       case 'projects':
-        return <ProjectsPreview items={section.content.items} />;
+        return <ProjectsPreview items={content.items} />;
       case 'services':
-        return <ServicesPreview items={section.content.items} />;
+        return <ServicesPreview items={content.items} />;
       case 'testimonials':
-        return <TestimonialsPreview items={section.content.items} />;
+        return <TestimonialsPreview items={content.items} />;
       default:
-        return <div className="text-gray-400 text-sm">Aperçu non disponible pour la section "{section.title}".</div>
+        return <div className="text-gray-400 text-sm">Aperçu non disponible pour la section "{section.title}".</div>;
     }
-  }
+  };
 
   return (
     <div className="w-1/2 bg-background p-6">
@@ -262,16 +263,21 @@ export const CVPreview: React.FC<CVPreviewProps> = ({ sections, cvName }) => {
         </div>
       </div>
 
-      <div ref={cvPreviewRef} className="p-8 bg-white rounded-lg shadow-lg w-full max-w-4xl mx-auto my-8">
-        {sections ? (
-          sections.map((section: any, index: number) => (
-            <div key={index} className={section.type !== 'header' ? 'mb-6' : ''}>
-              {section.type !== 'header' && section.title && <SectionTitle>{section.title}</SectionTitle>}
-              {renderSectionPreview(section)}
-            </div>
-          ))
+      <div ref={cvPreviewRef} className="p-12 bg-white rounded-lg shadow-2xl w-full max-w-4xl mx-auto my-8 font-sans">
+        {(translatedCv || sections) ? (
+          (translatedCv || sections).map((section: any, index: number) => {
+            if (section.type === 'header') {
+              return <HeaderPreview key={index} content={section.content} />;
+            }
+            return (
+              <section key={index}>
+                {section.title && <SectionTitle>{section.title}</SectionTitle>}
+                {renderSectionPreview(section)}
+              </section>
+            );
+          })
         ) : (
-          <p className="text-gray-500">Aucun contenu de CV à afficher.</p>
+          <p className="text-center text-gray-500 py-20">Aucun contenu de CV à afficher.</p>
         )}
       </div>
     </div>

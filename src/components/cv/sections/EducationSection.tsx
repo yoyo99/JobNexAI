@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from 'lucide-react'
 
 interface Education {
   id: string
@@ -43,118 +43,92 @@ export function EducationSection({ items, onChange }: EducationProps) {
 
   return (
     <div className="space-y-6">
-      {items.map((education, index) => (
+      {items.map((education) => (
         <motion.div
           key={education.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 rounded-lg p-4"
+          className="relative bg-white/5 rounded-lg p-6 flex gap-x-6"
         >
-          <div className="flex items-start justify-between mb-4">
-            <h4 className="text-white font-medium">Formation {index + 1}</h4>
-            <button
-              onClick={() => removeEducation(education.id)}
-              className="text-red-400 hover:text-red-300"
-            >
-              <TrashIcon className="h-5 w-5" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
+          {/* Colonne de gauche pour les dates */}
+          <div className="w-1/4 space-y-2 text-sm text-gray-400">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                Diplôme
-              </label>
+              <label className="block font-medium mb-1">Date de début</label>
               <input
-                type="text"
-                value={education.degree}
-                onChange={(e) => updateEducation(education.id, { degree: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                type="month"
+                value={education.startDate}
+                onChange={(e) => updateEducation(education.id, { startDate: e.target.value })}
+                className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-1.5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
+            {!education.current && (
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
-                  École
-                </label>
-                <input
-                  type="text"
-                  value={education.school}
-                  onChange={(e) => updateEducation(education.id, { school: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Localisation
-                </label>
-                <input
-                  type="text"
-                  value={education.location}
-                  onChange={(e) => updateEducation(education.id, { location: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Date de début
-                </label>
-                <input
-                  type="month"
-                  value={education.startDate}
-                  onChange={(e) => updateEducation(education.id, { startDate: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Date de fin
-                </label>
+                <label className="block font-medium mb-1">Date de fin</label>
                 <input
                   type="month"
                   value={education.endDate}
                   onChange={(e) => updateEducation(education.id, { endDate: e.target.value })}
-                  disabled={education.current}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
+                  className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-1.5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
+            )}
+            <div className="flex items-center gap-2 pt-2">
               <input
                 type="checkbox"
-                id={`current-${education.id}`}
+                id={`current-edu-${education.id}`}
                 checked={education.current}
-                onChange={(e) => updateEducation(education.id, {
-                  current: e.target.checked,
-                  endDate: e.target.checked ? undefined : education.endDate,
-                })}
+                onChange={(e) => updateEducation(education.id, { current: e.target.checked, endDate: e.target.checked ? undefined : education.endDate })}
                 className="rounded border-white/10 bg-white/5 text-primary-500 focus:ring-primary-500"
               />
-              <label
-                htmlFor={`current-${education.id}`}
-                className="text-sm text-gray-400"
-              >
-                En cours
-              </label>
+              <label htmlFor={`current-edu-${education.id}`}>En cours</label>
+            </div>
+          </div>
+
+          {/* Colonne de droite pour les détails */}
+          <div className="flex-1 space-y-4">
+            <input
+              type="text"
+              placeholder="Diplôme ou Titre de la formation"
+              value={education.degree}
+              onChange={(e) => updateEducation(education.id, { degree: e.target.value })}
+              className="w-full bg-transparent text-xl font-bold text-white placeholder-gray-500 focus:outline-none"
+            />
+
+            <div className="flex items-center gap-4 text-gray-400">
+              <input
+                type="text"
+                placeholder="Établissement"
+                value={education.school}
+                onChange={(e) => updateEducation(education.id, { school: e.target.value })}
+                className="w-1/2 bg-transparent focus:outline-none placeholder-gray-500"
+              />
+              <span className="text-gray-600">|</span>
+              <input
+                type="text"
+                placeholder="Lieu"
+                value={education.location}
+                onChange={(e) => updateEducation(education.id, { location: e.target.value })}
+                className="w-1/2 bg-transparent focus:outline-none placeholder-gray-500"
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                Description (optionnel)
-              </label>
               <textarea
+                placeholder="Description (optionnel)..."
                 value={education.description}
                 onChange={(e) => updateEducation(education.id, { description: e.target.value })}
-                rows={3}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                rows={2}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 placeholder-gray-500"
               />
             </div>
           </div>
+
+          <button
+            onClick={() => removeEducation(education.id)}
+            className="absolute top-3 right-3 text-red-500 hover:text-red-400 opacity-50 hover:opacity-100 transition-opacity"
+          >
+            <TrashIcon className="h-5 w-5" />
+          </button>
         </motion.div>
       ))}
 

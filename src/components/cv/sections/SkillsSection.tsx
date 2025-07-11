@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Trash2, X } from 'lucide-react';
 
 // Structure de données unifiée pour l'éditeur et l'aperçu
 interface Skill {
@@ -84,29 +84,29 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
   return (
     <div className="space-y-6">
       {categories.map(category => (
-        <div key={category.id} className="bg-white/5 rounded-lg p-4">
+        <div key={category.id} className="bg-white/5 rounded-lg p-5">
           <div className="flex items-center justify-between mb-4">
             <input
               type="text"
               value={category.name}
               onChange={e => updateCategoryName(category.id, e.target.value)}
               placeholder="Nom de la catégorie"
-              className="w-full bg-transparent text-white font-medium focus:outline-none text-lg"
+              className="w-full bg-transparent text-xl font-bold text-white placeholder-gray-500 focus:outline-none"
             />
             <button
               onClick={() => removeCategory(category.id)}
-              className="text-red-400 hover:text-red-300 ml-4"
+              className="text-red-500 hover:text-red-400 opacity-50 hover:opacity-100 transition-opacity ml-4"
             >
-              <TrashIcon className="h-5 w-5" />
+              <Trash2 className="h-5 w-5" />
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
             {category.skills.map(skill => (
-              <span key={skill.id} className="flex items-center gap-1 bg-indigo-500/20 text-indigo-300 text-sm font-medium px-3 py-1 rounded-full">
+              <span key={skill.id} className="flex items-center gap-1.5 bg-primary-500/10 text-primary-400 text-sm font-medium px-3 py-1.5 rounded-full">
                 {skill.name}
-                <button onClick={() => removeSkill(category.id, skill.id)} className="text-indigo-200 hover:text-white">
-                  <XMarkIcon className="h-4 w-4" />
+                <button onClick={() => removeSkill(category.id, skill.id)} className="text-primary-300 hover:text-white">
+                  <X className="h-4 w-4" />
                 </button>
               </span>
             ))}
@@ -118,7 +118,7 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
             onChange={e => handleInputChange(category.id, e.target.value)}
             onKeyDown={e => handleKeyDown(e, category.id)}
             placeholder="Ajouter une compétence et appuyer sur Entrée..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
       ))}

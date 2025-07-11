@@ -17,14 +17,19 @@ export const TestimonialsPreview: React.FC<TestimonialsPreviewProps> = ({ items 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {items.map(item => (
-        <div key={item.id} className="border-l-4 border-gray-200 pl-4">
-          <p className="text-gray-600 italic">"{item.text}"</p>
-          <footer className="mt-2 text-sm text-gray-800 font-semibold">
-            — {item.authorName}, <span className="text-gray-500 font-normal">{item.authorRole}</span>
-          </footer>
-        </div>
+        <figure key={item.id}>
+          <blockquote className="border-l-4 border-blue-500 pl-6">
+            <p className="text-xl italic text-gray-700 leading-relaxed">“{item.text}”</p>
+          </blockquote>
+          <figcaption className="mt-4 text-right">
+            <p className="font-semibold text-gray-800">— {item.authorName}</p>
+            {item.authorRole && (
+              <p className="text-sm text-gray-500">{item.authorRole}</p>
+            )}
+          </figcaption>
+        </figure>
       ))}
     </div>
   );

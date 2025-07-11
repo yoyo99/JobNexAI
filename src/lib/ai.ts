@@ -175,60 +175,63 @@ export function getAverageNote(conversationId: string): number {
  * @param {string} tone - Le ton de la lettre (par défaut : 'professional').
  * @returns {string} - La lettre de motivation générée.
  */
-async function generateCoverLetterWithOpenAI(
-  cv: any,
-  jobDescription: string,
-  language: string,
-  tone: 'professional' | 'conversational' | 'enthusiastic'
-): Promise<string> {
-  const openai = getOpenAIClient();
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4",
-    messages: [
-        {
-            role: "system",
-            content: `Tu es un expert en rédaction de lettres de motivation professionnelles. TÂCHE: Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous. INSTRUCTIONS: 1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}. 2. Structure la lettre avec une introduction, un développement et une conclusion. 3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi. 4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste. 5. Évite les formules génériques et les clichés. 6. Limite la lettre à environ 300-400 mots. 7. Inclus les formules de politesse appropriées en ${language}. FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
-        },
-        {
-            role: "user",
-            content: `CV: ${JSON.stringify(cv)}\nDescription du poste: ${jobDescription}`,
-        },
-    ],
-    temperature: 0.7,
-    max_tokens: 1000,
-  });
-  return completion.choices[0].message.content as string;
-}
-
 async function generateCoverLetterWithMistral(
   cv: any,
   jobDescription: string,
   language: string,
   tone: 'professional' | 'conversational' | 'enthusiastic'
 ): Promise<string> {
-  const mistralClient = getMistralClient();
-  const chatResponse = await mistralClient.chat.complete({
-    model: 'mistral-large-latest',
-    messages: [
-        {
-            role: 'system',
-            content: `Tu es un expert en rédaction de lettres de motivation professionnelles. TÂCHE: Rédige une lettre de motivation personnalisée en ${language} pour la candidature décrite ci-dessous. INSTRUCTIONS: 1. Utilise un ton ${tone === 'professional' ? 'professionnel et formel' : tone === 'conversational' ? 'conversationnel et accessible' : 'enthousiaste et dynamique'}. 2. Structure la lettre avec une introduction, un développement et une conclusion. 3. Mets en valeur les compétences et expériences du CV qui correspondent spécifiquement à l'offre d'emploi. 4. Utilise des exemples concrets tirés du CV pour illustrer l'adéquation avec le poste. 5. Évite les formules génériques et les clichés. 6. Limite la lettre à environ 300-400 mots. 7. Inclus les formules de politesse appropriées en ${language}. FORMAT: Rédige une lettre complète, prête à être envoyée, avec les formules d'usage.`,
-        },
-        {
-            role: 'user',
-            content: `CV: ${JSON.stringify(cv)}\nDescription du poste: ${jobDescription}`,
-        },
-    ],
-    temperature: 0.7,
-    maxTokens: 1000,
-  });
-  const messageContent = chatResponse.choices[0].message.content;
-  if (typeof messageContent === 'string') {
-    return messageContent;
+  try {
+    const response = await fetch('/.netlify/functions/generate-cover-letter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cv, jobDescription, language, tone, provider: 'mistral' }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.error || `La requête a échoué avec le statut ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.letter;
+  } catch (error) {
+    console.error('Erreur lors de l\`appel à la fonction de génération de lettre de motivation (Mistral):', error);
+    throw error;
   }
-  // Si le contenu n'est pas une chaîne (ex: ContentChunk[]), retourner une chaîne vide.
-  return '';
 }
+
+async function generateCoverLetterWithOpenAI(
+  cv: any,
+  jobDescription: string,
+  language: string,
+  tone: 'professional' | 'conversational' | 'enthusiastic'
+): Promise<string> {
+  try {
+    const response = await fetch('/.netlify/functions/generate-cover-letter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cv, jobDescription, language, tone, provider: 'openai' }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.error || `La requête a échoué avec le statut ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.letter;
+  } catch (error) {
+    console.error('Erreur lors de l\`appel à la fonction de génération de lettre de motivation:', error);
+    throw error;
+  }
+}
+
+
 
 export async function generateCoverLetter(
   cv: any,
@@ -256,26 +259,23 @@ export async function optimizeText(
   language: string = 'fr'
 ): Promise<string> {
   try {
-    const mistralClient = getMistralClient();
-    const chatResponse = await mistralClient.chat.complete({
-      model: 'mistral-large-latest',
-      messages: [
-        {
-            role: 'system',
-            content: `Tu es un coach de carrière expert et un rédacteur de CV professionnel. Ta tâche est de réécrire et d'optimiser le texte fourni pour le rendre plus percutant et professionnel. Instructions : 1. Utilise des verbes d'action forts. 2. Quantifie les réalisations lorsque c'est possible (même si tu dois suggérer des exemples comme '[X%]' ou '[Y projets]'). 3. Assure-toi que le ton est professionnel et adapté à un CV. 4. La réponse doit être uniquement le texte amélioré, sans aucune introduction ou phrase supplémentaire. La langue du texte est '${language}'.`,
-        },
-        {
-            role: 'user',
-            content: text,
-        },
-      ],
-      temperature: 0.6,
-      maxTokens: 1000,
+    const response = await fetch('/.netlify/functions/optimize-text', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text, language }),
     });
-    const messageContent = chatResponse.choices[0].message.content;
-    return typeof messageContent === 'string' ? messageContent.trim() : '';
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.error || `La requête a échoué avec le statut ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.optimizedText;
   } catch (error) {
-    console.error('Erreur lors de l\`optimisation du texte:', error);
+    console.error('Erreur lors de l\`appel à la fonction d\`optimisation:', error);
     throw error;
   }
 }
@@ -285,26 +285,23 @@ export async function translateText(
   targetLanguage: string
 ): Promise<string> {
   try {
-    const mistralClient = getMistralClient();
-    const chatResponse = await mistralClient.chat.complete({
-      model: 'mistral-large-latest',
-      messages: [
-        {
-            role: 'system',
-            content: `Tu es un traducteur expert spécialisé dans les documents professionnels et les CV. Ta tâche est de traduire le texte fourni vers la langue suivante : ${targetLanguage}. Instructions : 1. Conserve le formatage et la structure d'origine. 2. Assure une traduction précise et naturelle, en adaptant les termes au contexte professionnel de la langue cible. 3. La réponse doit être uniquement le texte traduit, sans aucune introduction ou phrase supplémentaire.`,
-        },
-        {
-            role: 'user',
-            content: text,
-        },
-      ],
-      temperature: 0.2,
-      maxTokens: 1500,
+    const response = await fetch('/.netlify/functions/translate-text', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text, targetLanguage }),
     });
-    const messageContent = chatResponse.choices[0].message.content;
-    return typeof messageContent === 'string' ? messageContent.trim() : '';
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.error || `La requête a échoué avec le statut ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.translatedText;
   } catch (error) {
-    console.error('Erreur lors de la traduction du texte:', error);
+    console.error('Erreur lors de l\`appel à la fonction de traduction:', error);
     throw error;
   }
 }
@@ -320,44 +317,24 @@ export async function translateTextsBatch(texts: string[], targetLanguage: strin
     return [];
   }
 
-  const mistral = getMistralClient();
-
-  const systemPrompt = `Tu es un expert en traduction multilingue spécialisé dans les CV professionnels. Traduis le tableau de textes JSON suivant en ${targetLanguage}. Réponds uniquement avec un tableau JSON contenant les traductions, en conservant exactement le même ordre et le même nombre d'éléments. La structure de ta réponse doit être : ["traduction 1", "traduction 2", ...].`;
-
-  const userMessage = JSON.stringify(texts);
-
   try {
-    const chatResponse = await mistral.chat.complete({
-      model: 'mistral-large-latest',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage },
-      ],
-      responseFormat: { type: 'json_object' },
+    const response = await fetch('/.netlify/functions/translate-batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ texts, targetLanguage }),
     });
 
-    const content = chatResponse.choices[0].message.content;
-    if (typeof content !== 'string') {
-      throw new Error("La réponse de l'IA est vide ou dans un format inattendu.");
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody.error || `La requête a échoué avec le statut ${response.status}`);
     }
 
-    // Le contenu peut être une chaîne JSON contenant un tableau, ou directement le tableau.
-    // Nous devons le parser pour obtenir le tableau de chaînes.
-    const parsedContent = JSON.parse(content);
-    
-    // Le modèle peut parfois retourner un objet avec une clé (ex: { translations: [...] }).
-    // Nous cherchons le premier tableau de chaînes de caractères trouvé dans la réponse.
-    const translations = Array.isArray(parsedContent) 
-      ? parsedContent 
-      : Object.values(parsedContent).find(Array.isArray);
-
-    if (!translations || !Array.isArray(translations) || translations.length !== texts.length) {
-      throw new Error("La réponse de l'IA ne correspond pas au format attendu ou le nombre de traductions est incorrect.");
-    }
-
+    const translations = await response.json();
     return translations;
   } catch (error) {
-    console.error('Erreur lors de la traduction par lot avec Mistral:', error);
+    console.error('Erreur lors de l\`appel à la fonction de traduction par lot:', error);
     throw new Error('Impossible de traduire le lot de textes.');
   }
 }
