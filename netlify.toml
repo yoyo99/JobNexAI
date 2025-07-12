@@ -13,7 +13,7 @@
   [build.functions]
     node_bundler = "esbuild"
     external_node_modules = ["langchain"]
-  included_files = ["src/lib/ai_logic/**"]
+  included_files = ["src/lib/ai_logic/**", "functions/rome-search/rome_appellations.csv"]
 
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
