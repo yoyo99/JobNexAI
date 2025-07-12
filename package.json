@@ -16,7 +16,7 @@
     "build:clean": "rimraf dist && node verify-deps.js && node check-imports.js && tsc && vite build && node clean-build.js",
     "fix-imports": "node fix-component-imports.js",
     "fix-router-imports": "node fix-router-imports.js",
-    "build:netlify": "rimraf dist && NETLIFY=true vite build --mode production",
+    "build:netlify": "rimraf dist && vite build && netlify functions:build --src functions",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "listfiles": "find . -not -path \"*/node_modules/*\" -not -path \"*/.git/*\" -not -path \"*/dist/*\"",
