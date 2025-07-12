@@ -20,7 +20,7 @@ const handler: Handler = async (event) => {
   }
 
   const results: RomeJob[] = [];
-  const filePath = path.resolve(__dirname, '../../src/data/rome/rome_appellations.csv');
+  const filePath = path.resolve(__dirname, './rome_appellations.csv');
 
   const parser = fs.createReadStream(filePath).pipe(parse({ delimiter: ';' }));
 
