@@ -9,11 +9,10 @@ interface Suggestion {
 interface AutocompleteInputProps {
   value: string;
   onChange: (value: { label: string; code: string }) => void;
-  endpoint: string;
   placeholder?: string;
 }
 
-export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ value, onChange, endpoint, placeholder }) => {
+export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ value, onChange, placeholder }) => {
   const [inputValue, setInputValue] = useState(value);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,12 +31,7 @@ export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ value, onC
     }
     setIsLoading(true);
     try {
-            let fullUrl = `${endpoint}?q=${encodeURIComponent(query)}`;
-      if (import.meta.env.DEV) {
-        // En développement, force l'URL absolue pour éviter les problèmes de résolution
-        fullUrl = `http://localhost:8888${endpoint}?q=${encodeURIComponent(query)}`;
-      }
-      const response = await fetch(fullUrl);
+                  const response = await fetch(`/.netlify/functions/rome-search?q=${encodeURIComponent(query)}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -49,7 +43,7 @@ export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ value, onC
     } finally {
       setIsLoading(false);
     }
-  }, [endpoint]);
+  }, []);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
