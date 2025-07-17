@@ -44,7 +44,7 @@ function StripeCheckoutStatus() {
 
         // Navigate to dashboard after a delay (React Router v6 migration)
         setTimeout(() => {
-          navigate('/dashboard')
+          navigate('/app/dashboard')
         }, 3000)
       } catch (error: any) {
         setStatus('error')

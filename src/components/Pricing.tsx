@@ -264,9 +264,9 @@ function Pricing() {
         if (userType === 'freelancer') {
           navigate('/freelance/projects')
         } else if (userType === 'recruiter') {
-          navigate('/recruiter/dashboard')
+          navigate('/app/recruiter/dashboard')
         } else {
-          navigate('/dashboard')
+          navigate('/app/dashboard')
         }
       } catch (error: any) {
         console.error('Error updating user type:', error)

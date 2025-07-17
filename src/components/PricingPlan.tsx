@@ -40,7 +40,7 @@ export function PricingPlan({
 
     if (!priceId) {
       // Pour le plan gratuit
-      navigate('/dashboard')
+      navigate('/app/dashboard')
       return
     }
 

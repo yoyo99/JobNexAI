@@ -18,7 +18,7 @@ function AuthCallback() {
 
         if (data.session) {
           // Rediriger vers le dashboard
-          navigate('/dashboard')
+          navigate('/app/dashboard')
         } else {
           // Si pas de session, rediriger vers la page de connexion
           navigate('/login')

@@ -36,13 +36,13 @@ function UserTypeSelection() {
       // Rediriger vers la page appropriée en fonction du type d'utilisateur
       switch (userType) {
         case 'candidate':
-          navigate('/dashboard')
+          navigate('/app/dashboard')
           break
         case 'freelancer':
           navigate('/freelance/projects')
           break
         case 'recruiter':
-          navigate('/recruiter/dashboard')
+          navigate('/app/recruiter/dashboard')
           break
       }
     } catch (error: any) {

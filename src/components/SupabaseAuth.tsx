@@ -31,7 +31,7 @@ const SupabaseAuth: React.FC = () => {
   // Vérifier si l'utilisateur est déjà connecté
   useEffect(() => {
     if (isLoggedIn && user) {
-      navigate('/dashboard');
+      navigate('/app/dashboard');
     }
   }, [isLoggedIn, user, navigate]);
 
