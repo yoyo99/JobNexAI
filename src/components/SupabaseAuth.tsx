@@ -7,7 +7,6 @@ import { PasswordStrengthMeter } from './PasswordStrengthMeter';
 import { useJobnexai } from '../hooks/useJobnexai';
 
 const SupabaseAuth: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,12 +20,20 @@ const SupabaseAuth: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Détecter automatiquement si on est sur la page d'inscription
+  const [isLogin, setIsLogin] = useState(location.pathname !== '/register');
 
   // Utiliser notre nouveau hook au lieu du AuthService
   const { auth, isLoggedIn, user } = useJobnexai();
 
   // Récupérer l'URL de redirection si elle existe
   const from = location.state?.from?.pathname || '/dashboard';
+
+  // Mettre à jour le mode selon la route
+  useEffect(() => {
+    setIsLogin(location.pathname !== '/register');
+  }, [location.pathname]);
 
   // Vérifier si l'utilisateur est déjà connecté
   useEffect(() => {

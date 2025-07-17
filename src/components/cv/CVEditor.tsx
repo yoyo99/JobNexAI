@@ -28,6 +28,10 @@ export function CVEditor({ templateId, onBack, sections, onSectionsChange }: Edi
       setSaving(true)
       setMessage(null)
 
+      if (!user?.id) {
+        throw new Error('Utilisateur non connecté')
+      }
+
       const { error } = await supabase
         .from('cv_data')
         .upsert({
@@ -38,9 +42,10 @@ export function CVEditor({ templateId, onBack, sections, onSectionsChange }: Edi
 
       if (error) throw error
       setMessage({ type: 'success', text: 'CV enregistré avec succès' })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving CV:', error)
-      setMessage({ type: 'error', text: 'Erreur lors de l\'enregistrement du CV' })
+      const errorMessage = error?.message || error?.details || 'Erreur lors de l\'enregistrement du CV'
+      setMessage({ type: 'error', text: `Erreur: ${errorMessage}` })
     } finally {
       setSaving(false)
     }
