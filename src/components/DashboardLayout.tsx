@@ -37,7 +37,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
     // Définir la navigation en fonction du type d'utilisateur
     if (user?.user_type === 'freelancer') {
       setNavigation([
-        { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+        { name: 'Dashboard', href: '/app/dashboard', icon: HomeIcon },
         { name: 'Projets disponibles', href: '/freelance/projects', icon: RectangleGroupIcon },
         { name: 'Mon profil freelance', href: '/freelance/profile', icon: UserIcon },
         { name: 'CV Builder', href: '/cv-builder', icon: DocumentTextIcon },
@@ -60,7 +60,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
     } else {
       // Navigation par défaut pour les candidats
       setNavigation([
-        { name: 'navigation.dashboard', href: '/dashboard', icon: HomeIcon },
+        { name: 'navigation.dashboard', href: '/app/dashboard', icon: HomeIcon },
         { name: 'navigation.jobSearch', href: '/jobs', icon: FolderIcon },
         { name: 'navigation.applications', href: '/suivi', icon: ClipboardDocumentListIcon },
         { name: 'navigation.cvBuilder', href: '/cv-builder', icon: DocumentTextIcon },

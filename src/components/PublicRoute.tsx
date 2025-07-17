@@ -19,7 +19,7 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   if (user) {
     // Si l'utilisateur est connecté, le rediriger loin de la page publique (ex: login, register)
     // vers la page d'où il venait ou le dashboard par défaut.
-    const from = location.state?.from?.pathname || '/dashboard';
+    const from = location.state?.from?.pathname || '/app/dashboard';
     return <Navigate to={from} replace />;
   }
 

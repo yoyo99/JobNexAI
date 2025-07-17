@@ -187,6 +187,8 @@ function App() {
               <Route path="/auth/reset-password" element={<LazyComponentWrapper><ResetPassword /></LazyComponentWrapper>} />
               <Route path="/auth/callback" element={<LazyComponentWrapper><AuthCallback /></LazyComponentWrapper>} />
               <Route path="/checkout/success" element={<LazyComponentWrapper><StripeCheckoutStatus /></LazyComponentWrapper>} />
+              {/* Redirection de l'ancienne route dashboard vers la nouvelle */}
+              <Route path="/dashboard" element={<Navigate to="/app/dashboard" replace />} />
               {/* --- Routes Protégées --- */}
               {/* Toutes les routes ici nécessitent que l'utilisateur soit connecté */}
               <Route 

@@ -25,7 +25,7 @@ const Auth: React.FC = () => {
   const { auth, isLoggedIn, user } = useJobnexai();
 
   // Récupérer l'URL de redirection si elle existe
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || '/app/dashboard';
 
 
 

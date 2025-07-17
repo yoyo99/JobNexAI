@@ -22,13 +22,13 @@ const SupabaseAuth: React.FC = () => {
   const location = useLocation();
   
   // Détecter automatiquement si on est sur la page d'inscription
-  const [isLogin, setIsLogin] = useState(location.pathname !== '/register');
+  const [isLogin, setIsLogin] = useState(() => location.pathname !== '/register');
 
   // Utiliser notre nouveau hook au lieu du AuthService
   const { auth, isLoggedIn, user } = useJobnexai();
 
   // Récupérer l'URL de redirection si elle existe
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || '/app/dashboard';
 
   // Mettre à jour le mode selon la route
   useEffect(() => {
