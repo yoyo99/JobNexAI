@@ -19,40 +19,65 @@ interface SkillsProps {
 }
 
 export function SkillsSection({ categories, onChange }: SkillsProps) {
-  // État pour garder la valeur de l'input pour chaque catégorie
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const fetchSuggestions = async (query: string) => {
+    if (query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/.netlify/functions/skills-search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setSuggestions(data);
+    } catch (error) {
+      console.error("Failed to fetch skills:", error);
+      setSuggestions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleInputChange = (categoryId: string, value: string) => {
     setInputValues(prev => ({ ...prev, [categoryId]: value }));
+    setActiveCategory(categoryId);
+
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+    if (value.trim() === '') {
+      setSuggestions([]);
+      return;
+    }
+
+    setDebounceTimeout(setTimeout(() => fetchSuggestions(value), 300));
   };
 
   const addCategory = () => {
-    onChange([
-      ...categories,
-      { id: crypto.randomUUID(), name: 'Nouvelle catégorie', skills: [] },
-    ]);
+    onChange([...categories, { id: crypto.randomUUID(), name: 'Nouvelle catégorie', skills: [] }]);
   };
 
   const updateCategoryName = (id: string, name: string) => {
-    onChange(
-      categories.map(cat => (cat.id === id ? { ...cat, name } : cat))
-    );
+    onChange(categories.map(cat => (cat.id === id ? { ...cat, name } : cat)));
   };
 
   const removeCategory = (id: string) => {
     onChange(categories.filter(cat => cat.id !== id));
   };
 
-  const addSkill = (categoryId: string) => {
-    const skillName = inputValues[categoryId]?.trim();
-    if (!skillName) return; // Ne pas ajouter de compétence vide
+  const addSkill = (categoryId: string, skillNameFromSuggestion?: string) => {
+    const skillName = skillNameFromSuggestion || inputValues[categoryId]?.trim();
+    if (!skillName) return;
 
     const newSkill = { id: crypto.randomUUID(), name: skillName };
 
     onChange(
       categories.map(cat =>
         cat.id === categoryId
-          // Éviter les doublons
           ? cat.skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())
             ? cat
             : { ...cat, skills: [...cat.skills, newSkill] }
@@ -60,8 +85,9 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
       )
     );
 
-    // Vider l'input
-    handleInputChange(categoryId, '');
+    setInputValues(prev => ({ ...prev, [categoryId]: '' }));
+    setSuggestions([]);
+    setActiveCategory(null);
   };
 
   const removeSkill = (categoryId: string, skillId: string) => {
@@ -76,7 +102,7 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, categoryId: string) => {
     if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault(); // Empêcher la soumission ou la virgule
+      e.preventDefault();
       addSkill(categoryId);
     }
   };
@@ -84,7 +110,7 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
   return (
     <div className="space-y-6">
       {categories.map(category => (
-        <div key={category.id} className="bg-white/5 rounded-lg p-5">
+        <div key={category.id} className="bg-white/5 rounded-lg p-5 relative">
           <div className="flex items-center justify-between mb-4">
             <input
               type="text"
@@ -112,14 +138,30 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
             ))}
           </div>
           
-          <input
-            type="text"
-            value={inputValues[category.id] || ''}
-            onChange={e => handleInputChange(category.id, e.target.value)}
-            onKeyDown={e => handleKeyDown(e, category.id)}
-            placeholder="Ajouter une compétence et appuyer sur Entrée..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={inputValues[category.id] || ''}
+              onChange={e => handleInputChange(category.id, e.target.value)}
+              onKeyDown={e => handleKeyDown(e, category.id)}
+              placeholder="Rechercher une compétence..."
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+            {isLoading && activeCategory === category.id && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">Chargement...</div>}
+            {suggestions.length > 0 && activeCategory === category.id && (
+              <ul className="absolute z-10 w-full bg-gray-800 border border-white/10 rounded-lg mt-1 max-h-60 overflow-y-auto shadow-lg">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    onClick={() => addSkill(category.id, suggestion.libelle_competence)}
+                    className="px-4 py-2 text-white cursor-pointer hover:bg-primary-500/20"
+                  >
+                    {suggestion.libelle_competence}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       ))}
       <button

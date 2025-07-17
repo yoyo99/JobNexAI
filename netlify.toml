@@ -18,7 +18,7 @@
   directory = "functions"
   node_bundler = "esbuild"
   external_node_modules = ["langchain"]
-  included_files = ["src/lib/ai_logic/**", "functions/rome-search/rome_appellations.csv"]
+  included_files = ["src/lib/ai_logic/**", "functions/rome-search/rome_appellations.csv", "data/unix_arborescence_competences_v459_utf8.csv"]
   # node_bundler et external_node_modules sont maintenant sous [build.functions]
 
 # Configuration des redirections
