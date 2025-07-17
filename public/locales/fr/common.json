@@ -47,6 +47,14 @@
   "auth": {
     "login": "Se connecter",
     "signup": "S'inscrire",
+    "title": {
+      "login": "Se connecter",
+      "signup": "Créer un compte"
+    },
+    "subtitle": {
+      "login": "Ou démarrer l'essai",
+      "signup": "Inscrivez-vous gratuitement"
+    },
     "logout": "Se déconnecter",
     "forgotPassword": "Mot de passe oublié ?",
     "resetPassword": "Réinitialiser le mot de passe",
@@ -59,6 +67,7 @@
     "linkedin": "LinkedIn",
     "createAccount": "Créer un compte",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "alreadyRegistered": "Déjà inscrit ? Se connecter",
     "dontHaveAccount": "Vous n'avez pas de compte ?",
     "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères",
     "emailVerification": "Vérification de l'e-mail",
@@ -73,6 +82,7 @@
     "requiredField": "Ce champ est requis",
     "invalidEmail": "Veuillez saisir une adresse e-mail valide",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "acceptTerms": "J'accepte les",
     "agreeToTerms": "J'accepte les Conditions d'utilisation et la Politique de confidentialité",
     "termsRequired": "Vous devez accepter les Conditions d'utilisation et la Politique de confidentialité",
     "passwordTooWeak": "Le mot de passe est trop faible",

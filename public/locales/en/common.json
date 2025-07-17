@@ -45,8 +45,16 @@
     "changeLanguage": "Change Language"
   },
   "auth": {
-    "login": "Login",
+    "login": "Sign In",
     "signup": "Sign Up",
+    "title": {
+      "login": "Sign In",
+      "signup": "Create Account"
+    },
+    "subtitle": {
+      "login": "Or start your trial",
+      "signup": "Sign up for free"
+    },
     "logout": "Logout",
     "forgotPassword": "Forgot Password?",
     "resetPassword": "Reset Password",
@@ -59,6 +67,7 @@
     "linkedin": "LinkedIn",
     "createAccount": "Create Account",
     "alreadyHaveAccount": "Already have an account?",
+    "alreadyRegistered": "Already registered? Sign in",
     "dontHaveAccount": "Don't have an account?",
     "passwordRequirements": "Password must be at least 8 characters long",
     "emailVerification": "Email Verification",
@@ -73,6 +82,7 @@
     "requiredField": "This field is required",
     "invalidEmail": "Please enter a valid email address",
     "passwordsDoNotMatch": "Passwords do not match",
+    "acceptTerms": "I accept the",
     "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
     "termsRequired": "You must agree to the Terms of Service and Privacy Policy",
     "passwordTooWeak": "Password is too weak",
