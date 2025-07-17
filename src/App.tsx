@@ -165,8 +165,8 @@ function App() {
             <Routes>
               <Route path="/" element={<LandingPageRouteHandler />} />
               <Route path="/home" element={<LandingPageRouteHandler />} />
-              <Route path="/login" element={<PublicRoute><LazyComponentWrapper><Auth /></LazyComponentWrapper></PublicRoute>} />
-              <Route path="/register" element={<PublicRoute><LazyComponentWrapper><Auth /></LazyComponentWrapper></PublicRoute>} />
+              <Route path="/login" element={<PublicRoute><LazyComponentWrapper><SupabaseAuth /></LazyComponentWrapper></PublicRoute>} />
+              <Route path="/register" element={<PublicRoute><LazyComponentWrapper><SupabaseAuth /></LazyComponentWrapper></PublicRoute>} />
               <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
               <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
               <Route path="/about" element={<LazyComponentWrapper><AboutPage /></LazyComponentWrapper>} />
