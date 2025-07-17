@@ -24,21 +24,39 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [noResultsMessage, setNoResultsMessage] = useState<string | null>(null);
 
   const fetchSuggestions = async (query: string) => {
     if (query.length < 2) {
       setSuggestions([]);
+      setErrorMessage(null);
+      setNoResultsMessage(null);
       return;
     }
     setIsLoading(true);
+    setErrorMessage(null);
+    setNoResultsMessage(null);
+    
     try {
       const response = await fetch(`/.netlify/functions/skills-search?q=${encodeURIComponent(query)}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      setSuggestions(data);
+      
+      // Gestion du cas "aucun résultat" avec message du serveur
+      if (data.message && data.suggestions) {
+        setSuggestions([]);
+        setNoResultsMessage(data.message);
+      } else if (Array.isArray(data) && data.length === 0) {
+        setSuggestions([]);
+        setNoResultsMessage('Aucune compétence trouvée pour cette recherche');
+      } else {
+        setSuggestions(Array.isArray(data) ? data : []);
+      }
     } catch (error) {
       console.error("Failed to fetch skills:", error);
       setSuggestions([]);
+      setErrorMessage('Erreur lors de la recherche. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -51,6 +69,8 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
     if (debounceTimeout) clearTimeout(debounceTimeout);
     if (value.trim() === '') {
       setSuggestions([]);
+      setErrorMessage(null);
+      setNoResultsMessage(null);
       return;
     }
 
@@ -88,6 +108,8 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
     setInputValues(prev => ({ ...prev, [categoryId]: '' }));
     setSuggestions([]);
     setActiveCategory(null);
+    setErrorMessage(null);
+    setNoResultsMessage(null);
   };
 
   const removeSkill = (categoryId: string, skillId: string) => {
@@ -147,16 +169,42 @@ export function SkillsSection({ categories, onChange }: SkillsProps) {
               placeholder="Rechercher une compétence..."
               className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
-            {isLoading && activeCategory === category.id && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">Chargement...</div>}
+            {isLoading && activeCategory === category.id && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                Chargement...
+              </div>
+            )}
+            
+            {/* Messages d'erreur */}
+            {errorMessage && activeCategory === category.id && (
+              <div className="absolute z-10 w-full bg-red-900/80 border border-red-500/50 rounded-lg mt-1 p-3 text-red-200 text-sm">
+                {errorMessage}
+              </div>
+            )}
+            
+            {/* Message aucun résultat */}
+            {noResultsMessage && activeCategory === category.id && (
+              <div className="absolute z-10 w-full bg-gray-800 border border-white/10 rounded-lg mt-1 p-3 text-gray-400 text-sm">
+                {noResultsMessage}
+                <div className="mt-2 text-xs text-gray-500">
+                  Suggestions : JavaScript, Python, Marketing, Communication
+                </div>
+              </div>
+            )}
+            
+            {/* Liste des suggestions */}
             {suggestions.length > 0 && activeCategory === category.id && (
               <ul className="absolute z-10 w-full bg-gray-800 border border-white/10 rounded-lg mt-1 max-h-60 overflow-y-auto shadow-lg">
                 {suggestions.map((suggestion, index) => (
                   <li
                     key={index}
                     onClick={() => addSkill(category.id, suggestion.libelle_competence)}
-                    className="px-4 py-2 text-white cursor-pointer hover:bg-primary-500/20"
+                    className="px-4 py-2 text-white cursor-pointer hover:bg-primary-500/20 border-b border-white/5 last:border-b-0"
                   >
-                    {suggestion.libelle_competence}
+                    <div className="font-medium">{suggestion.libelle_competence}</div>
+                    {suggestion.code_competence && (
+                      <div className="text-xs text-gray-400 mt-1">{suggestion.code_competence}</div>
+                    )}
                   </li>
                 ))}
               </ul>

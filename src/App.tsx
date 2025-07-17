@@ -55,7 +55,7 @@ const DashboardRedirectHandler = () => {
   }
 
   if (user) {
-    return <Navigate to="/dashboard" state={{ from: location }} replace />;
+    return <Navigate to="/app/dashboard" state={{ from: location }} replace />;
   }
 
   return <Navigate to="/" replace />;
@@ -190,7 +190,7 @@ function App() {
               {/* --- Routes Protégées --- */}
               {/* Toutes les routes ici nécessitent que l'utilisateur soit connecté */}
               <Route 
-                path="/" 
+                path="/app" 
                 element={
                   <ProtectedRoute>
                     <DashboardLayout />
@@ -198,7 +198,7 @@ function App() {
                 }
               >
                 {/* Redirection de la racine protégée vers le dashboard */}
-                <Route index element={<Navigate to="/dashboard" replace />} /> 
+                <Route index element={<Navigate to="/app/dashboard" replace />} /> 
 
                 {/* Routes générales du dashboard */}
                 <Route path="dashboard" element={<LazyComponentWrapper><Dashboard /></LazyComponentWrapper>} />
@@ -225,7 +225,7 @@ function App() {
                 <Route path="recruiter/create-job" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><CreateJobPosting /></LazyComponentWrapper></ProtectedRoute>} />
 
                 {/* L'ancienne route /user-type est maintenant gérée par la logique de redirection interne */}
-                <Route path="user-type" element={<Navigate to="/dashboard" replace />} />
+                <Route path="user-type" element={<Navigate to="/app/dashboard" replace />} />
               </Route>
             </Routes>
             <PrivacyConsent />

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import viteCompression from 'vite-plugin-compression'
-import path from 'path'
+import { fileURLToPath, URL } from 'node:url'
 // Compatibilité avec les fichiers Nav.vue requis par Netlify
 // Remarque : cette ligne ne sera pas utilisée par l'application React principale
 const emptyPlugin = { name: 'empty-plugin' }
@@ -41,9 +41,9 @@ export default defineConfig({
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
-      // Utiliser path.resolve pour garantir des chemins absolus corrects
-      '@': path.resolve(__dirname, 'src'),
-      'src': path.resolve(__dirname, 'src')
+      // Utiliser fileURLToPath pour ESM moderne
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'src': fileURLToPath(new URL('./src', import.meta.url))
     },
     // Activer ces options pour aider à la résolution des modules
     preserveSymlinks: true,
@@ -53,6 +53,7 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: true,
     target: 'esnext', // Set the build target to esnext to support top-level await
+    modulePreload: { polyfill: false }, // Disable module preload polyfill for modern builds
     // Assurer que des fichiers spécifiques sont exclus du build
     outDir: 'dist',
     assetsDir: 'assets',
