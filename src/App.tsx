@@ -40,8 +40,13 @@ const LazyComponentWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Handler for the landing page route
+// Handler for the landing page route - Always show landing page
 const LandingPageRouteHandler = () => {
+  return <LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>; 
+};
+
+// Handler for dashboard redirect (for authenticated users)
+const DashboardRedirectHandler = () => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -53,7 +58,7 @@ const LandingPageRouteHandler = () => {
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
 
-  return <LazyComponentWrapper><JobNexAILanding /></LazyComponentWrapper>; 
+  return <Navigate to="/" replace />;
 };
 
 // Code splitting (React.lazy) pour les pages principales
@@ -159,6 +164,7 @@ function App() {
         />
             <Routes>
               <Route path="/" element={<LandingPageRouteHandler />} />
+              <Route path="/home" element={<LandingPageRouteHandler />} />
               <Route path="/login" element={<PublicRoute><LazyComponentWrapper><Auth /></LazyComponentWrapper></PublicRoute>} />
               <Route path="/register" element={<PublicRoute><LazyComponentWrapper><Auth /></LazyComponentWrapper></PublicRoute>} />
               <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
