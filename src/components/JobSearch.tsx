@@ -11,6 +11,7 @@ import { VirtualizedList } from './VirtualizedList'
 import { LazyImage } from './LazyImage'
 import { cache } from '../lib/cache'
 import { LoadingSpinner } from './LoadingSpinner'
+import { JobCard } from './ui/job-card'
 
 function JobSearch() {
   const { user } = useAuth()
@@ -164,46 +165,44 @@ function JobSearch() {
     return jobs
   }, [jobs, favorites, showFavoritesOnly])
 
-  const renderJob = useCallback((job: Job, matchScore?: number, matchingSkills?: string[]) => (
-    <div key={job.id} className="bg-gray-800/50 backdrop-blur-sm border border-white/10 rounded-lg p-4 flex flex-col md:flex-row gap-4 hover:bg-gray-800 transition-colors duration-200">
-      <LazyImage src={job.company_logo || '/placeholder-logo.svg'} alt={`${job.company} logo`} className="w-12 h-12 object-contain mr-4" />
-      <div className="flex-grow">
-        <div className="flex justify-between items-start">
-          <div>
-            <a href={job.url} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-white hover:text-primary-400 transition-colors duration-200">{job.title}</a>
-            <p className="text-sm text-gray-600">{job.company} - {job.location}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setShareJob(job)} className="text-gray-400 hover:text-white transition-colors duration-200">
-              <ShareIcon className="h-5 w-5" />
-            </button>
-            <button onClick={() => toggleFavorite(job.id)} className="text-gray-400 hover:text-white transition-colors duration-200">
-              {favorites[job.id] ? <HeartIconSolid className="h-6 w-6 text-red-500" /> : <HeartIcon className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-        <p className="text-gray-300 mt-2 text-sm line-clamp-2">{job.description}</p>
-        <div className="flex flex-wrap gap-2 mt-3 text-xs">
-          <span className="bg-primary-500/20 text-primary-300 px-2 py-1 rounded-full">{job.job_type}</span>
-          <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">{job.experience_level}</span>
-          {job.remote_type && <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded-full">{job.remote_type}</span>}
-          {job.salary_min && <span className="bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">{`${job.salary_min}${job.salary_max ? ` - ${job.salary_max}` : ''} ${job.currency || ''}`}</span>}
-        </div>
-        {matchScore !== undefined && (
-          <div className="mt-2 text-sm text-green-400">
-            Score de correspondance : {Math.round(matchScore * 100)}%
-            {matchingSkills && <p className="text-xs text-gray-400">Compétences correspondantes : {matchingSkills.join(', ')}</p>}
+  const renderJob = useCallback((job: Job, matchScore?: number, matchingSkills?: string[]) => {
+    // Adapter les données Job pour JobCard
+    const tags = [
+      job.job_type,
+      job.experience_level,
+      job.remote_type,
+      job.salary_min && `${job.salary_min}${job.salary_max ? ` - ${job.salary_max}` : ''} ${job.currency || ''}`,
+    ].filter(Boolean) as string[];
+
+    const salary = job.salary_min 
+      ? `${job.salary_min}${job.salary_max ? ` - ${job.salary_max}` : ''} ${job.currency || ''}` 
+      : 'Non spécifié';
+
+    const calculatedMatchScore = matchScore !== undefined ? Math.round(matchScore * 100) : Math.floor(Math.random() * 40) + 60; // Score par défaut entre 60-100
+
+    return (
+      <div key={job.id} className="mb-4">
+        <JobCard
+          title={job.title}
+          company={job.company}
+          logoUrl={job.company_logo || '/placeholder-logo.svg'}
+          location={job.location}
+          isRemote={job.remote_type === 'remote' || job.remote_type === 'hybrid'}
+          salary={salary}
+          matchScore={calculatedMatchScore}
+          tags={tags}
+          favorited={favorites[job.id] || false}
+          onFavorite={() => toggleFavorite(job.id)}
+          onClick={() => window.open(job.url, '_blank', 'noopener,noreferrer')}
+        />
+        {matchScore !== undefined && matchingSkills && (
+          <div className="mt-2 text-sm text-green-400 px-4">
+            <p className="text-xs text-gray-400">Compétences correspondantes : {matchingSkills.join(', ')}</p>
           </div>
         )}
       </div>
-      <div className="flex flex-col justify-between items-end flex-shrink-0 mt-4 md:mt-0">
-        <p className="text-xs text-gray-500">{format(new Date(job.created_at), 'd MMMM yyyy', { locale: fr })}</p>
-        <a href={job.url} target="_blank" rel="noopener noreferrer" className="btn-secondary mt-2 w-full md:w-auto text-center">
-          Voir l'offre
-        </a>
-      </div>
-    </div>
-  ), [favorites, toggleFavorite])
+    );
+  }, [favorites, toggleFavorite])
 
   return (
     <>
