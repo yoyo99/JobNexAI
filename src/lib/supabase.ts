@@ -542,7 +542,13 @@ export const uploadUserCV = async (userId: string, file: File): Promise<CVMetada
     throw new Error('Upload to storage failed, no data returned.');
   }
 
-  // 2. Enregistrer les métadonnées dans la table user_cvs
+  // 2. Vérifier l'authentification avant insertion
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user || user.id !== userId) {
+    throw new Error('Utilisateur non authentifié ou ID utilisateur invalide.');
+  }
+
+  // 3. Enregistrer les métadonnées dans la table user_cvs
   const cvMetadataToInsert = {
     user_id: userId,
     file_name: file.name,

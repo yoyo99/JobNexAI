@@ -20,14 +20,14 @@ const publicNavigation = [
 
 // Navigation pour les utilisateurs connectés (avant admin)
 const userCoreNavigation = [
-  { name: 'Dashboard', href: '/app/dashboard' },
-  { name: 'Job Search', href: '/app/job-search' },
-  { name: 'Suivi', href: '/app/suivi' },
-  { name: 'CV Builder', href: '/app/cv-builder' },
-  { name: 'Network', href: '/app/network' },
-  { name: 'Market Analysis', href: '/app/market-analysis' },
-  { name: 'Profile', href: '/app/profile' },
-  { name: 'Billing', href: '/app/billing' },
+  { name: 'navigation.dashboard', href: '/app/dashboard' },
+  { name: 'navigation.jobSearch', href: '/app/job-search' },
+  { name: 'navigation.applications', href: '/app/suivi' },
+  { name: 'navigation.cvBuilder', href: '/app/cv-builder' },
+  { name: 'navigation.network', href: '/app/network' },
+  { name: 'navigation.marketAnalysis', href: '/app/market-analysis' },
+  { name: 'navigation.profile.title', href: '/app/profile' },
+  { name: 'navigation.billing', href: '/app/billing' },
 ];
 
 const adminSpecificNavigation = [
@@ -258,7 +258,7 @@ export function Header() {
                     <div className="py-6">
                       {user.is_admin && (
                         <Link
-                          to="/admin"
+                          to="/app/admin"
                           className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-yellow-400 hover:bg-white/10"
                           onClick={() => setMobileMenuOpen(false)}
                         >
