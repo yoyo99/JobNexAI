@@ -5,7 +5,6 @@
  */
 
 import { getUserAISettings as fetchUserSettings, UserAISettingsData } from '../lib/supabase';
-import { Mistral } from '@mistralai/mistralai';
 
 // Définition des moteurs d'IA supportés
 export type SupportedAI = 'openai' | 'mistral' | 'gemini' | 'claude' | 'cohere' | 'huggingface' | 'internal';
@@ -74,7 +73,7 @@ export const generateCoverLetter = async (
 };
 
 /**
- * Génère une lettre de motivation avec l'API Mistral
+ * Génère une lettre de motivation via la fonction serverless
  */
 async function generateWithMistral(
   cv: string,
@@ -82,69 +81,33 @@ async function generateWithMistral(
   language: string,
   tone: string
 ): Promise<string> {
-  const apiKey = import.meta.env.VITE_MISTRAL_API_KEY || process.env.MISTRAL_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error('Clé API Mistral manquante. Veuillez configurer MISTRAL_API_KEY dans les variables d\'environnement.');
-  }
-
-  const mistral = new Mistral({
-    apiKey: apiKey,
+  // Appel à la fonction serverless existante pour éviter l'exposition de la clé API
+  const response = await fetch('/.netlify/functions/generate-cover-letter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cv,
+      jobDescription,
+      language,
+      tone,
+      engine: 'mistral' // Spécifier le moteur
+    }),
   });
 
-  const languageMap: Record<string, string> = {
-    'fr': 'français',
-    'en': 'anglais',
-    'es': 'espagnol',
-    'de': 'allemand'
-  };
-
-  const toneMap: Record<string, string> = {
-    'professional': 'professionnel et formel',
-    'conversational': 'conversationnel et accessible',
-    'enthusiastic': 'enthousiaste et dynamique'
-  };
-
-  const prompt = `Tu es un expert en rédaction de lettres de motivation. Génère une lettre de motivation personnalisée et convaincante.
-
-**Informations du candidat (CV) :**
-${cv}
-
-**Description du poste :**
-${jobDescription}
-
-**Instructions :**
-- Langue : ${languageMap[language] || 'français'}
-- Ton : ${toneMap[tone] || 'professionnel'}
-- Structure : En-tête, introduction, corps (2-3 paragraphes), conclusion
-- Personnalise le contenu en mettant en avant les compétences et expériences du CV qui correspondent au poste
-- Sois spécifique et évite les généralités
-- Longueur : 250-400 mots
-- Format : Texte simple, prêt à être copié
-
-Génère uniquement la lettre de motivation, sans commentaires supplémentaires.`;
-
-  const response = await mistral.chat.complete({
-    model: 'mistral-small-latest',
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.7,
-    maxTokens: 800,
-  });
-
-  const generatedText = response.choices?.[0]?.message?.content;
-  
-  if (!generatedText) {
-    throw new Error('Aucune réponse reçue de l\'API Mistral');
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(`Erreur lors de la génération: ${response.status} - ${errorData}`);
   }
 
-  // Gérer le cas où content peut être un string ou un array
-  const textContent = typeof generatedText === 'string' ? generatedText : generatedText.join('');
-  return textContent.trim();
+  const result = await response.json();
+  
+  if (!result.coverLetter) {
+    throw new Error('Aucune lettre de motivation générée');
+  }
+
+  return result.coverLetter;
 }
 
 /**
@@ -182,83 +145,39 @@ export const getMatchScore = async (
 };
 
 /**
- * Calcule le score de matching avec l'API Mistral
+ * Calcule le score de matching via la fonction serverless
  */
 async function calculateMatchWithMistral(
   cv: string,
   jobDescription: string
 ): Promise<{ score: number; explanation: string }> {
-  const apiKey = import.meta.env.VITE_MISTRAL_API_KEY || process.env.MISTRAL_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error('Clé API Mistral manquante');
-  }
-
-  const mistral = new Mistral({
-    apiKey: apiKey,
+  // Appel à la fonction serverless existante pour éviter l'exposition de la clé API
+  const response = await fetch('/.netlify/functions/job-matching', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cv,
+      jobDescription,
+      engine: 'mistral' // Spécifier le moteur
+    }),
   });
 
-  const prompt = `Tu es un expert en recrutement. Analyse la correspondance entre ce CV et cette offre d'emploi.
-
-**CV du candidat :**
-${cv}
-
-**Description du poste :**
-${jobDescription}
-
-**Instructions :**
-- Évalue la correspondance sur une échelle de 0 à 100
-- Analyse les compétences, l'expérience, la formation
-- Identifie les points forts et les lacunes
-- Sois objectif et précis
-
-Réponds au format JSON suivant :
-{
-  "score": [nombre entre 0 et 100],
-  "explanation": "[explication détaillée en 2-3 phrases]"
-}`;
-
-  const response = await mistral.chat.complete({
-    model: 'mistral-small-latest',
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.3, // Plus déterministe pour l'évaluation
-    maxTokens: 300,
-  });
-
-  const generatedText = response.choices?.[0]?.message?.content;
-  
-  if (!generatedText) {
-    throw new Error('Aucune réponse reçue de l\'API Mistral');
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(`Erreur lors du calcul du score: ${response.status} - ${errorData}`);
   }
 
-  const textContent = typeof generatedText === 'string' ? generatedText : generatedText.join('');
+  const result = await response.json();
   
-  try {
-    // Extraire le JSON de la réponse
-    const jsonMatch = textContent.match(/\{[^}]*\}/);
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0]);
-      return {
-        score: Math.max(0, Math.min(100, result.score || 0)), // S'assurer que le score est entre 0 et 100
-        explanation: result.explanation || 'Score calculé par IA'
-      };
-    }
-  } catch (parseError) {
-    console.warn('Erreur de parsing JSON, utilisation du texte brut:', parseError);
+  if (typeof result.score !== 'number') {
+    throw new Error('Score invalide reçu de la fonction serverless');
   }
 
-  // Fallback: essayer d'extraire un score du texte
-  const scoreMatch = textContent.match(/(\d+)/);
-  const score = scoreMatch ? parseInt(scoreMatch[1]) : 75;
-  
   return {
-    score: Math.max(0, Math.min(100, score)),
-    explanation: textContent.substring(0, 200) + '...'
+    score: Math.max(0, Math.min(100, result.score)),
+    explanation: result.explanation || 'Score calculé par IA'
   };
 }
 
