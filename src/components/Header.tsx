@@ -5,6 +5,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react' // Nécessaire pour Transition
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { ThemeToggle } from './ui/theme-toggle'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../stores/auth'
 import simpleLogoSrc from '../assets/images/simple_logo.svg'; // Import SVG as a source URL
@@ -113,6 +114,9 @@ export function Header() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
             <div className="mr-4">
               <LanguageSwitcher />
+            </div>
+            <div className="mr-4">
+              <ThemeToggle />
             </div>
             {user ? (
               <Menu as="div" className="relative">
@@ -253,6 +257,9 @@ export function Header() {
                 <div className="py-6">
                   <div className="mb-4">
                     <LanguageSwitcher />
+                  </div>
+                  <div className="mb-4">
+                    <ThemeToggle />
                   </div>
                   {user ? (
                     <div className="py-6">

@@ -100,6 +100,7 @@ const CandidateSearch = React.lazy(() => import('./components/recruiter/Candidat
 const JobPostings = React.lazy(() => import('./components/recruiter/JobPostings'));
 const CreateJobPosting = React.lazy(() => import('./components/recruiter/CreateJobPosting'));
 const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelection'));
+const ModernComponentsDemo = React.lazy(() => import('./components/ModernComponentsDemo'));
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
@@ -168,6 +169,7 @@ function App() {
               <Route path="/login" element={<PublicRoute><LazyComponentWrapper><SupabaseAuth /></LazyComponentWrapper></PublicRoute>} />
               <Route path="/register" element={<PublicRoute><LazyComponentWrapper><SupabaseAuth /></LazyComponentWrapper></PublicRoute>} />
               <Route path="/pricing" element={<LazyComponentWrapper><Pricing /></LazyComponentWrapper>} />
+              <Route path="/demo" element={<LazyComponentWrapper><ModernComponentsDemo /></LazyComponentWrapper>} />
               <Route path="/privacy" element={<LazyComponentWrapper><PrivacyPolicy /></LazyComponentWrapper>} />
               <Route path="/about" element={<LazyComponentWrapper><AboutPage /></LazyComponentWrapper>} />
               <Route path="/contact" element={<LazyComponentWrapper><ContactPage /></LazyComponentWrapper>} />
