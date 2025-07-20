@@ -31,7 +31,7 @@ const userCoreNavigation = [
 ];
 
 const adminSpecificNavigation = [
-  { name: 'Admin', href: '/admin' },
+  { name: 'Admin', href: '/app/admin' },
 ];
 
 export function Header() {
@@ -151,7 +151,7 @@ export function Header() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            to="/admin"
+                            to="/app/admin"
                             className={`${active ? 'bg-gray-700' : ''} group flex items-center px-4 py-2 text-sm text-yellow-400 hover:text-yellow-300 w-full`}
                           >
                             {/* Vous pouvez ajouter une icône spécifique pour Admin si vous le souhaitez */}
@@ -163,7 +163,7 @@ export function Header() {
                     <Menu.Item>
                       {({ active }) => (
                         <Link
-                          to="/profile"
+                          to="/app/profile"
                           className={`${active ? 'bg-gray-700' : ''} group flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white w-full`}
                         >
                           <UserCircleIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />
@@ -174,7 +174,7 @@ export function Header() {
                     <Menu.Item>
                       {({ active }) => (
                         <Link
-                          to="/settings"
+                          to="/app/settings"
                           className={`${active ? 'bg-gray-700' : ''} group flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white w-full`}
                         >
                           <Cog6ToothIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />

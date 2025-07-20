@@ -84,6 +84,7 @@ const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
 const AuthCallback = React.lazy(() => import('./components/AuthCallback'));
 const StripeCheckoutStatus = React.lazy(() => import('./components/StripeCheckoutStatus'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Admin = React.lazy(() => import('./components/Admin').then(module => ({ default: module.Admin })));
 const Profile = React.lazy(() => import('./components/Profile'));
 const Billing = React.lazy(() => import('./components/Billing'));
 const JobSearch = React.lazy(() => import('./components/JobSearch'));
@@ -209,6 +210,7 @@ function App() {
                 <Route path="profile" element={<LazyComponentWrapper><Profile /></LazyComponentWrapper>} />
                 <Route path="billing" element={<LazyComponentWrapper><Billing /></LazyComponentWrapper>} />
                 <Route path="settings" element={<LazyComponentWrapper><Settings /></LazyComponentWrapper>} />
+                <Route path="admin" element={<LazyComponentWrapper><Admin /></LazyComponentWrapper>} />
                 
                 {/* Routes nécessitant un abonnement */}
                 <Route path="jobs" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
