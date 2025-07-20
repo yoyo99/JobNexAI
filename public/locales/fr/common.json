@@ -190,7 +190,8 @@
   },
   "dashboard": {
     "welcome": "Bienvenue",
-    "greeting": "Bienvenue !",
+    "greeting": "Bon retour, {{name}} !",
+    "userDefault": "utilisateur",
     "jobsApplied": "Emplois postulés",
     "interviews": "Entretiens",
     "savedJobs": "Emplois sauvegardés",
