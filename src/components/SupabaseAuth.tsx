@@ -329,19 +329,36 @@ const SupabaseAuth: React.FC = () => {
             >
               {loading ? t('common.loading') : isLogin ? t('auth.login') : t('auth.createAccount')}
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setMessage(null);
-                setShowHelp(false);
-              }}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white btn-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-            >
-              {isLogin ? t('auth.createAccount') : t('auth.alreadyRegistered')}
-            </button>
+
           </div>
         </form>
+        
+        {/* Lien vers l'autre page */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {isLogin ? (
+              <>
+                {t('auth.noAccount', 'Pas encore de compte ?')}{' '}
+                <button
+                  onClick={() => navigate('/register')}
+                  className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+                >
+                  {t('auth.createAccount', 'Créer un compte')}
+                </button>
+              </>
+            ) : (
+              <>
+                {t('auth.alreadyHaveAccount', 'Déjà un compte ?')}{' '}
+                <button
+                  onClick={() => navigate('/login')}
+                  className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+                >
+                  {t('auth.login', 'Se connecter')}
+                </button>
+              </>
+            )}
+          </p>
+        </div>
       </motion.div>
     </div>
   );
