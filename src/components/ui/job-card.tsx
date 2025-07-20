@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { BookmarkIcon, BriefcaseIcon, MapPinIcon, StarIcon } from "@heroicons/react/24/solid";
+import { BookmarkIcon, BriefcaseIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import { CircularProgressBar } from "./CircularProgressBar";
 
 type JobCardProps = {
   title: string;
@@ -30,8 +31,8 @@ export const JobCard = ({
 }: JobCardProps) => {
   return (
     <motion.div
-      whileHover={{ scale: 1.025, boxShadow: "0 6px 32px 0 rgba(20,20,40,0.10)" }}
-      className="group bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-5 flex flex-col gap-3 relative transition cursor-pointer"
+      whileHover={{ scale: 1.02, boxShadow: "0 10px 40px -5px rgba(0,0,0,0.1)" }}
+      className="group bg-white/50 dark:bg-zinc-800/40 backdrop-blur-lg border border-white/10 dark:border-zinc-700/50 rounded-2xl shadow-xl shadow-black/5 p-5 flex flex-col gap-3 relative transition cursor-pointer"
       onClick={onClick}
     >
       {/* Favorite Button */}
@@ -40,12 +41,22 @@ export const JobCard = ({
           e.stopPropagation();
           onFavorite();
         }}
-        className="absolute top-4 right-4 z-10"
+        className="absolute top-4 right-4 z-10 p-2 -m-2" // Increased tap area for better UX
         aria-label={favorited ? "Retirer des favoris" : "Ajouter aux favoris"}
       >
-        <BookmarkIcon
-          className={`h-6 w-6 ${favorited ? "text-yellow-400" : "text-zinc-300 group-hover:text-yellow-400"} transition`}
-        />
+        <motion.div
+          animate={{ scale: favorited ? [1, 1.3, 1] : 1 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          whileTap={{ scale: 0.8 }}
+        >
+          <BookmarkIcon
+            className={`h-6 w-6 transition-colors duration-200 ${ 
+              favorited 
+                ? "text-yellow-400 fill-yellow-400/80" 
+                : "text-zinc-300 group-hover:text-yellow-400"
+            }`}
+          />
+        </motion.div>
       </button>
       
       {/* Logo & Entreprise */}
@@ -98,22 +109,11 @@ export const JobCard = ({
       </div>
       
       {/* Bas de carte */}
-      <div className="flex items-end justify-between mt-2">
-        {/* Match Score animé */}
-        <div className="flex items-center gap-2">
-          <div className="relative w-16 h-3 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${matchScore}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-emerald-400 to-emerald-700 rounded-full"
-            />
-          </div>
-          <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-bold text-sm">
-            <StarIcon className="w-4 h-4" /> {matchScore}%
-          </span>
+      <div className="flex items-end justify-between mt-4 pt-4 border-t border-zinc-200/50 dark:border-zinc-700/50">
+        <div className="text-zinc-800 dark:text-zinc-100 font-semibold text-lg">
+          {salary}
         </div>
-        <div className="text-zinc-700 dark:text-zinc-200 font-semibold text-sm">{salary}</div>
+        <CircularProgressBar progress={matchScore} size={50} strokeWidth={5} />
       </div>
     </motion.div>
   );
