@@ -79,13 +79,16 @@ const UserAISettings: React.FC<UserAISettingsProps> = ({ userId, defaultEngine =
           initializeDefaultEngines();
         }
       }
-      // Notifier le parent du chargement des paramètres
-      if (onChange) {
-        onChange(featureEngines, apiKeys);
-      }
     };
     loadSettings();
-  }, [userId, defaultApiKeys, initializeDefaultEngines, onChange]);
+  }, [userId, initializeDefaultEngines]); // Retirer onChange et defaultApiKeys des dépendances
+  
+  // Effet séparé pour notifier les changements
+  useEffect(() => {
+    if (onChange && Object.keys(featureEngines).length > 0) {
+      onChange(featureEngines, apiKeys);
+    }
+  }, [featureEngines, apiKeys, onChange]);
 
   const handleFeatureEngineChange = (featureId: string, newEngine: string) => {
     const newFeatureEngines = { ...featureEngines, [featureId]: newEngine };

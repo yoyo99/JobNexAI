@@ -305,7 +305,13 @@ function Profile() {
           className="card"
         >
           <h2 className="text-lg font-semibold text-white mb-6">Paramètres IA</h2>
-          <UserAISettings userId={user?.id} />
+          <UserAISettings 
+            userId={user?.id} 
+            onChange={(featureEngines, apiKeys) => {
+              console.log('AI Settings changed:', { featureEngines, apiKeys })
+              // Les paramètres sont automatiquement sauvegardés par le composant
+            }}
+          />
         </motion.div>
       )}
 
