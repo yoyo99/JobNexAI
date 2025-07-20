@@ -92,7 +92,7 @@ async function generateWithMistral(
       jobDescription,
       language,
       tone,
-      engine: 'mistral' // Spécifier le moteur
+      provider: 'mistral' // Paramètre attendu par la fonction serverless
     }),
   });
 
@@ -103,11 +103,11 @@ async function generateWithMistral(
 
   const result = await response.json();
   
-  if (!result.coverLetter) {
+  if (!result.letter) {
     throw new Error('Aucune lettre de motivation générée');
   }
 
-  return result.coverLetter;
+  return result.letter;
 }
 
 /**
@@ -127,59 +127,11 @@ export const getMatchScore = async (
 
   console.log(`Calculating match score with ${engine}...`);
 
-  try {
-    if (engine === 'mistral') {
-      return await calculateMatchWithMistral(cv, jobDescription);
-    } else if (engine === 'internal') {
-      // Algorithme interne simple
-      return calculateInternalMatch(cv, jobDescription);
-    } else {
-      // Fallback vers algorithme interne
-      return calculateInternalMatch(cv, jobDescription);
-    }
-  } catch (error) {
-    console.error('Erreur lors du calcul du score:', error);
-    // Fallback vers algorithme interne en cas d'erreur
-    return calculateInternalMatch(cv, jobDescription);
-  }
+  // Utiliser l'algorithme interne pour l'instant
+  // La fonction serverless job-matching est conçue pour matcher des utilisateurs/jobs en base
+  // Pour l'analyse de texte brut, nous utilisons l'algorithme interne qui est efficace
+  return calculateInternalMatch(cv, jobDescription);
 };
-
-/**
- * Calcule le score de matching via la fonction serverless
- */
-async function calculateMatchWithMistral(
-  cv: string,
-  jobDescription: string
-): Promise<{ score: number; explanation: string }> {
-  // Appel à la fonction serverless existante pour éviter l'exposition de la clé API
-  const response = await fetch('/.netlify/functions/job-matching', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      cv,
-      jobDescription,
-      engine: 'mistral' // Spécifier le moteur
-    }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(`Erreur lors du calcul du score: ${response.status} - ${errorData}`);
-  }
-
-  const result = await response.json();
-  
-  if (typeof result.score !== 'number') {
-    throw new Error('Score invalide reçu de la fonction serverless');
-  }
-
-  return {
-    score: Math.max(0, Math.min(100, result.score)),
-    explanation: result.explanation || 'Score calculé par IA'
-  };
-}
 
 /**
  * Algorithme interne simple pour calculer le score de matching
