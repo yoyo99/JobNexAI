@@ -106,9 +106,7 @@ export function Header() {
           }
           {((): boolean => true)() && // Restore user section display
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
-            <div className="mr-4">
-              <LanguageSwitcher />
-            </div>
+            {/* Sélecteur de langue supprimé - disponible dans Paramètres */}
             <div className="mr-4">
               <ThemeToggle />
             </div>
@@ -248,9 +246,7 @@ export function Header() {
                   ))}
                 </div>
                 <div className="py-6">
-                  <div className="mb-4">
-                    <LanguageSwitcher />
-                  </div>
+                  {/* Sélecteur de langue supprimé - disponible dans Paramètres */}
                   <div className="mb-4">
                     <ThemeToggle />
                   </div>

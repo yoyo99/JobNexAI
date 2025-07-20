@@ -91,8 +91,10 @@ const UserAISettings: React.FC<UserAISettingsProps> = ({ userId, defaultEngine =
   }, [featureEngines, apiKeys, onChange]);
 
   const handleFeatureEngineChange = (featureId: string, newEngine: string) => {
+    console.log('[UserAISettings] Changing engine for', featureId, 'to', newEngine);
     const newFeatureEngines = { ...featureEngines, [featureId]: newEngine };
     setFeatureEngines(newFeatureEngines);
+    console.log('[UserAISettings] New featureEngines:', newFeatureEngines);
     setShowSaveButton(true);
     // Notifier le parent du changement
     if (onChange) {
