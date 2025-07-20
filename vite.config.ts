@@ -39,7 +39,7 @@ export default defineConfig({
   },
   // Améliorer la résolution des modules
   resolve: {
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.css', '.vue'],
     alias: {
       // Utiliser fileURLToPath pour ESM moderne
       '@': fileURLToPath(new URL('./src', import.meta.url)),
