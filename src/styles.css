@@ -1,7 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Styles de base temporaires pour résoudre le problème PostCSS */
 :root {
   color-scheme: dark;
 }
@@ -11,20 +8,47 @@ html {
 }
 
 body {
-  @apply bg-background text-white min-h-screen;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background-color: #1a1a1a;
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 ease-in-out;
-  }
-  
-  .btn-secondary {
-    @apply bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 ease-in-out;
-  }
+.btn-primary {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-  .card {
-    @apply bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10;
-  }
+.btn-primary:hover {
+  background: linear-gradient(to right, #2563eb, #7c3aed);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
