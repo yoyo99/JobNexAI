@@ -544,7 +544,11 @@ export const uploadUserCV = async (userId: string, file: File): Promise<CVMetada
 
   // 2. Vérifier l'authentification avant insertion
   const { data: { user }, error: authError } = await supabase.auth.getUser();
+  console.log('[uploadUserCV] Auth check - user:', user?.id, 'expected userId:', userId);
+  console.log('[uploadUserCV] Auth error:', authError);
+  
   if (authError || !user || user.id !== userId) {
+    console.error('[uploadUserCV] Auth validation failed:', { authError, user: user?.id, userId });
     throw new Error('Utilisateur non authentifié ou ID utilisateur invalide.');
   }
 
@@ -558,11 +562,15 @@ export const uploadUserCV = async (userId: string, file: File): Promise<CVMetada
     is_primary: existingCVs.length === 0, // Le premier CV uploadé devient principal par défaut
   };
 
+  console.log('[uploadUserCV] Inserting CV metadata:', cvMetadataToInsert);
+  
   const { data: dbData, error: dbError } = await supabase
     .from('user_cvs')
     .insert(cvMetadataToInsert)
     .select()
     .single();
+    
+  console.log('[uploadUserCV] DB insert result:', { dbData, dbError });
 
   if (dbError) {
     console.error('Error saving CV metadata to database:', dbError);

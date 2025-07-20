@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../stores/auth';
-import { CVMetadata, getUserCVs, uploadUserCV, deleteUserCV, setPrimaryCV } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import { uploadUserCV, getUserCVs, deleteUserCV, setPrimaryCV, CVMetadata } from '../lib/supabase';
 import { useTranslation } from 'react-i18next';
+import { testRLSPolicies } from '../utils/testRLS';
 import { FaUpload, FaTrash, FaCheckCircle, FaTimesCircle, FaSpinner, FaFilePdf } from 'react-icons/fa'; // Exemple d'icônes
 
 interface UserCVsProps {
@@ -69,16 +70,39 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
     }
     setUploading(true);
     setFeedbackMessage(null);
+    
+    console.log('🚀 [UserCVs] Début upload CV:', {
+      fileName: fileToUpload.name,
+      fileSize: fileToUpload.size,
+      fileType: fileToUpload.type,
+      userId: userId
+    });
+    
     try {
-      await uploadUserCV(userId, fileToUpload);
+      const result = await uploadUserCV(userId, fileToUpload);
+      console.log('✅ [UserCVs] Upload réussi:', result);
       setFeedbackMessage({ type: 'success', text: t('userCVs.success.upload') });
       fetchCVs(); // Recharger la liste
       setFileToUpload(null); // Réinitialiser le champ de fichier
       const fileInput = document.getElementById('cv-upload-input') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
     } catch (err: any) {
-      setFeedbackMessage({ type: 'error', text: err.message || t('userCVs.errors.uploadFailed') });
-      console.error('Upload failed:', err);
+      console.error('❌ [UserCVs] Upload échoué:', err);
+      console.error('❌ [UserCVs] Détails de l\'erreur:', {
+        message: err.message,
+        code: err.code,
+        details: err.details,
+        hint: err.hint,
+        statusCode: err.statusCode
+      });
+      
+      // Message d'erreur plus détaillé pour l'utilisateur
+      let userMessage = err.message || t('userCVs.errors.uploadFailed');
+      if (err.message && err.message.includes('bucket')) {
+        userMessage = 'Erreur de configuration du stockage. Le bucket "cvs" n\'existe pas ou n\'est pas accessible.';
+      }
+      
+      setFeedbackMessage({ type: 'error', text: userMessage });
     }
     setUploading(false);
   };
