@@ -515,7 +515,18 @@ export function Settings() {
               {languages.map((language) => (
                 <button
                   key={language.code}
-                  onClick={() => i18n.changeLanguage(language.code)}
+                  onClick={async () => {
+                    try {
+                      await i18n.changeLanguage(language.code)
+                      localStorage.setItem('i18nextLng', language.code)
+                      setMessage({ type: 'success', text: `Langue changée vers ${language.name}` })
+                      // Recharger la page pour appliquer toutes les traductions
+                      setTimeout(() => window.location.reload(), 1000)
+                    } catch (error) {
+                      console.error('Erreur lors du changement de langue:', error)
+                      setMessage({ type: 'error', text: 'Erreur lors de la mise à jour des paramètres' })
+                    }
+                  }}
                   className={`flex items-center justify-between p-4 rounded-lg transition-colors ${
                     i18n.language === language.code
                       ? 'bg-primary-600/20'

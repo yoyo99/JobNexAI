@@ -170,7 +170,7 @@ function Profile() {
           animate={{ opacity: 1, y: 0 }}
           className="card"
         >
-          <h2 className="text-lg font-semibold text-white mb-6">{t('profile.personalInfo')}</h2>
+          <h2 className="text-lg font-semibold text-white mb-6">{t('profile.personalInfo.title')}</h2>
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">
