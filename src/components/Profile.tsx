@@ -128,16 +128,19 @@ function Profile() {
           >
             Alertes
           </button>
-          <button
-            onClick={() => setActiveTab('webhook')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'webhook'
-                ? 'border-primary-400 text-primary-400'
-                : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
-            }`}
-          >
-            Webhook
-          </button>
+          {/* Onglet Webhook visible uniquement pour les admins */}
+          {(user?.is_admin || user?.user_type === 'admin') && (
+            <button
+              onClick={() => setActiveTab('webhook')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'webhook'
+                  ? 'border-primary-400 text-primary-400'
+                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+              }`}
+            >
+              Webhook
+            </button>
+          )}
           <button
             onClick={() => setActiveTab('cvs')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
@@ -167,7 +170,7 @@ function Profile() {
           animate={{ opacity: 1, y: 0 }}
           className="card"
         >
-          <h2 className="text-lg font-semibold text-white mb-6">{t('profile.personalInfo.title')}</h2>
+          <h2 className="text-lg font-semibold text-white mb-6">{t('profile.personalInfo')}</h2>
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">

@@ -457,6 +457,42 @@ export async function saveUserAISettings(userId: string, settings: UserAISetting
 const CV_STORAGE_BUCKET = 'cvs'; // Nom du bucket de stockage pour les CVs
 
 /**
+ * Crée le bucket CVs s'il n'existe pas déjà.
+ */
+async function ensureCVBucketExists(): Promise<void> {
+  try {
+    // Vérifier si le bucket existe
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    
+    if (listError) {
+      console.error('Error listing buckets:', listError);
+      return; // Continue même si on ne peut pas vérifier
+    }
+    
+    const bucketExists = buckets?.some(bucket => bucket.name === CV_STORAGE_BUCKET);
+    
+    if (!bucketExists) {
+      console.log('Creating CVs bucket...');
+      const { error: createError } = await supabase.storage.createBucket(CV_STORAGE_BUCKET, {
+        public: false, // Bucket privé pour la sécurité
+        allowedMimeTypes: ['application/pdf'], // Seulement les PDFs
+        fileSizeLimit: 5242880 // 5MB en bytes
+      });
+      
+      if (createError) {
+        console.error('Error creating CVs bucket:', createError);
+        // Ne pas throw, laisser l'upload essayer quand même
+      } else {
+        console.log('CVs bucket created successfully');
+      }
+    }
+  } catch (error) {
+    console.error('Error ensuring CV bucket exists:', error);
+    // Ne pas throw, laisser l'upload essayer
+  }
+}
+
+/**
  * Récupère la liste des CVs d'un utilisateur.
  */
 export const getUserCVs = async (userId: string): Promise<CVMetadata[]> => {
@@ -484,6 +520,9 @@ export const getUserCVs = async (userId: string): Promise<CVMetadata[]> => {
 export const uploadUserCV = async (userId: string, file: File): Promise<CVMetadata> => {
   if (!userId) throw new Error('User ID is required to upload CV.');
   if (!file) throw new Error('File is required to upload CV.');
+  
+  // S'assurer que le bucket CVs existe
+  await ensureCVBucketExists();
 
   // Vérifier la limite de CVs côté client (la BDD a aussi une RLS pour ça)
   const existingCVs = await getUserCVs(userId);

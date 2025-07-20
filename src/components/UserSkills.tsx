@@ -43,11 +43,58 @@ export function UserSkills() {
         .order('name')
 
       if (error) throw error
-      setSkills(data || [])
+      
+      // Si aucune compétence n'existe, créer des compétences par défaut
+      if (!data || data.length === 0) {
+        await createDefaultSkills()
+        // Recharger après création
+        const { data: newData } = await supabase
+          .from('skills')
+          .select('*')
+          .order('name')
+        setSkills(newData || [])
+      } else {
+        setSkills(data)
+      }
     } catch (error) {
       console.error('Error loading skills:', error)
+      // Fallback avec compétences locales si erreur BDD
+      setSkills(getDefaultSkillsLocal())
     }
   }
+
+  // Créer des compétences par défaut dans la BDD
+  const createDefaultSkills = async () => {
+    const defaultSkills = [
+      { name: 'JavaScript', category: 'Programmation' },
+      { name: 'Python', category: 'Programmation' },
+      { name: 'React', category: 'Framework' },
+      { name: 'Node.js', category: 'Backend' },
+      { name: 'TypeScript', category: 'Programmation' },
+      { name: 'SQL', category: 'Base de données' },
+      { name: 'Git', category: 'Outils' },
+      { name: 'Docker', category: 'DevOps' },
+      { name: 'AWS', category: 'Cloud' },
+      { name: 'Communication', category: 'Soft Skills' },
+      { name: 'Leadership', category: 'Soft Skills' },
+      { name: 'Gestion de projet', category: 'Management' }
+    ]
+
+    try {
+      await supabase.from('skills').insert(defaultSkills)
+    } catch (error) {
+      console.error('Error creating default skills:', error)
+    }
+  }
+
+  // Compétences par défaut en local (fallback)
+  const getDefaultSkillsLocal = () => [
+    { id: '1', name: 'JavaScript', category: 'Programmation' },
+    { id: '2', name: 'Python', category: 'Programmation' },
+    { id: '3', name: 'React', category: 'Framework' },
+    { id: '4', name: 'Communication', category: 'Soft Skills' },
+    { id: '5', name: 'Gestion de projet', category: 'Management' }
+  ]
 
   const loadUserSkills = async () => {
     try {
@@ -156,8 +203,13 @@ export function UserSkills() {
           <div>
             <input
               type="number"
+              min="0"
+              max="50"
               value={yearsExperience}
-              onChange={(e) => setYearsExperience(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Math.max(0, Math.min(50, Number(e.target.value)))
+                setYearsExperience(value)
+              }}
               placeholder="Années d'expérience"
               className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
