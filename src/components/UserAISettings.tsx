@@ -39,11 +39,11 @@ const UserAISettings: React.FC<UserAISettingsProps> = ({ userId, defaultEngine =
   const initializeDefaultEngines = useCallback(() => {
     const initialEngines: Record<string, string> = {};
     AI_FEATURES_CONFIG.forEach(feature => {
-      initialEngines[feature.id] = feature.defaultEngine;
+      initialEngines[feature.id] = defaultEngine || feature.defaultEngine;
     });
     setFeatureEngines(initialEngines);
     setApiKeys(defaultApiKeys);
-  }, [defaultApiKeys]);
+  }, [defaultApiKeys, defaultEngine]);
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -79,13 +79,22 @@ const UserAISettings: React.FC<UserAISettingsProps> = ({ userId, defaultEngine =
           initializeDefaultEngines();
         }
       }
+      // Notifier le parent du chargement des paramètres
+      if (onChange) {
+        onChange(featureEngines, apiKeys);
+      }
     };
     loadSettings();
-  }, [userId, defaultApiKeys, initializeDefaultEngines]);
+  }, [userId, defaultApiKeys, initializeDefaultEngines, onChange]);
 
   const handleFeatureEngineChange = (featureId: string, newEngine: string) => {
-    setFeatureEngines(prev => ({ ...prev, [featureId]: newEngine }));
+    const newFeatureEngines = { ...featureEngines, [featureId]: newEngine };
+    setFeatureEngines(newFeatureEngines);
     setShowSaveButton(true);
+    // Notifier le parent du changement
+    if (onChange) {
+      onChange(newFeatureEngines, apiKeys);
+    }
     setSaveStatus(null); // Réinitialiser le statut de sauvegarde lors d'un nouveau changement
   };
 

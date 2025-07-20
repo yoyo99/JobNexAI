@@ -457,38 +457,26 @@ export async function saveUserAISettings(userId: string, settings: UserAISetting
 const CV_STORAGE_BUCKET = 'cvs'; // Nom du bucket de stockage pour les CVs
 
 /**
- * Crée le bucket CVs s'il n'existe pas déjà.
+ * Vérifie si le bucket CVs existe et donne des instructions claires si ce n'est pas le cas.
  */
-async function ensureCVBucketExists(): Promise<void> {
+async function checkCVBucketExists(): Promise<boolean> {
   try {
-    // Vérifier si le bucket existe
-    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    // Tenter un simple appel au bucket pour voir s'il existe
+    const { data, error } = await supabase.storage.from(CV_STORAGE_BUCKET).list('', { limit: 1 });
     
-    if (listError) {
-      console.error('Error listing buckets:', listError);
-      return; // Continue même si on ne peut pas vérifier
+    if (error) {
+      console.error('CV Bucket does not exist or is not accessible:', error);
+      console.log('🚨 CONFIGURATION REQUISE:');
+      console.log('1. Aller dans Supabase Dashboard > Storage');
+      console.log('2. Créer un bucket nommé "cvs"');
+      console.log('3. Configurer les permissions RLS si nécessaire');
+      return false;
     }
     
-    const bucketExists = buckets?.some(bucket => bucket.name === CV_STORAGE_BUCKET);
-    
-    if (!bucketExists) {
-      console.log('Creating CVs bucket...');
-      const { error: createError } = await supabase.storage.createBucket(CV_STORAGE_BUCKET, {
-        public: false, // Bucket privé pour la sécurité
-        allowedMimeTypes: ['application/pdf'], // Seulement les PDFs
-        fileSizeLimit: 5242880 // 5MB en bytes
-      });
-      
-      if (createError) {
-        console.error('Error creating CVs bucket:', createError);
-        // Ne pas throw, laisser l'upload essayer quand même
-      } else {
-        console.log('CVs bucket created successfully');
-      }
-    }
+    return true;
   } catch (error) {
-    console.error('Error ensuring CV bucket exists:', error);
-    // Ne pas throw, laisser l'upload essayer
+    console.error('Error checking CV bucket:', error);
+    return false;
   }
 }
 
@@ -521,8 +509,11 @@ export const uploadUserCV = async (userId: string, file: File): Promise<CVMetada
   if (!userId) throw new Error('User ID is required to upload CV.');
   if (!file) throw new Error('File is required to upload CV.');
   
-  // S'assurer que le bucket CVs existe
-  await ensureCVBucketExists();
+  // Vérifier que le bucket CVs existe
+  const bucketExists = await checkCVBucketExists();
+  if (!bucketExists) {
+    throw new Error('Le stockage des CVs n\'est pas configuré. Veuillez contacter l\'administrateur pour créer le bucket "cvs" dans Supabase Storage.');
+  }
 
   // Vérifier la limite de CVs côté client (la BDD a aussi une RLS pour ça)
   const existingCVs = await getUserCVs(userId);

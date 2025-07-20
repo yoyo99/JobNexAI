@@ -42,23 +42,25 @@ export function UserSkills() {
         .select('*')
         .order('name')
 
-      if (error) throw error
+      if (error) {
+        console.error('Error loading skills from database:', error)
+        // Utiliser les compétences locales si erreur BDD
+        setSkills(getDefaultSkillsLocal())
+        return
+      }
       
-      // Si aucune compétence n'existe, créer des compétences par défaut
+      // Si aucune compétence n'existe, utiliser les compétences par défaut
       if (!data || data.length === 0) {
-        await createDefaultSkills()
-        // Recharger après création
-        const { data: newData } = await supabase
-          .from('skills')
-          .select('*')
-          .order('name')
-        setSkills(newData || [])
+        console.log('No skills found in database, using default skills')
+        setSkills(getDefaultSkillsLocal())
+        // Essayer de créer les compétences par défaut en arrière-plan
+        createDefaultSkills().catch(err => console.log('Could not create default skills:', err))
       } else {
         setSkills(data)
       }
     } catch (error) {
       console.error('Error loading skills:', error)
-      // Fallback avec compétences locales si erreur BDD
+      // Fallback avec compétences locales
       setSkills(getDefaultSkillsLocal())
     }
   }
