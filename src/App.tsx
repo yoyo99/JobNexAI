@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import ToastContainer from './ToastContainer';
 
 // Importer les styles CSS ici, avant tout autre import
-import './styles.css';
+import './minimal.css';
 import './App.css';
 
 // Import immédiat des composants critiques pour la navigation
