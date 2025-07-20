@@ -70,10 +70,10 @@ module.exports = {
   			}
   		},
   		fontFamily: {
-  			sans: [
-  				'Inter var', ...require(, tailwindcss/defaultTheme').fontFamily.sans'
-  			]
-  		},
+			sans: [
+				'Inter var', ...require('tailwindcss/defaultTheme').fontFamily.sans
+			]
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
