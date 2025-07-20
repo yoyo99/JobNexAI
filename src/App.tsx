@@ -100,7 +100,7 @@ const CandidateSearch = React.lazy(() => import('./components/recruiter/Candidat
 const JobPostings = React.lazy(() => import('./components/recruiter/JobPostings'));
 const CreateJobPosting = React.lazy(() => import('./components/recruiter/CreateJobPosting'));
 const UserTypeSelection = React.lazy(() => import('./components/UserTypeSelection'));
-const ModernComponentsDemo = React.lazy(() => import('./components/ModernComponentsDemo'));
+const ModernComponentsDemo = React.lazy(() => import('./components/ModernComponentsDemo').then(module => ({ default: module.ModernComponentsDemo })));
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
@@ -212,6 +212,8 @@ function App() {
                 
                 {/* Routes nécessitant un abonnement */}
                 <Route path="jobs" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
+                <Route path="job-search" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
+                <Route path="modern-components-demo" element={<LazyComponentWrapper><ModernComponentsDemo /></LazyComponentWrapper>} />
                 <Route path="suivi" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobApplications /></LazyComponentWrapper></ProtectedRoute>} />
                 <Route path="market-analysis" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><MarketAnalysis /></LazyComponentWrapper></ProtectedRoute>} />
                 <Route path="cv-builder" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><CVBuilder /></LazyComponentWrapper></ProtectedRoute>} />
