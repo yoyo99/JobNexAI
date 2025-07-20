@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import './i18n'
-import './index.css'
+import './styles.css'
 import App from './App';
 import { initMonitoring } from './lib/monitoring'
 import { initPerformanceMonitoring } from './lib/performance-monitoring'
