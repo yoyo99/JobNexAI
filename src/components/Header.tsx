@@ -76,14 +76,9 @@ export function Header() {
     return (
       <header className="backdrop-blur-sm border-b border-white/10">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-          {((): boolean => true)() && // Re-enable Logo section's parent div
           <div className="flex lg:flex-1">
-            <div className="-m-1.5 p-1.5 flex items-center">
-              <span className="sr-only">JobNexAI</span>
-              <img src={simpleLogoSrc} alt="JobNexAI Logo" className="h-10 w-auto" />
-            </div>
+            {/* Logo supprimé pour éviter la redondance avec le menu Dashboard */}
           </div>
-          }
           {((): boolean => true)() && // Enable mobile menu button
           <div className="flex lg:hidden">
             <button
@@ -227,8 +222,7 @@ export function Header() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
               <div className="-m-1.5 p-1.5">
-                <span className="sr-only">JobNexAI</span>
-                <img src={simpleLogoSrc} alt="JobNexAI Logo" className="h-10 w-auto" />
+                {/* Logo mobile supprimé */}
               </div>
               <button
                 type="button"

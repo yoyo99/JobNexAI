@@ -44,7 +44,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'Réseau', href: '/network', icon: UsersIcon },
         { name: 'Analyse du marché', href: '/market-analysis', icon: ChartPieIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
-        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
+        { name: 'Paramètres', href: '/app/settings', icon: Cog6ToothIcon },
       ])
     } else if (user?.user_type === 'recruiter') {
       setNavigation([
@@ -55,7 +55,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'Réseau', href: '/network', icon: UsersIcon },
         { name: 'Profil', href: '/profile', icon: UserIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
-        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
+        { name: 'Paramètres', href: '/app/settings', icon: Cog6ToothIcon },
       ])
     } else {
       // Navigation par défaut pour les candidats
@@ -68,7 +68,7 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
         { name: 'navigation.marketAnalysis', href: '/market-analysis', icon: ChartPieIcon },
         { name: 'navigation.profile.title', href: '/profile', icon: UserIcon },
         { name: 'Facturation', href: '/billing', icon: CreditCardIcon },
-        { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
+        { name: 'Paramètres', href: '/app/settings', icon: Cog6ToothIcon },
       ])
     }
   }, [user?.user_type, t])
