@@ -44,10 +44,13 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
         return;
       }
       const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ];
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.oasis.opendocument.text', // ODT (LibreOffice/OpenOffice)
+        'application/rtf', // RTF (Rich Text Format)
+        'text/rtf' // RTF alternative MIME type
+      ];
     if (!allowedTypes.includes(file.type)) {
          setFeedbackMessage({ type: 'error', text: t('userCVs.errors.invalidFileType') });
          setFileToUpload(null);
@@ -137,7 +140,7 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
             <input
               type="file"
               id="cv-upload-input"
-              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              accept=".pdf,.doc,.docx,.odt,.rtf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.oasis.opendocument.text,application/rtf,text/rtf"
               onChange={handleFileChange}
               className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-500 file:text-white hover:file:bg-primary-600 disabled:opacity-50"
               disabled={uploading}

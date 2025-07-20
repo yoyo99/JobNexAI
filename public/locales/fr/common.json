@@ -161,7 +161,7 @@
   },
   "userCVs": {
     "title": "Mes CVs",
-    "uploadLabel": "Uploader un nouveau CV (PDF, DOC, DOCX, max 5MB)",
+    "uploadLabel": "Uploader un nouveau CV (PDF, DOC, DOCX, ODT, RTF, max 5MB)",
     "uploadButton": "Uploader",
     "selectedFile": "Fichier sélectionné",
     "uploadHint": "Vous pouvez uploader encore {{count}} CV.",
@@ -176,7 +176,7 @@
     "errors": {
       "fetchFailed": "Erreur lors de la récupération des CVs.",
       "fileTooLarge": "Fichier trop volumineux (max 5MB).",
-      "invalidFileType": "Type de fichier invalide (PDF, DOC, DOCX uniquement acceptés).",
+      "invalidFileType": "Type de fichier invalide (PDF, DOC, DOCX, ODT, RTF uniquement acceptés).",
       "limitReached": "Limite de 2 CVs atteinte.",
       "uploadFailed": "Échec de l'upload du CV.",
       "deleteFailed": "Échec de la suppression du CV.",
