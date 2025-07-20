@@ -130,6 +130,83 @@ Une fois le bucket créé et configuré correctement :
 - ✅ Fichiers stockés dans le bucket 'cvs'
 - ✅ Métadonnées enregistrées dans la table 'user_cvs'
 
+## Problèmes Identifiés
+
+### 🔴 Problème Principal : RLS (Row Level Security)
+
+Le bucket "cvs" ne peut pas être créé automatiquement car Supabase applique des politiques de sécurité strictes :
+
+```
+StorageApiError: new row violates row-level security policy
+```
+
+### 🔧 Solutions
+
+#### Option 1 : Création Manuelle du Bucket (Recommandée)
+
+1. Va sur [Supabase Dashboard](https://supabase.com/dashboard)
+2. Sélectionne ton projet : `klwugophjvzctlautsqz`
+3. Va dans **Storage** > **Buckets**
+4. Clique sur **New Bucket**
+5. Configure le bucket :
+   - **Name**: `cvs`
+   - **Public**: ❌ (bucket privé)
+   - **File size limit**: `5MB`
+   - **Allowed MIME types**: 
+     ```
+     application/pdf
+     application/msword
+     application/vnd.openxmlformats-officedocument.wordprocessingml.document
+     application/vnd.oasis.opendocument.text
+     application/rtf
+     text/rtf
+     ```
+
+#### Option 2 : Politiques RLS pour Storage
+
+Si tu veux créer le bucket automatiquement, ajoute ces politiques RLS dans Supabase :
+
+```sql
+-- Politique pour permettre aux utilisateurs authentifiés de créer des buckets
+CREATE POLICY "Authenticated users can create buckets" ON storage.buckets
+FOR INSERT TO authenticated
+WITH CHECK (true);
+
+-- Politique pour les objets du bucket cvs
+CREATE POLICY "Users can upload their own CVs" ON storage.objects
+FOR INSERT TO authenticated
+WITH CHECK (bucket_id = 'cvs' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+CREATE POLICY "Users can view their own CVs" ON storage.objects
+FOR SELECT TO authenticated
+USING (bucket_id = 'cvs' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+CREATE POLICY "Users can delete their own CVs" ON storage.objects
+FOR DELETE TO authenticated
+USING (bucket_id = 'cvs' AND auth.uid()::text = (storage.foldername(name))[1]);
+```
+
 ## Page de Test
 
-Tu peux aussi utiliser la page de test : http://localhost:5173/cv-bucket-test
+Tu peux utiliser la page de test : https://jobnexai-windsurf.netlify.app/cv-bucket-test
+
+### Tests Disponibles
+
+1. **🔍 Vérification du bucket** - Vérifie si le bucket "cvs" existe
+2. **🧪 Test d'upload** - Teste l'upload d'un fichier factice
+3. **🔐 Test RLS** - Vérifie les permissions d'accès
+4. **🧹 Nettoyage** - Supprime les fichiers de test
+
+### Console Debug
+
+Pour déboguer manuellement :
+
+1. Ouvre la console (F12)
+2. Exécute :
+   ```javascript
+   // Test rapide du bucket
+   quickBucketTest();
+   
+   // Test complet avec upload
+   fullCVTest();
+   ```

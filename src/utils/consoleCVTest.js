@@ -3,22 +3,89 @@
  * pour diagnostiquer le problème du bucket CVs
  * 
  * Instructions :
- * 1. Ouvre http://localhost:5173 dans ton navigateur
+ * 1. Va sur https://jobnexai-windsurf.netlify.app/cv-bucket-test
  * 2. Connecte-toi à ton compte
- * 3. Ouvre la console (F12 > Console)
- * 4. Copie-colle ce script et exécute-le
+ * 3. Clique sur "Debug Console" pour exposer les fonctions
+ * 4. Ouvre la console (F12 > Console)
+ * 5. Exécute les fonctions disponibles :
+ *    - quickBucketTest() : Test rapide
+ *    - testBucketAccess() : Test d'accès
+ *    - fullCVTest() : Test complet
  */
 
-// Test du bucket CVs
-async function testCVBucket() {
-  console.log('🔍 Test du bucket CVs - Début');
+// Test rapide du bucket (fonction globale)
+async function quickBucketTest() {
+  console.log('⚡ Test rapide du bucket CVs...');
   
   try {
-    // Importer Supabase depuis le module global (si disponible)
     const { supabase } = window;
     
     if (!supabase) {
       console.error('❌ Supabase client non disponible dans window');
+      console.log('💡 Assure-toi d\'être sur la page de test et d\'avoir cliqué sur "Debug Console"');
+      return { success: false, message: 'Client Supabase non disponible' };
+    }
+    
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    
+    if (listError) {
+      console.error('❌ Erreur:', listError.message);
+      return { success: false, message: listError.message };
+    }
+    
+    const cvsBucket = buckets?.find(bucket => bucket.name === 'cvs');
+    
+    if (cvsBucket) {
+      console.log('✅ Bucket "cvs" trouvé!');
+      return { success: true, message: 'Bucket trouvé', bucketExists: true };
+    } else {
+      console.log('❌ Bucket "cvs" non trouvé');
+      return { success: false, message: 'Bucket non trouvé', bucketExists: false };
+    }
+  } catch (error) {
+    console.error('❌ Erreur inattendue:', error);
+    return { success: false, message: error.message };
+  }
+}
+
+// Test d'accès au bucket (fonction globale)
+async function testBucketAccess() {
+  console.log('🔐 Test d\'accès au bucket CVs...');
+  
+  try {
+    const { supabase } = window;
+    
+    if (!supabase) {
+      console.error('❌ Supabase client non disponible');
+      return { success: false, message: 'Client non disponible' };
+    }
+    
+    const { data: files, error: accessError } = await supabase.storage
+      .from('cvs')
+      .list('', { limit: 1 });
+      
+    if (accessError) {
+      console.error('❌ Erreur d\'accès:', accessError.message);
+      return { success: false, message: accessError.message };
+    }
+    
+    console.log(`✅ Accès confirmé (${files?.length || 0} fichiers)`);
+    return { success: true, message: `Accès confirmé (${files?.length || 0} fichiers)` };
+  } catch (error) {
+    console.error('❌ Erreur:', error);
+    return { success: false, message: error.message };
+  }
+}
+
+// Test complet (fonction globale)
+async function fullCVTest() {
+  console.log('🚀 Test complet du système CV...');
+  
+  try {
+    const { supabase } = window;
+    
+    if (!supabase) {
+      console.error('❌ Supabase client non disponible');
       return;
     }
     
