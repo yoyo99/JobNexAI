@@ -42,9 +42,19 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
         return;
       }
 
-      if (data && data.checkoutUrl) {
-        console.log('Received checkout URL:', data.checkoutUrl);
-        window.location.href = data.checkoutUrl;
+      // 🆓 Gestion des offres gratuites
+      if (data && data.isFree) {
+        console.log('Offre gratuite activée:', data.message);
+        alert(data.message || 'Essai gratuit activé avec succès !');
+        window.location.href = data.url; // Redirection vers dashboard
+        return;
+      }
+
+      // Gestion des offres payantes
+      if (data && (data.checkoutUrl || data.url)) {
+        const redirectUrl = data.checkoutUrl || data.url;
+        console.log('Received checkout URL:', redirectUrl);
+        window.location.href = redirectUrl;
       } else {
         console.error('No checkoutUrl received from function:', data);
         alert(t('pricing.alerts.checkoutUrlError'));

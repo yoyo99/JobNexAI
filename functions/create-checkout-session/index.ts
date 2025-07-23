@@ -24,6 +24,58 @@ export async function handler(event, context) {
   try {
     const { priceId, userId, userType } = JSON.parse(event.body || '{}');
 
+    // 🆓 GESTION DES OFFRES GRATUITES
+    const FREE_TRIAL_PRICE_IDS = [
+      'price_1RWdHcQIOmiow871I3yM8fQM', // Essai Gratuit 48h
+    ];
+
+    // Si c'est une offre gratuite, créer directement l'abonnement
+    if (FREE_TRIAL_PRICE_IDS.includes(priceId)) {
+      // Récupérer les infos du prix depuis Stripe
+      const price = await stripe.prices.retrieve(priceId);
+      
+      // Créer l'abonnement gratuit directement dans Supabase
+      const trialEndDate = new Date();
+      trialEndDate.setHours(trialEndDate.getHours() + 48); // 48h d'essai
+      
+      const { error: subscriptionError } = await supabase
+        .from('subscriptions')
+        .upsert({
+          user_id: userId,
+          status: 'trialing',
+          plan: 'essai_gratuit_48h',
+          current_period_start: new Date().toISOString(),
+          current_period_end: trialEndDate.toISOString(),
+          trial_end: trialEndDate.toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+
+      if (subscriptionError) {
+        throw new Error(`Erreur création abonnement gratuit: ${subscriptionError.message}`);
+      }
+
+      // Mettre à jour le type d'utilisateur
+      if (userType) {
+        await supabase
+          .from('profiles')
+          .update({ user_type: userType })
+          .eq('id', userId);
+      }
+
+      // Retourner une URL de succès directement (pas de paiement)
+      return {
+        statusCode: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          sessionId: null, 
+          url: `${(event.headers as any)?.origin || ''}/dashboard?trial=activated`,
+          isFree: true,
+          message: 'Essai gratuit activé avec succès !'
+        }),
+      };
+    }
+
     // Créer ou récupérer le client Stripe
     const { data: profile } = await supabase
       .from('profiles')
