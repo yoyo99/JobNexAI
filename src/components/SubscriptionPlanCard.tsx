@@ -24,16 +24,15 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
       return;
     }
 
-    // Plus besoin de getSession(), on utilise l'utilisateur du hook
-    console.log(`User ${user.id} attempting to subscribe to price ID: ${priceId}`);
-
     try {
+      console.log('🚨 FRONTEND DEBUG: handleSubscribe called!');
+      console.log('🚨 FRONTEND DEBUG: priceId =', priceId);
+      console.log('🚨 FRONTEND DEBUG: userId =', user.id);
+      console.log('🚨 FRONTEND DEBUG: userType =', userType);
+      
+      console.log('Invoking Stripe checkout function with:', { priceId, userId: user.id, userType });
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: { 
-          priceId: priceId,
-          userId: user.id, // Ajout de l'ID utilisateur
-          userType: userType
-        }, 
+        body: { priceId, userId: user.id, userType },
       });
 
       if (error) {
