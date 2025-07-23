@@ -9,7 +9,32 @@ function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Traiter le callback d'authentification
+        // 📧 Gérer les liens de confirmation email
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get('token')
+        const type = urlParams.get('type')
+        
+        if (token && type === 'signup') {
+          // Confirmer l'email avec le token
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: token,
+            type: 'signup'
+          })
+          
+          if (error) {
+            console.error('Error confirming email:', error)
+            setError('Lien de confirmation invalide ou expiré. Veuillez demander un nouveau lien.')
+            return
+          }
+          
+          if (data.session) {
+            // Confirmation réussie, rediriger vers pricing
+            navigate('/pricing?confirmed=true')
+            return
+          }
+        }
+        
+        // Traitement normal du callback
         const { data, error } = await supabase.auth.getSession()
 
         if (error) {
