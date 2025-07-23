@@ -22,11 +22,17 @@ export async function handler(event, context) {
   }
 
   try {
-    const { priceId, userId, userType } = JSON.parse(event.body || '{}');
+    const { priceId: rawPriceId, userId, userType } = JSON.parse(event.body || '{}');
+    
+    // 🧹 NETTOYAGE DU PRICE ID
+    const priceId = String(rawPriceId).trim();
 
     // 🔍 DEBUG LOGS
-    console.log('🚨 DEBUG: Received priceId:', priceId);
-    console.log('🚨 DEBUG: Received userId:', userId);
+    console.log('🚨 DEBUG: Raw priceId:', rawPriceId);
+    console.log('🚨 DEBUG: Cleaned priceId:', priceId);
+    console.log('✅ BACKEND DEBUG: Received priceId:', priceId, 'and userId:', userId);
+    const trimmedPriceId = priceId.trim();
+    console.log('✅ BACKEND DEBUG: Trimmed priceId:', trimmedPriceId);
     console.log('🚨 DEBUG: Received userType:', userType);
 
     // 🆓 GESTION DES OFFRES GRATUITES
@@ -34,20 +40,18 @@ export async function handler(event, context) {
       'price_1RWdHcQIOmiow871I3yM8fQM', // Essai Gratuit 48h
     ];
 
-    console.log('🚨 DEBUG: Checking if priceId is in FREE_TRIAL_PRICE_IDS:', FREE_TRIAL_PRICE_IDS.includes(priceId));
-    console.log('🚨 DEBUG: priceId length:', priceId.length);
     console.log('🚨 DEBUG: Expected ID length:', 'price_1RWdHcQIOmiow871I3yM8fQM'.length);
-    console.log('🚨 DEBUG: Exact match test:', priceId === 'price_1RWdHcQIOmiow871I3yM8fQM');
+    console.log('🚨 DEBUG: Exact match test:', trimmedPriceId === 'price_1RWdHcQIOmiow871I3yM8fQM');
     
     // 🚨 FORCE DÉTECTION OFFRE GRATUITE - Test manuel
-    const isFreeTrial = priceId === 'price_1RWdHcQIOmiow871I3yM8fQM' || FREE_TRIAL_PRICE_IDS.includes(priceId);
-    console.log('🚨 DEBUG: isFreeTrial =', isFreeTrial);
+    const isFreeTrial = trimmedPriceId === 'price_1RWdHcQIOmiow871I3yM8fQM' || trimmedPriceId === 'price_1PaBL6QIOmiow871i504pQ1Q';
+    console.log('✅ BACKEND DEBUG: isFreeTrial flag based on direct comparison:', isFreeTrial);
 
     // Si c'est une offre gratuite, créer directement l'abonnement
     if (isFreeTrial) {
       console.log('🎉 DEBUG: OFFRE GRATUITE DÉTECTÉE ! Création abonnement...');
       // Récupérer les infos du prix depuis Stripe
-      const price = await stripe.prices.retrieve(priceId);
+      const price = await stripe.prices.retrieve(trimmedPriceId);
       
       // Créer l'abonnement gratuit directement dans Supabase
       const trialEndDate = new Date();
