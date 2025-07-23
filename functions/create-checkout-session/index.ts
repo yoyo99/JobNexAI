@@ -35,9 +35,16 @@ export async function handler(event, context) {
     ];
 
     console.log('🚨 DEBUG: Checking if priceId is in FREE_TRIAL_PRICE_IDS:', FREE_TRIAL_PRICE_IDS.includes(priceId));
+    console.log('🚨 DEBUG: priceId length:', priceId.length);
+    console.log('🚨 DEBUG: Expected ID length:', 'price_1RWdHcQIOmiow871I3yM8fQM'.length);
+    console.log('🚨 DEBUG: Exact match test:', priceId === 'price_1RWdHcQIOmiow871I3yM8fQM');
+    
+    // 🚨 FORCE DÉTECTION OFFRE GRATUITE - Test manuel
+    const isFreeTrial = priceId === 'price_1RWdHcQIOmiow871I3yM8fQM' || FREE_TRIAL_PRICE_IDS.includes(priceId);
+    console.log('🚨 DEBUG: isFreeTrial =', isFreeTrial);
 
     // Si c'est une offre gratuite, créer directement l'abonnement
-    if (FREE_TRIAL_PRICE_IDS.includes(priceId)) {
+    if (isFreeTrial) {
       console.log('🎉 DEBUG: OFFRE GRATUITE DÉTECTÉE ! Création abonnement...');
       // Récupérer les infos du prix depuis Stripe
       const price = await stripe.prices.retrieve(priceId);
