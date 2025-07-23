@@ -151,4 +151,4 @@ export async function handler(event, context) {
       body: JSON.stringify({ error: error.message }),
     }
   }
-}
+}// Force redeploy Wed Jul 23 20:08:52 CEST 2025
