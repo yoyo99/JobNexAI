@@ -31,9 +31,15 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
       console.log('🚨 FRONTEND DEBUG: userType =', userType);
       
       console.log('Invoking Stripe checkout function with:', { priceId, userId: user.id, userType });
+      
+      console.log('🚨 FRONTEND DEBUG: About to call supabase.functions.invoke');
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { priceId, userId: user.id, userType },
       });
+      
+      console.log('🚨 FRONTEND DEBUG: Supabase function response:');
+      console.log('🚨 FRONTEND DEBUG: data =', data);
+      console.log('🚨 FRONTEND DEBUG: error =', error);
 
       if (error) {
         console.error('Error invoking Stripe checkout function:', error);
