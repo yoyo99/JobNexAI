@@ -214,9 +214,9 @@ function App() {
                 <Route path="settings" element={<LazyComponentWrapper><Settings /></LazyComponentWrapper>} />
                 <Route path="admin" element={<LazyComponentWrapper><Admin /></LazyComponentWrapper>} />
                 
-                {/* Routes nécessitant un abonnement */}
-                <Route path="jobs" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
-                <Route path="job-search" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
+                {/* Routes temporairement LIBRES - Abonnement désactivé pour debug */}
+                <Route path="jobs" element={<ProtectedRoute><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
+                <Route path="job-search" element={<ProtectedRoute><LazyComponentWrapper><JobSearch /></LazyComponentWrapper></ProtectedRoute>} />
                 <Route path="modern-components-demo" element={<LazyComponentWrapper><ModernComponentsDemo /></LazyComponentWrapper>} />
                 <Route path="suivi" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><JobApplications /></LazyComponentWrapper></ProtectedRoute>} />
                 <Route path="market-analysis" element={<ProtectedRoute requiresSubscription><LazyComponentWrapper><MarketAnalysis /></LazyComponentWrapper></ProtectedRoute>} />
