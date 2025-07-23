@@ -59,9 +59,9 @@ const Auth: React.FC = () => {
         setMessage({ type: 'error', text: t('auth.errors.signup') });
         return;
       }
-      setMessage({ type: 'success', text: t('auth.success.checkEmail') });
-      // 📧 Pas de redirection automatique - attendre confirmation email
-      // L'utilisateur doit confirmer son email avant d'accéder aux offres
+      setMessage({ type: 'success', text: t('auth.success.signup') });
+      // ✅ Compte créé avec succès - confirmation email désactivée temporairement
+      // L'utilisateur peut maintenant se connecter directement
     } catch (error: any) {
       console.error('Error signing up:', error);
       setMessage({ type: 'error', text: error?.message || t('auth.errors.unknown') });
