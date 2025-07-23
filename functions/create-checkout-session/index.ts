@@ -24,150 +24,110 @@ export async function handler(event, context) {
   try {
     const { priceId: rawPriceId, userId, userType } = JSON.parse(event.body || '{}');
     
-    // 🧹 NETTOYAGE DU PRICE ID
+    if (!rawPriceId || !userId) {
+        return {
+            statusCode: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'priceId and userId are required.' }),
+        };
+    }
+
     const priceId = String(rawPriceId).trim();
+    console.log(`✅ BACKEND DEBUG: Received priceId: ${priceId}, userId: ${userId}`);
 
-    // 🔍 DEBUG LOGS
-    console.log('🚨 DEBUG: Raw priceId:', rawPriceId);
-    console.log('🚨 DEBUG: Cleaned priceId:', priceId);
-    console.log('✅ BACKEND DEBUG: Received priceId:', priceId, 'and userId:', userId);
-    const trimmedPriceId = priceId.trim();
-    console.log('✅ BACKEND DEBUG: Trimmed priceId:', trimmedPriceId);
-    console.log('🚨 DEBUG: Received userType:', userType);
+    const FREE_TRIAL_PRICE_ID = 'price_1RWdHcQIOmiow871I3yM8fQM';
 
-    // 🆓 GESTION DES OFFRES GRATUITES
-    const FREE_TRIAL_PRICE_IDS = [
-      'price_1RWdHcQIOmiow871I3yM8fQM', // Essai Gratuit 48h
-    ];
-
-    console.log('🚨 DEBUG: Expected ID length:', 'price_1RWdHcQIOmiow871I3yM8fQM'.length);
-    console.log('🚨 DEBUG: Exact match test:', trimmedPriceId === 'price_1RWdHcQIOmiow871I3yM8fQM');
-    
-    // 🚨 FORCE DÉTECTION OFFRE GRATUITE - Test manuel
-    const isFreeTrial = trimmedPriceId === 'price_1RWdHcQIOmiow871I3yM8fQM' || trimmedPriceId === 'price_1PaBL6QIOmiow871i504pQ1Q';
-    console.log('✅ BACKEND DEBUG: isFreeTrial flag based on direct comparison:', isFreeTrial);
-
-    // Si c'est une offre gratuite, créer directement l'abonnement
-    if (isFreeTrial) {
+    // === LOGIQUE DE L'ESSAI GRATUIT ===
+    if (priceId === FREE_TRIAL_PRICE_ID) {
       console.log('🎉 DEBUG: OFFRE GRATUITE DÉTECTÉE ! Création abonnement...');
-      // Récupérer les infos du prix depuis Stripe
-      const price = await stripe.prices.retrieve(trimmedPriceId);
       
-      // Créer l'abonnement gratuit directement dans Supabase
       const trialEndDate = new Date();
-      trialEndDate.setHours(trialEndDate.getHours() + 48); // 48h d'essai
-      
-      const { error: subscriptionError } = await supabase
-        .from('subscriptions')
-        .upsert({
-          user_id: userId,
-          status: 'trialing',
-          plan: 'essai_gratuit_48h',
-          current_period_start: new Date().toISOString(),
-          current_period_end: trialEndDate.toISOString(),
-          trial_end: trialEndDate.toISOString(),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        });
+      trialEndDate.setDate(trialEndDate.getDate() + 2); // Ajoute 48h
 
-      if (subscriptionError) {
-        throw new Error(`Erreur création abonnement gratuit: ${subscriptionError.message}`);
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          subscription_status: 'trialing',
+          trial_ends_at: trialEndDate.toISOString(),
+          has_used_trial: true,
+          price_id: priceId
+        })
+        .eq('id', userId);
+
+      if (updateError) {
+        console.error('❌ ERREUR SUPABASE:', updateError);
+        throw new Error(`Erreur Supabase: ${updateError.message}`);
       }
 
-      // Mettre à jour le type d'utilisateur
-      if (userType) {
-        await supabase
-          .from('profiles')
-          .update({ user_type: userType })
-          .eq('id', userId);
-      }
-
-      // Retourner une URL de succès directement (pas de paiement)
+      console.log('✅ Succès: Essai gratuit activé pour', userId);
+      const redirectUrl = `${(event.headers as any)?.origin || ''}/app/dashboard?trial=success`;
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          sessionId: null, 
-          url: `${(event.headers as any)?.origin || ''}/dashboard?trial=activated`,
-          isFree: true,
-          message: 'Essai gratuit activé avec succès !'
-        }),
+        body: JSON.stringify({ url: redirectUrl, isFree: true }),
       };
     }
 
-    // Créer ou récupérer le client Stripe
+    // === LOGIQUE DE PAIEMENT STRIPE (si ce n'est pas une offre gratuite) ===
+    console.log('ℹ️ DEBUG: Pas une offre gratuite, création session Stripe...');
+
     const { data: profile } = await supabase
       .from('profiles')
-      .select('email')
+      .select('email, stripe_customer_id')
       .eq('id', userId)
       .single();
 
     if (!profile) {
-      throw new Error('User not found')
+      throw new Error('User profile not found');
     }
 
-    let customerId: string
+    let customerId = profile.stripe_customer_id;
 
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('stripe_customer_id')
-      .eq('user_id', userId)
-      .single()
+    if (!customerId) {
+        const customer = await stripe.customers.create({
+            email: profile.email,
+            metadata: {
+              supabase_user_id: userId,
+            },
+        });
+        customerId = customer.id;
 
-    if (subscription?.stripe_customer_id) {
-      customerId = subscription.stripe_customer_id
-    } else {
-      const customer = await stripe.customers.create({
-        email: profile.email,
-        metadata: {
-          supabase_user_id: userId,
-          user_type: userType
-        },
-      })
-      customerId = customer.id
+        // Save the new customer ID to the profile
+        await supabase
+            .from('profiles')
+            .update({ stripe_customer_id: customerId })
+            .eq('id', userId);
     }
-
-    // Mettre à jour le type d'utilisateur si nécessaire
-    if (userType) {
-      await supabase
-        .from('profiles')
-        .update({ user_type: userType })
-        .eq('id', userId)
-    }
-
-    // Créer la session de paiement
+    
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
-      client_reference_id: userId,
       payment_method_types: ['card'],
-      mode: 'subscription',
-      line_items: [
-        {
+      line_items: [{
           price: priceId,
           quantity: 1,
-        },
-      ],
-      success_url: `${(event.headers as any)?.origin || ''}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      }],
+      mode: 'subscription',
+      success_url: `${(event.headers as any)?.origin || ''}/app/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${(event.headers as any)?.origin || ''}/pricing`,
       subscription_data: {
         metadata: {
           supabase_user_id: userId,
-          user_type: userType
         },
       },
-    })
+    });
 
     return {
       statusCode: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId: session.id, url: session.url }),
-    }
-  } catch (error) {
-    console.error('Error:', error)
+      body: JSON.stringify({ url: session.url }),
+    };
+
+  } catch (error: any) {
+    console.error('Error:', error);
     return {
       statusCode: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: error.message }),
-    }
+    };
   }
-}// Force redeploy Wed Jul 23 20:08:52 CEST 2025
+}
