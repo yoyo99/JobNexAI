@@ -24,13 +24,21 @@ export async function handler(event, context) {
   try {
     const { priceId, userId, userType } = JSON.parse(event.body || '{}');
 
+    // 🔍 DEBUG LOGS
+    console.log('🚨 DEBUG: Received priceId:', priceId);
+    console.log('🚨 DEBUG: Received userId:', userId);
+    console.log('🚨 DEBUG: Received userType:', userType);
+
     // 🆓 GESTION DES OFFRES GRATUITES
     const FREE_TRIAL_PRICE_IDS = [
       'price_1RWdHcQIOmiow871I3yM8fQM', // Essai Gratuit 48h
     ];
 
+    console.log('🚨 DEBUG: Checking if priceId is in FREE_TRIAL_PRICE_IDS:', FREE_TRIAL_PRICE_IDS.includes(priceId));
+
     // Si c'est une offre gratuite, créer directement l'abonnement
     if (FREE_TRIAL_PRICE_IDS.includes(priceId)) {
+      console.log('🎉 DEBUG: OFFRE GRATUITE DÉTECTÉE ! Création abonnement...');
       // Récupérer les infos du prix depuis Stripe
       const price = await stripe.prices.retrieve(priceId);
       
