@@ -240,7 +240,7 @@ function App() {
             </Routes>
             <PrivacyConsent />
             <SecurityBadge />
-            <SubscriptionBanner />
+            {location.pathname !== '/pricing' && <SubscriptionBanner />}
             <ToastContainer />
           </Router>
         </AuthProvider>
