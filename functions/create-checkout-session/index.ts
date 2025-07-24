@@ -3,7 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@11.1.0';
 
 // ID de l'offre d'essai gratuit
-const FREE_TRIAL_PRICE_ID = 'price_1RWdHcQIOmiow871I3yM8fQM';
+const FREE_TRIAL_PRICE_ID = 'price_1RoRHKQIOmiow871W7anKnRZ';
 
 // Headers CORS pour les réponses
 const corsHeaders = {
