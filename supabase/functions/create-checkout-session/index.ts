@@ -1,4 +1,4 @@
-
+// Force redeploy: 2025-07-24T20:02:47
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Initialisation Supabase Admin
