@@ -52,36 +52,20 @@ const handler: Handler = async (event, context) => {
 
     // === LOGIQUE DE L'ESSAI GRATUIT ===
     if (priceId === FREE_TRIAL_PRICE_ID) {
-      console.log('🎉 DEBUG: OFFRE GRATUITE DÉTECTÉE ! Création abonnement...');
-      
-      const trialEndDate = new Date();
-      trialEndDate.setDate(trialEndDate.getDate() + 2); // Ajoute 48h
-
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ 
-          subscription_status: 'trialing',
-          trial_ends_at: trialEndDate.toISOString(),
-          has_used_trial: true,
-          price_id: priceId
-        })
-        .eq('id', userId);
-
-      if (updateError) {
-        console.error('❌ ERREUR SUPABASE:', updateError);
-        throw new Error(`Erreur Supabase: ${updateError.message}`);
-      }
-
-      console.log('✅ Succès: Essai gratuit activé pour', userId);
-      const redirectUrl = `${(event.headers as any)?.origin || ''}/app/dashboard?trial=success`;
+      // TEMP DEBUG: Return the received priceId to the client
       return {
         statusCode: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: redirectUrl, isFree: true }),
+        body: JSON.stringify({ 
+          debug: true,
+          message: 'DEBUGGING...',
+          receivedPriceId: priceId,
+          expectedPriceId: FREE_TRIAL_PRICE_ID,
+          areEqual: priceId === FREE_TRIAL_PRICE_ID
+        }),
       };
     }
 
-    // === LOGIQUE DE PAIEMENT STRIPE (si ce n'est pas une offre gratuite) ===
     console.log('ℹ️ DEBUG: Pas une offre gratuite, création session Stripe...');
 
     const { data: profile } = await supabase
