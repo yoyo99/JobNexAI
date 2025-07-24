@@ -1,3 +1,12 @@
+
+import { createClient } from '@supabase/supabase-js';
+
+// Initialisation Supabase Admin
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+);
+
 console.log('🚀 FUNCTION START - create-checkout-session loading...');
 
 const corsHeaders = {
@@ -18,14 +27,24 @@ Deno.serve(async (req: Request) => {
   try {
     console.log('🔍 Parsing request body...');
     const body = await req.json();
+// Extraire priceId et userId
+const { priceId, userId } = body as { priceId: string; userId: string }; 
     console.log('📋 Request body:', JSON.stringify(body, null, 2));
     
-    const { priceId } = body;
+    
     console.log('💰 Price ID received:', priceId);
     
     // Test simple pour l'essai gratuit
     if (priceId === 'price_1RoRHKQIOmiow871W7anKnRZ') {
       console.log('🎉 FREE TRIAL DETECTED!');
+// Mettre à jour le profil pour activer l'essai gratuit 48h
+const trialEndsAt = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
+const { error: updateError } = await supabase
+  .from('profiles')
+  .update({ subscription_status: 'trialing', trial_ends_at: trialEndsAt })
+  .eq('id', userId);
+if (updateError) console.error('Error updating trial in profiles:', updateError);
+
       
       const redirectUrl = new URL('/app/dashboard?trial=success', req.headers.get('origin')!).toString();
       console.log('🔗 Redirect URL:', redirectUrl);
