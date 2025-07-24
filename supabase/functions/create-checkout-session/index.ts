@@ -17,6 +17,9 @@ const corsHeaders = {
 console.log('✅ CORS headers defined');
 
 Deno.serve(async (req: Request) => {
+  console.log('⚙️ Checking Environment Variables...');
+  console.log('  - Supabase URL:', Deno.env.get('SUPABASE_URL'));
+  console.log('  - Service Role Key Loaded:', !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
   console.log('📥 REQUEST RECEIVED:', req.method, req.url);
   
   if (req.method === 'OPTIONS') {
