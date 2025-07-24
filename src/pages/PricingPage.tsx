@@ -17,8 +17,7 @@ const PricingPage: React.FC = () => {
   const { t } = useTranslation('translation');
   return (
     <div className="container mx-auto px-4 py-12">
-            <h1 className="text-2xl font-bold text-center text-red-500">VERSION TEST DEPLOIEMENT 16h45</h1>
-      <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">{t('pricing.title')}</h1>
+            <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">{t('pricing.title')}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
 
         <SubscriptionPlanCard 
