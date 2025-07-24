@@ -1,8 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
+import { Handler } from '@netlify/functions';
 
-export async function handler(event, context) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
+const handler: Handler = async (event, context) => {
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+  if (!stripeSecretKey) {
+    console.error('Stripe secret key not set.');
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'STRIPE_SECRET_KEY is not set in environment variables.' }),
+    };
+  }
+
+  const stripe = new Stripe(stripeSecretKey, {
+    apiVersion: '2022-11-15', // Aligned with installed types
+  });
   const supabase = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
