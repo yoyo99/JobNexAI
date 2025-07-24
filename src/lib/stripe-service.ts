@@ -27,7 +27,7 @@ export const StripeService = {
       }
 
       // Appeler la fonction Edge pour créer une session Checkout
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session-v2', {
         body: { 
           priceId, 
           userId,

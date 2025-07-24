@@ -33,7 +33,7 @@ const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({ planName, p
       console.log('Invoking Stripe checkout function with:', { priceId, userId: user.id, userType });
       
       console.log('🚨 FRONTEND DEBUG: About to call supabase.functions.invoke');
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session-v2', {
         body: { priceId, userId: user.id, userType },
       });
       
