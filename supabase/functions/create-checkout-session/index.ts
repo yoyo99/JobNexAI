@@ -39,10 +39,12 @@ const { priceId, userId } = body as { priceId: string; userId: string };
       console.log('🎉 FREE TRIAL DETECTED!');
 // Mettre à jour le profil pour activer l'essai gratuit 48h
 const trialEndsAt = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
-const { error: updateError } = await supabase
+const { data: updateData, error: updateError } = await supabase
   .from('profiles')
   .update({ subscription_status: 'trialing', trial_ends_at: trialEndsAt })
   .eq('id', userId);
+console.log('📊 Supabase profile update result - Data:', updateData);
+console.log('📊 Supabase profile update result - Error:', updateError);
 if (updateError) {
   console.error('Error updating trial in profiles:', updateError);
   return new Response(JSON.stringify({ error: 'DB update failed: ' + updateError.message }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
