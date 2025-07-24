@@ -1,0 +1,12 @@
+{
+  "lint": {
+    "files": {
+      "include": ["functions/"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": ["functions/"]
+    }
+  }
+}
