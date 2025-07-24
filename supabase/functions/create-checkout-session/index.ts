@@ -1,5 +1,5 @@
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Initialisation Supabase Admin
 const supabase = createClient(
@@ -43,7 +43,10 @@ const { error: updateError } = await supabase
   .from('profiles')
   .update({ subscription_status: 'trialing', trial_ends_at: trialEndsAt })
   .eq('id', userId);
-if (updateError) console.error('Error updating trial in profiles:', updateError);
+if (updateError) {
+  console.error('Error updating trial in profiles:', updateError);
+  return new Response(JSON.stringify({ error: 'DB update failed: ' + updateError.message }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
+}
 
       
       const redirectUrl = new URL('/app/dashboard?trial=success', req.headers.get('origin')!).toString();
