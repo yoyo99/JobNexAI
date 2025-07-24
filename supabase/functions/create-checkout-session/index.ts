@@ -42,7 +42,8 @@ const trialEndsAt = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
 const { data: updateData, error: updateError } = await supabase
   .from('profiles')
   .update({ subscription_status: 'trialing', trial_ends_at: trialEndsAt })
-  .eq('id', userId);
+  .eq('id', userId)
+  .select();
 console.log('📊 Supabase profile update result - Data:', updateData);
 console.log('📊 Supabase profile update result - Error:', updateError);
 if (updateError) {

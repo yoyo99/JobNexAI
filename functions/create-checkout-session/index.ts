@@ -1,5 +1,5 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from '@supabase/supabase-js';
 import Stripe from 'https://esm.sh/stripe@11.1.0';
 
 // ID de l'offre d'essai gratuit
@@ -82,8 +82,13 @@ serve(async (req: Request) => {
     let customerId = profile?.stripe_customer_id;
 
     if (!customerId) {
-      const { data: user } = await supabase.auth.admin.getUserById(userId);
-      const customer = await stripe.customers.create({ email: user?.email });
+      const { data: userData } = await supabase.auth.admin.getUserById(userId);
+      
+      if (!userData?.user?.email) {
+        throw new Error('User email not found. Cannot create Stripe customer.');
+      }
+      
+      const customer = await stripe.customers.create({ email: userData.user.email });
       customerId = customer.id;
       await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', userId);
     }
