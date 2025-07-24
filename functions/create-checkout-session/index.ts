@@ -18,7 +18,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
 });
 
 // Démarrage du serveur de la fonction
-serve(async (req) => {
+serve(async (req: Request) => {
   // Gérer la requête pre-flight CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -41,7 +41,7 @@ serve(async (req) => {
 
     // === LOGIQUE DE L'ESSAI GRATUIT ===
     if (trimmedPriceId === FREE_TRIAL_PRICE_ID) {
-      console.log('🎉 Offre gratuite détectée pour l'utilisateur:', userId);
+            console.log('Free trial offer detected for user:', userId);
       
       const trialEndDate = new Date();
       trialEndDate.setDate(trialEndDate.getDate() + 2); // 48 heures d'essai
@@ -106,8 +106,9 @@ serve(async (req) => {
       status: 200,
     });
 
-  } catch (error) {
-    console.error('❌ Erreur inattendue:', error);
+  } catch (e) {
+    const error = e instanceof Error ? e : new Error(String(e));
+    console.error('❌ Unexpected error:', error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
