@@ -89,14 +89,14 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
 
       try {
         console.log(`🚀 [UserCVs] Lancement du parsing pour le CV ID: ${result.id}`);
-        const { error: parseError } = await supabase.functions.invoke('parse-cv', {
+        const { error: parseError } = await supabase.functions.invoke('parse-cv-v2', {
           body: { cvId: result.id, cvPath: result.storage_path },
         });
         if (parseError) throw new Error(`Erreur lors du parsing: ${parseError.message}`);
         console.log(`✅ [UserCVs] Parsing terminé pour le CV ID: ${result.id}`);
 
         console.log(`🚀 [UserCVs] Lancement de l'analyse pour le CV ID: ${result.id}`);
-        const { data: analysisResult, error: analyzeError } = await supabase.functions.invoke('analyze-cv', {
+        const { data: analysisResult, error: analyzeError } = await supabase.functions.invoke('analyze-cv-v2', {
           body: { cvId: result.id },
         });
         if (analyzeError) throw new Error(`Erreur lors de l'analyse: ${analyzeError.message}`);

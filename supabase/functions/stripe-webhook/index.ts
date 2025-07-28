@@ -183,6 +183,21 @@ Deno.serve(async (req) => {
         }
           // **** NEW DEBUG LOG ****
         console.log(`[STRIPE WEBHOOK DEBUG] Successfully processed checkout.session.completed for user ${userId}.`);
+
+        // **** NOUVEAU : Mettre à jour le statut de l'abonnement dans la table profiles ****
+        console.log(`[STRIPE WEBHOOK DEBUG] Updating profiles table for user ${userId} with status: ${subscriptionDetails.status}`);
+        const { error: profileUpdateError } = await supabase
+          .from('profiles')
+          .update({ subscription_status: subscriptionDetails.status })
+          .eq('id', userId);
+
+        if (profileUpdateError) {
+          console.error(`[STRIPE WEBHOOK DEBUG] CRITICAL: Failed to update profile status for user ${userId}:`, profileUpdateError.message);
+          // Ne pas bloquer le processus pour cette erreur, mais la logger comme critique.
+        } else {
+          console.log(`[STRIPE WEBHOOK DEBUG] Successfully updated profile status for user ${userId}.`);
+        }
+        // **** FIN DE LA MISE À JOUR DU PROFIL ****
       // La re-lecture immédiate est maintenant moins critique avec la logique de réessai et la contrainte unique.
         // Vous pouvez la décommenter si vous souhaitez conserver une vérification explicite.
         /*
