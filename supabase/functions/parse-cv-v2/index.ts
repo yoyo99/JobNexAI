@@ -12,12 +12,39 @@ const supabase = createClient(
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-edge-version',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-edge-version, x-requested-with',
+  'Access-Control-Max-Age': '86400', // 24 hours
 };
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    console.log('Handling OPTIONS request');
+    return new Response('ok', { 
+      headers: corsHeaders,
+      status: 204 
+    });
+  }
+  
+  // Log request details
+  const headers: Record<string, string> = {};
+  req.headers.forEach((value, key) => {
+    headers[key] = value;
+  });
+  
+  console.log('Incoming request:', {
+    method: req.method,
+    url: req.url,
+    headers,
+  });
+  
+  // Ensure it's a POST request
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 405,
+    });
   }
 
   try {

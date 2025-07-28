@@ -89,18 +89,47 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
 
       try {
         console.log(`🚀 [UserCVs] Lancement du parsing pour le CV ID: ${result.id}`);
-        const { error: parseError } = await supabase.functions.invoke('parse-cv-v2', {
-          body: { cvId: result.id, cvPath: result.storage_path },
+        console.log('Détails de l\'appel:', {
+          function: 'parse-cv-v2',
+          cvId: result.id,
+          cvPath: result.storage_path,
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL
         });
-        if (parseError) throw new Error(`Erreur lors du parsing: ${parseError.message}`);
-        console.log(`✅ [UserCVs] Parsing terminé pour le CV ID: ${result.id}`);
+        
+        const parseResponse = await supabase.functions.invoke('parse-cv-v2', {
+          body: { 
+            cvId: result.id, 
+            cvPath: result.storage_path 
+          },
+        });
+        
+        console.log('Réponse brute de parse-cv-v2:', parseResponse);
+        
+        if (parseResponse.error) {
+          console.error('Erreur détaillée du parsing:', {
+            error: parseResponse.error,
+            message: parseResponse.error.message,
+            status: parseResponse.status,
+            statusText: parseResponse.statusText
+          });
+          throw new Error(`Erreur lors du parsing: ${parseResponse.error.message}`);
+        }
+        
+        console.log(`✅ [UserCVs] Parsing terminé pour le CV ID: ${result.id}`, parseResponse.data);
 
         console.log(`🚀 [UserCVs] Lancement de l'analyse pour le CV ID: ${result.id}`);
-        const { data: analysisResult, error: analyzeError } = await supabase.functions.invoke('analyze-cv-v2', {
+        const analyzeResponse = await supabase.functions.invoke('analyze-cv-v2', {
           body: { cvId: result.id },
         });
-        if (analyzeError) throw new Error(`Erreur lors de l'analyse: ${analyzeError.message}`);
-        console.log(`✅ [UserCVs] Analyse terminée. Résultat:`, analysisResult);
+        
+        console.log('Réponse brute de analyze-cv-v2:', analyzeResponse);
+        
+        if (analyzeResponse.error) {
+          console.error('Erreur détaillée de l\'analyse:', analyzeResponse.error);
+          throw new Error(`Erreur lors de l'analyse: ${analyzeResponse.error.message}`);
+        }
+        
+        console.log(`✅ [UserCVs] Analyse terminée. Résultat:`, analyzeResponse.data);
 
         setFeedbackMessage({ type: 'success', text: t('userCVs.success.analysisDone') });
 
