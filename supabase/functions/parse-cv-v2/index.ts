@@ -1,5 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import pdf from 'https://esm.sh/pdf-parse@1.1.1';
+import { pdf } from 'npm:unpdf';
 
 // --- Configuration Validation ---
 console.log('Initializing Edge Function: parse-cv-v2');
@@ -120,12 +120,15 @@ Deno.serve(async (req) => {
     }
     console.log('Step 1: CV downloaded successfully');
 
-    // 2. Parse the PDF content to extract text
-    console.log('Step 2: Parsing PDF content...');
-    const fileBuffer = await fileBlob.arrayBuffer();
-    console.log('File buffer size:', fileBuffer.byteLength);
-    const pdfData = await pdf(fileBuffer);
-    const cvText = pdfData.text;
+    // 2. Parse the PDF content using unpdf
+    console.log('Step 2: Parsing PDF content with unpdf');
+    const pdfBuffer = await fileBlob.arrayBuffer();
+    const { text: cvText } = await pdf(pdfBuffer);
+
+    if (!cvText || cvText.trim().length < 50) {
+      console.warn('Warning: Extracted text is very short or empty. Length:', cvText.trim().length);
+    }
+
     console.log('Step 2: PDF parsed successfully. Text length:', cvText.length);
 
     // 3. Prepare the prompt for OpenAI
