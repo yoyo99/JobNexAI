@@ -238,24 +238,31 @@ const mockSupabaseClient = {
   },
   functions: {
     invoke: async (functionName: string, options?: any) => {
-      console.warn(`[SupabaseInit] Using mock Supabase client: functions.invoke(${functionName})`, options);
-      // Simuler la réponse pour create-stripe-checkout
-      if (functionName === 'create-stripe-checkout') {
-        return {
-          data: {
-            sessionId: 'mock_session_id_12345'
-          },
-          error: null
-        };
+      // Utiliser le véritable client Supabase pour les appels de fonction
+      const supabase = getSupabase();
+      console.log(`[Supabase] Calling Edge Function: ${functionName}`, options);
+      
+      try {
+        const { data, error } = await supabase.functions.invoke(functionName, {
+          body: options?.body,
+          headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+          }
+        });
+        
+        if (error) {
+          console.error(`[Supabase] Error calling ${functionName}:`, error);
+          return { data: null, error };
+        }
+        
+        console.log(`[Supabase] Success calling ${functionName}`);
+        return { data, error: null };
+      } catch (error) {
+        console.error(`[Supabase] Exception calling ${functionName}:`, error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        return { data: null, error: { message: errorMessage } };
       }
-      // Simuler la réponse pour get_user_roles
-      if (functionName === 'get_user_roles') {
-        return {
-          data: { roles: ['user'] }, // Simule un utilisateur avec le rôle 'user'
-          error: null
-        };
-      }
-      return { data: null, error: { message: 'Mock function not implemented' } }; // Réponse par défaut
     }
   },
   realtime: null, // ou simuler un client realtime basique si besoin
