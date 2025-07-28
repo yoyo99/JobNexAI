@@ -15,6 +15,7 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [analyzingCvId, setAnalyzingCvId] = useState<string | null>(null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -79,11 +80,40 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
     });
     
     try {
-      const result = await uploadUserCV(userId, fileToUpload);
+            const result = await uploadUserCV(userId, fileToUpload);
       console.log('✅ [UserCVs] Upload réussi:', result);
-      setFeedbackMessage({ type: 'success', text: t('userCVs.success.upload') });
-      fetchCVs(); // Recharger la liste
-      setFileToUpload(null); // Réinitialiser le champ de fichier
+
+      // Lancer l'analyse en arrière-plan
+      setAnalyzingCvId(result.id);
+      setFeedbackMessage({ type: 'success', text: t('userCVs.success.analysisInProgress') });
+
+      try {
+        console.log(`🚀 [UserCVs] Lancement du parsing pour le CV ID: ${result.id}`);
+        const { error: parseError } = await supabase.functions.invoke('parse-cv', {
+          body: { cvId: result.id, cvPath: result.storage_path },
+        });
+        if (parseError) throw new Error(`Erreur lors du parsing: ${parseError.message}`);
+        console.log(`✅ [UserCVs] Parsing terminé pour le CV ID: ${result.id}`);
+
+        console.log(`🚀 [UserCVs] Lancement de l'analyse pour le CV ID: ${result.id}`);
+        const { data: analysisResult, error: analyzeError } = await supabase.functions.invoke('analyze-cv', {
+          body: { cvId: result.id },
+        });
+        if (analyzeError) throw new Error(`Erreur lors de l'analyse: ${analyzeError.message}`);
+        console.log(`✅ [UserCVs] Analyse terminée. Résultat:`, analysisResult);
+
+        setFeedbackMessage({ type: 'success', text: t('userCVs.success.analysisDone') });
+
+      } catch (analysisError: any) {
+        console.error('❌ [UserCVs] Erreur durant l\'analyse:', analysisError);
+        setFeedbackMessage({ type: 'error', text: `${t('userCVs.errors.analysisFailed')}: ${analysisError.message}` });
+      } finally {
+        setAnalyzingCvId(null);
+        fetchCVs(); // Recharger la liste pour mettre à jour les statuts/données
+      }
+
+      // Réinitialiser le formulaire d'upload immédiatement après l'upload
+      setFileToUpload(null);
       const fileInput = document.getElementById('cv-upload-input') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
     } catch (err: any) {
@@ -190,11 +220,17 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
       {cvs.length > 0 ? (
         <ul className="space-y-3">
           {cvs.map((cv) => (
-            <li key={cv.id} className="bg-white/5 p-3 rounded-lg shadow flex items-center justify-between">
+                        <li key={cv.id} className="bg-white/5 p-3 rounded-lg shadow flex items-center justify-between relative overflow-hidden">
               <div className="flex items-center">
                 <FaFilePdf className="text-2xl text-primary-400 mr-3" />
                 <div>
-                  <p className="font-medium text-white">{cv.file_name}</p>
+                                    <p className="font-medium text-white">{cv.file_name}</p>
+                  {analyzingCvId === cv.id && (
+                    <div className="flex items-center text-xs text-amber-400 mt-1">
+                      <FaSpinner className="animate-spin mr-2" />
+                      <span>{t('userCVs.analysisInProgress')}</span>
+                    </div>
+                  )}
                   <p className="text-xs text-gray-400">
                     {t('userCVs.uploadedOn', { date: new Date(cv.uploaded_at).toLocaleDateString() })}
                     {cv.file_size && ` - ${(cv.file_size / 1024 / 1024).toFixed(2)} MB`}
