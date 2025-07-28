@@ -96,11 +96,19 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
           supabaseUrl: import.meta.env.VITE_SUPABASE_URL
         });
         
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          throw new Error('User not authenticated. Cannot call Edge Function.');
+        }
+
         const parseResponse = await supabase.functions.invoke('parse-cv-v2', {
           body: { 
             cvId: result.id, 
             cvPath: result.storage_path 
           },
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
         });
         
         console.log('Réponse brute de parse-cv-v2:', parseResponse);
