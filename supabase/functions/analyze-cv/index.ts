@@ -1,9 +1,7 @@
-import OpenAI from 'openai'
+
 import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 
-const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
-})
+
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -45,15 +43,36 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { cv, jobDescription } = await req.json()
+        const { cvId, jobDescription } = await req.json();
 
-    // Analyze CV with GPT-4
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [
-        {
-          role: 'system',
-          content: `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
+    // Authenticate and get user ID once
+    const userResponse = await supabase.auth.getUser();
+    if (userResponse.error) throw new Error('Failed to authenticate user.');
+    const userId = userResponse.data.user.id;
+
+    // Fetch the structured CV data from the database
+    const { data: cvRecord, error: fetchError } = await supabase
+      .from('user_cvs')
+      .select('id, cv_data')
+      .eq('id', cvId)
+      .single();
+
+    if (fetchError) {
+      throw new Error(`Failed to fetch CV data: ${fetchError.message}`);
+    }
+
+    if (!cvRecord || !cvRecord.cv_data) {
+      throw new Error('CV has not been parsed yet or data is missing.');
+    }
+
+    const cv = {
+      id: cvRecord.id,
+      ...cvRecord.cv_data
+    };
+
+    // Analyze CV with Mistral AI
+    const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
+    const systemPrompt = `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
           If a job description is provided, analyze the CV's relevance for that position.
           Focus on:
           1. Content completeness and clarity
@@ -65,25 +84,43 @@ Deno.serve(async (req) => {
           - score (0-100)
           - strengths (array of strings)
           - weaknesses (array of strings)
-          - suggestions (array of objects with section, priority, and suggestion)`
-        },
-        {
-          role: 'user',
-          content: `CV: ${JSON.stringify(cv)}
-          ${jobDescription ? `Job Description: ${jobDescription}` : ''}`
-        }
-      ],
-      response_format: { type: 'json_object' },
-      temperature: 0.7,
-    })
+          - suggestions (array of objects with section, priority, and suggestion)`;
 
-    const analysis: AnalysisResult = JSON.parse(completion.choices[0].message.content)
+    const userPrompt = `CV: ${JSON.stringify(cv)}
+          ${jobDescription ? `Job Description: ${jobDescription}` : ''}`;
+
+    const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${mistralApiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'mistral-large-latest',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.7,
+      }),
+    });
+
+    if (!mistralResponse.ok) {
+      const errorBody = await mistralResponse.text();
+      throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
+    }
+
+    const completion = await mistralResponse.json();
+
+        const analysis: AnalysisResult = JSON.parse(completion.choices[0].message.content);
 
     // Save analysis results
     const { error: analysisError } = await supabase
       .from('cv_analysis')
       .insert({
         cv_id: cv.id,
+        user_id: userId,
         analysis_type: jobDescription ? 'job_match' : 'general',
         score: analysis.score,
         details: analysis,
@@ -97,6 +134,7 @@ Deno.serve(async (req) => {
       .insert(
         analysis.suggestions.map(suggestion => ({
           cv_id: cv.id,
+          user_id: userId,
           section: suggestion.section,
           suggestion: suggestion.suggestion,
           priority: suggestion.priority,
