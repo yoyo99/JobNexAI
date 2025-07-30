@@ -130,8 +130,32 @@ Deno.serve(async (req) => {
     console.log('DEBUG: Awaiting mistralResponse.json()...');
     const mistralData = await mistralResponse.json();
     console.log('DEBUG: mistralResponse.json() complete.');
+    console.log('DEBUG: Mistral response structure:', JSON.stringify(mistralData, null, 2));
 
-    const analysisResult = JSON.parse(mistralData.choices[0].message.content);
+    // Validate Mistral response structure
+    if (!mistralData.choices || !Array.isArray(mistralData.choices) || mistralData.choices.length === 0) {
+      console.error('Invalid Mistral response: missing or empty choices array');
+      throw new Error('Invalid response from Mistral AI: missing choices');
+    }
+
+    const messageContent = mistralData.choices[0]?.message?.content;
+    if (!messageContent) {
+      console.error('Invalid Mistral response: missing message content');
+      throw new Error('Invalid response from Mistral AI: missing message content');
+    }
+
+    console.log('DEBUG: Message content to parse:', messageContent);
+
+    let analysisResult;
+    try {
+      analysisResult = JSON.parse(messageContent);
+      console.log('DEBUG: JSON parsing successful.');
+    } catch (parseError) {
+      console.error('JSON parsing failed:', parseError);
+      console.error('Content that failed to parse:', messageContent);
+      throw new Error(`Failed to parse Mistral AI response as JSON: ${parseError.message}`);
+    }
+
     console.log('Step 3: Mistral AI analysis successful.');
 
     // 5. Update the database with the analysis result
