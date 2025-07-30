@@ -5,29 +5,7 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 )
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://jobnexus.netlify.app',
-  'https://*.netlify.app',
-  'https://*.supabase.co',
-];
-
-function getAllowedOrigin(origin: string | null): string {
-  if (!origin) return '*';
-  const allowedOrigin = allowedOrigins.find(allowed => 
-    origin === allowed || 
-    (allowed.includes('*') && origin.endsWith(allowed.split('*')[1]))
-  );
-  return allowedOrigin || allowedOrigins[0];
-}
-
-const getCorsHeaders = (origin: string | null) => ({
-  'Access-Control-Allow-Origin': getAllowedOrigin(origin),
-  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET, PUT, DELETE',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-edge-version, x-requested-with',
-  'Access-Control-Allow-Credentials': 'true',
-  'Access-Control-Max-Age': '86400', // 24 hours
-});
+import { corsHeaders } from '../_shared/cors.ts';
 
 interface CVSection {
   type: string
@@ -54,11 +32,8 @@ interface AnalysisResult {
 }
 
 Deno.serve(async (req) => {
-  const origin = req.headers.get('origin');
-  const corsHeaders = getCorsHeaders(origin);
-
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: corsHeaders });
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
