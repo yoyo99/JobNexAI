@@ -168,19 +168,24 @@ Deno.serve(async (req) => {
 
     console.log('Step 3: Mistral AI analysis successful.');
 
-    // 5. Update the database with the analysis result
-    console.log('DEBUG: Awaiting database update...');
-    const { error: updateError } = await supabaseAdmin
-      .from('user_cvs')
-      .update({ analysis: analysisResult, status: 'analyzed' })
-      .eq('id', cvId);
-    console.log('DEBUG: Database update complete.');
+    // 5. Save the analysis result to cv_analysis table
+    console.log('DEBUG: Awaiting cv_analysis insertion...');
+    const { error: insertError } = await supabaseAdmin
+      .from('cv_analysis')
+      .insert({
+        cv_id: cvId,
+        analysis_type: 'parsing',
+        score: 100, // Default score for successful parsing
+        details: analysisResult,
+        created_at: new Date().toISOString()
+      });
+    console.log('DEBUG: cv_analysis insertion complete.');
 
-    if (updateError) {
-      console.error('Database update error:', updateError);
-      throw new Error(`Failed to update CV in database: ${updateError.message}`);
+    if (insertError) {
+      console.error('Database insertion error:', insertError);
+      throw new Error(`Failed to save analysis in database: ${insertError.message}`);
     }
-    console.log('Step 4: Database updated successfully.');
+    console.log('Step 4: Analysis saved successfully.');
 
     return new Response(JSON.stringify({ success: true, cvId }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
