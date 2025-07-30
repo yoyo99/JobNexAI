@@ -101,7 +101,7 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
           throw new Error('User not authenticated. Cannot call Edge Function.');
         }
 
-                const parseResponse = await supabase.functions.invoke('health-check', {
+                        const parseResponse = await supabase.functions.invoke('parse-cv-v2', {
           body: JSON.stringify({ 
             cvId: result.id, 
             cvPath: result.storage_path 
