@@ -118,8 +118,6 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
           console.error('Erreur détaillée du parsing:', {
             error: parseResponse.error,
             message: parseResponse.error.message,
-            status: parseResponse.status,
-            statusText: parseResponse.statusText
           });
           throw new Error(`Erreur lors du parsing: ${parseResponse.error.message}`);
         }
