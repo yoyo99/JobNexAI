@@ -86,7 +86,7 @@ Deno.serve(async (req) => {
       status,
       headers: {
         'Content-Type': 'application/json',
-        ...corsHeaders
+        ...getCorsHeaders(origin)
       }
     });
 
