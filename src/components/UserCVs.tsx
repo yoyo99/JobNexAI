@@ -102,12 +102,13 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
         }
 
         const parseResponse = await supabase.functions.invoke('parse-cv-v2', {
-          body: { 
+          body: JSON.stringify({ 
             cvId: result.id, 
             cvPath: result.storage_path 
-          },
+          }),
           headers: {
-            'Authorization': `Bearer ${session.access_token}`
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json'
           }
         });
         
