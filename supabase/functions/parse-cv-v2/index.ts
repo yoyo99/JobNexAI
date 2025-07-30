@@ -100,8 +100,18 @@ Deno.serve(async (req) => {
     }
     console.log('Step 2: PDF parsed successfully. Text length:', cvText.length);
 
-    // 3. Prepare the prompt for OpenAI
+    // Truncate text if too long to avoid token limits
+    const MAX_TEXT_LENGTH = 4000; // Safe limit for Mistral AI
+    if (cvText.length > MAX_TEXT_LENGTH) {
+      console.log(`Truncating CV text from ${cvText.length} to ${MAX_TEXT_LENGTH} characters`);
+      cvText = cvText.substring(0, MAX_TEXT_LENGTH) + '...';
+    }
+    console.log('DEBUG: Final CV text length for Mistral:', cvText.length);
+
+    // 3. Prepare the prompt for Mistral AI
+    console.log('DEBUG: Preparing prompt for Mistral AI...');
     const prompt = `Analyze the following CV and extract the information in JSON format. The fields are: "firstName", "lastName", "email", "phoneNumber", "address", "summary", "skills" (as an array of strings), "experience" (as an array of objects with "title", "company", "period", "description"), and "education" (as an array of objects with "degree", "school", "period"). Here is the CV text: \n\n${cvText}`;
+    console.log('DEBUG: Prompt prepared, length:', prompt.length);
 
     // 4. Call Mistral AI API
     console.log('DEBUG: Awaiting fetch() to Mistral AI...');
