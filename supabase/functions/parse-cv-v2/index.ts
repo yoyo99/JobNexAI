@@ -1,5 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { unpdf } from 'npm:unpdf';
+import unpdf from 'npm:unpdf';
 
 // --- Configuration Validation ---
 console.log('Initializing Edge Function: parse-cv-v2');
