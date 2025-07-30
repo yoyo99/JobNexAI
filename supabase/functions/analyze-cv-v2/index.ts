@@ -44,24 +44,25 @@ Deno.serve(async (req) => {
     if (userResponse.error) throw new Error('Failed to authenticate user.');
     const userId = userResponse.data.user.id;
 
-    // Fetch the structured CV data from the database
-    const { data: cvRecord, error: fetchError } = await supabase
-      .from('user_cvs')
-      .select('id, cv_data')
-      .eq('id', cvId)
+    // Fetch the parsed CV data from cv_analysis table
+    const { data: analysisRecord, error: fetchError } = await supabase
+      .from('cv_analysis')
+      .select('details')
+      .eq('cv_id', cvId)
+      .eq('analysis_type', 'parsing')
       .single();
 
     if (fetchError) {
-      throw new Error(`Failed to fetch CV data: ${fetchError.message}`);
+      throw new Error(`Failed to fetch parsed CV data: ${fetchError.message}`);
     }
 
-    if (!cvRecord || !cvRecord.cv_data) {
-      throw new Error('CV has not been parsed yet or data is missing.');
+    if (!analysisRecord || !analysisRecord.details) {
+      throw new Error('CV has not been parsed yet or analysis data is missing.');
     }
 
     const cv = {
-      id: cvRecord.id,
-      ...cvRecord.cv_data
+      id: cvId,
+      ...analysisRecord.details
     };
 
     // Analyze CV with Mistral AI
@@ -109,33 +110,21 @@ Deno.serve(async (req) => {
 
     const analysis: AnalysisResult = JSON.parse(completion.choices[0].message.content);
 
-    // Save analysis results
+    // Save analysis results to cv_analysis table
     const { error: analysisError } = await supabase
       .from('cv_analysis')
       .insert({
-        cv_id: cv.id,
-        user_id: userId,
+        cv_id: cvId,
         analysis_type: jobDescription ? 'job_match' : 'general',
         score: analysis.score,
         details: analysis,
+        created_at: new Date().toISOString()
       })
 
-    if (analysisError) throw analysisError
-
-    // Save improvement suggestions
-    const { error: suggestionsError } = await supabase
-      .from('cv_improvements')
-      .insert(
-        analysis.suggestions.map(suggestion => ({
-          cv_id: cv.id,
-          user_id: userId,
-          section: suggestion.section,
-          suggestion: suggestion.suggestion,
-          priority: suggestion.priority,
-        }))
-      )
-
-    if (suggestionsError) throw suggestionsError
+    if (analysisError) {
+      console.error('Analysis insertion error:', analysisError);
+      throw new Error(`Failed to save analysis: ${analysisError.message}`);
+    }
 
     return new Response(
       JSON.stringify(analysis),
