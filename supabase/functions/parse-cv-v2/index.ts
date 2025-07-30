@@ -171,7 +171,7 @@ Deno.serve(async (req) => {
     // 5. Update the database with the analysis result
     console.log('DEBUG: Awaiting database update...');
     const { error: updateError } = await supabaseAdmin
-      .from('cvs')
+      .from('user_cvs')
       .update({ analysis: analysisResult, status: 'analyzed' })
       .eq('id', cvId);
     console.log('DEBUG: Database update complete.');
