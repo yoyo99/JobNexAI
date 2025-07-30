@@ -1,5 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import unpdf from 'npm:unpdf';
+import { getDocument } from 'https://esm.sh/unpdf/pdfjs';
 
 // --- Configuration Validation ---
 console.log('Initializing Edge Function: parse-cv-v2');
@@ -126,9 +126,16 @@ Deno.serve(async (req) => {
     console.log('Step 1: CV downloaded successfully');
 
     // 2. Parse the PDF content using unpdf
-    console.log('Step 2: Parsing PDF content with unpdf');
-    const pdfBuffer = await fileBlob.arrayBuffer();
-    const { text: cvText } = await unpdf(pdfBuffer);
+    console.log('Step 2: Parsing PDF buffer with getDocument...');
+    const doc = await getDocument(fileBlob.arrayBuffer()).promise;
+    let cvText = '';
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map((item: any) => item.str).join(' ');
+      cvText += pageText + '\n'; // Ajouter un saut de ligne entre les pages
+    }
+    console.log(`PDF parsed successfully. Total pages: ${doc.numPages}`);
 
     if (!cvText || cvText.trim().length < 50) {
       console.warn('Warning: Extracted text is very short or empty. Length:', cvText.trim().length);
