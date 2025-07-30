@@ -123,6 +123,10 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
         
         console.log(`✅ [UserCVs] Parsing terminé pour le CV ID: ${result.id}`, parseResponse.data);
 
+        // TODO: Fix analyze-cv-v2 function structure and re-enable
+        console.log(`⏸️ [UserCVs] Analyse temporairement désactivée pour le CV ID: ${result.id}`);
+        
+        /*
         console.log(`🚀 [UserCVs] Lancement de l'analyse pour le CV ID: ${result.id}`);
         const analyzeResponse = await supabase.functions.invoke('analyze-cv-v2', {
           body: { cvId: result.id },
@@ -136,6 +140,7 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
         }
         
         console.log(`✅ [UserCVs] Analyse terminée. Résultat:`, analyzeResponse.data);
+        */
 
         setFeedbackMessage({ type: 'success', text: t('userCVs.success.analysisDone') });
 
