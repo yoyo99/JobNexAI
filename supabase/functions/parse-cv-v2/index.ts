@@ -99,8 +99,11 @@ Deno.serve(async (req) => {
   }
 
   try {
-    console.log('=== Starting parse-cv-v2 function ===');
+    console.log('DEBUG: Entering main try block.');
+    console.log('DEBUG: Awaiting req.json()...');
     const { cvPath, cvId } = await req.json();
+    console.log('DEBUG: req.json() complete.', { cvPath, cvId });
+
     if (!cvPath || !cvId) {
       throw new Error('Missing cvPath or cvId in request body');
     }
@@ -108,10 +111,11 @@ Deno.serve(async (req) => {
     const supabaseAdmin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
     // 1. Download the CV from Supabase Storage
-    console.log('Step 1: Downloading CV from path:', cvPath);
+    console.log('DEBUG: Awaiting storage.download()...');
     const { data: fileBlob, error: downloadError } = await supabaseAdmin.storage
       .from('cvs')
       .download(cvPath);
+    console.log('DEBUG: storage.download() complete.');
 
     if (downloadError) {
       console.error('Download error:', downloadError);
@@ -123,14 +127,26 @@ Deno.serve(async (req) => {
     console.log('Step 1: CV downloaded successfully');
 
     // 2. Parse the PDF content using unpdf
-    console.log('Step 2: Parsing PDF buffer with getDocument...');
-    const doc = await getDocument(fileBlob.arrayBuffer()).promise;
+    console.log('DEBUG: Awaiting fileBlob.arrayBuffer()...');
+    const buffer = await fileBlob.arrayBuffer();
+    console.log('DEBUG: fileBlob.arrayBuffer() complete.');
+
+    console.log('DEBUG: Awaiting getDocument(buffer)...');
+    const doc = await getDocument(buffer).promise;
+    console.log('DEBUG: getDocument() complete.');
+
     let cvText = '';
     for (let i = 1; i <= doc.numPages; i++) {
+      console.log(`DEBUG: Awaiting getPage(${i})...`);
       const page = await doc.getPage(i);
+      console.log(`DEBUG: getPage(${i}) complete.`);
+
+      console.log(`DEBUG: Awaiting getTextContent() for page ${i}...`);
       const textContent = await page.getTextContent();
+      console.log(`DEBUG: getTextContent() for page ${i} complete.`);
+
       const pageText = textContent.items.map((item: any) => item.str).join(' ');
-      cvText += pageText + '\n'; // Ajouter un saut de ligne entre les pages
+      cvText += pageText + '\n';
     }
     console.log(`PDF parsed successfully. Total pages: ${doc.numPages}`);
 
@@ -143,7 +159,7 @@ Deno.serve(async (req) => {
     const prompt = `Analyze the following CV and extract the information in JSON format. The fields are: "firstName", "lastName", "email", "phoneNumber", "address", "summary", "skills" (as an array of strings), "experience" (as an array of objects with "title", "company", "period", "description"), and "education" (as an array of objects with "degree", "school", "period"). Here is the CV text: \n\n${cvText}`;
 
     // 4. Call Mistral AI API
-    console.log('Step 3: Calling Mistral AI API...');
+    console.log('DEBUG: Awaiting fetch() to Mistral AI...');
     const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -164,16 +180,22 @@ Deno.serve(async (req) => {
       throw new Error(`Mistral AI API request failed with status ${mistralResponse.status}`);
     }
 
+    console.log('DEBUG: fetch() to Mistral AI complete.');
+
+    console.log('DEBUG: Awaiting mistralResponse.json()...');
     const mistralData = await mistralResponse.json();
+    console.log('DEBUG: mistralResponse.json() complete.');
+
     const analysisResult = JSON.parse(mistralData.choices[0].message.content);
     console.log('Step 3: Mistral AI analysis successful.');
 
     // 5. Update the database with the analysis result
-    console.log('Step 4: Updating database with analysis result...');
+    console.log('DEBUG: Awaiting database update...');
     const { error: updateError } = await supabaseAdmin
       .from('cvs')
       .update({ analysis: analysisResult, status: 'analyzed' })
       .eq('id', cvId);
+    console.log('DEBUG: Database update complete.');
 
     if (updateError) {
       console.error('Database update error:', updateError);
