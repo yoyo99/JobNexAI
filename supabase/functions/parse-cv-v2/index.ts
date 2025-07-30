@@ -1,5 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import unpdf from 'npm:unpdf';
+import { unpdf } from 'npm:unpdf';
 
 // --- Configuration Validation ---
 console.log('Initializing Edge Function: parse-cv-v2');
@@ -21,8 +21,6 @@ if (!supabaseUrl || !serviceRoleKey || !mistralApiKey) {
 
 console.log('All required secrets are present.');
 
-// Initialize Supabase client
-const supabase = createClient(supabaseUrl, serviceRoleKey);
 
 
 
