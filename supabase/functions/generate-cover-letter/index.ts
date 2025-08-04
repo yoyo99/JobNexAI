@@ -2,12 +2,20 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/generate-cover-letter/index.ts
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import OpenAI from 'https://deno.land/x/openai@v4.24.1/mod.ts'; // Vérifiez la dernière version compatible
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*', // Ajustez pour la production
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { corsHeaders } from '../_shared/cors.ts';
+
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  }
+);
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -15,6 +23,19 @@ serve(async (req: Request) => {
   }
 
   try {
+    // JWT Authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new Error('Missing or invalid Authorization header');
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: user, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      throw new Error('Invalid JWT token: ' + (authError?.message || 'User not found'));
+    }
+
     const {
       cvText,
       jobTitle,
@@ -28,12 +49,10 @@ serve(async (req: Request) => {
       throw new Error('Missing required fields: cvText, jobTitle, companyName, jobDescription, targetLanguage.');
     }
 
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openAIApiKey) {
-      throw new Error('OPENAI_API_KEY is not set in environment variables.');
+    const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
+    if (!mistralApiKey) {
+      throw new Error('MISTRAL_API_KEY is not set in environment variables.');
     }
-
-    const openai = new OpenAI({ apiKey: openAIApiKey });
 
     const systemMessage = `You are an expert cover letter writer. Your task is to generate a compelling and professional cover letter in ${targetLanguage}.`;
     
@@ -69,18 +88,31 @@ serve(async (req: Request) => {
       Generate only the text of the cover letter itself. Do not include any surrounding text like "Here is your cover letter:" or any explanations.
     `;
     
-    console.log("Sending prompt to OpenAI...");
+    console.log("Sending prompt to Mistral AI...");
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", 
-      messages: [
-        { role: "system", content: systemMessage },
-        { role: "user", content: userPrompt }
-      ],
-      temperature: 0.7, 
-      max_tokens: 1024, 
+    const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${mistralApiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'mistral-large-latest',
+        messages: [
+          { role: 'system', content: systemMessage },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 1024,
+      }),
     });
 
+    if (!mistralResponse.ok) {
+      const errorBody = await mistralResponse.text();
+      throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
+    }
+
+    const completion = await mistralResponse.json();
     const generatedLetter = completion.choices[0]?.message?.content?.trim();
 
     if (!generatedLetter) {

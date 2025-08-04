@@ -1,4 +1,7 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
+import * as jose from "https://deno.land/x/jose@v4.14.4/index.ts";
+
+// Test runner pour tests locaux
 
 interface TestCV {
   id: string;
@@ -20,7 +23,56 @@ interface TestResult {
 class CVFuzzerRunner {
   private results: TestResult[] = [];
   private baseUrl = "http://localhost:54321/functions/v1";
-  private testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0";
+  private testToken = '';
+  private supabaseAdmin!: SupabaseClient;
+  private JWT_SECRET = 'super-secret-jwt-token-with-at-least-32-characters-long';
+
+  private async initializeAdminClient(): Promise<void> {
+    const SUPABASE_URL = "http://localhost:54321";
+    const serviceRolePayload = {
+        iss: 'supabase-demo',
+        ref: 'default',
+        role: 'service_role',
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
+    };
+
+    const secret = new TextEncoder().encode(this.JWT_SECRET);
+    const serviceRoleKey = await new jose.SignJWT(serviceRolePayload)
+        .setProtectedHeader({ alg: 'HS256' })
+        .sign(secret);
+
+    this.supabaseAdmin = createClient(SUPABASE_URL, serviceRoleKey);
+  }
+
+  private async initializeTestUserAndToken(): Promise<void> {
+    const testEmail = `test-user-${Date.now()}@example.com`;
+    const testPassword = 'password123';
+
+    // Créer un utilisateur de test
+    const { data: userData, error: userError } = await this.supabaseAdmin.auth.admin.createUser({
+      email: testEmail,
+      password: testPassword,
+      email_confirm: true, // L'utilisateur est confirmé automatiquement
+    });
+
+    if (userError) {
+      throw new Error(`Failed to create test user: ${userError.message}`);
+    }
+
+    // Obtenir le token de l'utilisateur créé
+    const { data: sessionData, error: sessionError } = await this.supabaseAdmin.auth.signInWithPassword({
+        email: testEmail,
+        password: testPassword,
+    });
+
+    if (sessionError || !sessionData.session) {
+        throw new Error(`Failed to sign in as test user: ${sessionError?.message}`);
+    }
+
+    this.testToken = sessionData.session.access_token;
+    console.log("✅ Utilisateur de test créé et token généré.");
+  }
   
   // Test CVs de base
   private testCVs: TestCV[] = [
@@ -48,8 +100,10 @@ Formation: Master Marketing`,
     }
   ];
 
-  async runTests() {
+        async runTests() {
     console.log("🧪 Lancement des tests CV Fuzzer...");
+    await this.initializeAdminClient();
+    await this.initializeTestUserAndToken();
     
     for (const testCV of this.testCVs) {
       await this.testCVParsing(testCV);
@@ -67,7 +121,7 @@ Formation: Master Marketing`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer test-token"
+          "Authorization": `Bearer ${this.testToken}`
         },
         body: JSON.stringify({
           cvId: testCV.id,
@@ -109,7 +163,7 @@ Formation: Master Marketing`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer test-token"
+          "Authorization": `Bearer ${this.testToken}`
         },
         body: JSON.stringify({
           cvId: testCV.id,
@@ -142,11 +196,12 @@ Formation: Master Marketing`,
     
     const totalTests = this.results.length;
     const successfulTests = this.results.filter(r => r.success).length;
-    const avgParsingTime = this.results.reduce((sum, r) => sum + r.parsingTime, 0) / totalTests;
-    const avgAnalysisTime = this.results.reduce((sum, r) => sum + r.analysisTime, 0) / totalTests;
+    const avgParsingTime = totalTests > 0 ? this.results.reduce((sum, r) => sum + r.parsingTime, 0) / totalTests : 0;
+    const avgAnalysisTime = totalTests > 0 ? this.results.reduce((sum, r) => sum + r.analysisTime, 0) / totalTests : 0;
     
     console.log(`Total tests: ${totalTests}`);
-    console.log(`Success rate: ${successfulTests}/${totalTests} (${(successfulTests/totalTests*100).toFixed(1)}%)`);
+    const successRate = totalTests > 0 ? (successfulTests / totalTests * 100).toFixed(1) : "0.0";
+    console.log(`Success rate: ${successfulTests}/${totalTests} (${successRate}%)`);
     console.log(`Avg parsing time: ${avgParsingTime.toFixed(0)}ms`);
     console.log(`Avg analysis time: ${avgAnalysisTime.toFixed(0)}ms`);
     

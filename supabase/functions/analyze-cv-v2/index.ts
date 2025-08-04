@@ -124,7 +124,7 @@ ${jobDescription ? `Job Description: ${jobDescription}` : ''}`;
       let analysis: AnalysisResult;
       try {
         analysis = JSON.parse(completion.choices[0].message.content);
-      } catch (parseError) {
+      } catch (_parseError) {
         console.error('Failed to parse Mistral response:', completion.choices[0].message.content);
         throw new Error('Invalid JSON response from Mistral API');
       }
