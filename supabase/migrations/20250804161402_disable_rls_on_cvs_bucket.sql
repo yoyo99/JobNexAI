@@ -1,0 +1,2 @@
+-- Note: RLS is managed at the storage.objects level, not storage.buckets
+-- This migration is intentionally left empty as RLS disabling is handled in 20250804161507_disable_rls_on_storage_objects.sql
