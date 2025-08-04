@@ -1,0 +1,20 @@
+[
+  {
+    "cvId": "cv-dev-en",
+    "success": false,
+    "parsingTime": 0,
+    "analysisTime": 0,
+    "errors": [
+      "Storage upload failed: Bucket not found"
+    ]
+  },
+  {
+    "cvId": "cv-marketing-fr",
+    "success": false,
+    "parsingTime": 0,
+    "analysisTime": 0,
+    "errors": [
+      "Storage upload failed: Bucket not found"
+    ]
+  }
+]

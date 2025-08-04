@@ -6,13 +6,13 @@ console.log('Initializing Edge Function: parse-cv-v2');
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL');
 const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
+const mistralApiKey = Deno.env.get('MISTRAL_API_KEY') || Deno.env.get('VITE_MISTRAL_API_KEY');
 
 if (!supabaseUrl || !serviceRoleKey || !mistralApiKey) {
   const missing = [
     !supabaseUrl ? 'SUPABASE_URL' : null,
     !serviceRoleKey ? 'SUPABASE_SERVICE_ROLE_KEY' : null,
-    !mistralApiKey ? 'MISTRAL_API_KEY' : null,
+    !mistralApiKey ? 'MISTRAL_API_KEY or VITE_MISTRAL_API_KEY' : null,
   ].filter(Boolean).join(', ');
   
   console.error(`FATAL: Missing required environment variables: ${missing}`);
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Deno.env.get('MISTRAL_API_KEY')}`,
+        'Authorization': `Bearer ${mistralApiKey}`,
       },
       body: JSON.stringify({
         model: 'mistral-large-latest',

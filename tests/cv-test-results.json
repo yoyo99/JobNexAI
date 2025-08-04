@@ -3,22 +3,22 @@
     "cvId": "cv-dev-en",
     "success": false,
     "score": 0,
-    "parsingTime": 246,
-    "analysisTime": 256,
+    "parsingTime": 413,
+    "analysisTime": 54351,
     "errors": [
-      "Parsing failed",
-      "MISTRAL_API_KEY environment variable is not set"
+      "Missing cvPath or cvId in request body",
+      "Mistral API failed: Error: Failed to save analysis: invalid input syntax for type uuid: \"cv-dev-en\""
     ]
   },
   {
     "cvId": "cv-marketing-fr",
     "success": false,
     "score": 0,
-    "parsingTime": 278,
-    "analysisTime": 198,
+    "parsingTime": 276,
+    "analysisTime": 12227,
     "errors": [
-      "Parsing failed",
-      "MISTRAL_API_KEY environment variable is not set"
+      "Missing cvPath or cvId in request body",
+      "Mistral API failed: Error: Failed to save analysis: invalid input syntax for type uuid: \"cv-marketing-fr\""
     ]
   }
 ]
