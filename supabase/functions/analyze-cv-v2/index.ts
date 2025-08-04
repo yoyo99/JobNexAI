@@ -5,7 +5,7 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 )
 
-import { corsHeaders } from '../_shared/cors.ts';
+import { corsHeaders } from '../_shared/cors.ts'
 
 interface CVSection {
   type: string
@@ -51,8 +51,6 @@ Deno.serve(async (req) => {
     const _userId = userResponse.data.user.id;
 
     // For now, create a simple mock analysis without complex data dependencies
-    console.log('Creating simple analysis for CV ID:', cvId);
-    
     const cv = {
       id: cvId,
       // Mock CV data for analysis
@@ -68,9 +66,9 @@ Deno.serve(async (req) => {
     };
 
     // Analyze CV with Mistral AI
-    const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
+    const mistralApiKey = Deno.env.get('MISTRAL_API_KEY') || Deno.env.get('VITE_MISTRAL_API_KEY');
     if (!mistralApiKey) {
-      throw new Error('MISTRAL_API_KEY environment variable is not set');
+      throw new Error('MISTRAL_API_KEY or VITE_MISTRAL_API_KEY environment variable is not set');
     }
 
     const systemPrompt = `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
