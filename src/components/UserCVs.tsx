@@ -126,6 +126,9 @@ const UserCVs: React.FC<UserCVsProps> = ({ userId }) => {
         console.log(`🚀 [UserCVs] Lancement de l'analyse pour le CV ID: ${result.id}`);
         const analyzeResponse = await supabase.functions.invoke('analyze-cv-v2', {
           body: { cvId: result.id },
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
         });
         
         console.log('Réponse brute de analyze-cv-v2:', analyzeResponse);

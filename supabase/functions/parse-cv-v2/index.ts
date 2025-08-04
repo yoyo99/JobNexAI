@@ -160,10 +160,10 @@ Deno.serve(async (req) => {
     try {
       analysisResult = JSON.parse(messageContent);
       console.log('DEBUG: JSON parsing successful.');
-    } catch (parseError) {
+    } catch (parseError: any) {
       console.error('JSON parsing failed:', parseError);
       console.error('Content that failed to parse:', messageContent);
-      throw new Error(`Failed to parse Mistral AI response as JSON: ${parseError.message}`);
+      throw new Error(`Failed to parse Mistral AI response as JSON: ${parseError?.message || 'Unknown parsing error'}`)
     }
 
     console.log('Step 3: Mistral AI analysis successful.');
@@ -191,9 +191,9 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Fatal error in parse-cv-v2:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error?.message || 'Unknown error' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
     });

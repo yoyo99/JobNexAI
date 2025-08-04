@@ -39,10 +39,16 @@ Deno.serve(async (req) => {
   try {
     const { cvId, jobDescription } = await req.json();
 
-    // Authenticate and get user ID once
-    const userResponse = await supabase.auth.getUser();
-    if (userResponse.error) throw new Error('Failed to authenticate user.');
-    const userId = userResponse.data.user.id;
+    // Authenticate and get user ID from Authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new Error('Authorization header missing or invalid');
+    }
+    
+    const token = authHeader.replace('Bearer ', '');
+    const userResponse = await supabase.auth.getUser(token);
+    if (userResponse.error) throw new Error('Failed to authenticate user: ' + userResponse.error.message);
+    const _userId = userResponse.data.user.id;
 
     // For now, create a simple mock analysis without complex data dependencies
     console.log('Creating simple analysis for CV ID:', cvId);
@@ -129,10 +135,10 @@ Deno.serve(async (req) => {
         status: 200,
       }
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error analyzing CV:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error?.message || 'Unknown error' }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,

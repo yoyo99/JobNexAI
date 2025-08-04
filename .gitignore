@@ -2,6 +2,9 @@
 
 # Dependencies
 **/node_modules
+**/node_modules/.deno
+**/.deno
+supabase/functions/node_modules
 
 # Vite build output
 /dist
@@ -39,6 +42,12 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Deno/Supabase specific
+supabase/functions/.deno
+supabase/functions/node_modules
+**/.supabase
+**/.edge_runtime
 public/locales/.DS_Store
 /tmp
 public/locales/.DS_Store
