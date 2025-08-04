@@ -151,7 +151,7 @@ serve(async (req: Request) => {
         console.error(errorStack);
     }
 
-    const isInputError = errorMessage === 'OPENAI_API_KEY is not set in environment variables.' || errorMessage.startsWith('Missing required fields');
+    const isInputError = errorMessage === 'MISTRAL_API_KEY is not set in environment variables.' || errorMessage.startsWith('Missing required fields');
 
     return new Response(
       JSON.stringify({ error: errorMessage }),
@@ -165,7 +165,7 @@ serve(async (req: Request) => {
 
 /*
 Variables d'environnement à configurer dans Supabase Dashboard > Edge Functions > generate-cover-letter > Settings:
-- OPENAI_API_KEY: Votre clé API OpenAI.
+- MISTRAL_API_KEY: Votre clé API Mistral.
 
 Pour invoquer localement (après supabase start) :
   curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/generate-cover-letter' \
