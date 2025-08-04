@@ -69,6 +69,10 @@ Deno.serve(async (req) => {
 
     // Analyze CV with Mistral AI
     const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
+    if (!mistralApiKey) {
+      throw new Error('MISTRAL_API_KEY environment variable is not set');
+    }
+
     const systemPrompt = `You are an expert CV analyst and career coach. Analyze the CV and provide detailed feedback.
           If a job description is provided, analyze the CV's relevance for that position.
           Focus on:
@@ -81,68 +85,90 @@ Deno.serve(async (req) => {
           - score (0-100)
           - strengths (array of strings)
           - weaknesses (array of strings)
-          - suggestions (array of objects with section, priority, and suggestion)`;
+          - suggestions (array of objects with section, priority, and suggestion)
+          Ensure the response is valid JSON.`;
 
     const userPrompt = `CV: ${JSON.stringify(cv)}
-          ${jobDescription ? `Job Description: ${jobDescription}` : ''}`;
+${jobDescription ? `Job Description: ${jobDescription}` : ''}`;
 
-    const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${mistralApiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'mistral-large-latest',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.7,
-      }),
-    });
+    try {
+      const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${mistralApiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'mistral-large-latest',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          response_format: { type: 'json_object' },
+          temperature: 0.7,
+        }),
+      });
 
-    if (!mistralResponse.ok) {
-      const errorBody = await mistralResponse.text();
-      throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
-    }
-
-    const completion = await mistralResponse.json();
-
-    const analysis: AnalysisResult = JSON.parse(completion.choices[0].message.content);
-
-    // Save analysis results to cv_analysis table
-    const { error: analysisError } = await supabase
-      .from('cv_analysis')
-      .insert({
-        cv_id: cvId,
-        analysis_type: jobDescription ? 'job_match' : 'general',
-        score: analysis.score,
-        details: analysis,
-        created_at: new Date().toISOString()
-      })
-
-    if (analysisError) {
-      console.error('Analysis insertion error:', analysisError);
-      throw new Error(`Failed to save analysis: ${analysisError.message}`);
-    }
-
-    return new Response(
-      JSON.stringify(analysis),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
+      if (!mistralResponse.ok) {
+        const errorBody = await mistralResponse.text();
+        throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
       }
-    )
+
+      const completion = await mistralResponse.json();
+      
+      // Validate response structure
+      if (!completion.choices || !completion.choices[0] || !completion.choices[0].message) {
+        throw new Error('Invalid response structure from Mistral API');
+      }
+
+      let analysis: AnalysisResult;
+      try {
+        analysis = JSON.parse(completion.choices[0].message.content);
+      } catch (parseError) {
+        console.error('Failed to parse Mistral response:', completion.choices[0].message.content);
+        throw new Error('Invalid JSON response from Mistral API');
+      }
+
+      // Validate analysis structure
+      if (typeof analysis.score !== 'number' || !Array.isArray(analysis.strengths) || !Array.isArray(analysis.weaknesses)) {
+        throw new Error('Invalid analysis structure from Mistral API');
+      }
+
+      // Save analysis results to cv_analysis table
+      const { error: analysisError } = await supabase
+        .from('cv_analysis')
+        .insert({
+          cv_id: cvId,
+          analysis_type: jobDescription ? 'job_match' : 'general',
+          score: analysis.score,
+          details: analysis,
+          created_at: new Date().toISOString()
+        });
+
+      if (analysisError) {
+        console.error('Analysis insertion error:', analysisError);
+        throw new Error(`Failed to save analysis: ${analysisError.message}`);
+      }
+
+      return new Response(
+        JSON.stringify(analysis),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        }
+      );
+    } catch (mistralError) {
+      console.error('Mistral API error:', mistralError);
+      throw new Error(`Mistral API failed: ${mistralError}`);
+    }
   } catch (error: any) {
-    console.error('Error analyzing CV:', error)
+    console.error('Error analyzing CV:', error);
     return new Response(
       JSON.stringify({ error: error?.message || 'Unknown error' }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
       }
-    )
+    );
   }
 })
