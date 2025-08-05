@@ -34,7 +34,7 @@ export function subscribeToNotifications(userId: string) {
         if (Notification.permission === 'granted') {
           new Notification(notification.title, {
             body: notification.content,
-            icon: '/logo.png',
+            icon: '/jobnexai-logo.svg',
             tag: notification.id,
             data: {
               url: notification.link,

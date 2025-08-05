@@ -1,7 +1,7 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/generate-cover-letter/index.ts
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 import { corsHeaders } from '../_shared/cors.ts';
 
@@ -25,14 +25,14 @@ Deno.serve(async (req: Request) => {
     // JWT Authentication
     const authHeader = req.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new Error('Missing or invalid Authorization header');
+      return new Response(JSON.stringify({ error: 'Missing or invalid Authorization header' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const token = authHeader.replace('Bearer ', '');
     const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
     
     if (authError || !user) {
-      throw new Error('Invalid JWT token: ' + (authError?.message || 'User not found'));
+      return new Response(JSON.stringify({ error: 'Invalid JWT token: ' + (authError?.message || 'User not found') }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const {
@@ -45,12 +45,12 @@ Deno.serve(async (req: Request) => {
     } = await req.json();
 
     if (!cvText || !jobTitle || !companyName || !jobDescription || !targetLanguage) {
-      throw new Error('Missing required fields: cvText, jobTitle, companyName, jobDescription, targetLanguage.');
+      return new Response(JSON.stringify({ error: 'Missing required fields: cvText, jobTitle, companyName, jobDescription, targetLanguage.' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const mistralApiKey = Deno.env.get('MISTRAL_API_KEY');
     if (!mistralApiKey) {
-      throw new Error('MISTRAL_API_KEY is not set in environment variables.');
+      return new Response(JSON.stringify({ error: 'MISTRAL_API_KEY is not set in environment variables.' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const systemMessage = `You are an expert cover letter writer. Your task is to generate a compelling and professional cover letter in ${targetLanguage}.`;
@@ -92,6 +92,7 @@ Deno.serve(async (req: Request) => {
     const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
+        ...corsHeaders,
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${mistralApiKey}`,
       },
