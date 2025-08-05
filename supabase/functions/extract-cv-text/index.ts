@@ -2,7 +2,7 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/extract-cv-text/index.ts
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { extractPDFText } from 'https://esm.sh/unpdf@latest';
+import { extractText, getDocumentProxy } from 'https://esm.sh/unpdf@latest';
 import { corsHeaders } from '../_shared/cors.ts';
 
 Deno.serve(async (req: Request) => {
@@ -50,9 +50,11 @@ Deno.serve(async (req: Request) => {
 
     const fileArrayBuffer = await fileData.arrayBuffer();
     
-    console.log('Attempting to extract text using unpdf...');
+    console.log('Creating PDF document proxy...');
+    const pdfProxy = await getDocumentProxy(new Uint8Array(fileArrayBuffer));
 
-    const { text: extractedText, totalPages, meta } = await extractPDFText(fileArrayBuffer);
+    console.log('Attempting to extract text using unpdf...');
+    const { text: extractedText, totalPages } = await extractText(pdfProxy);
 
     if (extractedText === undefined || extractedText === null) { 
       if (typeof extractedText !== 'string') {
@@ -66,7 +68,6 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({ 
         extractedText: extractedText || "", 
         totalPages,
-        meta,
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
