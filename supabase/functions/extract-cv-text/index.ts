@@ -1,18 +1,11 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/extract-cv-text/index.ts
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-// Importation via esm.sh. Pour la production, envisagez de pinner à une version spécifique,
-// par exemple: import { extractPDFText } from 'https://esm.sh/unpdf@0.13.0'; (vérifiez la dernière version sur npm)
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { extractPDFText } from 'https://esm.sh/unpdf@latest';
+import { corsHeaders } from '../_shared/cors.ts';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*', // Ajustez pour la production
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
