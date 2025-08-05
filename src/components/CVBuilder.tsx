@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../stores/auth'
 import { supabase } from '../lib/supabase'
@@ -50,7 +50,35 @@ function CVBuilder() {
       items: []
     }
   ])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadCV = async () => {
+      if (!user) return
+
+      try {
+        const { data, error } = await supabase
+          .from('user_cvs')
+          .select('content')
+          .eq('user_id', user.id)
+          .single()
+
+        if (error && error.code !== 'PGRST116') {
+          throw error
+        }
+
+        if (data && data.content) {
+          setSections(data.content)
+        }
+      } catch (error) {
+        console.error('Error loading CV:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCV()
+  }, [user])
 
   const addItem = (sectionId: string) => {
     setSections(prev => prev.map(section => {
