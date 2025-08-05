@@ -50,7 +50,8 @@ yarn-error.log*
 **/firebase.js
 **/auto_translate_json.py
 **/secrets.json
-**/config.json
+# Allow function-specific configs, but ignore others
+!supabase/functions/**/config.json
 **/service-account-key.json
 
 # Deno/Supabase specific
