@@ -1,14 +1,13 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/generate-cover-letter/index.ts
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from '@supabase/supabase-js';
 
 import { corsHeaders } from '../_shared/cors.ts';
 
-const supabase = createClient(
+const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
   {
     auth: {
       autoRefreshToken: false,
@@ -17,7 +16,7 @@ const supabase = createClient(
   }
 );
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
@@ -30,7 +29,7 @@ serve(async (req: Request) => {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: user, error: authError } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
     
     if (authError || !user) {
       throw new Error('Invalid JWT token: ' + (authError?.message || 'User not found'));
