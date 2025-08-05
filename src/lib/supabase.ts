@@ -685,14 +685,17 @@ export const invokeExtractCvText = async (cvPath: string): Promise<string> => {
 };
 
 /**
- * Appelle la fonction Edge 'generate-cover-letter' pour générer une lettre de motivation.
- * @param cvText Le texte du CV.
- * @param jobTitle Le titre du poste.
- * @param companyName Le nom de l'entreprise.
- * @param jobDescription La description du poste.
- * @param language La langue cible pour la lettre.
- * @param customInstructions Instructions personnalisées optionnelles.
- * @returns Le contenu de la lettre de motivation générée.
+ * Interface pour le statut d'une tâche de génération de contenu.
+ */
+export interface GenerationStatus {
+  status: 'pending' | 'completed' | 'failed';
+  content: string | null;
+  error: string | null;
+}
+
+/**
+ * Déclenche la génération asynchrone d'une lettre de motivation.
+ * @returns {Promise<string>} Le taskId de la tâche de génération.
  */
 export const invokeGenerateCoverLetter = async (
   cvText: string,
@@ -722,13 +725,31 @@ export const invokeGenerateCoverLetter = async (
     throw error;
   }
 
-  // La fonction retourne { coverLetter: string } ou { error: string }
-  if (data.error) {
-    console.error('Error from generate-cover-letter function:', data.error);
-    throw new Error(data.error);
+  if (data.error || !data.taskId) {
+    console.error('Error from generate-cover-letter function:', data.error || 'No taskId returned');
+    throw new Error(data.error || 'Failed to start generation task.');
   }
 
-  return data.coverLetter;
+  return data.taskId;
+};
+
+/**
+ * Interroge le statut d'une tâche de génération de contenu.
+ * @param taskId L'ID de la tâche à vérifier.
+ * @returns Le statut et le contenu/erreur de la tâche.
+ */
+export const pollGeneratedContent = async (taskId: string): Promise<GenerationStatus> => {
+  if (!supabaseExport) throw new Error('Supabase client is not initialized');
+  if (!taskId) throw new Error('Task ID is required for polling.');
+
+  const { data, error } = await supabaseExport.functions.invoke(`get-generated-content?taskId=${taskId}`);
+
+  if (error) {
+    console.error('Error polling generation status:', error);
+    throw error;
+  }
+
+  return data;
 };
 
 // --- Fonctions pour la gestion des Lettres de Motivation Utilisateurs ---

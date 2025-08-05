@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../stores/auth';
 import { useTranslation } from 'react-i18next';
-import { CVMetadata, getUserCVs, invokeExtractCvText, invokeGenerateCoverLetter } from '../lib/supabase'; // Importer aussi les fonctions pour les lettres de motivation plus tard
+import { CVMetadata, getUserCVs, invokeExtractCvText, invokeGenerateCoverLetter, pollGeneratedContent, GenerationStatus } from '../lib/supabase'; // Importer aussi les fonctions pour les lettres de motivation plus tard
 import { FaFileAlt, FaSpinner, FaTrash, FaMagic, FaSave } from 'react-icons/fa';
 
 // Importer CoverLetterMetadata et les fonctions associées quand elles seront utilisées activement
@@ -37,6 +37,7 @@ const CoverLetterGenerator: React.FC<CoverLetterGeneratorProps> = ({
   // États pour la lettre générée
   const [generatedLetter, setGeneratedLetter] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [taskId, setTaskId] = useState<string | null>(null);
   const [editingLetter, setEditingLetter] = useState<string>(''); // Pour la modification
   const [isSaving, setIsSaving] = useState(false);
 
@@ -87,70 +88,79 @@ const CoverLetterGenerator: React.FC<CoverLetterGeneratorProps> = ({
     setJobDescription(initialJobDescription || '');
   }, [initialJobDescription]);
 
+  // Effect for polling the generation status
+  useEffect(() => {
+    if (!taskId) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const result: GenerationStatus = await pollGeneratedContent(taskId);
+        if (result.status === 'completed') {
+          clearInterval(interval);
+          setGeneratedLetter(result.content || '');
+          setEditingLetter(result.content || '');
+          setIsGenerating(false);
+          setTaskId(null);
+          setFeedbackMessage({ type: 'success', text: t('coverLetterGenerator.feedback.generationSuccess') });
+        } else if (result.status === 'failed') {
+          clearInterval(interval);
+          setError(result.error || t('coverLetterGenerator.errors.generationError'));
+          setIsGenerating(false);
+          setTaskId(null);
+        }
+        // If status is 'pending', do nothing and wait for the next poll
+      } catch (err) {
+        clearInterval(interval);
+        const errorMessage = err instanceof Error ? err.message : t('coverLetterGenerator.errors.pollingError');
+        setError(errorMessage);
+        setIsGenerating(false);
+        setTaskId(null);
+      }
+    }, 3000); // Poll every 3 seconds
+
+    // Cleanup function to clear the interval when the component unmounts or taskId changes
+    return () => clearInterval(interval);
+  }, [taskId, t]);
+
   const handleGenerateLetter = async () => {
-    if (!user?.id) {
-      setError(t('coverLetterGenerator.errors.notAuthenticated'));
-      return;
-    }
-    if (!selectedCvId) {
-      setError(t('coverLetterGenerator.errors.noCvSelected'));
-      return;
-    }
-    if (!jobDescription) {
-      setError(t('coverLetterGenerator.errors.jobDescriptionRequired'));
+    if (!user?.id || !selectedCvId || !jobDescription) {
+      setError(t('coverLetterGenerator.errors.formInvalid'));
       return;
     }
 
     setIsGenerating(true);
     setError(null);
     setFeedbackMessage(null);
+    setGeneratedLetter('');
+    setEditingLetter('');
+    setTaskId(null);
 
     try {
-      const cvToUse = userCVs.find(cv => cv.id === selectedCvId);
-      if (!cvToUse || !cvToUse.storage_path) {
-        throw new Error(t('coverLetterGenerator.errors.cvPathMissing'));
+      const selectedCV = userCVs.find(cv => cv.id === selectedCvId);
+      if (!selectedCV) {
+        throw new Error('Selected CV not found.');
       }
 
-      // Étape 1: Extraire le texte du CV
-      setFeedbackMessage({ type: 'success', text: t('coverLetterGenerator.feedback.extractingCv') });
-      const cvText = await invokeExtractCvText(cvToUse.storage_path);
-      if (!cvText) {
-        throw new Error(t('coverLetterGenerator.errors.cvExtractionFailed'));
-      }
-      //     targetLanguage,
-      //     // userId: user.id, // L'user ID sera pris du token dans la fonction Edge
-      //     // apiKey: userAISettings.api_keys[userAISettings.feature_engines['cover_letter_generation']] // Logique à affiner
-      //   }
-      // });
+      const cvText = await invokeExtractCvText(selectedCV.storage_path);
 
-      // if (response.error) throw response.error;
-      // const { letter } = response.data;
-      // setGeneratedLetter(letter);
-      // setEditingLetter(letter);
+      const newTaskId = await invokeGenerateCoverLetter(
+        cvText,
+        jobTitle,
+        companyName,
+        jobDescription,
+        targetLanguage,
+        customInstructions
+      );
 
-      // --- Placeholder pour la génération --- 
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simuler l'appel API
-      const placeholderLetter = `Cher/Chère équipe de recrutement de ${companyName || 'l\'entreprise'},
+      setTaskId(newTaskId);
+      // Le polling est maintenant géré par le hook useEffect
 
-Basé sur mon CV (${cvToUse.file_name}) et votre description pour le poste de ${jobTitle || 'ce poste passionnant'},
-Je suis très intéressé(e) par cette opportunité. Mes compétences en [Compétence 1] et [Compétence 2] correspondent bien à vos besoins.
-${customInstructions ? `\nInstruction spéciale: ${customInstructions}` : ''}
-
-Cordialement,
-${user.full_name || 'Le Candidat'}
-(Généré en ${targetLanguage})`;
-      setGeneratedLetter(placeholderLetter);
-      setEditingLetter(placeholderLetter);
-      // --- Fin Placeholder --- 
-
-      setFeedbackMessage({ type: 'success', text: t('coverLetterGenerator.success.generationSuccess') });
-
-    } catch (err: any) {
-      console.error('Failed to generate cover letter:', err);
-      setError(err.message || t('coverLetterGenerator.errors.generationFailed'));
-      setFeedbackMessage({ type: 'error', text: err.message || t('coverLetterGenerator.errors.generationFailed') });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t('coverLetterGenerator.errors.startGenerationError');
+      setError(errorMessage);
+      setFeedbackMessage({ type: 'error', text: errorMessage });
+      setIsGenerating(false);
     }
-    setIsGenerating(false);
   };
   
   const handleSaveLetter = async () => {

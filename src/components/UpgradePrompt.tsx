@@ -30,7 +30,9 @@ export function UpgradePrompt() {
   }
 
   // Si l'utilisateur est en période d'essai, afficher le temps restant
-  const isTrialActive = profile?.trial_ends_at && new Date(profile.trial_ends_at) > new Date()
+  if (!user) return null;
+
+  const isTrialActive = profile?.trial_ends_at && new Date(profile.trial_ends_at) > new Date();
   
   return (
     <motion.div
@@ -49,8 +51,8 @@ export function UpgradePrompt() {
               : 'Débloquez toutes les fonctionnalités premium'}
           </h3>
           <p className="text-gray-300 mt-1">
-            {isTrialActive 
-              ? `Profitez de toutes les fonctionnalités premium jusqu'au ${format(new Date(user.trial_ends_at!), 'dd MMMM yyyy', { locale: fr })}`
+            {isTrialActive && profile?.trial_ends_at
+              ? `Profitez de toutes les fonctionnalités premium jusqu'au ${format(new Date(profile.trial_ends_at), 'dd MMMM yyyy', { locale: fr })}`
               : 'Accédez à des fonctionnalités avancées pour optimiser votre recherche d\'emploi'}
           </p>
           

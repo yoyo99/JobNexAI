@@ -16,6 +16,8 @@ const supabaseAdmin = createClient(
   }
 );
 
+
+
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -87,45 +89,87 @@ Deno.serve(async (req: Request) => {
       Generate only the text of the cover letter itself. Do not include any surrounding text like "Here is your cover letter:" or any explanations.
     `;
     
-    console.log("Sending prompt to Mistral AI...");
+    const taskId = crypto.randomUUID();
 
-    const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        ...corsHeaders,
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${mistralApiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'mistral-large-latest',
-        messages: [
-          { role: 'system', content: systemMessage },
-          { role: 'user', content: userPrompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 1024,
-      }),
-    });
+    const { error: insertError } = await supabaseAdmin
+      .from('generated_content')
+      .insert({
+        user_id: user.id,
+        task_id: taskId,
+        status: 'pending',
+      });
 
-    if (!mistralResponse.ok) {
-      const errorBody = await mistralResponse.text();
-      throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
+    if (insertError) {
+      console.error('Error inserting task:', insertError);
+      return new Response(JSON.stringify({ error: 'Failed to create generation task.' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500,
+      });
     }
 
-    const completion = await mistralResponse.json();
-    const generatedLetter = completion.choices[0]?.message?.content?.trim();
+    const backgroundTask = async () => {
+      try {
+        console.log(`Starting background task for task_id: ${taskId}`);
+        const mistralResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${mistralApiKey}`,
+          },
+          body: JSON.stringify({
+            model: 'mistral-large-latest',
+            messages: [
+              { role: 'system', content: systemMessage },
+              { role: 'user', content: userPrompt }
+            ],
+            temperature: 0.7,
+            max_tokens: 1024,
+          }),
+        });
 
-    if (!generatedLetter) {
-      throw new Error('AI failed to generate a cover letter content.');
-    }
-    
-    console.log("Cover letter generated successfully by AI.");
+        if (!mistralResponse.ok) {
+          const errorBody = await mistralResponse.text();
+          throw new Error(`Mistral API error: ${mistralResponse.status} ${errorBody}`);
+        }
+
+        const completion = await mistralResponse.json();
+        const generatedLetter = completion.choices[0]?.message?.content?.trim();
+
+        if (!generatedLetter) {
+          throw new Error('AI failed to generate a cover letter content.');
+        }
+
+        await supabaseAdmin
+          .from('generated_content')
+          .update({
+            content: generatedLetter,
+            status: 'completed',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('task_id', taskId);
+        console.log(`Task ${taskId} completed successfully.`);
+
+      } catch (e) {
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        console.error(`Background task failed for task_id ${taskId}:`, errorMessage);
+        await supabaseAdmin
+          .from('generated_content')
+          .update({
+            error: errorMessage,
+            status: 'failed',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('task_id', taskId);
+      }
+    };
+
+    EdgeRuntime.waitUntil(backgroundTask());
 
     return new Response(
-      JSON.stringify({ coverLetterContent: generatedLetter }),
+      JSON.stringify({ taskId }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200
+        status: 202, // Accepted
       }
     );
 

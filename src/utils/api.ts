@@ -22,29 +22,30 @@ export async function apiClient<T = any>(
   endpoint: string,
   options: ApiOptions = {}
 ): Promise<ApiResponse<T>> {
-  const { headers = {}, token, method = 'GET', body } = options;
-  
+    const { headers: customHeaders = {}, token, method = 'GET', body } = options;
+
   const url = endpoint.startsWith('http') 
     ? endpoint 
     : `/.netlify/functions/${endpoint}`;
-  
-  const authHeaders = token 
-    ? { Authorization: `Bearer ${token}` } 
-    : {};
-  
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...customHeaders,
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
     const response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...authHeaders,
-        ...headers,
-      },
+      headers,
       body: body ? JSON.stringify(body) : undefined,
     });
 
     // Gérer les différents types de réponses
-    let data = null;
+    let data: any = null;
     const contentType = response.headers.get('Content-Type');
     if (contentType && contentType.includes('application/json')) {
       data = await response.json();
@@ -56,7 +57,7 @@ export async function apiClient<T = any>(
       // Si c'est une erreur 4xx ou 5xx, formater la réponse d'erreur
       return {
         data: null,
-        error: data?.error || response.statusText || 'Une erreur est survenue',
+        error: data?.error || (typeof data === 'string' ? data : response.statusText) || 'Une erreur est survenue',
         status: response.status,
       };
     }
