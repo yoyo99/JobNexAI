@@ -662,6 +662,7 @@ export const setPrimaryCV = async (userId: string, cvIdToMakePrimary: string): P
  * @param cvPath Le chemin de stockage du fichier CV dans Supabase Storage.
  * @returns Le texte extrait du CV.
  */
+// Force git detection
 export const invokeExtractCvText = async (cvPath: string): Promise<string> => {
   if (!supabaseExport) throw new Error('Supabase client is not initialized');
   if (!cvPath) throw new Error('CV path is required to extract text.');
