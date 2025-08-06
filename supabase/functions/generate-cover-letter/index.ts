@@ -1,6 +1,7 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // supabase/functions/generate-cover-letter/index.ts
+import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 import { corsHeaders } from '../_shared/cors.ts';
