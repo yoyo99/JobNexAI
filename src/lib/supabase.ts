@@ -667,7 +667,7 @@ export const invokeExtractCvText = async (cvPath: string): Promise<string> => {
   if (!cvPath) throw new Error('CV path is required to extract text.');
 
   const { data, error } = await supabaseExport.functions.invoke('extract-cv-text', {
-    body: { cvPath },
+    body: { storagePath: cvPath },
   });
 
   if (error) {
