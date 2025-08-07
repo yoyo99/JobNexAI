@@ -35,8 +35,13 @@ serve(async (req: Request) => {
     if (userError) throw userError;
     if (!user) throw new Error('User subscription not found.');
 
-    const limits = TIER_LIMITS[user.tier];
-    if (!limits) throw new Error(`Invalid tier: ${user.tier}`);
+    // Validate tier type
+    const tierKey = user.tier as keyof typeof TIER_LIMITS;
+    if (!tierKey || !(tierKey in TIER_LIMITS)) {
+      throw new Error(`Invalid tier: ${user.tier}`);
+    }
+    
+    const limits = TIER_LIMITS[tierKey];
 
     const actionKey = action as keyof typeof limits;
 
