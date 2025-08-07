@@ -58,10 +58,12 @@ Deno.serve(async (req: Request) => {
     console.log('Attempting to extract text using unpdf...');
     const { text: extractedText, totalPages } = await extractText(pdfProxy);
 
-    if (extractedText === undefined || extractedText === null) { 
-      if (typeof extractedText !== 'string') {
-        throw new Error('Failed to extract text content using unpdf. Result was not a string.');
-      }
+    if (extractedText === undefined || extractedText === null || typeof extractedText !== 'string') {
+      throw new Error('Failed to extract text content using unpdf. Result was not a string.');
+    }
+    
+    if (extractedText.trim().length === 0) {
+      throw new Error('Extracted text is empty. The PDF might be image-based or corrupted.');
     }
     
     console.log(`Text extracted successfully using unpdf. Extracted text length: ${extractedText?.length ?? 0}, Total pages: ${totalPages}`);
