@@ -24,13 +24,9 @@ Deno.serve(async (req: Request) => {
 
     console.log(`Attempting to download from storage path: ${storagePath}`);
 
-    const [bucketName, ...filePathParts] = storagePath.split('/');
-    const filePath = filePathParts.join('/');
+    const bucketName = 'cvs'; // The actual name of your CVs bucket
+    const filePath = storagePath; // The full path inside the bucket, e.g., 'user_id/cv.pdf'
 
-    if (!bucketName || !filePath) {
-        throw new Error(`Invalid storagePath format. Expected 'bucket/path/to/file.pdf', got '${storagePath}'`);
-    }
-    
     console.log(`Downloading from bucket: '${bucketName}', file path: '${filePath}'`);
 
     const { data: fileData, error: downloadError } = await supabaseClient
