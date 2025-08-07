@@ -34,8 +34,15 @@ Deno.serve(async (req: Request) => {
       .download(filePath);
 
     if (downloadError) {
-      console.error('Download error:', downloadError);
-      throw downloadError;
+      console.error('Download error details:', {
+        message: downloadError.message,
+        name: downloadError.name,
+        cause: downloadError.cause,
+        stack: downloadError.stack,
+        bucketName,
+        filePath
+      });
+      throw new Error(`Storage download failed: ${downloadError.message} (bucket: ${bucketName}, path: ${filePath})`);
     }
     if (!fileData) {
       throw new Error('File not found or empty from Supabase Storage.');
