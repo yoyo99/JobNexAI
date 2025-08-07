@@ -50,34 +50,42 @@ Deno.serve(async (req: Request) => {
     
     console.log('File downloaded successfully. Size:', fileData.size);
 
-    const fileArrayBuffer = await fileData.arrayBuffer();
-    
-    console.log('Creating PDF document proxy...');
-    const pdfProxy = await getDocumentProxy(new Uint8Array(fileArrayBuffer));
+    try {
+      const fileArrayBuffer = await fileData.arrayBuffer();
+      console.log('File converted to ArrayBuffer. Size:', fileArrayBuffer.byteLength);
+      
+      console.log('Creating PDF document proxy...');
+      const pdfProxy = await getDocumentProxy(new Uint8Array(fileArrayBuffer));
+      console.log('PDF document proxy created successfully');
 
-    console.log('Attempting to extract text using unpdf...');
-    const { text: extractedText, totalPages } = await extractText(pdfProxy);
+      console.log('Attempting to extract text using unpdf...');
+      const { text: extractedText, totalPages } = await extractText(pdfProxy);
+      console.log('Text extraction completed. Text length:', extractedText?.length, 'Total pages:', totalPages);
 
-    if (extractedText === undefined || extractedText === null || typeof extractedText !== 'string') {
-      throw new Error('Failed to extract text content using unpdf. Result was not a string.');
-    }
-    
-    if (extractedText.trim().length === 0) {
-      throw new Error('Extracted text is empty. The PDF might be image-based or corrupted.');
-    }
-    
-    console.log(`Text extracted successfully using unpdf. Extracted text length: ${extractedText?.length ?? 0}, Total pages: ${totalPages}`);
-
-    return new Response(
-      JSON.stringify({ 
-        extractedText: extractedText || "", 
-        totalPages,
-      }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
+      if (extractedText === undefined || extractedText === null || typeof extractedText !== 'string') {
+        throw new Error('Failed to extract text content using unpdf. Result was not a string.');
       }
-    );
+      
+      if (extractedText.trim().length === 0) {
+        throw new Error('Extracted text is empty. The PDF might be image-based or corrupted.');
+      }
+      
+      console.log(`Text extracted successfully using unpdf. Extracted text length: ${extractedText?.length ?? 0}, Total pages: ${totalPages}`);
+
+      return new Response(
+        JSON.stringify({ 
+          extractedText: extractedText || "", 
+          totalPages,
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200 
+        }
+      );
+    } catch (pdfError) {
+      console.error('Error during PDF processing:', pdfError);
+      throw new Error(`PDF processing failed: ${pdfError instanceof Error ? pdfError.message : 'Unknown error'}`);
+    }
 
   } catch (e) {
     console.error('Error in extract-cv-text function:', e);
