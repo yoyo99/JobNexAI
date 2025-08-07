@@ -59,22 +59,44 @@ Deno.serve(async (req: Request) => {
       console.log('PDF document proxy created successfully');
 
       console.log('Attempting to extract text using unpdf...');
-      const { text: extractedText, totalPages } = await extractText(pdfProxy);
+      const extractResult = await extractText(pdfProxy);
+      console.log('Extract result:', {
+        type: typeof extractResult,
+        keys: extractResult ? Object.keys(extractResult) : 'null',
+        text_type: typeof extractResult?.text,
+        text_length: extractResult?.text?.length,
+        totalPages: extractResult?.totalPages
+      });
+      
+      const { text: extractedText, totalPages } = extractResult;
       console.log('Text extraction completed. Text length:', extractedText?.length, 'Total pages:', totalPages);
 
-      if (extractedText === undefined || extractedText === null || typeof extractedText !== 'string') {
-        throw new Error('Failed to extract text content using unpdf. Result was not a string.');
+      // More flexible text validation
+      let finalText = '';
+      if (typeof extractedText === 'string') {
+        finalText = extractedText;
+      } else if (extractedText && typeof extractedText === 'object') {
+        // Sometimes unpdf returns an object with text content
+        finalText = String(extractedText);
+      } else if (Array.isArray(extractedText)) {
+        // Sometimes text is returned as an array
+        finalText = extractedText.join(' ');
+      } else {
+        console.log('Unexpected text format:', extractedText);
+        throw new Error(`Failed to extract text content using unpdf. Unexpected result type: ${typeof extractedText}`);
       }
       
-      if (extractedText.trim().length === 0) {
-        throw new Error('Extracted text is empty. The PDF might be image-based or corrupted.');
+      if (finalText.trim().length === 0) {
+        throw new Error('Extracted text is empty. The PDF might be image-based, password-protected, or corrupted.');
       }
       
-      console.log(`Text extracted successfully using unpdf. Extracted text length: ${extractedText?.length ?? 0}, Total pages: ${totalPages}`);
+      console.log(`Text extracted successfully. Final text length: ${finalText.length}`);
+      
+      console.log(`Text extracted successfully using unpdf. Extracted text length: ${finalText?.length ?? 0}, Total pages: ${totalPages}`);
 
       return new Response(
         JSON.stringify({ 
-          extractedText: extractedText || "", 
+          extractedText: finalText || "", 
           totalPages,
         }),
         { 
